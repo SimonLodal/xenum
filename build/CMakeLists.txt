@@ -23,6 +23,6 @@ set(BUILD_SHARED_LIBS true)
 enable_testing()
 
 ################################ SUBPROJECTS #################################
-set(APP_VERSION "0.1")
+set(APP_VERSION "3.0")
 add_definitions(-DAPP_VERSION="${APP_VERSION}")
 add_subdirectory(../xenum xenum)

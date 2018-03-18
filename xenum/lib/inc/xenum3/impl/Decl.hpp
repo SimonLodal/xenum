@@ -57,7 +57,7 @@
 /**
  * Initialize the XENUM_DECL_* macro; generate error if required fields are missing/empty,
  * and fill in defaults where applicable.
- * @param DBGLOC The suffix that identifies the xenum.
+ * @param SUFFIX The suffix that identifies the xenum.
  * @return Initialized xenum declaration, as a sequence, where all fields are present.
  * @hideinitializer
  */

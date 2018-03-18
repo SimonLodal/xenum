@@ -355,7 +355,10 @@ IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	} BOOST_PP_CAT(PROPNAME, _NodeNames_t);							\
 	NWLN
 
-
+/**
+ * Worker for _XENUM3_DEFINE_CNTNR_PROP_NODES_NAMES().
+ * @hideinitializer
+ */
 #define _XENUM3_DEFINE_CNTNR_PROP_NODE_NAME(ITERPOS, NODE, CTXT)				\
 IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	_XENUM3_DECL_GET_CNTNRNAME(_XENUM3_CTXT_GET_DECL(CTXT))					\
@@ -455,9 +458,17 @@ _DEFINE_CNTNR_PROP_NODE_DATA: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} 
 
 
 // ====================================== DEBUG STUFF ===========================================
+/**
+ * Define some members for debugging.
+ * @hideinitializer
+ */
 #define _XENUM3_DEFINE_CNTNR_PROP_DEBUG(CTXT, DECL, PROPDEF)					\
 	_XENUM3_DEFINE_CNTNR_PROP_DEBUG_DUMP_NODES(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF))	\
 
+/**
+ * Worker for _XENUM3_DEFINE_CNTNR_PROP_DEBUG().
+ * @hideinitializer
+ */
 #define _XENUM3_DEFINE_CNTNR_PROP_DEBUG_DUMP_NODES(CTXT, DECL, PROPDEF, PROPNAME)		\
 
 /*

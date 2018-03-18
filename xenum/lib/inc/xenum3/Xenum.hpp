@@ -3,7 +3,7 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 3.pre1.0
+ * @version 3.0
  *
  * @section Description
  * Xenum is an enum class that adds all the functionality that standard C++ enums lack.
@@ -171,20 +171,19 @@
  *	@code
  *	#define XENUM_DECL_${suffix} (scope, enumClassName, enumValueName[, intType [, features [, custom_properties]]])
  *	@endcode
- *   - Again note the space between XENUM_DECL_${suffix} and the opening parenthesis.
+ * Again note the space between XENUM_DECL_${suffix} and the opening parenthesis.
  * @param scope The containing namespace and/or class. Define this if the call to
  *	XENUM3_DEFINE() is not inside the same namespace and class (if any) as the call to
  *	XENUM3_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
  *	"my::ns::" (do not quote the value). You may also use a :: prefix to denote
  *	the toplevel namespace, to avoid any relative resolution of namespace.
- *
  *	Note that if the xenum is member in a class (XENUM3_DECLARE() is called from within
  *	a class), the scope MUST contain at least the class name, if not also the namespace.
  * @param enumClassName Name of the generated enum-container class, fx. "Fruits" (not quoted).
  * @param enumValueName Name of the generated enum-value class, fx. "Fruit" (not quoted).
  * @param intType Optional. Integer-type for the enum values. Should be unsigned, and must be large
  *	enough to hold the number of enum values (compile-time error if not). Leave empty
- *	to let code decide the smallest possible type.
+ *	to let Xenum decide the smallest possible type.
  * @param features Optional. Not implemented yet. Leave empty for now.
  * @param properties Optional. Defines custom properties. Leave field empty/undefined if the
  *	xenum does not have any custom properties. If defined, it must be a tuple of one or
@@ -346,6 +345,18 @@
  *   Some template magic may be possible in C++14 but for now we stick with C++11.
  * - Enum class inheritance (maybe).
  * - Custom code injection (maybe - if custom properties are not enough).
+ *
+ * @section Versioning Versioning
+ * Major version is increased when introducing incompatible API changes.
+ *
+ * Minor versions may include features/changes that have sane, backwards-compatible
+ * (within same major version) defaults, and do not require changes to users' code.
+ *
+ * All preprocessor symbols have a versioned prefix (_XENUM${MAJORVERSION}).
+ * Toplevel directory and namespace are also versioned (xenum${majorversion}).
+ *
+ * This allows different versions to be used in the same project. Very convenient
+ * when you might want to upgrade, but not update all the enum definitions at once.
  */
 #ifndef _XENUM3_XENUM_HPP
 #define _XENUM3_XENUM_HPP

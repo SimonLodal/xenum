@@ -69,9 +69,8 @@ namespace xenum3 {
  * Anyway this function makes sure that only the true branch is executed.
  * Not reentrant so copy/paste if nesting.
  * @param COND The condition variable, must be 1 or 0.
- * @param CMD1 Command to execute if COND is true.
- * @param CMD0 Command to execute if COND is false.
- * The CMD1 and CMD0 parameters are tuples, where the first field is the name of the macro to
+ * @param ... Commands to execute if COND is true or false respectively.
+ * Each command is defined as a tuple, where the first field is the name of the macro to
  * execute, and all remaining value are passed as parameters to that macro when executed.
  * @hideinitializer
  */
@@ -93,13 +92,22 @@ namespace xenum3 {
 // ===================================================================================================
 /**
  * @return Size of tuple, or zero if the parameter empty.
+ * @hideinitializer
  */
 #define _XENUM3_GET_TUPLE_OR_EMPTY_SIZE(DATA)							\
 	BOOST_PP_CAT(_XENUM3_GET_TUPLE_OR_EMPTY_SIZE_, BOOST_PP_NOT(BOOST_PP_IS_EMPTY(DATA))) (DATA)
 
+/**
+ * Worker for _XENUM3_GET_TUPLE_OR_EMPTY_SIZE().
+ * @hideinitializer
+ */
 #define _XENUM3_GET_TUPLE_OR_EMPTY_SIZE_0(DATA)							\
 	0
 
+/**
+ * Worker for _XENUM3_GET_TUPLE_OR_EMPTY_SIZE().
+ * @hideinitializer
+ */
 #define _XENUM3_GET_TUPLE_OR_EMPTY_SIZE_1(DATA)							\
 	BOOST_PP_TUPLE_SIZE(TUPLE)
 
@@ -107,13 +115,22 @@ namespace xenum3 {
 // ===================================================================================================
 /**
  * @return Size of seq, or zero if the parameter empty.
+ * @hideinitializer
  */
 #define _XENUM3_GET_SEQ_OR_EMPTY_SIZE(DATA)							\
 	BOOST_PP_CAT(_XENUM3_GET_SEQ_OR_EMPTY_SIZE_, BOOST_PP_NOT(BOOST_PP_IS_EMPTY(DATA))) (DATA)
 
+/**
+ * Worker for _XENUM3_GET_SEQ_OR_EMPTY_SIZE().
+ * @hideinitializer
+ */
 #define _XENUM3_GET_SEQ_OR_EMPTY_SIZE_0(DATA)							\
 	0
 
+/**
+ * Worker for _XENUM3_GET_SEQ_OR_EMPTY_SIZE().
+ * @hideinitializer
+ */
 #define _XENUM3_GET_SEQ_OR_EMPTY_SIZE_1(DATA)							\
 	BOOST_PP_SEQ_SIZE(DATA)
 
@@ -121,13 +138,22 @@ namespace xenum3 {
 // ===================================================================================================
 /**
  * @return Size of tuple, if data looks like it might actually be a tuple, else zero.
+ * @hideinitializer
  */
 #define _XENUM3_GET_TUPLE_SIZE_IF_TUPLE(DATA)							\
 	BOOST_PP_CAT(_XENUM3_GET_TUPLE_SIZE_IF_TUPLE_, BOOST_PP_IS_BEGIN_PARENS(DATA)) (DATA)
 
+/**
+ * Worker for _XENUM3_GET_TUPLE_SIZE_IF_TUPLE().
+ * @hideinitializer
+ */
 #define _XENUM3_GET_TUPLE_SIZE_IF_TUPLE_0(DATA)							\
 	0
 
+/**
+ * Worker for _XENUM3_GET_TUPLE_SIZE_IF_TUPLE().
+ * @hideinitializer
+ */
 #define _XENUM3_GET_TUPLE_SIZE_IF_TUPLE_1(DATA)							\
 	BOOST_PP_TUPLE_SIZE(DATA)
 
@@ -136,13 +162,22 @@ namespace xenum3 {
 /**
  * @return Tuple converted to seq, if data looks like it might be a tuple, else just the data
  *	itself.
+ * @hideinitializer
  */
 #define _XENUM3_TUPLE_TO_SEQ_IF_TUPLE(DATA)							\
 	BOOST_PP_CAT(_XENUM3_TUPLE_TO_SEQ_IF_TUPLE_, BOOST_PP_IS_BEGIN_PARENS(DATA)) (DATA)
 
+/**
+ * Worker for _XENUM3_TUPLE_TO_SEQ_IF_TUPLE().
+ * @hideinitializer
+ */
 #define _XENUM3_TUPLE_TO_SEQ_IF_TUPLE_0(DATA)							\
 	DATA
 
+/**
+ * Worker for _XENUM3_TUPLE_TO_SEQ_IF_TUPLE().
+ * @hideinitializer
+ */
 #define _XENUM3_TUPLE_TO_SEQ_IF_TUPLE_1(DATA)							\
 	BOOST_PP_TUPLE_TO_SEQ(DATA)
 
@@ -151,6 +186,7 @@ namespace xenum3 {
 /**
  * @return Tuple converted to seq, if data looks like it might actually be a tuple,
  *	and COND is true; else just the data itself.
+ * @hideinitializer
  */
 #define _XENUM3_TUPLE_TO_SEQ_COND(DATA, COND)							\
 	BOOST_PP_CAT(										\
@@ -158,9 +194,17 @@ namespace xenum3 {
 		BOOST_PP_AND(COND, BOOST_PP_IS_BEGIN_PARENS(DATA))				\
 	) (DATA)
 
+/**
+ * Worker for _XENUM3_TUPLE_TO_SEQ_COND().
+ * @hideinitializer
+ */
 #define _XENUM3_TUPLE_TO_SEQ_COND_0(DATA)							\
 	DATA
 
+/**
+ * Worker for _XENUM3_TUPLE_TO_SEQ_COND().
+ * @hideinitializer
+ */
 #define _XENUM3_TUPLE_TO_SEQ_COND_1(DATA)							\
 	BOOST_PP_TUPLE_TO_SEQ(DATA)
 
