@@ -169,7 +169,7 @@
  * The XENUM_DECL_$suffix macro contains general parameters, defined as a tuple (comma-separated
  * values inside parentheses). Syntax:
  *	@code
- *	#define XENUM_DECL_${suffix} (scope, enumClassName, enumValueName[, intType [, features [, custom_properties]]])
+ *	#define XENUM_DECL_${suffix} (scope, enumClassName, enumValueName [, intType [, features [, custom_properties]]])
  *	@endcode
  * Again note the space between XENUM_DECL_${suffix} and the opening parenthesis.
  * @param scope The containing namespace and/or class. Define this if the call to
@@ -191,13 +191,21 @@
  *
  * Custom property definition tuple syntax:
  *	@code
- *	(propertyName, propertyType, defaultValue)
+ *	(propertyName, propertyType [, defaultValue [, depth]])
  *	@endcode
  * @param propertyName Name of the custom property.
  * @param propertyType Data-type of the custom property. For now only simple bool/int types
  *	are supported (not strings).
- * @param defaultValue Optional. Default value to apply if an enum value does not define a value
- *	for this property.
+ * @param defaultValue Optional (default=none). Default value to apply if an enum value does not
+ *	define a value for this property.
+ * @param depth Optional (default=0). Defines number of array levels. Depth=0 means each enum value
+ *	has exactly one value for this custom property. Depth=1 means that each enum value has an
+ *	array of values. Depth=2 means they each have a two-level array of values, etc. Array sizes
+ *	are not fixed; you can make them any length (up to preprocessor limit of maybe 64 or 256).
+ *	Arrays can also be empty or non-existent (empty branches allowed).
+ *	Arrays are indexed by the smallest possible integer (decided by Xenum).
+ *	Values can only exist as leaf nodes in the data hierarchy, that is, they can only appear
+ *	at level $depth, not somewhere in between.
  *
  * @subsection XENUM_VALS XENUM_VALS_${suffix}()
  * The XENUM_VALS macro defines the enum-values, as a series of calls to a V() macro that is
