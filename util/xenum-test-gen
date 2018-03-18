@@ -1,0 +1,2088 @@
+#!/usr/bin/perl -w
+#
+# xenum-test-gen - a utility to generate an Xenum, for unit testing.
+# Copyright 2018 Simon Lodal <simonl@parknet.dk>
+# 
+
+use strict;
+
+
+############################################ IMPORTS #############################################
+
+
+######################################### CONFIGURATION ##########################################
+# Absolute maximum number of leafnodes. Just to set some very high bound, to avoid overflowing
+# calculations.
+my $absMaxLeafNodeCount = 0x40000000;
+# For output.
+my $tabWidth = 8;
+
+# Output formatting: At what column the custom property values start.
+my $propValueOffset = 32;
+# Output formatting: At what column to try to place the data comments.
+my $dataCommentOffset = 72;
+# Output formatting: At what column to place the line continuation backslash.
+my $lineContOffset = 96;
+
+# Flag to turn on/off comments on each piece of data. Should perhaps be a cmdline option.
+my $dataComments = 1;
+
+
+######################################## ARGUMENT VALUES #########################################
+# General argument values
+my $gopts = {
+	cntnrName => "",
+	valueName => "",
+	execute => 0,
+	incpath => "",
+	namespace => "",
+	overwrite => 0,
+	enumSize => 0,
+	propCount => 0,
+	testing => 0,
+};
+# Argument values for custom properties data
+my $popts = {
+	depth => 0,
+	levelWidth => 2,
+	leafNodes => -1,
+	leafSize => 0,
+	totalValues => 0,
+	# FIXME: These should perhaps be configurable.
+	wantEmptyRoot => 1,
+	wantEmptyBranch => 1,
+	wantEmptyLeafNode => 1,
+};
+
+
+########################################## RUNTIME DATA ##########################################
+my $appname = "xenum-test-gen";
+my $filename = "xenum-test-gen";
+my $appversion = "0.1";
+
+my $nsparts = [];
+my $valnumWidth = 0;
+my $valnumfmt = "";
+my $propnumWidth = 0;
+my $propnumfmt = "";
+
+# Maximum total number of leafnodes, given the propCount, enumSize, depth and levelWidth.
+# If we want empty enum/prop and/or empty branch, this number gets smaller; it is really
+# the number of leaf-nodes that can be created after we have ensured some empty spaces in
+# the data hierarchy.
+# Bounded to $absMaxLeafNodeCount if exceeding this.
+my $maxLeafNodeCount = 0;
+# Maximum number of values in a leafnode.
+my $maxLeafSize = 0;
+
+# Make sure that at least one enum/prop (root branch) does not have any branches/leafnodes at all.
+my $ensureEmptyRoot = 0;
+# Make sure that at least one enum/prop (root branch) has branch node(s) but that they ultimately
+# have no leafnodes; they are just a dead end.
+my $ensureEmptyBranch = 0;
+# Make sure that at least one leafnode is empty (exists but contains no values).
+my $ensureEmptyLeafNode = 0;
+
+# Array defining distribution of values across leafnodes (and thus leafnodes to create).
+# Each field is an array containing the values that go into each separate leaf-node, so
+# each field also represents a leafnode to create.
+my $leafNodes = [];
+# The data value hierarchy; arrays of arrays, $depth+1 levels deep, first indexed by enum-value
+# index, then by custom property index, then by generated indexes until the leafnodes at
+# level $depth-1 (the enum-values count as a depth level).
+my $propValues = [];
+
+# Seed for rand(), to get reproducible runs. We do not care about true randomness, we just want
+# to distribute values in a not completely sequential manner.
+my $randSeed = 0xce965ddb;
+
+# General debugging flag.
+my $dbg = 0;
+# Debug value distribution.
+my $dbgv = 0;
+# Debug leafnode distribution.
+my $dbgn = 0;
+# Debug generic inclined distribution.
+my $dbgi = 0;
+
+
+
+######################################### INPUT HANDLING #########################################
+
+sub showHelp($)
+{
+	my ($errmsg) = @_;
+
+	print(STDERR "${errmsg}\n\n") if ($errmsg);
+
+	print <<HELP
+$appname-$appversion
+
+Generate an Xenum for testing. The source tree has a number of unit tests with
+some small Xenum\'s, for testing basic functionality. This program on the other
+hand can generate large Xenum\'s, meant to test limits, especially for custom
+parameter data.
+
+Outputs:
+- Header file cotaining declaration of the xenum.
+- Source file containing definition of the xenum.
+- Source file containing complete unit tests of the generated xenum.
+- Makefile to build the unit test as a standalone program.
+
+Usage:
+$filename [options]
+
+General options:
+    -e, --enumValueName NAME  Name of the Xenum value-class (required).
+    -E, --enumCntnrName NAME  Name of the Xenum container-class. Default=enumValueName plus 's'.
+                              A subdirectory of this name is created in current dir, containing
+                              all output files.
+    -h, --help                This help.
+    -I, --incPath PATH        Prepend this path to the include path when compiling. Useful to
+                              compile with local Xenum.hpp instead of system installed version.
+    -n, --namespace NAME      Namespace of the xenum.
+    -p, --propCount NUMBER    Number of custom properties.
+    -s, --enumSize NUMBER     Number of values in the xenum (required).
+    -v, --version             Show version.
+    -W, --overwrite           Overwrite existing output dir/files.
+    -x, --execute             Make and execute the generated test program.
+    -z                        Testing.
+
+Custom parameter options (only relevant with -p):
+    -pd, --cp-depth NUMBER        Depth of the data hierarchy for each custom parameter (default=0).
+                                  0 means it is just an immediate value.
+                                  1 means there is a single leaf-node (which can contain 0..n values).
+                                  >1 means that the data is a multilevel array, where each indexing
+                                  level has a corresponding level of branch nodes in the hierarchy,
+                                  inserted between the root (enum/prop pair) and their leafnodes.
+    -pn, --cp-leafNodes NUMBER    Max number of leaf nodes (arrays containing values). Default=-1
+                                  which means 'not set'; let program decide.
+    -ps, --cp-leafSize NUMBER     Max number of data values in a leaf node.
+    -pt, --cp-totalValues NUMBER  Max total number of data values.
+    -pw, --cp-levelWidth NUMBER   Max number of child nodes on a given level of the data
+                                  hierarchy (default=2). Ignored if depth<2.
+Notes:
+- When depth=0, all the other custom-parameter options are ignored, since at depth=0 each
+  enum-value/property has exactly one value, and no array hierarchy.
+- All the options (except depth) are max-value options, which means the program will make
+  sure to create at most this number of nodes/values/etc. On the other hand, it will try
+  hard to create exactly that number.
+
+
+Requirements: g++, gtest
+
+HELP
+;
+	exit 1;
+}
+
+
+sub show_version()
+{
+	print("$appname-$appversion\n");
+	exit(1);
+}
+
+
+sub parseArgs()
+{
+	my ($argc, $aidx, $arg, $val);
+
+	$argc = @ARGV;
+
+	showHelp("Error: No args") unless ($argc > 0);
+	for ($aidx=0; $aidx<$argc; $aidx++) {
+		$arg = $ARGV[$aidx];
+		if ($arg =~ /^(?:-e|--enumValueName)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$gopts->{valueName} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-E|--enumCntnrName)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$gopts->{cntnrName} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-h|--help)$/) {
+			showHelp("");
+		}
+		if ($arg =~ /^(?:-I|--incPath)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$gopts->{incPath} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-n|--namespace)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$gopts->{namespace} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-p|--propCount)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$gopts->{propCount} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-s|--enumSize)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$gopts->{enumSize} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-v|--version)$/) {
+			show_version();
+		}
+		if ($arg =~ /^(?:-W|--overwrite)$/) {
+			$gopts->{overwrite} = 1;
+			next;
+		}
+		if ($arg =~ /^(?:-x|--execute)$/) {
+			$gopts->{execute} = 1;
+			next;
+		}
+		if ($arg =~ /^(?:-z)$/) {
+			$gopts->{testing} = 1;
+			next;
+		}
+
+
+		if ($arg =~ /^(?:-pd|--cp-depth)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$popts->{depth} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-pn|--cp-leafNodes)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$popts->{leafNodes} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-ps|--cp-leafSize)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$popts->{leafSize} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-pt|--cp-totalValues)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$popts->{totalValues} = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-pw|--cp-levelWidth)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			$popts->{levelWidth} = $ARGV[++$aidx];
+			next;
+		}
+
+		showHelp("error: unknown argument '$arg'");
+	}
+}
+
+
+############################################## UTIL ##############################################
+
+# Append tabs to line until it has desired length.
+sub tailFill($$)
+{
+	my ($line, $targetLen) = @_;
+	my ($len, $ch, $subLen);
+
+	$len = 0;
+	foreach $ch (split(//, $line)) {
+		if ($ch eq "\t") {
+			$subLen = $len % $tabWidth;
+			if ($subLen == 0) {
+				$len += $tabWidth;
+			} else {
+				$len += $tabWidth - $subLen;
+			}
+		}
+		else {
+			$len++;
+		}
+	}
+	if ($len < $targetLen) {
+		$subLen = $len % $tabWidth;
+		if ($subLen != 0) {
+			$line .= "\t";
+			$len += $tabWidth - $subLen;
+		}
+	}
+	while ($len < $targetLen) {
+		$line .= "\t";
+		$len += $tabWidth;
+	}
+	return $line;
+}
+
+
+# Add line continuation backslash.
+sub cont($)
+{
+	my ($line) = @_;
+	return tailFill($line, $lineContOffset) . "\\";
+}
+
+
+sub dumpGopts()
+{
+	print("General opts:\n".
+	      "\tvalueName = '".$gopts->{valueName}."'\n".
+	      "\tcntnrName = '".$gopts->{cntnrName}."'\n".
+	      "\texecute = '".$gopts->{execute}."'\n".
+	      "\tincPath = '".$gopts->{incPath}."'\n".
+	      "\tnamespace = '".$gopts->{namespace}."'\n".
+	      "\toverwrite = ".$gopts->{overwrite}."\n".
+	      "\tenumSize = ".$gopts->{enumSize}."\n".
+	      "\tpropCount = ".$gopts->{propCount}."\n".
+	      "");
+}
+
+
+sub dumpPopts()
+{
+	print("Custom parameter opts (enumSize=".$gopts->{enumSize}.", propCount=".$gopts->{propCount}."):\n".
+	      "\tdepth = ".$popts->{depth}."\n".
+	      "\tleafNodes = ".$popts->{leafNodes}."\n".
+	      "\tlevelWidth = ".$popts->{levelWidth}."\n".
+	      "\tleafSize = ".$popts->{leafSize}."\n".
+	      "\ttotalValues = ".$popts->{totalValues}."\n".
+#	      "\twantEmptyRoot = ".$popts->{wantEmptyRoot}."\n".
+#	      "\twantEmptyBranch = ".$popts->{wantEmptyBranch}."\n".
+#	      "\twantEmptyLeafNode = ".$popts->{wantEmptyLeafNode}."\n".
+	      "");
+}
+
+
+sub dumpState()
+{
+	print("Current state vars:\n".
+	      "\tmaxLeafNodeCount = ${maxLeafNodeCount}\n".
+	      "\tensureEmptyRoot = ${ensureEmptyRoot}\n".
+	      "\tensureEmptyBranch = ${ensureEmptyBranch}\n".
+	      "\tensureEmptyLeafNode = ${ensureEmptyLeafNode}\n".
+#	      "\tleafNodes(".@{$leafNodes}.") = [".join(",", map {"[".join(",",@{$_})."]"} @{$leafNodes})."]\n".
+	      "\tleafNodes : ".@{$leafNodes}."\n".
+	      "\tpropValues : ".@{$propValues}."\n".
+	      "");
+}
+
+
+sub dumpLeafNodes()
+{
+	my ($idx);
+	print("leafNodes (".@{$leafNodes}."):\n");
+	for ($idx=0; $idx<@{$leafNodes}; $idx++) {
+		print("    [${idx}] : [".join(",", @{$leafNodes->[$idx]})."]\n");
+	}
+}
+
+
+# Recursive worker for dumpPropValues().
+sub dumpPropValueNode($$$)
+{
+	my ($pidx, $node, $depth) = @_;
+	my ($out, $nidx, $indent, $line);
+	$out = [];
+
+#print("dumpPropValueNode() pidx=${pidx} depth=${depth} node=${node}\n");
+	$indent = $depth + 2;
+	$line = "";
+
+	if ($pidx >= 0) {
+		$line = ("    " x $indent) . "[${pidx}] ";
+	}
+	if (ref($node) ne "ARRAY") {
+		# Should not happen
+		if (defined($node)) {
+			$line .= " <${node}>";
+		} else {
+			$line .= "-";
+		}
+		push(@{$out}, $line);
+		return $out;
+	}
+	$line .= "(".@{$node}."):";
+	$depth++;
+	# Print leafnode array as is.
+	if ($depth == $popts->{depth}) {
+		$line .= " [".join(",", @{$node})."]";
+		push(@{$out}, $line);
+		return $out;
+	}
+
+	push(@{$out}, $line);
+	for ($nidx=0; $nidx<@{$node}; $nidx++) {
+		push(@{$out}, @{ dumpPropValueNode_rec($nidx, $node->[$nidx], $depth) });
+	}
+
+	return $out;
+}
+
+# Recursive worker for dumpPropValueNode().
+sub dumpPropValueNode_rec($$$)
+{
+	my ($pidx, $node, $depth) = @_;
+	return dumpPropValueNode($pidx, $node, $depth);
+}
+
+
+sub dumpPropValues()
+{
+	my ($out);
+	$out = dumpPropValueNode(-1, $propValues, -2);
+	print("PropValues [enumIdx, propIdx, ...] " . join("\n", @{$out}) . "\n");
+}
+
+
+# Distribute a number of "stones" across fields in an x*y grid, generally so
+# that each x column has fewer stones than the previous.
+# @param sizeX: X-size of grid.
+# @param sizeY: Y-size of grid.
+# @param stones: Number of stones to distribute across the grid.
+# @param opts: Options (satisfied in this order):
+#     - firstMin: Minimum number of stones to assign to the first x column
+#	(provided there is enough stones).
+#     - fillAll: If true, distribute at least one stone to every x column
+#	(provided there is enough stones).
+#     - minColumns: Create at least this number of output columns, even if
+#	they are empty.
+# @return Array with number of stones in each x column. Size of array may be
+#	smaller than $sizeX.
+sub distributeInclined($$$$)
+{
+	my ($sizeX, $sizeY, $stones, $opts) = @_;
+	my ($columns, $stonesLeft, $stonesCur, $idxCur, $idxBeg, $maxEnd, $idxEnd);
+
+if($dbgi){print("distributeInclined() -------------------- begin: sizeX=${sizeX} sizeY=${sizeY} stones=${stones} opts={".join(", ", map {"$_=$opts->{$_}"} keys(%{$opts}))."} --------------------\n");}
+	die("Parameter error.") if ($sizeX < 1 || $sizeY < 1 || $stones < 0);
+
+	$columns = [];
+	$stonesLeft = $stones;
+	$idxBeg = 0;
+	$maxEnd = $sizeX - 1;
+
+	# Fill first.
+	if ($opts->{firstMin}) {
+		$stonesCur = $sizeY;
+		if ($stonesCur > $stonesLeft) {
+			$stonesCur = $stonesLeft;
+		}
+		if ($stonesCur) {
+if($dbgi>1){print("distributeInclined() fill first: [0] = ${stonesCur}\n");}
+			push(@{$columns}, $stonesCur);
+			$stonesLeft -= $stonesCur;
+			$idxBeg++;
+		}
+		else {
+if($dbgi>1){print("distributeInclined() fill first: No stones.\n");}
+		}
+	}
+
+	# Fill all (maybe except one empty)
+	if ($opts->{fillAll}) {
+		for ($idxCur=$idxBeg; $idxCur<=$maxEnd; $idxCur++) {
+			if ($stonesLeft > 0) {
+if($dbgi>1){print("distributeInclined() fill all: [".@{$columns}."] = 1\n");}
+				push(@{$columns}, 1);
+				$stonesLeft--;
+			}
+		}
+	}
+
+	# Ensure minimum number of columns.
+	while (@{$columns} < $opts->{minColumns}) {
+if($dbgi>1){print("distributeInclined() ensure columns[".@{$columns}."]\n");}
+		push(@{$columns}, 0);
+	}
+
+	# Distribute all remaining stones.
+if($dbgi>1){print("distributeInclined() before inclined fill loop: idxBeg=${idxBeg} maxEnd=${maxEnd} columns=".@{$columns}." stonesLeft=${stonesLeft}\n");}
+	if ($idxBeg <= $maxEnd) {
+		$idxEnd = $idxBeg;
+		while ($stonesLeft != 0 && $idxBeg <= $idxEnd) {
+if($dbgi>1){print("distributeInclined() inclined loop [${idxBeg}-${idxEnd}] begin: columns=".@{$columns}." stonesLeft=${stonesLeft}\n");}
+			for ($idxCur=$idxEnd; $idxCur>=$idxBeg; $idxCur--) {
+if($dbgi>1){print("distributeInclined() inclined loop [${idxBeg}-${idxEnd}] [${idxCur}]=".($idxCur<@{$columns}?$columns->[$idxCur]:"-")."\n");}
+				last if ($stonesLeft == 0);
+				while ($idxCur >= @{$columns}) {
+if($dbgi>1){print("distributeInclined() inclined loop [${idxBeg}-${idxEnd}] [${idxCur}] creating column ".@{$columns}."\n");}
+					push(@{$columns}, 0);
+				}
+				if ($columns->[$idxCur] < $sizeY) {
+					$columns->[$idxCur]++;
+					$stonesLeft--;
+if($dbgi>1){print("distributeInclined() inclined loop [${idxBeg}-${idxEnd}] [${idxCur}] increasing=>".$columns->[${idxCur}]."\n");}
+				}
+				else {
+if($dbgi>1){print("distributeInclined() inclined loop [${idxBeg}-${idxEnd}] [${idxCur}] already at max, increasing idxBeg\n");}
+					$idxBeg++;
+					last;
+				}
+			}
+			if ($idxEnd < $maxEnd) {
+				$idxEnd++;
+			}
+		}
+	}
+
+if($dbgi){
+	print("distributeInclined() done:".
+	      " sizeX=${sizeX}".
+	      " sizeY=${sizeY}".
+	      " stones=${stones}".
+	      " opts={".join(", ", map {"$_=$opts->{$_}"} keys(%{$opts}))."}".
+	      " columns(".@{$columns}.")=[".join(",", @{$columns})."]".
+	      "\n");
+}
+	return $columns;
+}
+
+
+# FIXME: Fix text below. Empty stuff now takes precedence.
+# Constraints:
+# 0) Obey the parameters given:
+#    - leafNodes: Total number of leafNodes to create (may not be set).
+#    - totalValues: Total number of values to create.
+#    - leafSize: Max number of values in one leafNode.
+#    - levelWidth: Max number of childnodes of an indexnode, where
+#      childnodes the next depth level; either another set of indexnodes,
+#      or the final set of leafNodes.
+# 1) Max-case: We want to have at least one instance where an indexnode
+#    at $depth-1 has the maximal number of leafNodes, which is $levelWidth.
+#    So the absolute minimum number of leafNodes to create is $levelWidth.
+#    Of course we want to create more than this, else all the other
+#    property>enumvalue>index* nodes will not have any values at all.
+# 2) Max-case: Among these $levelWidth leafNodes in the maximum case, at
+#    least one of them must have the maximum size ($leafSize).
+# 3) Min-case: At least one leafNode should be empty (exist but have not values).
+# 4) Min-case: At least one instance where a branchnode at level=$depth-1 has
+#    zero child leafNodes (another kind of no data).
+# 5) Min-case: At least one instance where a property/enum-value pair has no
+#    branchnodes at all, hence no data at all.
+# 6) Min-case: At least one instance where a property/enum-value pair has no
+#    leafnodes at all, hence no data at all, but it has branchnodes that just
+#    end up nowhere.
+# 7) We want to create all requested leafNodes and values ($leafNodes and
+#    $totalValues) if possible. This is more important than satisfying the min
+#    cases #3-#6.
+sub runTestDistributeInclined()
+{
+	my ($opts, $columns, $errors);
+
+	$errors = 0;
+#$dbgi = 1;
+
+if (1) {
+	$opts = {
+		firstMin => 0,
+		fillAll => 0,
+		minColumns => 0,
+	};
+
+	$errors += testDistributeInclined("1x1 [0] {0,0,0}", 1, 1, 0, $opts, []);
+	$errors += testDistributeInclined("1x1 [1] {0,0,0}", 1, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("1x1 [2] {0,0,0}", 1, 1, 2, $opts, [1]);
+
+	$errors += testDistributeInclined("4x1 [0] {0,0,0}", 4, 1, 0, $opts, []);
+	$errors += testDistributeInclined("4x1 [1] {0,0,0}", 4, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x1 [2] {0,0,0}", 4, 1, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x1 [3] {0,0,0}", 4, 1, 3, $opts, [1,1,1]);
+	$errors += testDistributeInclined("4x1 [4] {0,0,0}", 4, 1, 4, $opts, [1,1,1,1]);
+	$errors += testDistributeInclined("4x1 [5] {0,0,0}", 4, 1, 5, $opts, [1,1,1,1]);
+
+	$errors += testDistributeInclined("4x2 [0] {0,0,0}", 4, 2, 0, $opts, []);
+	$errors += testDistributeInclined("4x2 [1] {0,0,0}", 4, 2, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x2 [2] {0,0,0}", 4, 2, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x2 [3] {0,0,0}", 4, 2, 3, $opts, [2,1]);
+	$errors += testDistributeInclined("4x2 [4] {0,0,0}", 4, 2, 4, $opts, [2,1,1]);
+	$errors += testDistributeInclined("4x2 [5] {0,0,0}", 4, 2, 5, $opts, [2,2,1]);
+	$errors += testDistributeInclined("4x2 [6] {0,0,0}", 4, 2, 6, $opts, [2,2,1,1]);
+	$errors += testDistributeInclined("4x2 [7] {0,0,0}", 4, 2, 7, $opts, [2,2,2,1]);
+	$errors += testDistributeInclined("4x2 [8] {0,0,0}", 4, 2, 8, $opts, [2,2,2,2]);
+
+	$errors += testDistributeInclined("4x4 [0] {0,0,0}", 4, 4, 0, $opts, []);
+	$errors += testDistributeInclined("4x4 [1] {0,0,0}", 4, 4, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x4 [2] {0,0,0}", 4, 4, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x4 [3] {0,0,0}", 4, 4, 3, $opts, [2,1]);
+	$errors += testDistributeInclined("4x4 [4] {0,0,0}", 4, 4, 4, $opts, [2,1,1]);
+	$errors += testDistributeInclined("4x4 [5] {0,0,0}", 4, 4, 5, $opts, [2,2,1]);
+	$errors += testDistributeInclined("4x4 [6] {0,0,0}", 4, 4, 6, $opts, [3,2,1]);
+	$errors += testDistributeInclined("4x4 [7] {0,0,0}", 4, 4, 7, $opts, [3,2,1,1]);
+	$errors += testDistributeInclined("4x4 [10] {0,0,0}", 4, 4, 10, $opts, [4,3,2,1]);
+	$errors += testDistributeInclined("4x4 [13] {0,0,0}", 4, 4, 13, $opts, [4,4,3,2]);
+	$errors += testDistributeInclined("4x4 [16] {0,0,0}", 4, 4, 16, $opts, [4,4,4,4]);
+	$errors += testDistributeInclined("4x4 [17] {0,0,0}", 4, 4, 17, $opts, [4,4,4,4]);
+
+	$errors += testDistributeInclined("4x6 [0] {0,0,0}", 4, 6, 0, $opts, []);
+	$errors += testDistributeInclined("4x6 [1] {0,0,0}", 4, 6, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x6 [2] {0,0,0}", 4, 6, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x6 [4] {0,0,0}", 4, 6, 4, $opts, [2,1,1]);
+	$errors += testDistributeInclined("4x6 [6] {0,0,0}", 4, 6, 6, $opts, [3,2,1]);
+	$errors += testDistributeInclined("4x6 [10] {0,0,0}", 4, 6, 10, $opts, [4,3,2,1]);
+	$errors += testDistributeInclined("4x6 [14] {0,0,0}", 4, 6, 14, $opts, [5,4,3,2]);
+	$errors += testDistributeInclined("4x6 [18] {0,0,0}", 4, 6, 18, $opts, [6,5,4,3]);
+	$errors += testDistributeInclined("4x6 [21] {0,0,0}", 4, 6, 21, $opts, [6,6,5,4]);
+	$errors += testDistributeInclined("4x6 [24] {0,0,0}", 4, 6, 24, $opts, [6,6,6,6]);
+	$errors += testDistributeInclined("4x6 [25] {0,0,0}", 4, 6, 25, $opts, [6,6,6,6]);
+}
+
+if (1) {
+	$opts = {
+		firstMin => 0,
+		fillAll => 1,
+		minColumns => 0,
+	};
+
+	$errors += testDistributeInclined("1x1 [0] {0,1,0}", 1, 1, 0, $opts, []);
+	$errors += testDistributeInclined("1x1 [1] {0,1,0}", 1, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("1x1 [2] {0,1,0}", 1, 1, 2, $opts, [1]);
+
+	$errors += testDistributeInclined("4x1 [0] {0,1,0}", 4, 1, 0, $opts, []);
+	$errors += testDistributeInclined("4x1 [1] {0,1,0}", 4, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x1 [2] {0,1,0}", 4, 1, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x1 [3] {0,1,0}", 4, 1, 3, $opts, [1,1,1]);
+	$errors += testDistributeInclined("4x1 [4] {0,1,0}", 4, 1, 4, $opts, [1,1,1,1]);
+	$errors += testDistributeInclined("4x1 [5] {0,1,0}", 4, 1, 5, $opts, [1,1,1,1]);
+
+	$errors += testDistributeInclined("4x2 [0] {0,1,0}", 4, 2, 0, $opts, []);
+	$errors += testDistributeInclined("4x2 [1] {0,1,0}", 4, 2, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x2 [2] {0,1,0}", 4, 2, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x2 [3] {0,1,0}", 4, 2, 3, $opts, [1,1,1]);
+	$errors += testDistributeInclined("4x2 [4] {0,1,0}", 4, 2, 4, $opts, [1,1,1,1]);
+	$errors += testDistributeInclined("4x2 [5] {0,1,0}", 4, 2, 5, $opts, [2,1,1,1]);
+	$errors += testDistributeInclined("4x2 [6] {0,1,0}", 4, 2, 6, $opts, [2,2,1,1]);
+	$errors += testDistributeInclined("4x2 [7] {0,1,0}", 4, 2, 7, $opts, [2,2,2,1]);
+	$errors += testDistributeInclined("4x2 [8] {0,1,0}", 4, 2, 8, $opts, [2,2,2,2]);
+
+	$errors += testDistributeInclined("4x4 [0] {0,1,0}", 4, 4, 0, $opts, []);
+	$errors += testDistributeInclined("4x4 [1] {0,1,0}", 4, 4, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x4 [2] {0,1,0}", 4, 4, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x4 [3] {0,1,0}", 4, 4, 3, $opts, [1,1,1]);
+	$errors += testDistributeInclined("4x4 [4] {0,1,0}", 4, 4, 4, $opts, [1,1,1,1]);
+	$errors += testDistributeInclined("4x4 [5] {0,1,0}", 4, 4, 5, $opts, [2,1,1,1]);
+	$errors += testDistributeInclined("4x4 [6] {0,1,0}", 4, 4, 6, $opts, [2,2,1,1]);
+	$errors += testDistributeInclined("4x4 [7] {0,1,0}", 4, 4, 7, $opts, [3,2,1,1]);
+	$errors += testDistributeInclined("4x4 [10] {0,1,0}", 4, 4, 10, $opts, [4,3,2,1]);
+	$errors += testDistributeInclined("4x4 [13] {0,1,0}", 4, 4, 13, $opts, [4,4,3,2]);
+	$errors += testDistributeInclined("4x4 [16] {0,1,0}", 4, 4, 16, $opts, [4,4,4,4]);
+	$errors += testDistributeInclined("4x4 [17] {0,1,0}", 4, 4, 17, $opts, [4,4,4,4]);
+
+	$errors += testDistributeInclined("4x6 [0] {0,1,0}", 4, 6, 0, $opts, []);
+	$errors += testDistributeInclined("4x6 [1] {0,1,0}", 4, 6, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x6 [2] {0,1,0}", 4, 6, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x6 [4] {0,1,0}", 4, 6, 4, $opts, [1,1,1,1]);
+	$errors += testDistributeInclined("4x6 [6] {0,1,0}", 4, 6, 6, $opts, [2,2,1,1]);
+	$errors += testDistributeInclined("4x6 [10] {0,1,0}", 4, 6, 10, $opts, [4,3,2,1]);
+	$errors += testDistributeInclined("4x6 [14] {0,1,0}", 4, 6, 14, $opts, [5,4,3,2]);
+	$errors += testDistributeInclined("4x6 [18] {0,1,0}", 4, 6, 18, $opts, [6,5,4,3]);
+	$errors += testDistributeInclined("4x6 [21] {0,1,0}", 4, 6, 21, $opts, [6,6,5,4]);
+	$errors += testDistributeInclined("4x6 [24] {0,1,0}", 4, 6, 24, $opts, [6,6,6,6]);
+	$errors += testDistributeInclined("4x6 [25] {0,1,0}", 4, 6, 25, $opts, [6,6,6,6]);
+}
+
+if (1) {
+	$opts = {
+		firstMin => -1,
+		fillAll => 0,
+		minColumns => 0,
+	};
+
+	$opts->{firstMin} = 1;
+	$errors += testDistributeInclined("1x1 [0] {1,0,0}", 1, 1, 0, $opts, []);
+	$errors += testDistributeInclined("1x1 [1] {1,0,0}", 1, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("1x1 [2] {1,0,0}", 1, 1, 2, $opts, [1]);
+
+	$errors += testDistributeInclined("4x1 [0] {1,0,0}", 4, 1, 0, $opts, []);
+	$errors += testDistributeInclined("4x1 [1] {1,0,0}", 4, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x1 [2] {1,0,0}", 4, 1, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x1 [3] {1,0,0}", 4, 1, 3, $opts, [1,1,1]);
+	$errors += testDistributeInclined("4x1 [4] {1,0,0}", 4, 1, 4, $opts, [1,1,1,1]);
+	$errors += testDistributeInclined("4x1 [5] {1,0,0}", 4, 1, 5, $opts, [1,1,1,1]);
+
+	$opts->{firstMin} = 2;
+	$errors += testDistributeInclined("4x2 [0] {2,0,0}", 4, 2, 0, $opts, []);
+	$errors += testDistributeInclined("4x2 [1] {2,0,0}", 4, 2, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x2 [2] {2,0,0}", 4, 2, 2, $opts, [2]);
+	$errors += testDistributeInclined("4x2 [3] {2,0,0}", 4, 2, 3, $opts, [2,1]);
+	$errors += testDistributeInclined("4x2 [4] {2,0,0}", 4, 2, 4, $opts, [2,1,1]);
+	$errors += testDistributeInclined("4x2 [5] {2,0,0}", 4, 2, 5, $opts, [2,2,1]);
+	$errors += testDistributeInclined("4x2 [6] {2,0,0}", 4, 2, 6, $opts, [2,2,1,1]);
+	$errors += testDistributeInclined("4x2 [7] {2,0,0}", 4, 2, 7, $opts, [2,2,2,1]);
+	$errors += testDistributeInclined("4x2 [8] {2,0,0}", 4, 2, 8, $opts, [2,2,2,2]);
+
+	$opts->{firstMin} = 4;
+	$errors += testDistributeInclined("4x4 [0] {4,0,0}", 4, 4, 0, $opts, []);
+	$errors += testDistributeInclined("4x4 [1] {4,0,0}", 4, 4, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x4 [2] {4,0,0}", 4, 4, 2, $opts, [2]);
+	$errors += testDistributeInclined("4x4 [3] {4,0,0}", 4, 4, 3, $opts, [3]);
+	$errors += testDistributeInclined("4x4 [4] {4,0,0}", 4, 4, 4, $opts, [4]);
+	$errors += testDistributeInclined("4x4 [5] {4,0,0}", 4, 4, 5, $opts, [4,1]);
+	$errors += testDistributeInclined("4x4 [6] {4,0,0}", 4, 4, 6, $opts, [4,1,1]);
+	$errors += testDistributeInclined("4x4 [7] {4,0,0}", 4, 4, 7, $opts, [4,2,1]);
+	$errors += testDistributeInclined("4x4 [10] {4,0,0}", 4, 4, 10, $opts, [4,3,2,1]);
+	$errors += testDistributeInclined("4x4 [13] {4,0,0}", 4, 4, 13, $opts, [4,4,3,2]);
+	$errors += testDistributeInclined("4x4 [16] {4,0,0}", 4, 4, 16, $opts, [4,4,4,4]);
+	$errors += testDistributeInclined("4x4 [17] {4,0,0}", 4, 4, 17, $opts, [4,4,4,4]);
+
+	$opts->{firstMin} = 6;
+	$errors += testDistributeInclined("4x6 [0] {6,0,0}", 4, 6, 0, $opts, []);
+	$errors += testDistributeInclined("4x6 [1] {6,0,0}", 4, 6, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x6 [2] {6,0,0}", 4, 6, 2, $opts, [2]);
+	$errors += testDistributeInclined("4x6 [4] {6,0,0}", 4, 6, 4, $opts, [4]);
+	$errors += testDistributeInclined("4x6 [6] {6,0,0}", 4, 6, 6, $opts, [6]);
+	$errors += testDistributeInclined("4x6 [10] {6,0,0}", 4, 6, 10, $opts, [6,2,1,1]);
+	$errors += testDistributeInclined("4x6 [14] {6,0,0}", 4, 6, 14, $opts, [6,3,3,2]);
+	$errors += testDistributeInclined("4x6 [18] {6,0,0}", 4, 6, 18, $opts, [6,5,4,3]);
+	$errors += testDistributeInclined("4x6 [21] {6,0,0}", 4, 6, 21, $opts, [6,6,5,4]);
+	$errors += testDistributeInclined("4x6 [24] {6,0,0}", 4, 6, 24, $opts, [6,6,6,6]);
+	$errors += testDistributeInclined("4x6 [25] {6,0,0}", 4, 6, 25, $opts, [6,6,6,6]);
+}
+
+if (1) {
+	$opts = {
+		firstMin => -1,
+		fillAll => 1,
+		minColumns => 0,
+	};
+
+	$opts->{firstMin} = 1;
+	$errors += testDistributeInclined("1x1 [0] {1,1,0}", 1, 1, 0, $opts, []);
+	$errors += testDistributeInclined("1x1 [1] {1,1,0}", 1, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("1x1 [2] {1,1,0}", 1, 1, 2, $opts, [1]);
+
+	$errors += testDistributeInclined("4x1 [0] {1,1,0}", 4, 1, 0, $opts, []);
+	$errors += testDistributeInclined("4x1 [1] {1,1,0}", 4, 1, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x1 [2] {1,1,0}", 4, 1, 2, $opts, [1,1]);
+	$errors += testDistributeInclined("4x1 [3] {1,1,0}", 4, 1, 3, $opts, [1,1,1]);
+	$errors += testDistributeInclined("4x1 [4] {1,1,0}", 4, 1, 4, $opts, [1,1,1,1]);
+	$errors += testDistributeInclined("4x1 [5] {1,1,0}", 4, 1, 5, $opts, [1,1,1,1]);
+
+	$opts->{firstMin} = 2;
+	$errors += testDistributeInclined("4x2 [0] {2,1,0}", 4, 2, 0, $opts, []);
+	$errors += testDistributeInclined("4x2 [1] {2,1,0}", 4, 2, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x2 [2] {2,1,0}", 4, 2, 2, $opts, [2]);
+	$errors += testDistributeInclined("4x2 [3] {2,1,0}", 4, 2, 3, $opts, [2,1]);
+	$errors += testDistributeInclined("4x2 [4] {2,1,0}", 4, 2, 4, $opts, [2,1,1]);
+	$errors += testDistributeInclined("4x2 [5] {2,1,0}", 4, 2, 5, $opts, [2,1,1,1]);
+	$errors += testDistributeInclined("4x2 [6] {2,1,0}", 4, 2, 6, $opts, [2,2,1,1]);
+	$errors += testDistributeInclined("4x2 [7] {2,1,0}", 4, 2, 7, $opts, [2,2,2,1]);
+	$errors += testDistributeInclined("4x2 [8] {2,1,0}", 4, 2, 8, $opts, [2,2,2,2]);
+
+	$opts->{firstMin} = 4;
+	$errors += testDistributeInclined("4x4 [0] {4,1,0}", 4, 4, 0, $opts, []);
+	$errors += testDistributeInclined("4x4 [1] {4,1,0}", 4, 4, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x4 [2] {4,1,0}", 4, 4, 2, $opts, [2]);
+	$errors += testDistributeInclined("4x4 [3] {4,1,0}", 4, 4, 3, $opts, [3]);
+	$errors += testDistributeInclined("4x4 [4] {4,1,0}", 4, 4, 4, $opts, [4]);
+	$errors += testDistributeInclined("4x4 [5] {4,1,0}", 4, 4, 5, $opts, [4,1]);
+	$errors += testDistributeInclined("4x4 [6] {4,1,0}", 4, 4, 6, $opts, [4,1,1]);
+	$errors += testDistributeInclined("4x4 [7] {4,1,0}", 4, 4, 7, $opts, [4,1,1,1]);
+	$errors += testDistributeInclined("4x4 [10] {4,1,0}", 4, 4, 10, $opts, [4,3,2,1]);
+	$errors += testDistributeInclined("4x4 [13] {4,1,0}", 4, 4, 13, $opts, [4,4,3,2]);
+	$errors += testDistributeInclined("4x4 [16] {4,1,0}", 4, 4, 16, $opts, [4,4,4,4]);
+	$errors += testDistributeInclined("4x4 [17] {4,1,0}", 4, 4, 17, $opts, [4,4,4,4]);
+
+	$opts->{firstMin} = 6;
+	$errors += testDistributeInclined("4x6 [0] {6,1,0}", 4, 6, 0, $opts, []);
+	$errors += testDistributeInclined("4x6 [1] {6,1,0}", 4, 6, 1, $opts, [1]);
+	$errors += testDistributeInclined("4x6 [2] {6,1,0}", 4, 6, 2, $opts, [2]);
+	$errors += testDistributeInclined("4x6 [4] {6,1,0}", 4, 6, 4, $opts, [4]);
+	$errors += testDistributeInclined("4x6 [6] {6,1,0}", 4, 6, 6, $opts, [6]);
+	$errors += testDistributeInclined("4x6 [10] {6,1,0}", 4, 6, 10, $opts, [6,2,1,1]);
+	$errors += testDistributeInclined("4x6 [14] {6,1,0}", 4, 6, 14, $opts, [6,3,3,2]);
+	$errors += testDistributeInclined("4x6 [18] {6,1,0}", 4, 6, 18, $opts, [6,5,4,3]);
+	$errors += testDistributeInclined("4x6 [21] {6,1,0}", 4, 6, 21, $opts, [6,6,5,4]);
+	$errors += testDistributeInclined("4x6 [24] {6,1,0}", 4, 6, 24, $opts, [6,6,6,6]);
+	$errors += testDistributeInclined("4x6 [25] {6,1,0}", 4, 6, 25, $opts, [6,6,6,6]);
+}
+
+
+#$dbgi = 1;
+
+	print("testDistributeInclined() done, errors: ${errors}\n");
+}
+
+
+sub testDistributeInclined($$$$$$)
+{
+	my ($testName, $sizeX, $sizeY, $stones, $opts, $expDist) = @_;
+	my ($resDist);
+	my ($expDistSum, $resDistSum);
+	my ($success, $idx, $max);
+
+	$success = 1;
+
+	print("------------------------------ Test BEGIN : ${testName} ------------------------------\n");
+	$resDist = distributeInclined($sizeX, $sizeY, $stones, $opts);
+
+	if (@{$expDist} != @{$resDist}) {
+		$success = 0;
+	}
+
+	$expDistSum = $resDistSum = 0;
+	$max = 0 + @{$expDist};
+	if ($max < @{$resDist}) {
+		$max = 0 + @{$resDist};
+	}
+	for ($idx=0; $idx<$max; $idx++) {
+		if ($idx < @{$expDist}) {
+			$expDistSum += $expDist->[$idx];
+		}
+		if ($idx < @{$resDist}) {
+			$resDistSum += $resDist->[$idx];
+		}
+		if ($expDistSum != $resDistSum) {
+			$success = 0;
+		}
+	}
+
+	if ($success) {
+		#print("ok\n");
+		return 0;
+	}
+	else {
+		print("FAIL:\n".
+		      "\tsizeX  = ${sizeX}\n".
+		      "\tsizeY  = ${sizeY}\n".
+		      "\tstones = ${stones}\n".
+		      "\topts   = {".join(", ", map {"$_=$opts->{$_}"} keys(%{$opts}))."}\n".
+		      "\tExpect(".@{$expDist}.",${expDistSum}) = [".join(",", @{$expDist})."]\n".
+		      "\tResult(".@{$resDist}.",${resDistSum}) = [".join(",", @{$resDist})."]\n".
+		      "");
+		return 1;
+	}
+}
+
+
+########################################## OUTPUT FILES ##########################################
+
+sub initFiles()
+{
+	my ($outputdir, $manifest, $xenumHeader, $xenumSource, $testSource, $makefile);
+	my $fheader = "Generated by ${appname}-${appversion}";
+
+	$outputdir = $gopts->{cntnrName};
+	$manifest = $outputdir . "/manifest.txt";
+	$xenumHeader = $outputdir . "/".$gopts->{cntnrName}.".hpp";
+	$xenumSource = $outputdir . "/".$gopts->{cntnrName}.".cpp";
+	$testSource = $outputdir . "/Test".$gopts->{cntnrName}.".cpp";
+	$makefile = $outputdir . "/Makefile";
+
+	if (-e $outputdir) {
+		if (!$gopts->{overwrite}) {
+			die("ERROR (initFiles()): Output directory '${outputdir}' exists.".
+			    " Use -W to overwrite.\n");
+		}
+	}
+	elsif (!mkdir($outputdir)) {
+		die("ERROR (initFiles()): Could not create directory '${outputdir}'.\n");
+	}
+
+	if (-e $manifest && !$gopts->{overwrite}) {
+		die("ERROR (initFiles()): Manifest '${manifest}' exists. Use -W to overwrite.\n");
+	}
+	if (-e $xenumHeader && !$gopts->{overwrite}) {
+		die("ERROR (initFiles()): Xenum header '${xenumHeader}' exists. Use -W to overwrite.\n");
+	}
+	if (-e $xenumSource && !$gopts->{overwrite}) {
+		die("ERROR (initFiles()): Xenum source '${xenumSource}' exists. Use -W to overwrite.\n");
+	}
+	if (-e $testSource && !$gopts->{overwrite}) {
+		die("ERROR (initFiles()): Test source '${testSource}' exists. Use -W to overwrite.\n");
+	}
+	if (-e $makefile && !$gopts->{overwrite}) {
+		die("ERROR (initFiles()): Makefile '${makefile}' exists. Use -W to overwrite.\n");
+	}
+
+	open(MANIFEST, ">${manifest}") || die("ERROR (init_files()): ".
+					      "Could not open/create manifest '${manifest}'.\n");
+	open(XENUMHEADER, ">${xenumHeader}") || die("ERROR (init_files()): ".
+						    "Could not open/create xenum header '${xenumHeader}'.\n");
+	open(XENUMSOURCE, ">${xenumSource}") || die("ERROR (init_files()): ".
+						    "Could not open/create xenum source '${xenumSource}'.\n");
+	open(TESTSOURCE, ">${testSource}") || die("ERROR (init_files()): ".
+						  "Could not open/create test source '${testSource}'.\n");
+	open(MAKEFILE, ">${makefile}") || die("ERROR (init_files()): ".
+					      "Could not open/create test source '${makefile}'.\n");
+
+	print(MANIFEST "${fheader}\n");
+	print(XENUMHEADER "// ${fheader}\n");
+	print(XENUMSOURCE "// ${fheader}\n");
+	print(TESTSOURCE "// ${fheader}\n");
+	print(MAKEFILE "# ${fheader}\n");
+}
+
+
+sub closeFiles()
+{
+	close(MANIFEST);
+	close(XENUMHEADER);
+	close(XENUMSOURCE);
+	close(TESTSOURCE);
+	close(MAKEFILE);
+}
+
+
+############################################## INIT ##############################################
+
+sub initParms()
+{
+	if ($gopts->{valueName} eq "") {
+		showHelp("Error: Value-name value must be set (-e).");
+	}
+	if ($gopts->{enumSize} == 0) {
+		showHelp("Error: Enum size value must be set (-s).");
+	}
+	if ($gopts->{propCount} != 0) {
+		if ($popts->{levelWidth} < 2) {
+			showHelp("Error: levelWidth=".$popts->{levelWidth}." is pointless.");
+		}
+	}
+
+	if ($gopts->{cntnrName} eq "") {
+		$gopts->{cntnrName} = $gopts->{valueName} . "s";
+	}
+	@{$nsparts} = split('::', $gopts->{namespace});
+	$valnumWidth = length("".($gopts->{enumSize}-1));
+	$valnumfmt = "%0${valnumWidth}d";
+	$propnumWidth = length("".($gopts->{propCount}-1));
+	$propnumfmt = "%0${propnumWidth}d";
+
+	srand($randSeed);
+}
+
+
+# Calculate the $maxLeafNodeCount, and set the ensureEmpty* flags if wanted and if it is
+# possible to honor them; lower $maxLeafNodeCount accordingly.
+# Assumes only called if depth!=0.
+sub initBounds()
+{
+	my ($tmpCount, $rootBranches, $didx);
+
+	# The total possible number of leafNodes is:
+	#	propCount * enumSize * (levelWidth ^ (depth-1))
+	# The whole problem is that this can become very large, could overflow a normal
+	# integer several times, so we can not just multiply up and and store it in a
+	# variable.
+	# maxLeafNodeCount may overflow, we just only use it if we are sure it did not,
+	# and else bound it to $absMaxLeafNodeCount.
+	$maxLeafNodeCount = 1;
+	$tmpCount = $absMaxLeafNodeCount;
+
+	$rootBranches = $gopts->{enumSize} * $gopts->{propCount};
+	# We can only have empty root/branch if there is enough roots that we can still
+	# have at least one with actual values in it.
+	$ensureEmptyRoot = ($popts->{wantEmptyRoot} && ($rootBranches > 1)) ? 1 : 0;
+	# We can only generate empty branches if there are any branching levels.
+	$ensureEmptyBranch = (($popts->{depth} > 1) && $popts->{wantEmptyBranch} && ($rootBranches > 1)) ? 1 : 0;
+if($dbg){print("initBounds() initial-rootBranches=${rootBranches} ensureEmptyRoot=${ensureEmptyRoot} ensureEmptyBranch=${ensureEmptyBranch}\n");}
+	if ($ensureEmptyRoot) {
+		$rootBranches -= 1;
+	}
+	if ($ensureEmptyBranch) {
+		$rootBranches -= 1;
+	}
+if($dbg){print("initBounds() final rootBranches=${rootBranches}\n");}
+
+	$maxLeafNodeCount *= $rootBranches;
+	$tmpCount /= $rootBranches;
+if($dbg){print("initBounds() tmp maxLeafNodeCount=${maxLeafNodeCount}\n");}
+
+	for ($didx=1; $didx<$popts->{depth}; $didx++) {
+		$maxLeafNodeCount *= $popts->{levelWidth};
+if($dbg){print("initBounds() didx=${didx} tmp maxLeafNodeCount=${maxLeafNodeCount}\n");}
+		$tmpCount /= $popts->{levelWidth};
+	}
+
+	# If absMaxLeafNodeCount was in total divided by a higher number than itself,
+	# it also means that maxLeafNodeCount is now higher than absMaxLeafNodeCount,
+	# and possibly overflown, so adjust it down.
+	if ($tmpCount < 1) {
+		$maxLeafNodeCount = $absMaxLeafNodeCount;
+	}
+
+#print("initBounds() done: maxLeafNodeCount=${maxLeafNodeCount}\n");
+}
+
+
+# Calculate how many leafNode arrays to create, and how many values they should
+# each contain.
+sub calculateValueCounts()
+{
+	my ($minLeafNodesWidth, $minLeafNodesFull, $minLeafNodeCount, $curMaxLeafNodeCount);
+	my ($valueCounts);
+	my ($warnings, $errors, $msg, $valueCount, $valueCountsSum);
+
+	$maxLeafSize = $popts->{leafSize};
+	if ($popts->{leafSize} == 0) {
+		$maxLeafSize = 0;
+		if ($popts->{totalValues} != 0) {
+			print(STDERR "Warning: Can not honor \$totalValues (".
+			      $popts->{totalValues}.") since \$leafSize=0; ".
+			      "can not create any values at all.\n");
+		}
+	}
+	elsif ($popts->{totalValues} < $popts->{leafSize}) {
+		$maxLeafSize = $popts->{totalValues};
+		print(STDERR "Warning: Can not honor \$leafSize (".
+		      $popts->{leafSize}.") since \$totalValues=".
+		      $popts->{totalValues}." is smaller.\n");
+	}
+
+	$ensureEmptyLeafNode = $popts->{wantEmptyLeafNode};
+	# Because distributeInclined() does not generated empty nodes, it is inserted later.
+	$curMaxLeafNodeCount = $maxLeafNodeCount - $ensureEmptyLeafNode;
+	# We want at least one level(depth-1) branch to be full of leafnodes.
+	$minLeafNodesWidth = ($popts->{depth} == 1) ? 1 : $popts->{levelWidth};
+	# Another minimum is defined by (totalValues / leafSize) + ensureEmptyLeafNode.
+	if ($maxLeafSize == 0) {
+		$minLeafNodesFull = 0;
+	} else {
+		$minLeafNodesFull = $popts->{totalValues} / $popts->{leafSize};
+		if (($minLeafNodesFull % 1) != 0) {
+			$minLeafNodesFull += 1;
+		}
+		$minLeafNodesFull = int($minLeafNodesFull);
+		$minLeafNodesFull += $ensureEmptyLeafNode;
+	}
+	if ($popts->{leafNodes} != -1) {
+		$minLeafNodeCount = $popts->{leafNodes};
+		if ($minLeafNodeCount < $minLeafNodesWidth) {
+			print(STDERR "Warning: \$leafNodes (".$popts->{leafNodes}.") < ".
+			      "\$levelWidth (".$popts->{levelWidth}."), so can not create ".
+			      "a full level(depth-1) branchnode.\n");
+		}
+		if ($minLeafNodeCount < $minLeafNodesFull) {
+			print(STDERR "Warning: Can not honor \$totalValues (".
+			      $popts->{totalValues}."); can only create \$leafNodes(".
+			      $popts->{leafNodes}.") * \$leafSize(".$popts->{leafSize}.
+			      ") = ".($popts->{leafNodes} * $popts->{leafSize}).
+			      " values.\n");
+		}
+		if ($minLeafNodeCount > $curMaxLeafNodeCount) {
+			print(STDERR "Warning: Can not honor \$leafNodes (".
+			      $popts->{leafNodes}."); can only create \$propCount(".
+			      $gopts->{propCount}.") * \$enumSize(".$gopts->{enumSize}.
+			      ") * (\$levelWidth(".$popts->{levelWidth}.") ^ (\$depth(".
+			      $popts->{depth}.")-1)) = ".$curMaxLeafNodeCount.
+			      " leaf nodes.\n");
+			$minLeafNodeCount = $curMaxLeafNodeCount;
+		}
+	}
+	else {
+		$minLeafNodeCount = ($minLeafNodesFull > $minLeafNodesWidth)
+			? $minLeafNodesFull : $minLeafNodesWidth;
+		if ($minLeafNodeCount > $curMaxLeafNodeCount) {
+			$minLeafNodeCount = $curMaxLeafNodeCount;
+			# Can not happen except if depth=1, in which case there are no branch
+			# nodes anyway.
+			#if ($minLeafNodeCount < $minLeafNodesWidth) {
+			#	print(STDERR  "Warning: Can not create a full level(depth-1) branchnode; ".
+			#	      "can only create \$propCount(".$gopts->{propCount}.") * ".
+			#	      "\$enumSize(".$gopts->{enumSize}.") * (\$levelWidth(".
+			#	      $popts->{levelWidth}.") ^ (\$depth(".$popts->{depth}.")-1)) = ".
+			#	      "${minLeafNodeCount} leaf nodes.\n");
+			#}
+			if ($minLeafNodeCount < $minLeafNodesFull) {
+				print(STDERR "Warning: Can not honor \$totalValues (".
+				      $popts->{totalValues}."); can only create ".
+				      ($minLeafNodeCount - $ensureEmptyLeafNode)." full leaf-nodes = ".
+				      (($minLeafNodeCount - $ensureEmptyLeafNode) * $popts->{leafSize}).
+				      " values.\n");
+			}
+		}
+	}
+
+	$valueCounts = distributeInclined($curMaxLeafNodeCount,
+					  $maxLeafSize,
+					  $popts->{totalValues},
+					  {
+						  firstMin => $maxLeafSize,
+						  fillAll => 0,
+						  minColumns => $minLeafNodeCount,
+					  });
+if($dbgv){
+	dumpGopts(); dumpPopts(); dumpState();
+	print("calculateValueCounts() curMaxLeafNodeCount=${curMaxLeafNodeCount} maxLeafSize=${maxLeafSize} valueCounts(".@{$valueCounts}.")=[".join(",",@{$valueCounts})."]\n");
+}
+	# Check the result.
+	$warnings = [];
+	$errors = [];
+	if (@{$valueCounts} > $maxLeafNodeCount) {
+		push(@{$errors}, "Algorithm generated ".@{$valueCounts}." leafnodes, even though maxLeafNodeCount=${maxLeafNodeCount}.");
+	}
+	foreach $valueCount (@{$valueCounts}) {
+		if ($valueCount > $maxLeafSize) {
+			push(@{$errors}, "Algorithm generated a value-count '${valueCount}', even though maxLeafSize=${maxLeafSize}.");
+		}
+	}
+	$valueCountsSum = 0;
+	map { $valueCountsSum += $_ } @{$valueCounts};
+	if ($valueCountsSum > $popts->{totalValues}) {
+		push(@{$errors}, "Algorithm generated ${valueCountsSum} values, even though totalValues=".$popts->{totalValues}.".");
+	}
+	if (@{$valueCounts} < $minLeafNodeCount) {
+		push(@{$warnings}, "Generated only ".@{$valueCounts}." leafnodes; less than \$minLeafNodeCount (${minLeafNodeCount}).");
+	}
+	if (@{$valueCounts} != 0 && $valueCounts->[0] < $maxLeafSize) {
+		push(@{$warnings}, "Generated first leafnode contains only ".$valueCounts->[0]." values; less than \$maxLeafSize (${maxLeafSize}).");
+	}
+	if ($valueCountsSum < $popts->{totalValues}) {
+		push(@{$warnings}, "Generated leafnodes contain only ${valueCountsSum} values; less than \$totalValues (".$popts->{totalValues}.").");
+	}
+	if (@{$warnings} != 0 || @{$errors} != 0) {
+		print("--- value distribution (".@{$valueCounts}."): [".join(",", @{$valueCounts})."]\n");
+		if (@{$warnings} != 0) {
+			print("    Warnings (".@{$warnings}."):\n");
+			foreach $msg (@{$warnings}) {
+				print("      - ${msg}\n");
+			}
+		}
+		if (@{$errors} != 0) {
+			print("    Errors (".@{$errors}."):\n");
+			foreach $msg (@{$errors}) {
+				print("      - ${msg}\n");
+			}
+			exit(1);
+		}
+	}
+
+	return $valueCounts;
+}
+
+
+sub createLeafNodes()
+{
+	my ($nidx, $vidx, $curNode, $curSize, $curValue);
+	my ($valueCounts);
+
+#$dbgv = 1;
+#$dbgi = 1;
+	$valueCounts = calculateValueCounts();
+	$curValue = $maxLeafSize + 2;
+	for ($nidx=0; $nidx<@{$valueCounts}; $nidx++) {
+		$curSize = $valueCounts->[$nidx];
+		$curNode = [];
+		if ($curSize != 0) {
+			push(@{$curNode}, $curSize);
+		}
+		# Assign actual values to each leafnode. Algorithm:
+		# - The first number in a leafnode is the number of values in that leafnode
+		#   (unless if the leafnode is empty, then it stays empty).
+		# - The following numbers are supposed to be unique, and non-sequential. So
+		#   they are assigned sequentially, then swapped pairwise. Or in other words,
+		#   they are assigned from a running counter that starts at maxLeafSize+2,
+		#   and goes in +3/-1 steps; 13,12,15,14,17,16,19,18, etc.
+		for ($vidx=1; $vidx<$curSize; $vidx++) {
+			push(@{$curNode}, $curValue);
+			if ($curValue & 1) {
+				$curValue -= 1;
+			} else {
+				$curValue += 3;
+			}
+		}
+if($dbgv){print("createLeafNodes() nidx=${nidx} curSize=${curSize} curNode=[".join(",",@{$curNode})."]\n");}
+		push(@{$leafNodes}, $curNode);
+
+	}
+
+	if ($ensureEmptyLeafNode) {
+		push(@{$leafNodes}, []);
+	}
+}
+
+
+sub calculateNodeCounts()
+{
+	my ($leafNodeCount, $maxRootSize, $rootCount, $firstMin);
+	my ($tmpcount, $didx);
+	my ($nodeCounts);
+	my ($warnings, $errors, $msg, $nodeCount, $nodeCountsSum);
+
+	$leafNodeCount = 0 + @{$leafNodes};
+	$maxRootSize = 1;
+	$tmpcount = $absMaxLeafNodeCount;
+	# Note: We do not take ensureEmpty{Root,Branch} into account here since we are
+	# calculating the max number of leaf nodes for the first root, which should be
+	# full, and ensureEmpty* will not be set if it is the only available branch.
+	for ($didx=1; $didx<$popts->{depth}; $didx++) {
+		$tmpcount /= $popts->{levelWidth};
+		$maxRootSize *= $popts->{levelWidth};
+		if (($maxRootSize >= $leafNodeCount) || ($tmpcount < 1)) {
+			$maxRootSize = $leafNodeCount;
+			last;
+		}
+	}
+	$rootCount = ($gopts->{enumSize} * $gopts->{propCount}) - ($ensureEmptyRoot + $ensureEmptyBranch);
+if($dbgn>0){print("calculateNodeCounts() leafNodeCount=${leafNodeCount} maxRootSize=${maxRootSize} rootCount=${rootCount}\n");}
+	$firstMin = $popts->{depth} == 1 ? 1 : $popts->{levelWidth};
+	$nodeCounts = distributeInclined($rootCount,
+					 $maxRootSize,
+					 $leafNodeCount,
+					 {
+						 firstMin => $firstMin,
+						 fillAll => 0,
+						 minColumns => 0,
+					 });
+if($dbgn>0){print("calculateNodeCounts() done: nodeCounts(".@{$nodeCounts}.")=[".join(",", @{$nodeCounts})."]\n");}
+	# Check the result.
+	$warnings = [];
+	$errors = [];
+	if (@{$nodeCounts} > $rootCount) {
+		push(@{$errors}, "Algorithm generated too many roots; ".@{$nodeCounts}."/${rootCount}.");
+	}
+	foreach $nodeCount (@{$nodeCounts}) {
+		if ($nodeCount > $maxRootSize) {
+			push(@{$errors}, "Algorithm generated a node-count '${nodeCount}', even though maxRootSize=${maxRootSize}.");
+		}
+	}
+	$nodeCountsSum = 0;
+	map { $nodeCountsSum += $_ } @{$nodeCounts};
+	if ($nodeCountsSum != $leafNodeCount) {
+		push(@{$errors}, "Algorithm distributed ${nodeCountsSum} nodes, even though leafNodeCount=${leafNodeCount}.");
+	}
+	if (@{$nodeCounts} != 0 && $nodeCounts->[0] < $firstMin) {
+		push(@{$warnings}, "Generated first leafnode contains only ".$nodeCounts->[0]." nodes; less than firstMin (${firstMin}).");
+	}
+	if (@{$warnings} != 0 || @{$errors} != 0) {
+		print("--- node distribution (".@{$nodeCounts}."): [".join(",", @{$nodeCounts})."]\n");
+		if (@{$warnings} != 0) {
+			print("    Warnings (".@{$warnings}."):\n");
+			foreach $msg (@{$warnings}) {
+				print("      - ${msg}\n");
+			}
+		}
+		if (@{$errors} != 0) {
+			print("    Errors (".@{$errors}."):\n");
+			foreach $msg (@{$errors}) {
+				print("      - ${msg}\n");
+			}
+			exit(1);
+		}
+	}
+
+	return $nodeCounts;
+}
+
+
+# Insert one or more leafnodes in the propValues hierarchy. Calls itself recursively down
+# through the hierarchy until insertion of a leafnode succeeds.
+# @param $curNode Current branch node in the hierarchy.
+# @param $curDepth Current depth (of $curNode) in the hierarchy.
+# @param $nxtChildIndex Index in this node to branch to (whether next depth level is another
+#	branch level, or the leaf level).
+# @param $retry If true, try all possible child indexes until insertion succeeds, or
+#	ultimately fails. If false, only try insertion at the given $nxtChildIndex.
+#	Retry is only attempted in intermediate branch nodes, not in the outer (depth-1)
+#	branch nodes.
+# @param $nxtLeafNodeIndex Next index in the global $leafNodes array; where to fetch
+#	the leaf-node(s) to insert.
+# @param $nodeCount How many leafnodes to insert. Minimum 1, maximum popts->{levelWidth}.
+#	Multiple leafnodes are inserted as children of the same depth-1 branch-node.
+# @return ($success, $nxtChildIndex, $nxtLeafNodeIndex) - the values to use for next
+#	insertion, and a $success flag used in recursive calling; if success=false it
+#	means there was already a leafNode at the desired position; try again with next
+#	index until success.
+sub insertLeafNodes($$$$$$$)
+{
+	my ($curNode, $curDepth, $nxtChildIndex, $retry, $nxtLeafNodeIndex, $nodeCount, $idxPath) = @_;
+	my ($curCount, $begChildIndex, $curChildIndex, $success);
+	my ($curNodeIndex);
+
+	$success = 0;
+
+	if ($curDepth == ($popts->{depth} - 1)) {
+if($dbgn>1){print("insertLeafNodes() [${idxPath}] curNode:".@{$curNode}." curDepth=${curDepth} nxtChildIndex=${nxtChildIndex} retry=${retry} nxtLeafNodeIndex=${nxtLeafNodeIndex} nodeCount=${nodeCount} : Inserting leafnode(s)\n");}
+		$curCount = $nodeCount;
+		while ($curCount != 0) {
+			while (@{$curNode} <= $nxtChildIndex) {
+				push(@{$curNode}, undef);
+			}
+			# If there is already a leafnode at this index, try another index.
+			# Except if inserting multiple, can not undo that.
+			if (defined($curNode->[$nxtChildIndex])) {
+				if ($curCount == $nodeCount) {
+					return (0, $nxtChildIndex, $nxtLeafNodeIndex);
+				}
+				die("ERROR: Leafnode already attached at index ${nxtChildIndex}.");
+			}
+			if ($nxtLeafNodeIndex >= @{$leafNodes}) {
+				die("BUG: No more leafnodes available to insert.");
+			}
+if($dbgn>0){print("insertLeafNodes() [${idxPath}] inserting leafnode [${nxtLeafNodeIndex}] at [${idxPath},${nxtChildIndex}]\n");}
+			$curNode->[$nxtChildIndex] = $leafNodes->[$nxtLeafNodeIndex];
+			$nxtLeafNodeIndex++;
+			$nxtChildIndex--;
+			if ($nxtChildIndex < 0) {
+				$nxtChildIndex = $popts->{levelWidth} - 1;
+			}
+			$curCount--;
+		}
+		$success = 1;
+	}
+	else {
+if($dbgn>1){print("insertLeafNodes() [${idxPath}] curNode:".@{$curNode}." curDepth=${curDepth} nxtChildIndex=${nxtChildIndex} retry=${retry} nxtLeafNodeIndex=${nxtLeafNodeIndex} nodeCount=${nodeCount} : ");}
+		while (@{$curNode} <= $nxtChildIndex) {
+			push(@{$curNode}, undef);
+		}
+		if (ref($curNode->[$nxtChildIndex]) ne "ARRAY") {
+			$curNode->[$nxtChildIndex] = [];
+if($dbgn>1){print("Branch node [${idxPath},${nxtChildIndex}] created.\n");}
+		} else {
+if($dbgn>1){print("Branch node [${idxPath},${nxtChildIndex}] found.\n");}
+		}
+		$curNode = $curNode->[$nxtChildIndex];
+		$curNodeIndex = $nxtChildIndex;
+
+		$nxtChildIndex--;
+		if ($nxtChildIndex < 0) {
+			$nxtChildIndex = $popts->{levelWidth} - 1;
+		}
+		$begChildIndex = $curChildIndex = $nxtChildIndex;
+
+		# Loop through all branch indexes until success
+		for (;;) {
+#if($dbgn>1){print("insertLeafNodes() [${idxPath}] trying childIndex=${childIndex}\n");}
+			($success, $nxtChildIndex, $nxtLeafNodeIndex) =
+				insertLeafNodes_rec($curNode, $curDepth+1, $curChildIndex, 1,
+						    $nxtLeafNodeIndex, $nodeCount,
+						    "${idxPath},${curNodeIndex}");
+			if ($success) {
+if($dbgn>1){print("insertLeafNodes() [${idxPath}] success=${success} retry=${retry} => exit/done\n");}
+				last;
+			}
+			if (!$retry) {
+if($dbgn>1){print("insertLeafNodes() [${idxPath}] success=${success} retry=${retry} => exit/fail\n");}
+				last;
+			}
+
+if($dbgn>1){print("insertLeafNodes() [${idxPath}] success=${success} retry=${retry} => retry next\n");}
+			$curChildIndex--;
+			if ($curChildIndex < 0) {
+				$curChildIndex = $popts->{levelWidth} - 1;
+			}
+			# We have tried all child indexes without success.
+			if ($curChildIndex == $begChildIndex) {
+				return (0, $begChildIndex, $nxtLeafNodeIndex);
+			}
+
+		}
+	}
+
+	return ($success, $nxtChildIndex, $nxtLeafNodeIndex);
+}
+
+# Recursive calling for perl.
+sub insertLeafNodes_rec($$$$$$$)
+{
+	my ($curNode, $curDepth, $nxtChildIndex, $retry, $nxtLeafNodeIndex, $nodeCount, $idxPath) = @_;
+	return insertLeafNodes($curNode, $curDepth, $nxtChildIndex, $retry, $nxtLeafNodeIndex, $nodeCount, $idxPath);
+}
+
+
+# Now that the leafNodes are defined, we need to distribute them to the
+# data hierarchy. Some constraints:
+# - ensureEmptyRoot
+# - ensureEmptyBranch
+# - Create one full depth-1 branchnode, including the first (full) leafnode.
+sub createPropValues()
+{
+	my ($nodeCounts, $ncIdx, $ncEnd, $isFirst);
+	my ($emptyEnumIndex, $emptyPropIndex);
+	my ($enumIndex, $propIndex, $nodeCount);
+	my ($curNode, $nxtChildIndex, $nxtLeafNodeIndex, $curNodeCount, $success);
+
+$dbgn = 0;
+if($dbgn>0){
+#	dumpGopts();
+#	dumpPopts();
+	dumpState();
+}
+	$nodeCounts = calculateNodeCounts();
+#$dbgn = 1;
+
+	$emptyPropIndex = $emptyEnumIndex = -1;
+	if ($ensureEmptyRoot) {
+		$emptyEnumIndex = int($gopts->{enumSize} * rand());
+		$emptyPropIndex = int($gopts->{propCount} * rand());
+	}
+if($dbgn){print("createPropValues() emptyRoot=[${emptyEnumIndex},${emptyPropIndex}]\n");}
+
+	$isFirst = 1;
+	$nxtChildIndex = $popts->{levelWidth} - 1;
+	$nxtLeafNodeIndex = 0;
+
+	$ncEnd = @{$nodeCounts} + $ensureEmptyBranch;
+	for ($ncIdx=0; $ncIdx<$ncEnd; $ncIdx++) {
+if($dbgn>0){print("createPropValues() ncIdx=${ncIdx} finding root\n");}
+#$dbgn = ($ncIdx == $ncEnd-1) ? 2 : 0;
+		$nodeCount = ($ncIdx < @{$nodeCounts}) ? $nodeCounts->[$ncIdx] : 0;
+		$enumIndex = $emptyEnumIndex;
+		$propIndex = $emptyPropIndex;
+		do {
+# FIXME: Scales terribly with high propCount*enumSize and nodeCount close to that; many tries needed to find an empty spot.
+			$enumIndex = int($gopts->{enumSize} * rand());
+			$propIndex = int($gopts->{propCount} * rand());
+		} while (($enumIndex == $emptyEnumIndex && $propIndex == $emptyPropIndex) ||
+			 (defined($propValues->[$enumIndex]) &&
+			  (ref($propValues->[$enumIndex]) eq "ARRAY") &&
+			  defined($propValues->[$enumIndex]->[$propIndex]) &&
+			  (ref($propValues->[$enumIndex]->[$propIndex]) eq "ARRAY")));
+if($dbgn>0){print("createPropValues() ncIdx=${ncIdx} root=[${enumIndex},${propIndex}]\n");}
+		# Create root branch.
+		$curNode = $propValues;
+		while (@{$curNode} <= $enumIndex) {
+			push(@{$curNode}, undef);
+		}
+		if (ref($curNode->[$enumIndex]) ne "ARRAY") {
+			$curNode->[$enumIndex] = [];
+		}
+		$curNode = $curNode->[$enumIndex];
+
+		while (@{$curNode} <= $propIndex) {
+			push(@{$curNode}, undef);
+		}
+		# For depth=1, propValues[enumIndex][propIndex] is an immediate leafNode.
+		if ($popts->{depth} == 1) {
+			if (defined($curNode->[$propIndex])) {
+				die("BUG: leafnode already inserted.");
+			}
+			# Note: ensureEmptyBranch should never be set when depth=1.
+			if ($nodeCount != 1) {
+				die("BUG: depth=1 requires nodeCount=1 (is ${nodeCount}).");
+			}
+			$curNode->[$propIndex] = $leafNodes->[$nxtLeafNodeIndex];
+			$nxtLeafNodeIndex++;
+			next;
+		}
+		do {
+			if ($nodeCount == 0) {
+				$curNodeCount = 0;
+			}
+			elsif ($isFirst) {
+				$curNodeCount = $popts->{levelWidth};
+				if ($curNodeCount > @{$leafNodes}) {
+					$curNodeCount = 0 + @{$leafNodes};
+				}
+			}
+			else {
+				$curNodeCount = 1;
+			}
+if($dbgn>1){print("createPropValues() >> insertLeafNodes(nxtChildIndex=${propIndex}, retry=0, nxtLeafNodeIndex=${nxtLeafNodeIndex}, curNodeCount=${curNodeCount}) nodeCount=${nodeCount}\n");}
+			($success, $nxtChildIndex, $nxtLeafNodeIndex) =
+				insertLeafNodes($curNode, 0, $propIndex, 1,
+						$nxtLeafNodeIndex, $curNodeCount,
+						"${ncIdx}:${enumIndex}");
+			if (!$success) {
+if($dbgn>1){print("createPropValues() << insertLeafNodes() : success=${success} nxtChildIndex=${nxtChildIndex} nxtLeafNodeIndex=${nxtLeafNodeIndex}\n");}
+				die("BUG: Failed inserting leafnode under [${ncIdx}:${propIndex}].");
+			}
+			$nodeCount -= $curNodeCount;
+if($dbgn>1){print("createPropValues() << insertLeafNodes() : success=${success} nxtChildIndex=${nxtChildIndex} nxtLeafNodeIndex=${nxtLeafNodeIndex} nodeCount=${nodeCount}\n");}
+			$isFirst = 0;
+		} while ($nodeCount != 0);
+	}
+
+if($dbgn>0){print("createPropValues() insertion done: ${nxtLeafNodeIndex}/".@{$leafNodes}."\n");}
+
+	if ($nxtLeafNodeIndex != @{$leafNodes}) {
+		die("BUG: Inserted ${nxtLeafNodeIndex} of ".@{$leafNodes}." nodes.\n");
+	}
+}
+
+
+sub initPropValues()
+{
+	my ($eidx, $pidx, $curlst, $maxval, $curval);
+
+	return unless ($gopts->{propCount});
+	initBounds();
+
+	# Init the propvals structure; it must always have at least two levels, for the
+	# enum-values and for the custom properties.
+	$propValues = [];
+	for ($eidx=0; $eidx<$gopts->{enumSize}; $eidx++) {
+		$curlst = [];
+		for ($pidx=0; $pidx<$gopts->{propCount}; $pidx++) {
+			push(@{$curlst}, undef);
+		}
+		push(@{$propValues}, $curlst);
+	}
+
+	# If depth=0, all enumvalues/properties get a single value.
+	if ($popts->{depth} == 0) {
+		$maxval = $gopts->{enumSize} * $gopts->{propCount};
+		$curval = int($maxval * rand());
+		for ($eidx=0; $eidx<$gopts->{enumSize}; $eidx++) {
+			$curlst = $propValues->[$eidx];
+			for ($pidx=0; $pidx<$gopts->{propCount}; $pidx++) {
+				$curlst->[$pidx] = $curval;
+				$curval++;
+				if ($curval == $maxval) {
+					$curval = 0;
+				}
+			}
+		}
+		return;
+	}
+
+	createLeafNodes();
+#dumpLeafNodes();
+	createPropValues();
+#dumpPropValues();
+}
+
+
+
+########################################### PROCESSING ###########################################
+
+sub generateManifest()
+{
+	my $out = [];
+	push(@{$out}, "valueName = '".$gopts->{valueName}."'");
+	push(@{$out}, "cntnrName = '".$gopts->{cntnrName}."'");
+	push(@{$out}, "namespace = '".$gopts->{namespace}."'");
+	push(@{$out}, "enumSize = ".$gopts->{enumSize}."");
+	push(@{$out}, "propCount = ".$gopts->{propCount}."");
+	if ($gopts->{propCount}) {
+		push(@{$out}, "depth = ".$popts->{depth}."");
+		push(@{$out}, "leafNodes = ".$popts->{leafNodes}."");
+		push(@{$out}, "levelWidth = ".$popts->{levelWidth}."");
+		push(@{$out}, "leafSize = ".$popts->{leafSize}."");
+		push(@{$out}, "totalValues = ".$popts->{totalValues}."");
+	}
+	print(MANIFEST join("\n", @{$out}) . "\n");
+}
+
+
+sub generateLeafNodeValues($$)
+{
+	my ($line, $leafNode) = @_;
+	my ($idx);
+
+	if (!defined($leafNode)) {
+		if ($dataComments) {
+			$line = tailFill($line, $dataCommentOffset) . "/* no leafnode */";
+		}
+	}
+	elsif (@{$leafNode} == 0) {
+		if ($dataComments) {
+			$line = tailFill($line, $dataCommentOffset) . "/* empty leafnode */";
+		}
+	}
+	else {
+		$line .= "(";
+		for ($idx=0; $idx<@{$leafNode}; $idx++) {
+			if ($idx != 0) {
+				$line .= ",";
+			}
+			if (defined($leafNode->[$idx])) {
+				$line .= $leafNode->[$idx];
+			}
+		}
+		$line .= ")";
+		if ($dataComments) {
+			$line = tailFill($line, $dataCommentOffset) . "/* leafnode */";
+		}
+	}
+	return $line;
+}
+
+
+sub generateNodeValues($$$$)
+{
+	my ($node, $depth, $nidx, $idxstr) = @_;
+	my ($child, $cidx);
+	my ($out, $line, $sep);
+
+	$out = [];
+
+	$child = $node->[$nidx];
+	$sep = ($nidx != 0) ? "," : "";
+	if ($depth == ($popts->{depth} - 1)) {
+		$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ("\t" x $depth) . $sep;
+		$line = generateLeafNodeValues($line, $child);
+		push(@{$out}, cont($line));
+	}
+	elsif (!defined($child)) {
+		$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ("\t" x $depth) . $sep;
+		if ($dataComments) {
+			$line = tailFill($line, $dataCommentOffset) . "/* no branchnode */";
+		}
+		push(@{$out}, cont($line));
+	}
+	elsif (ref($child) eq "ARRAY") {
+		if (@{$child} == 0) {
+			$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ("\t" x $depth) . $sep;
+			if ($dataComments) {
+				$line = tailFill($line, $dataCommentOffset) . "/* empty branchnode */";
+			}
+			push(@{$out}, cont($line));
+		}
+		else {
+			$line = tailFill("\t/* +[${idxstr}] */", $propValueOffset) . ("\t" x $depth) . $sep . "(";
+			if ($dataComments) {
+				$line = tailFill($line, $dataCommentOffset) . "/* branchnode begin */";
+			}
+			push(@{$out}, cont($line));
+			for ($cidx=0; $cidx<@{$child}; $cidx++) {
+				push(@{$out}, generateNodeValues_rec($child, $depth+1, $cidx, "${idxstr},${cidx}"));
+			}
+			$line = tailFill("\t/* -[${idxstr}] */", $propValueOffset) . ("\t" x $depth) . ")";
+			if ($dataComments) {
+				$line = tailFill($line, $dataCommentOffset) . "/* branchnode end */";
+			}
+			push(@{$out}, cont($line));
+		}
+	}
+	else {
+		die("Unexpected child type '".ref($child)."' = '${child}'");
+		#$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ("\t" x $depth) . $sep . "(${child}) /* immediate value*/";
+		#push(@{$out}, cont($line));
+	}
+	return join("\n", @{$out});
+}
+
+
+sub generateNodeValues_rec($$$$)
+{
+	my ($node, $depth, $nidx, $idxstr) = @_;
+	return generateNodeValues($node, $depth, $nidx, $idxstr);
+}
+
+
+sub generateEnumPropValues($$)
+{
+	my ($eidx, $pidx) = @_;
+	my ($node, $nidx);
+	my ($out, $line, $idxstr);
+
+	$out = [];
+
+	$idxstr = "V${eidx},P${pidx}";
+	$node = $propValues->[$eidx][$pidx];
+	for ($nidx=0; $nidx<@{$node}; $nidx++) {
+		push(@{$out}, generateNodeValues($node, 1, $nidx, "${idxstr},${nidx}"));
+	}
+	return join("\n", @{$out});
+}
+
+
+sub generateEnumValues($)
+{
+	my ($eidx) = @_;
+	my ($enumNode, $data, $pidx, $out, $line, $idxstr);
+
+	$out = [];
+
+	$enumNode = $propValues->[$eidx];
+	for ($pidx=0; $pidx<$gopts->{propCount}; $pidx++) {
+		$idxstr = "V${eidx},P${pidx}";
+		$data = $enumNode->[$pidx];
+		if (defined($data)) {
+			if ($popts->{depth} == 0) {
+				$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ", ${data}";
+				if ($dataComments) {
+					$line = tailFill($line, $dataCommentOffset) . "/* immediate value */";
+				}
+				push(@{$out}, cont($line));
+			}
+			elsif ($popts->{depth} == 1) {
+				$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ", ";
+				$line = generateLeafNodeValues($line, $data);
+				push(@{$out}, cont($line));
+			}
+			elsif (@{$data} == 0) {
+				$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ",";
+				if ($dataComments) {
+					$line = tailFill($line, $dataCommentOffset) . "/* empty prop node */";
+				}
+				push(@{$out}, cont($line));
+			}
+			else {
+				$line = tailFill("\t/* +[${idxstr}] */", $propValueOffset) . ",(";
+				if ($dataComments) {
+					$line = tailFill($line, $dataCommentOffset) . "/* propnode begin */";
+				}
+				push(@{$out}, cont($line));
+				push(@{$out}, generateEnumPropValues($eidx, $pidx));
+				$line = tailFill("\t/* -[${idxstr}] */", $propValueOffset) . ")";
+				if ($dataComments) {
+					$line = tailFill($line, $dataCommentOffset) . "/* propnode end */";
+				}
+				push(@{$out}, cont($line));
+			}
+		}
+		else {
+			$line = tailFill("\t/* =[${idxstr}] */", $propValueOffset) . ",";
+			if ($dataComments) {
+				$line = tailFill($line, $dataCommentOffset) . "/* no prop node */";
+			}
+			push(@{$out}, cont($line));
+		}
+	}
+
+	return join("\n", @{$out});
+}
+
+
+sub generateHeader()
+{
+	my ($encaps, $nspart);
+	my ($line, $idx);
+	my $out = [];
+
+	$encaps = "XENUM_TEST_" . uc($gopts->{cntnrName}) . "_HPP";
+
+	push(@{$out}, "#ifndef ${encaps}");
+	push(@{$out}, "#define ${encaps}");
+	push(@{$out}, "#include <xenum3/Xenum.hpp>");
+	foreach $nspart (@{$nsparts}) {
+		push(@{$out}, "namespace ${nspart} {");
+	}
+
+	$line = "#define XENUM_DECL_".$gopts->{cntnrName}.
+			" (".$gopts->{namespace}.
+			", ".$gopts->{cntnrName}.
+			", ".$gopts->{valueName}.
+			", ". # inttype: auto
+			", ". # features: Not implemented yet
+			"";
+	if ($gopts->{propCount}) {
+		push(@{$out}, cont($line . ", ("));
+		for ($idx=0; $idx<$gopts->{propCount}; $idx++) {
+			$line = "\t(P".sprintf($propnumfmt, $idx).", int, -1";
+			if ($popts->{depth}) {
+				$line .= ", ".$popts->{depth};
+			}
+			$line .= ")";
+			if ($idx < ($gopts->{propCount} - 1)) {
+				$line .= ",";
+			}
+			push(@{$out}, cont($line));
+		}
+		$line = "\t)";
+	}
+	$line .= ")";
+	push(@{$out}, $line);
+
+dumpPropValues();
+	push(@{$out}, cont("#define XENUM_VALS_".$gopts->{cntnrName}."(V,C)"));
+	for ($idx=0; $idx<$gopts->{enumSize}; $idx++) {
+		$line = "\tV(C";
+		# Enumvalue name
+		$line .= ", V".sprintf($valnumfmt, $idx);
+		if ($gopts->{propCount}) {
+			push(@{$out}, cont($line));
+			push(@{$out}, generateEnumValues($idx));
+			$line = "\t\t)";
+			push(@{$out}, cont($line));
+		}
+		else {
+			$line .= ")";
+			push(@{$out}, cont($line));
+		}
+	}
+
+	push(@{$out}, "");
+	push(@{$out}, "XENUM3_DECLARE(".$gopts->{cntnrName}.")");
+	foreach $nspart (reverse(@{$nsparts})) {
+		push(@{$out}, "} // namespace ${nspart}");
+	}
+	push(@{$out}, "#endif // ${encaps}");
+	print(XENUMHEADER join("\n", @{$out}) . "\n");
+}
+
+
+
+sub generateSource()
+{
+	my $out = [];
+	push(@{$out}, "#include \"".$gopts->{cntnrName}.".hpp\"");
+	push(@{$out}, "XENUM3_DEFINE(".$gopts->{cntnrName}.")");
+	print(XENUMSOURCE join("\n", @{$out}) . "\n");
+}
+
+
+sub generateTestBasics($)
+{
+	my ($out) = @_;
+
+	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", Basics)");
+	push(@{$out}, "{");
+	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", ".$gopts->{cntnrName}."::size);");
+	push(@{$out}, "}");
+	push(@{$out}, "");
+}
+
+
+sub generateTestFromIndex($)
+{
+	my ($out) = @_;
+	my ($validx, $valname);
+	my $cntnrns = $gopts->{namespace} . $gopts->{cntnrName};
+	my $valuens = $gopts->{namespace} . $gopts->{valueName};
+
+	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", FromIndex)");
+	push(@{$out}, "{");
+	push(@{$out}, "\t${valuens} ovalue;");
+	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
+		push(@{$out}, "");
+		$valname = "V" . sprintf($valnumfmt, $validx);
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIndex(${validx}, nvalue));");
+		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, nvalue);");
+		push(@{$out}, "\tovalue = nvalue;");
+		push(@{$out}, "\tEXPECT_EQ(${validx}, ovalue.getIndex());");
+		push(@{$out}, "\tEXPECT_EQ(nvalue, ${cntnrns}::fromIndex(${validx}));");
+	}
+	push(@{$out}, "}");
+	push(@{$out}, "");
+}
+
+
+sub generateTestFromIdentifier($)
+{
+	my ($out) = @_;
+	my ($validx, $valname);
+	my $cntnrns = $gopts->{namespace} . $gopts->{cntnrName};
+	my $valuens = $gopts->{namespace} . $gopts->{valueName};
+
+	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", FromIdentifier)");
+	push(@{$out}, "{");
+	push(@{$out}, "\t${valuens} ovalue;");
+	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
+		push(@{$out}, "");
+		$valname = "V" . sprintf($valnumfmt, $validx);
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIdentifier(\"${valname}\", nvalue));");
+		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, nvalue);");
+		push(@{$out}, "\tovalue = nvalue;");
+		push(@{$out}, "\tEXPECT_STREQ(\"${valname}\", ovalue.getIdentifier());");
+		push(@{$out}, "\tEXPECT_EQ(nvalue, ${cntnrns}::fromIdentifier(\"${valname}\"));");
+	}
+	push(@{$out}, "}");
+	push(@{$out}, "");
+}
+
+
+sub generateTestIteration($)
+{
+	my ($out) = @_;
+	my ($validx, $valname);
+	my $cntnrns = $gopts->{namespace} . $gopts->{cntnrName};
+	my $valuens = $gopts->{namespace} . $gopts->{valueName};
+
+	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", Iteration)");
+	push(@{$out}, "{");
+	push(@{$out}, "\tsize_t index;");
+	push(@{$out}, "\t${valuens} ovalue;");
+	push(@{$out}, "\t${valuens}::Enum nvalue;");
+
+	push(@{$out}, "");
+	push(@{$out}, "\tindex = 0;");
+	push(@{$out}, "\tfor (auto nvalue : ${cntnrns}()) {");
+	push(@{$out}, "\t\tEXPECT_EQ(index, ${valuens}(nvalue).getIndex());");
+	push(@{$out}, "\t\tindex++;");
+	push(@{$out}, "\t}");
+	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", index);");
+
+	push(@{$out}, "");
+	push(@{$out}, "\tindex = 0;");
+	push(@{$out}, "\tfor (${cntnrns}::iterator iter = ${cntnrns}::begin();");
+	push(@{$out}, "\t     iter != ${cntnrns}::end(); ++iter) {");
+	push(@{$out}, "\t\tEXPECT_EQ(index, ${valuens}(*iter).getIndex());");
+	push(@{$out}, "\t\tindex++;");
+	push(@{$out}, "\t}");
+	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", index);");
+
+	push(@{$out}, "}");
+	push(@{$out}, "");
+}
+
+
+sub generateTestPropLevel($$$$$$$)
+{
+	my ($out, $propIdx, $propName, $enumIdx, $enumName, $indexPath, $node) = @_;
+	my ($level, $ncnt, $nidx);
+	my $cntnrns = $gopts->{namespace} . $gopts->{cntnrName};
+	my $valuens = $gopts->{namespace} . $gopts->{valueName};
+
+	#push(@{$out}, "\t// [${enumIdx}]${enumName} [${propIdx}]${propName} [".join(",", @{$indexPath})."]");
+
+	$level = 0 + @{$indexPath};
+
+	if ($level < $popts->{depth}) {
+		$ncnt = 0;
+		if ($node) {
+			$ncnt += @{$node};
+		}
+		push(@{$out}, "\tEXPECT_EQ(${ncnt}, ovalue.get${propName}Size(".join(",", @{$indexPath})."));");
+		push(@{$indexPath}, -1);
+		for ($nidx=0; $nidx<$ncnt; $nidx++) {
+			$indexPath->[$level] = $nidx;
+			generateTestPropLevel_rec($out, $propIdx, $propName, $enumIdx, $enumName, $indexPath, $node->[$nidx]);
+		}
+		pop(@{$indexPath});
+	}
+	elsif ($level == $popts->{depth}) {
+		push(@{$out}, "\tEXPECT_EQ(${node}, ovalue.get${propName}(".join(",", @{$indexPath})."));");
+	}
+	else {
+		die("BUG: Level exceeds depth.");
+	}
+}
+
+
+sub generateTestPropLevel_rec($$$$$$$)
+{
+	my ($out, $propIdx, $propName, $enumIdx, $enumName, $indexPath, $node) = @_;
+	return generateTestPropLevel($out, $propIdx, $propName, $enumIdx, $enumName, $indexPath, $node);
+}
+
+
+sub generateTestProp($$)
+{
+	my ($out, $propIdx) = @_;
+	my ($propName, $enumIdx, $enumName, $enumNode);
+	my $cntnrns = $gopts->{namespace} . $gopts->{cntnrName};
+	my $valuens = $gopts->{namespace} . $gopts->{valueName};
+
+	$propName = "P" . sprintf($propnumfmt, $propIdx);
+
+	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", CustomProp${propName})");
+	push(@{$out}, "{");
+	push(@{$out}, "\t${valuens} ovalue;");
+	#push(@{$out}, "\t${valuens}::Enum nvalue;");
+# FIXME
+#push(@{$out}, "\t${cntnrns}::dumpNodes();");
+
+
+	for ($enumIdx=0; $enumIdx<$gopts->{enumSize}; $enumIdx++) {
+		$enumName = "V" . sprintf($valnumfmt, $enumIdx);
+		$enumNode = $propValues->[$enumIdx]->[$propIdx];
+		push(@{$out}, "");
+		push(@{$out}, "\t// [${enumIdx}]${enumName} [${propIdx}]${propName}");
+		push(@{$out}, "\tovalue = ${cntnrns}::${enumName};");
+		generateTestPropLevel($out, $propIdx, $propName, $enumIdx, $enumName, [], $enumNode);
+	}
+
+	push(@{$out}, "}");
+	push(@{$out}, "");
+}
+
+
+sub generateTestProps($)
+{
+	my ($out) = @_;
+	my ($pidx);
+
+	for ($pidx=0; $pidx<$gopts->{propCount}; $pidx++) {
+		generateTestProp($out, $pidx);
+	}
+}
+
+
+sub generateTest()
+{
+	my ($nspart);
+	my $out = [];
+
+	push(@{$out}, "#include <gtest/gtest.h>");
+	push(@{$out}, "#include \"".$gopts->{cntnrName}.".hpp\"");
+	foreach $nspart (@{$nsparts}) {
+		push(@{$out}, "namespace ${nspart} {");
+	}
+	push(@{$out}, "");
+
+	push(@{$out}, "class Test".$gopts->{cntnrName}." : public ::testing::Test {");
+	push(@{$out}, "};");
+	push(@{$out}, "");
+
+	generateTestBasics($out);
+	generateTestFromIndex($out);
+	generateTestFromIdentifier($out);
+	generateTestIteration($out);
+	generateTestProps($out);
+
+	push(@{$out}, "");
+	foreach $nspart (reverse(@{$nsparts})) {
+		push(@{$out}, "} // namespace ${nspart}");
+	}
+	print(TESTSOURCE join("\n", @{$out}) . "\n");
+}
+
+
+sub generateMakefile()
+{
+	my $out = [];
+	my $gtestroot = "/usr/src/gtest";
+	my $incPaths = "-I /usr/src/gtest -I /usr/src/gtest/include -I /usr/local/include -I /usr/include";
+	my $cname = $gopts->{cntnrName};
+
+	if ($gopts->{incPath} ne "") {
+		$incPaths = "-I " . $gopts->{incPath} . " " . $incPaths;
+	}
+
+	push(@{$out}, "CCC = g++ -Wall -Wstrict-overflow=5 -std=c++11 -Os");
+
+	push(@{$out}, "Test${cname} : ${cname}.ppp Test${cname}.o ${cname}.o");
+	push(@{$out}, "\t\$(CCC) -L ${gtestroot} -o Test${cname} Test${cname}.o ${cname}.o -l gtest -l gtest_main");
+	push(@{$out}, "${cname}.o : ${cname}.cpp ${cname}.hpp");
+	push(@{$out}, "\t\$(CCC) ${incPaths} -DGTEST_ROOT=${gtestroot} -c ${cname}.cpp");
+	push(@{$out}, "Test${cname}.o : Test${cname}.cpp ${cname}.hpp");
+	push(@{$out}, "\t\$(CCC) ${incPaths} -DGTEST_ROOT=${gtestroot} -c Test${cname}.cpp");
+
+	push(@{$out}, "${cname}.ppp : ${cname}.cpp ${cname}.hpp");
+	push(@{$out}, "\t\@cpp -P -DXENUM_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
+	push(@{$out}, "\t\t| ../xenum-postprocess \\");
+	push(@{$out}, "\t\t> ${cname}.ppp");
+
+	push(@{$out}, "Time${cname}.ppp : ${cname}.cpp ${cname}.hpp");
+	push(@{$out}, "\t\@ time -p cpp -P -DXENUM_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
+	push(@{$out}, "\t\t> /dev/null");
+
+	print(MAKEFILE join("\n", @{$out}) . "\n");
+}
+
+
+
+############################################# main() #############################################
+sub execute()
+{
+	my $res;
+
+	return unless ($gopts->{execute});
+	my $outputdir = $gopts->{cntnrName};
+	chdir($outputdir) || die("ERROR: Could not change to output directory '${outputdir}'.\n");
+	system("make");
+	$res = $?;
+	if ($res == -1) {
+		die("ERROR: Could not exec 'make'.\n");
+	}
+	elsif ($res != 0) {
+		die("ERROR: 'make' failed (${res}).\n");
+	}
+	exec("./Test".$gopts->{cntnrName})
+}
+
+
+sub main()
+{
+	parseArgs();
+	if ($gopts->{testing}) {
+		runTestDistributeInclined();
+		return;
+	}
+	initParms();
+#dumpGopts();
+#dumpPopts();
+	initPropValues();
+	initFiles();
+	generateManifest();
+	generateHeader();
+	generateSource();
+	generateTest();
+	generateMakefile();
+	closeFiles();
+	execute();
+}
+
+
+main();

@@ -1,0 +1,31 @@
+#!/usr/bin/perl -w
+#
+# xenum-postprocess - post-processing of preprocessed C++ code, to make the Xenum
+# parts easier to read.
+# Copyright 2018 Simon Lodal <simonl@parknet.dk>
+# 
+
+use strict;
+
+my $marker = (@ARGV > 0 && $ARGV[0]) ? $ARGV[0] : "^namespace xenum3";
+
+my $started = 0;
+my $line;
+
+while (<STDIN>) {
+	chomp;
+	if ($started == 0 && m/$marker/) {
+		$started = 1;
+	}
+	next unless ($started);
+	foreach $line (split /@\\n@/) {
+		$line =~ s/@\\t@/\t/g;
+		$line =~ s/@\\t\\t@/\t\t/g;
+		$line =~ s/@\\t\\t\\t@/\t\t\t/g;
+		$line =~ s/@\\t\\t\\t\\t@/\t\t\t\t/g;
+		$line =~ s/^[ *]//;
+		$line =~ s/^[\s]*$//;
+		print "$line\n" if ($line);
+	}
+
+}
