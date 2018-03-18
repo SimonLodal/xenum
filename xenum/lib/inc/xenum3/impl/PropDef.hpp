@@ -55,11 +55,11 @@ _PROPDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
  * @hideinitializer
  */
 #define _XENUM3_PROPDEF_INIT_NAME(DBGLOC, PROPNAME, ...)					\
-	BOOST_PP_IF(										\
+	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PROPNAME),							\
-		Xenum3 error (DBGLOC): Missing custom property name.,				\
-		(PROPNAME)									\
-	)											\
+		_XENUM3_ERROR(LOC, Missing custom property name.),				\
+		PROPNAME									\
+	))											\
 	_XENUM3_PROPDEF_INIT_TYPE(DBGLOC, __VA_ARGS__)
 
 /**
@@ -70,7 +70,7 @@ _PROPDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
 /* FIXME: Define general type suffix */ \
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PROPTYPE),							\
-		Xenum3 error (DBGLOC): Missing custom property type.,				\
+		_XENUM3_ERROR(LOC, Missing custom property type.),				\
 		PROPTYPE									\
 	))											\
 	_XENUM3_PROPDEF_INIT_DEFAULTVALUE(DBGLOC, __VA_ARGS__)

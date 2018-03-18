@@ -37,6 +37,27 @@ namespace xenum3 {
 
 
 // ===================================================================================================
+/**
+ * Report an error. This is tricky since we have no stderr channel, and sometimes not even a
+ * stdout; any output from a macro may be gobbled up and discarded by the caller. So this only
+ * works when all output eventually ends up as C++ output code.
+ *
+ * The goals are:
+ * - Produce some output that is searchable (when you only preprocess the source).
+ * - Make sure that the code can not compile.
+ *
+ * So we wrap the error message in a static_assert(). If the preprocessor does not fail on this
+ * data, then at least the compiler will fail later. And it is somewhat searchable, together with
+ * the "Xenum3 error" prefix.
+ * @param LOC String describing data location, to help user figure out where the error happened.
+ * @param MSG The error message.
+ * @hideinitializer
+ */
+#define _XENUM3_ERROR(LOC, MSG)									\
+	static_assert(false, BOOST_PP_STRINGIZE(Xenum3 error (LOC): MSG));
+
+
+// ===================================================================================================
 /// Can be used for unwanted _XENUM3_EXEC_COND branch.
 #define _XENUM3_NOOP()
 /// Can be used for unwanted _XENUM3_EXEC_COND branch.

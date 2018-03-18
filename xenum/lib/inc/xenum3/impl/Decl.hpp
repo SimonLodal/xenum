@@ -87,11 +87,11 @@ _DECL_INIT_DO: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
  * @hideinitializer
  */
 #define _XENUM3_DECL_INIT_CNTNRNAME(DBGLOC, CNTNRNAME, ...)					\
-	BOOST_PP_IF(										\
+	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(CNTNRNAME),							\
-		Xenum3 error (DBGLOC): Missing enum-container class name.,			\
-		(CNTNRNAME)									\
-	)											\
+		_XENUM3_ERROR(DBGLOC, Missing enum-container class name.),			\
+		CNTNRNAME									\
+	))											\
 	_XENUM3_DECL_INIT_VALUENAME(DBGLOC, __VA_ARGS__)
 
 /**
@@ -99,11 +99,11 @@ _DECL_INIT_DO: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
  * @hideinitializer
  */
 #define _XENUM3_DECL_INIT_VALUENAME(DBGLOC, VALUENAME, ...)					\
-	BOOST_PP_IF(										\
+	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(VALUENAME),							\
-		Xenum3 error (DBGLOC): Missing enum-value class name.,				\
-		(VALUENAME)									\
-	)											\
+		_XENUM3_ERROR(DBGLOC, Missing enum-value class name.),				\
+		VALUENAME									\
+	))											\
 	_XENUM3_DECL_INIT_INTTYPE(DBGLOC, __VA_ARGS__)
 
 /**
