@@ -94,7 +94,7 @@ IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}
  * @hideinitializer
  */
 #define _XENUM3_DECLARE_VALUE_PROPIDX_I1(CTXT, PROPDEF, Z)					\
-	_XENUM3_DECLARE_VALUE_PROP_FUNCS(							\
+	BOOST_PP_CAT(_XENUM3_DECLARE_VALUE_PROP_FUNCS_, _XENUM3_PROPDEF_GET_TYPCAT(PROPDEF)) (	\
 		_XENUM3_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
 		PROPDEF,									\
 		Z										\
@@ -105,7 +105,7 @@ IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}
  * Declare the getters for a single property.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_VALUE_PROP_FUNCS(CTXT, PROPDEF, Z)					\
+#define _XENUM3_DECLARE_VALUE_PROP_FUNCS_PLAIN(CTXT, PROPDEF, Z)				\
 	_XENUM3_DECLARE_VALUE_PROP_FUNC_GET_SIZE(CTXT, PROPDEF, Z)				\
 	_XENUM3_DECLARE_VALUE_PROP_FUNC_GET_VALUE(CTXT, PROPDEF, Z)				\
 

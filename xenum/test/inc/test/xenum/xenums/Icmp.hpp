@@ -20,9 +20,9 @@ namespace xenums {
  */
 
 #define XENUM_DECL_IcmpTypes (test::xenum::xenums::, IcmpTypes, IcmpType, uint8_t, , (		\
-	(Ipv4, bool, false),									\
-	(Ipv6, bool, false),									\
-	(NfName, cstring, , 1)									\
+	 (Ipv4, bool, false)									\
+	,(Ipv6, bool, false)									\
+	,(NfName, cstring, , 1)									\
 	))
 
 // FIXME:
@@ -71,10 +71,10 @@ XENUM3_DECLARE(IcmpTypes)
  * IP ICMP codes enum, for testing custom properties.
  */
 #define XENUM_DECL_IcmpCodes (test::xenum::xenums::, IcmpCodes, IcmpCode, uint8_t, , (		\
-	(Ipv4, bool, false),									\
-	(Ipv6, bool, false),									\
-	(IcmpType, test::xenum::xenums::IcmpType),						\
-	(NfName, cstring)									\
+	 (Ipv4, bool, false)									\
+	,(Ipv6, bool, false)									\
+	,(IcmpType, test::xenum::xenums::IcmpType)						\
+	,(NfName, cstring)									\
 	))
 // FIXME: iptables seems to miss some codes:
 // - DestinationUNreachable.SourceHostIsolated.

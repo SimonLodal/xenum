@@ -394,6 +394,7 @@
 #include <xenum3/impl/PropDef.hpp>
 #include <xenum3/impl/Ctxt.hpp>
 #include <xenum3/impl/IndexNode.hpp>
+#include <xenum3/impl/Cstring.hpp>
 #include <xenum3/impl/DeclareCntnr.hpp>
 #include <xenum3/impl/DeclareCntnrProps.hpp>
 #include <xenum3/impl/DeclareValue.hpp>

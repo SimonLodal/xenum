@@ -39,7 +39,7 @@
  * @hideinitializer
  */
 #define _XENUM3_DECLARE_CNTNR_PROPS_I2(CTXT, PROPDEF, Z)					\
-	_XENUM3_DECLARE_CNTNR_PROP(								\
+	BOOST_PP_CAT(_XENUM3_DECLARE_CNTNR_PROP_, _XENUM3_PROPDEF_GET_TYPCAT(PROPDEF)) (	\
 		_XENUM3_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
 		_XENUM3_CTXT_GET_DECL(CTXT),							\
 		PROPDEF,									\
@@ -51,7 +51,7 @@
  * Declares a single custom property.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_CNTNR_PROP(CTXT, DECL, PROPDEF, Z)					\
+#define _XENUM3_DECLARE_CNTNR_PROP_PLAIN(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM3_DECLARE_CNTNR_PROP_DATA(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
 	_XENUM3_DECLARE_CNTNR_PROP_FUNCS(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
 	_XENUM3_DECLARE_CNTNR_PROP_DEBUG(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
@@ -73,10 +73,7 @@ IND1	typedef _XENUM3_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, _t);	
 protected:											NWLN \
 IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, _valuecount_) = 0			\
 		_XENUM3_CALL_VALS(								\
-			BOOST_PP_CAT(								\
-				_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_,			\
-				_XENUM3_PROPDEF_GET_TYPCAT(PROPDEF)				\
-			),									\
+			_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES,				\
 			CTXT									\
 		);										NWLN \
 /* This should be protected, but it's size must be compared to struct ${propname}_ValueNames_t	\
@@ -93,96 +90,60 @@ IND1	static const BOOST_PP_CAT(PROPNAME, _t)							\
 // ============================== COUNT VALUES ==============================
 /**
  * Worker for _XENUM3_DECLARE_CNTNR_PROP_DATA(). Called as XENUM_VALS_* callback.
- * Counts the values of a single custom property, for a single enum value.
+ * Counts the values of a single custom property of plain type, for a single enum value.
  * VARARGS: All custom property data for the enum value.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN(CTXT, IDENT, ...)				\
-	_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO					\
+#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES(CTXT, IDENT, ...)				\
+	_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO						\
 	(											\
 		CTXT,										\
 		_XENUM3_PROPDEF_GET_DEPTH(_XENUM3_CTXT_GET_PROPDEF(CTXT)),			\
 		_XENUM3_GET_VARARG(_XENUM3_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__)		\
 	)
 /*
-_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN: ctxt=CTXT ident=IDENT argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) argv=BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__) NWLN \
+_DECLARE_CNTNR_PROP_COUNT_VALUES: ctxt=CTXT ident=IDENT argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) argv=BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__) NWLN \
 */
 
 /**
- * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN().
+ * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES().
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO(CTXT, DEPTH, DATA)			\
-	BOOST_PP_CAT(_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO_, BOOST_PP_BOOL(DEPTH))	\
+#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO(CTXT, DEPTH, DATA)				\
+	BOOST_PP_CAT(_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO_, BOOST_PP_BOOL(DEPTH))		\
 	(CTXT, DEPTH, DATA)
 
 /**
- * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO(), for DEPTH==0.
+ * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO(), for DEPTH==0.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO_0(CTXT, DEPTH, DATA)			\
+#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO_0(CTXT, DEPTH, DATA)				\
 	_XENUM3_ADD_ONE()
 
 /**
- * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO(), for DEPTH!=0.
+ * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO(), for DEPTH!=0.
  * Calc state is just a single number; count of values in the entire data tree.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO_1(CTXT, DEPTH, DATA)			\
+#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO_1(CTXT, DEPTH, DATA)				\
 	+_XENUM3_TUPLETREE_ITERATE_DEPTH_CALC(							\
 		DATA,										\
 		/* Stop at the leafnodes; no reason to count individual values */		\
 		/* when we have the leafnode size. */						\
 		BOOST_PP_DEC(DEPTH),								\
-		(_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_ADD_LEAF, _XENUM3_TUPLETREE_FILTER_LEAF),	\
+		(_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_ADD_LEAF, _XENUM3_TUPLETREE_FILTER_LEAF),	\
 		CTXT,										\
 		0										\
 	)											\
 
 /**
- * Callback for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_DO_1() iteration. Called for
+ * Callback for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_DO_1() iteration. Called for
  * each node.
  * @return New state, with counter incremented with number of values in leaf node.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_PLAIN_ADD_LEAF(ITERPOS, NODE, CTXT, STATE)	\
+#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_ADD_LEAF(ITERPOS, NODE, CTXT, STATE)		\
 	BOOST_PP_ADD(STATE, _XENUM3_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))			\
-
-
-/**
- * Worker for _XENUM3_DECLARE_CNTNR_PROP_DATA(). Called as XENUM_VALS_* callback.
- * Counts the number of chars in all the string values of a single custom property, for a
- * single enum value.
- * VARARGS: All custom property data for the enum value.
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING(CTXT, IDENT, ...)			\
-	_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_DO					\
-	(											\
-		CTXT,										\
-		_XENUM3_PROPDEF_GET_DEPTH(_XENUM3_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM3_GET_VARARG(_XENUM3_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__)		\
-	)
-/*
-NWLN _DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING: ident=IDENT ctxt=CTXT argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) argv=BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__) NWLN \
-*/
-
-/**
- * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING().
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_DO(CTXT, DEPTH, DATA)			\
-	_XENUM3_TUPLETREE_ITERATE_DEPTH_GEN(							\
-		DATA,										\
-		DEPTH,										\
-		(_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_ADD_ONE,			\
-		 _XENUM3_TUPLETREE_FILTER_LEAF),						\
-		CTXT										\
-	)											\
-
-
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_ADD_ONE(ITERPOS, NODE, CTXT)		\
-	+sizeof(NODE)
 
 
 // ============================== COUNT NODES ==============================
