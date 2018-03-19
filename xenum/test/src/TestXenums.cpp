@@ -285,6 +285,7 @@ TEST_F(TestXenums, IcmpTypes)
 	EXPECT_EQ(true, rplControl.getIpv6());
 
 	//std::cout<<"hasProps="<<xenums::IcmpTypes::hasProps()<<std::endl;
+	//std::cout<<"NfName_valuecount_ = "<<xenums::IcmpTypes::NfName_valuecount_<<std::endl;
 }
 
 

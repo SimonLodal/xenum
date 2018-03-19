@@ -55,7 +55,7 @@ _DEFINE_CNTNR_PROPS_DO2 : z=Z n=N ctxt=CTXT NWLN \
  * @hideinitializer
  */
 #define _XENUM3_DEFINE_CNTNR_PROP(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM3_DEFINE_CNTNR_PROP_DATA(								\
+	BOOST_PP_CAT(_XENUM3_DEFINE_CNTNR_PROP_DATA_, _XENUM3_PROPDEF_GET_TYPCAT(PROPDEF)) (	\
 		CTXT,										\
 		DECL,										\
 		PROPDEF,									\
@@ -73,11 +73,11 @@ _DEFINE_CNTNR_PROPS_DO2 : z=Z n=N ctxt=CTXT NWLN \
 // ======================================== DATA ================================================
 /**
  * Worker for _XENUM3_DEFINE_CNTNR_PROP().
- * Defines the data of a single custom property.
+ * Defines all the data of a single custom property (for PLAIN data types).
  * @hideinitializer
  */
 // Also define the ${propname}_valuecount_ and _nodecount_ integers - ?
-#define _XENUM3_DEFINE_CNTNR_PROP_DATA(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)	\
+#define _XENUM3_DEFINE_CNTNR_PROP_DATA_PLAIN(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)\
 	constexpr const										\
 		SCOPE CNTNRNAME :: BOOST_PP_CAT(PROPNAME, _t)					\
 		SCOPE CNTNRNAME :: BOOST_PP_CAT(PROPNAME, _values_)				\
@@ -113,6 +113,11 @@ _DEFINE_CNTNR_PROP: ctxt=CTXT scope=SCOPE cntnrname=CNTNRNAME valuename=VALUENAM
 	_XENUM3_DEFINE_CNTNR_PROP_VALUES_NAMES(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME)	\
 	_XENUM3_DEFINE_CNTNR_PROP_NODES_NAMES(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)	\
 	_XENUM3_DEFINE_CNTNR_PROP_NODES_DATA(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)	\
+
+// FIXME: !!
+#define _XENUM3_DEFINE_CNTNR_PROP_DATA_CSTRING(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)\
+
+//_DEFINE_CNTNR_PROP_DATA_CSTRING: propdef=PROPDEF NWLN
 
 
 // ============================== INDEXNODE NAME ==============================
