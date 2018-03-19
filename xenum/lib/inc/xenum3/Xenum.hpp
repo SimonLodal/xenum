@@ -395,12 +395,17 @@
 #include <xenum3/impl/Ctxt.hpp>
 #include <xenum3/impl/IndexNode.hpp>
 #include <xenum3/impl/Props.hpp>
+#include <xenum3/impl/Plain.hpp>
+#include <xenum3/impl/PlainDeclCntnr.hpp>
+#include <xenum3/impl/PlainDeclValue.hpp>
+#include <xenum3/impl/PlainDefine.hpp>
 #include <xenum3/impl/Cstring.hpp>
+#include <xenum3/impl/CstringDeclCntnr.hpp>
+#include <xenum3/impl/CstringDeclValue.hpp>
+#include <xenum3/impl/CstringDefine.hpp>
 #include <xenum3/impl/DeclareCntnr.hpp>
-#include <xenum3/impl/DeclareCntnrProps.hpp>
 #include <xenum3/impl/DeclareValue.hpp>
 #include <xenum3/impl/DefineCntnr.hpp>
-#include <xenum3/impl/DefineCntnrProps.hpp>
 #include <xenum3/impl/Main.hpp>
 
 

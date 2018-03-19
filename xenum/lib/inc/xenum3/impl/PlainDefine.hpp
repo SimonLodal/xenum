@@ -3,9 +3,11 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
+ *
+ * Implementation of definitions for "plain" data type category.
  */
-#ifndef _XENUM3_IMPL_DEFINE_CNTNR_PROPS_HPP
-#define _XENUM3_IMPL_DEFINE_CNTNR_PROPS_HPP
+#ifndef _XENUM3_IMPL_PLAIN_DEFINE_HPP
+#define _XENUM3_IMPL_PLAIN_DEFINE_HPP
 
 
 // ======================================== DATA ================================================
@@ -434,4 +436,4 @@ IND2		}										NWLN \
 */
 
 
-#endif // _XENUM3_IMPL_DEFINE_CNTNR_PROPS_HPP
+#endif // _XENUM3_IMPL_PLAIN_DEFINE_HPP

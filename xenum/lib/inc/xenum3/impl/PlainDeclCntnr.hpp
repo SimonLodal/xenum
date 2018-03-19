@@ -3,26 +3,11 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
+ *
+ * Implementation of declarations in container class context, for "plain" data type category.
  */
-#ifndef _XENUM3_IMPL_DECLARE_CNTNR_PROPS_HPP
-#define _XENUM3_IMPL_DECLARE_CNTNR_PROPS_HPP
-
-
-// ==============================================================================================
-
-/**
- * Entry point for declaring a custom property of plain type.
- * Caller context: Container class declaration (header).
- * @hideinitializer
- */
-#define _XENUM3_PROP_DECLC_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM3_DECLARE_CNTNR_PROP_DATA(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
-	_XENUM3_DECLARE_CNTNR_PROP_FUNCS(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
-	_XENUM3_DECLARE_CNTNR_PROP_DEBUG(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
-
-/*
-_DECLARE_CNTNR_PROP: ctxt=CTXT decl=DECL propdef=PROPDEF NWLN \
-*/
+#ifndef _XENUM3_IMPL_PLAIN_DECL_CNTNR_HPP
+#define _XENUM3_IMPL_PLAIN_DECL_CNTNR_HPP
 
 
 // ======================================= DATA =================================================
@@ -367,4 +352,4 @@ IND1	static void dumpNodes(void) noexcept;							NWLN \
 
 
 
-#endif // _XENUM3_IMPL_DECLARE_CNTNR_PROPS_HPP
+#endif // _XENUM3_IMPL_PLAIN_DECL_CNTNR_HPP
