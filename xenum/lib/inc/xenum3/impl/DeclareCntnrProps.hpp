@@ -9,49 +9,13 @@
 
 
 // ==============================================================================================
-/**
- * Main entry function for declaring custom properties on the enum values.
- * Main loop is a REPEAT since that is the only kind of loop that provides a zero-based index
- * counter.
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_CNTNR_PROPS(CTXT)							\
-	BOOST_PP_REPEAT(									\
-		BOOST_PP_SEQ_SIZE(_XENUM3_DECL_GET_PROPDEFS(_XENUM3_CTXT_GET_DECL(CTXT))),	\
-		_XENUM3_DECLARE_CNTNR_PROPS_I1,							\
-		CTXT										\
-		)
 
 /**
- * Callback for _XENUM3_DECLARE_CNTNR_PROPS() loop.
+ * Entry point for declaring a custom property of plain type.
+ * Caller context: Container class declaration (header).
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_CNTNR_PROPS_I1(Z, N, CTXT)						\
-	_XENUM3_DECLARE_CNTNR_PROPS_I2								\
-	(											\
-		_XENUM3_CTXT_SET_PROPINDEX(CTXT, N),						\
-		_XENUM3_DECL_GET_PROPDEFN(_XENUM3_CTXT_GET_DECL(CTXT), N),			\
-		Z										\
-	)
-
-/**
- * Worker for _XENUM3_DECLARE_CNTNR_PROPS_I1().
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_CNTNR_PROPS_I2(CTXT, PROPDEF, Z)					\
-	BOOST_PP_CAT(_XENUM3_DECLARE_CNTNR_PROP_, _XENUM3_PROPDEF_GET_TYPCAT(PROPDEF)) (	\
-		_XENUM3_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
-		_XENUM3_CTXT_GET_DECL(CTXT),							\
-		PROPDEF,									\
-		Z										\
-	)
-
-/**
- * Worker for _XENUM3_DECLARE_CNTNR_PROPS_I2().
- * Declares a single custom property.
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_CNTNR_PROP_PLAIN(CTXT, DECL, PROPDEF, Z)					\
+#define _XENUM3_PROP_DECLC_PLAIN(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM3_DECLARE_CNTNR_PROP_DATA(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
 	_XENUM3_DECLARE_CNTNR_PROP_FUNCS(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
 	_XENUM3_DECLARE_CNTNR_PROP_DEBUG(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\

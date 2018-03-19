@@ -10,16 +10,35 @@
 #define _XENUM3_IMPL_CSTRING_HPP
 
 
+// ====================================== DECLARATION ==========================================
+/**
+ * Entry point for declaring a custom property of cstring type, in container class context.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_DECLC_CSTRING(CTXT, DECL, PROPDEF, Z)					\
 // FIXME: !!
-#define _XENUM3_DECLARE_CNTNR_PROP_CSTRING(CTXT, DECL, PROPDEF, Z)					\
 
+/**
+ * Entry point for declaring a custom property of cstring type, in value class context.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_DECLV_CSTRING(CTXT, PROPDEF, Z)						\
 // FIXME: !!
-#define _XENUM3_DECLARE_VALUE_PROP_FUNCS_CSTRING(CTXT, PROPDEF, Z)				\
 
+
+
+
+
+// ======================================= DEFINITION ==========================================
 // FIXME: !!
-#define _XENUM3_DEFINE_CNTNR_PROP_DATA_CSTRING(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)\
+#define _XENUM3_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)		\
 
 
+
+
+
+
+// =================================== FIXME: OLD =======================================
 /**
  * Worker for _XENUM3_DECLARE_CNTNR_PROP_DATA(). Called as XENUM_VALS_* callback.
  * Counts the number of chars in all the string values of a single custom property, for a

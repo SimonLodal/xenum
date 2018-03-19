@@ -52,18 +52,9 @@ class _XENUM3_DECL_GET_VALUENAME(DECL)								\
 	: public ::_XENUM3_NS::XenumValue<_XENUM3_DECL_GET_CNTNRNAME(DECL)> {			NWLN \
 	_XENUM3_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM3_DECL_GET_VALUENAME(DECL))			\
 public:												NWLN \
-	BOOST_PP_REPEAT										\
-	(											\
-		BOOST_PP_SEQ_SIZE(_XENUM3_DECL_GET_PROPDEFS(DECL)),				\
-		_XENUM3_DECLARE_VALUE_PROPIDX,							\
-		CTXT										\
-	)											\
+	_XENUM3_PROPS_DECLV(CTXT)								\
 };												\
 NWLN
-
-/* DEBUG
-_DECLARE_VALUE_SUBCLASS : ctxt=CTXT argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) NWLN \
-*/
 
 /**
  * Worker for _XENUM3_DECLARE_VALUE_1().
@@ -78,34 +69,10 @@ IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}
 
 
 /**
- * Callback worker for _XENUM3_DECLARE_VALUE() iteration over propdefs indexes.
+ * Entry point for declaring a custom property of plain type, in value class context.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_VALUE_PROPIDX(Z, N, CTXT)						\
-	_XENUM3_DECLARE_VALUE_PROPIDX_I1							\
-	(											\
-		_XENUM3_CTXT_SET_PROPINDEX(CTXT, N),						\
-		_XENUM3_DECL_GET_PROPDEFN(_XENUM3_CTXT_GET_DECL(CTXT), N),			\
-		Z										\
-	)
-
-/**
- * Worker for _XENUM3_DECLARE_VALUE_PROPIDX().
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_VALUE_PROPIDX_I1(CTXT, PROPDEF, Z)					\
-	BOOST_PP_CAT(_XENUM3_DECLARE_VALUE_PROP_FUNCS_, _XENUM3_PROPDEF_GET_TYPCAT(PROPDEF)) (	\
-		_XENUM3_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
-		PROPDEF,									\
-		Z										\
-	)
-
-/**
- * Callback worker for _XENUM3_DECLARE_VALUE_1() iteration over propdefs.
- * Declare the getters for a single property.
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_VALUE_PROP_FUNCS_PLAIN(CTXT, PROPDEF, Z)				\
+#define _XENUM3_PROP_DECLV_PLAIN(CTXT, PROPDEF, Z)						\
 	_XENUM3_DECLARE_VALUE_PROP_FUNC_GET_SIZE(CTXT, PROPDEF, Z)				\
 	_XENUM3_DECLARE_VALUE_PROP_FUNC_GET_VALUE(CTXT, PROPDEF, Z)				\
 
