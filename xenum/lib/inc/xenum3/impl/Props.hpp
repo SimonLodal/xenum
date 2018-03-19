@@ -120,34 +120,13 @@
  * @hideinitializer
  */
 #define _XENUM3_PROP_DEFINE_I1(CTXT, PROPDEF, Z)						\
-	_XENUM3_PROP_DEFINE_I2(									\
+	BOOST_PP_CAT(_XENUM3_PROP_DEFINE_, _XENUM3_PROPDEF_GET_TYPCAT(PROPDEF))			\
+	(											\
 		_XENUM3_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
 		_XENUM3_CTXT_GET_DECL(CTXT),							\
 		PROPDEF,									\
 		Z										\
 	)
-
-/**
- * Worker for _XENUM3_PROP_DEFINE_I2().
- * @hideinitializer
- */
-#define _XENUM3_PROP_DEFINE_I2(CTXT, DECL, PROPDEF, Z)						\
-	BOOST_PP_CAT(_XENUM3_PROP_DEFINE_, _XENUM3_PROPDEF_GET_TYPCAT(PROPDEF))			\
-	(											\
-		CTXT,										\
-		DECL,										\
-		PROPDEF,									\
-		_XENUM3_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM3_DECL_GET_SCOPE(DECL),							\
-		_XENUM3_DECL_GET_CNTNRNAME(DECL),						\
-		Z										\
-	)											\
-/* Nothing to define										\
-	_XENUM3_DEFINE_CNTNR_PROP_FUNCS(CTXT, DECL, PROPDEF)					\
-*/												\
-	_XENUM3_DEFINE_CNTNR_PROP_DEBUG(CTXT, DECL, PROPDEF)					\
-
-
 
 
 #endif // _XENUM3_IMPL_PROPS_HPP

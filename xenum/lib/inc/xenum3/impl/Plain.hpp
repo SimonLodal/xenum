@@ -17,9 +17,9 @@
  * @hideinitializer
  */
 #define _XENUM3_PROP_DECLC_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM3_DECLARE_CNTNR_PROP_DATA(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
-	_XENUM3_DECLARE_CNTNR_PROP_FUNCS(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
-	_XENUM3_DECLARE_CNTNR_PROP_DEBUG(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
+	_XENUM3_PLAIN_DECLC_DATA(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
+	_XENUM3_PLAIN_DECLC_FUNCS(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
+	_XENUM3_PLAIN_DECLC_DEBUG(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
 
 
 // =============================== DECLARATION IN VALUE CLASS ==================================
@@ -28,8 +28,31 @@
  * @hideinitializer
  */
 #define _XENUM3_PROP_DECLV_PLAIN(CTXT, PROPDEF, Z)						\
-	_XENUM3_DECLARE_VALUE_PROP_FUNC_GET_SIZE(CTXT, PROPDEF, Z)				\
-	_XENUM3_DECLARE_VALUE_PROP_FUNC_GET_VALUE(CTXT, PROPDEF, Z)				\
+	_XENUM3_PLAIN_DECLV_FUNC_GET_SIZE(CTXT, PROPDEF, Z)					\
+	_XENUM3_PLAIN_DECLV_FUNC_GET_VALUE(CTXT, PROPDEF, Z)					\
+
+
+// ======================================= DEFINITION ==========================================
+/**
+ * Entry point for defining a custom property of plain type, in source file context.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_DEFINE_PLAIN(CTXT, DECL, PROPDEF, Z)					\
+	_XENUM3_PLAIN_DEFINE_DATA								\
+	(											\
+		CTXT,										\
+		PROPDEF,									\
+		_XENUM3_DECL_GET_SCOPE(DECL),							\
+		_XENUM3_DECL_GET_CNTNRNAME(DECL),						\
+		_XENUM3_PROPDEF_GET_NAME(PROPDEF),						\
+		Z										\
+	)											\
+/* Nothing to define										\
+	_XENUM3_PLAIN_DEFINE_FUNCS(CTXT, PROPDEF, Z)						\
+*/												\
+	_XENUM3_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
+
+
 
 
 #endif // _XENUM3_IMPL_PLAIN_HPP
