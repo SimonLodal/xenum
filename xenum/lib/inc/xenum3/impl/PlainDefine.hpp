@@ -12,8 +12,8 @@
 
 // ======================================== DATA ================================================
 /**
- * Worker for _XENUM3_PROP_DEFINE().
- * Defines all the data of a single custom property (for PLAIN data types).
+ * Worker for _XENUM3_PROP_DEFINE_PLAIN().
+ * Defines all the data of a single custom property, for "plain" data types.
  * @hideinitializer
  */
 #define _XENUM3_PLAIN_DEFINE_DATA(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
@@ -55,84 +55,6 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE cntnrname=CNTNRNAME valuename=VALUENAM
 	_XENUM3_PLAIN_NODES_DATA(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
 
 
-// ============================== INDEXNODE NAME ==============================
-/**
- * Utility to generate a node name.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_GEN_NODE_NAME(CTXT, INDEXPATH)						\
-	BOOST_PP_CAT(										\
-		_XENUM3_PLAIN_GEN_NODE_NAME_,							\
-		BOOST_PP_BOOL(BOOST_PP_SEQ_SIZE(INDEXPATH))					\
-	) (CTXT, INDEXPATH)
-
-/**
- * Worker for _XENUM3_PLAIN_GEN_NODE_NAME(), when indexpath is empty.
- * Avoid using FOLD_LEFT() since it fails on empty seq.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_GEN_NODE_NAME_0(CTXT, INDEXPATH)						\
-	_XENUM3_CTXT_GET_IDENT(CTXT)
-
-/**
- * Worker for _XENUM3_PLAIN_GEN_NODE_NAME(), when indexpath is non-empty.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_GEN_NODE_NAME_1(CTXT, INDEXPATH)						\
-	BOOST_PP_SEQ_FOLD_LEFT(									\
-		_XENUM3_PLAIN_GEN_NODE_NAME_APPEND_INDEX,					\
-		_XENUM3_CTXT_GET_IDENT(CTXT),							\
-		INDEXPATH									\
-	)
-
-/**
- * Append a single index to the node name.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_GEN_NODE_NAME_APPEND_INDEX(S, RESULT, INDEX)				\
-	BOOST_PP_CAT(RESULT, BOOST_PP_CAT(_, INDEX))
-
-
-// ======================= COMMON LOOP FOR VALUE ITERATION =======================
-/**
- * Iterate data structure, execute callback for each leaf value.
- * Used by both value data table and value names table, to ensure that they have identical
- * structure; that the placement of values in the _values_ table match the names in the
- * _ValueNames_t struct.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_ITER_VALUES(CALLBACK, CTXT)						\
-	_XENUM3_CALL_VALS(									\
-		_XENUM3_PLAIN_ITER_VALUES_NODE,							\
-		_XENUM3_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
-	)
-
-/**
- * Callback worker for _XENUM3_PLAIN_ITER_VALUES(); loop function for each node.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_ITER_VALUES_NODE(CTXT, IDENT, ...)					\
-	_XENUM3_PLAIN_ITER_VALUES_NODE_I1							\
-	(											\
-		_XENUM3_GET_VARARG(_XENUM3_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		_XENUM3_PROPDEF_GET_DEPTH(_XENUM3_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM3_CTXT_SET_IDENT(CTXT, IDENT)						\
-	)
-
-/**
- * Worker for _XENUM3_PLAIN_ITER_VALUES_NODE().
- * Execute tupletree iteration.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_ITER_VALUES_NODE_I1(DATA, DEPTH, CTXT)					\
-	_XENUM3_TUPLETREE_ITERATE_DEPTH_GEN(							\
-		DATA,										\
-		DEPTH,										\
-		(_XENUM3_CTXT_GET_CALLBACK(CTXT), _XENUM3_TUPLETREE_FILTER_LEAF),		\
-		CTXT										\
-	)
-
-
 // ============================== VALUES DATA TABLE ==============================
 /**
  * Worker for _XENUM3_PLAIN_DEFINE_DATA().
@@ -140,7 +62,7 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE cntnrname=CNTNRNAME valuename=VALUENAM
  * @hideinitializer
  */
 #define _XENUM3_PLAIN_VALUES_DATA(CTXT)								\
-	_XENUM3_PLAIN_ITER_VALUES(_XENUM3_PLAIN_VALUE_DATA, CTXT)
+	_XENUM3_PROP_ITER_VALUES(_XENUM3_PLAIN_VALUE_DATA, CTXT)
 
 /**
  * Callback worker for values iteration.
@@ -167,7 +89,7 @@ IND1	BOOST_PP_IF(										\
 #define _XENUM3_PLAIN_VALUES_NAMES(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME)			\
 	typedef struct										\
 	{ NWLN											\
-		_XENUM3_PLAIN_ITER_VALUES(_XENUM3_PLAIN_VALUE_NAME, CTXT)			\
+		_XENUM3_PROP_ITER_VALUES(_XENUM3_PLAIN_VALUE_NAME, CTXT)			\
 	} BOOST_PP_CAT(PROPNAME, _ValueNames_t);						\
 	NWLN											\
 	/* Data and names should match, but it can not hurt to check it again */		\
@@ -187,7 +109,7 @@ IND1	BOOST_PP_IF(										\
 IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	_XENUM3_DECL_GET_CNTNRNAME(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	:: BOOST_PP_CAT(_XENUM3_PROPDEF_GET_NAME(_XENUM3_CTXT_GET_PROPDEF(CTXT)), _t)		\
-	_XENUM3_PLAIN_GEN_NODE_NAME(CTXT, _XENUM3_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
+	_XENUM3_PROP_GEN_NODE_NAME(CTXT, _XENUM3_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
 	; NWLN
 
 
@@ -303,7 +225,7 @@ IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	_XENUM3_DECL_GET_CNTNRNAME(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	:: BOOST_PP_CAT(_XENUM3_PROPDEF_GET_NAME(_XENUM3_CTXT_GET_PROPDEF(CTXT)), _IndexNode_t)	\
-	_XENUM3_PLAIN_GEN_NODE_NAME(								\
+	_XENUM3_PROP_GEN_NODE_NAME(								\
 		CTXT,										\
 		_XENUM3_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
 	)											\
@@ -393,7 +315,7 @@ _XENUM3_PLAIN_NODE_DATA: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  */
 #define _XENUM3_PLAIN_NODE_DATA_INDEX_1_DO(CTXT, PROPNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE)	\
 	(((intptr_t)&((BOOST_PP_CAT(PROPNAME, NAMESTRUCT)*)0)->					\
-	_XENUM3_PLAIN_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0)))		\
+	_XENUM3_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0)))			\
 	/ sizeof(BOOST_PP_CAT(PROPNAME, MEMBERTYPE)))
 
 

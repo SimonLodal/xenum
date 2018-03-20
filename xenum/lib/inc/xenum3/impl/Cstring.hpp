@@ -40,8 +40,18 @@
  * @hideinitializer
  */
 //#define _XENUM3_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)
-#define _XENUM3_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, Z)		\
-// FIXME: !!
+#define _XENUM3_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, Z)					\
+	_XENUM3_CSTRING_DEFINE_DATA								\
+	(											\
+		CTXT,										\
+		PROPDEF,									\
+		_XENUM3_DECL_GET_SCOPE(DECL),							\
+		_XENUM3_DECL_GET_CNTNRNAME(DECL),						\
+		_XENUM3_PROPDEF_GET_NAME(PROPDEF),						\
+		Z										\
+	)											\
+
+// FIXME: Funcs?
 
 
 
