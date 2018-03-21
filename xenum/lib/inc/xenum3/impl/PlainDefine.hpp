@@ -55,7 +55,7 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE cntnrname=CNTNRNAME valuename=VALUENAM
 	_XENUM3_PLAIN_NODES_DATA(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
 
 
-// ============================== VALUES DATA TABLE ==============================
+// ========================== VALUES DATA TABLE ==============================
 /**
  * Worker for _XENUM3_PLAIN_DEFINE_DATA().
  * Defines the ${propname}_values_ data table.
@@ -79,7 +79,7 @@ IND1	BOOST_PP_IF(										\
 , NWLN
 
 
-// ============================== VALUE NAMES ==============================
+// ============================= VALUE NAMES =================================
 /**
  * Worker for _XENUM3_PLAIN_DATA_MULTILEVEL_1().
  * Declares the ${propname}_ValueNames_t struct that contains a name for each index in the
@@ -113,7 +113,7 @@ IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	; NWLN
 
 
-// ======================= COMMON LOOP FOR NODE ITERATION =======================
+// ==================== COMMON LOOP FOR NODE ITERATION =======================
 /**
  * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
  * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
@@ -203,7 +203,7 @@ IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	)
 
 
-// ============================== NODE NAMES ==============================
+// ============================== NODE NAMES =================================
 /**
  * Worker for _XENUM3_PLAIN_DATA_MULTILEVEL_1().
  * Declares the ${propname}_NodeNames_t struct that contains a name for each index in the
@@ -235,7 +235,7 @@ _PLAIN_NODE_NAME: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] 
 */
 
 
-// ============================== NODES DATA TABLE ==============================
+// =========================== NODES DATA TABLE ==============================
 /**
  * Worker for _XENUM3_PLAIN_DATA_MULTILEVEL_1().
  * Defines the ${propname}_nodes_ node-data table.

@@ -21,8 +21,17 @@
 	namespace BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) {	NWLN \
 		_XENUM3_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)			\
 		_XENUM3_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)			\
-		_XENUM3_CSTRING_DEFINE_FUNCS(CTXT, PROPDEF, PROPNAME, Z)			\
-	}}											NWLN
+		_XENUM3_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)					\
+	}}											NWLN \
+	_XENUM3_CSTRING_DEFC_FUNCS(								\
+		PROPNAME,									\
+		_XENUM3_PROPDEF_GET_DEPTH(PROPDEF),						\
+		SCOPE,										\
+		CNTNRNAME,									\
+		CTXT,										\
+		PROPDEF,									\
+		Z										\
+	)
 
 
 // ========================================= VALUES ============================================
@@ -106,7 +115,7 @@ IND1	};											NWLN
 */
 
 
-// ============================== COUNT NODES ==============================
+// ============================= COUNT NODES =================================
 /**
  * Worker for _XENUM3_CSTRING_DEFINE_NODES(). Called as XENUM_VALS_* callback.
  * Counts the indexnodes of a single custom property, for a single enum value.
@@ -132,7 +141,7 @@ IND1	};											NWLN
 	BOOST_PP_INC(STATE)
 
 
-// ======================= COMMON LOOP FOR NODE ITERATION =======================
+// ==================== COMMON LOOP FOR NODE ITERATION =======================
 /**
  * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
  * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
@@ -166,9 +175,6 @@ IND1	};											NWLN
 	_XENUM3_CSTRING_ITER_NODES_ROOT_I1							\
 	(											\
 		_XENUM3_GET_VARARG(_XENUM3_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-/* FIXME: Why DEC()? \
-		BOOST_PP_DEC(_XENUM3_PROPDEF_GET_DEPTH(_XENUM3_CTXT_GET_PROPDEF(CTXT))),	\
-*/ \
 		_XENUM3_PROPDEF_GET_DEPTH(_XENUM3_CTXT_GET_PROPDEF(CTXT)),			\
 		_XENUM3_CTXT_SET_IDENT(CTXT, IDENT)						\
 	)
@@ -225,7 +231,7 @@ IND1	};											NWLN
 	)
 
 
-// ============================== NODE NAMES ==============================
+// ============================== NODE NAMES =================================
 /**
  * Worker for _XENUM3_CSTRING_DEFINE_NODES().
  * Declares the ${propname}_NodeNames_t struct that contains a name for each index in the
@@ -253,7 +259,7 @@ _CSTRING_NODE_NAME: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE
 */
 
 
-// ============================== NODES DATA TABLE ==============================
+// =========================== NODES DATA TABLE ==============================
 /**
  * Worker for _XENUM3_CSTRING_DEFINE_NODES().
  * Defines the ${propname}_Nodes node-data table.
@@ -365,20 +371,139 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 	/ sizeof(BOOST_PP_CAT(PROPNAME, _IndexNode_t)))
 
 
-// ========================================= FUNCS =============================================
+// ==================================== LOCAL FUNCTIONS ========================================
 /**
  * Worker for _XENUM3_CSTRING_DEFINE().
- * Defines the string values.
+ * Defines the local functions (in anon namespace, not part of any class) related to a
+ * single custom property.
  * @hideinitializer
  */
+#define _XENUM3_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)						\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(_XENUM3_PROPDEF_GET_DEPTH(PROPDEF)),				\
+		_XENUM3_CSTRING_DEFL_GET_NODE,							\
+		CTXT										\
+	)											\
 
-#define _XENUM3_CSTRING_DEFINE_FUNCS(CTXT, PROPDEF, PROPNAME, Z)				\
 
-// FIXME: !
+// ============================== getNode() ==================================
+/**
+ * Worker for _XENUM3_CSTRING_DEFINE_FUNCS_LV().
+ * Defines get${propname}Node() getters.
+ * @hideinitializer
+ */
+#define _XENUM3_CSTRING_DEFL_GET_NODE(Z, N, CTXT)						\
+	_XENUM3_CSTRING_DEFL_GET_NODE_I1(							\
+		_XENUM3_PROPDEF_GET_NAME(_XENUM3_CTXT_GET_PROPDEF(CTXT)),			\
+		N,										\
+		_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT)),				\
+		_XENUM3_DECL_GET_CNTNRNAME(_XENUM3_CTXT_GET_DECL(CTXT)),			\
+		Z										\
+	)
+
+/**
+ * Worker for _XENUM3_CSTRING_DEFL_GET_NODE().
+ * @hideinitializer
+ */
+#define _XENUM3_CSTRING_DEFL_GET_NODE_I1(PROPNAME, LEVEL, SCOPE, CNTNRNAME, Z)			\
+IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
+	BOOST_PP_CAT(PROPNAME, _IndexNode_t&)							\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
+		_XENUM3_PROP_GEN_INDEX_PARMS(							\
+			SCOPE CNTNRNAME :: Enum,						\
+			BOOST_PP_CAT(PROPNAME, _Index_t),					\
+			LEVEL,									\
+			Z									\
+		)										\
+	)											NWLN \
+IND1	{											NWLN \
+IND2		return BOOST_PP_CAT(PROPNAME, _Nodes)[						\
+			_XENUM3_PROP_GEN_NODE_INDEXING(PROPNAME, LEVEL, Z)			\
+		];										NWLN \
+IND1	}											NWLN
 
 
+// ================================== CONTAINER FUNCTIONS ======================================
+/**
+ * Worker for _XENUM3_CSTRING_DEFINE().
+ * Defines the container class functions related to a single custom property.
+ * @hideinitializer
+ */
+#define _XENUM3_CSTRING_DEFC_FUNCS(PROPNAME, DEPTH, SCOPE, CNTNRNAME, CTXT, PROPDEF, Z)		\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(DEPTH),								\
+		_XENUM3_CSTRING_DEFC_GET_SIZE,							\
+		CTXT										\
+	)											\
+	_XENUM3_CSTRING_DEFC_GET_VALUE(								\
+		PROPNAME,									\
+		DEPTH,										\
+		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::,	\
+		SCOPE,										\
+		CNTNRNAME,									\
+		PROPDEF,									\
+		Z										\
+	)
 
 
+// ============================== getSize() ==================================
+/**
+ * Callback worker for _XENUM3_CSTRING_DEFC_FUNCS().
+ * Defines get${propname}Size() getters.
+ * @hideinitializer
+ */
+#define _XENUM3_CSTRING_DEFC_GET_SIZE(Z, N, CTXT)						\
+	_XENUM3_CSTRING_DEFC_GET_SIZE_I1(							\
+		_XENUM3_PROPDEF_GET_NAME(_XENUM3_CTXT_GET_PROPDEF(CTXT)),			\
+		N,										\
+		_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT)),				\
+		_XENUM3_DECL_GET_CNTNRNAME(_XENUM3_CTXT_GET_DECL(CTXT)),			\
+		Z										\
+	)
+
+/**
+ * Worker for _XENUM3_CSTRING_DEFC_GET_SIZE().
+ * @hideinitializer
+ */
+#define _XENUM3_CSTRING_DEFC_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, CNTNRNAME, Z)			\
+	const size_t										\
+	SCOPE CNTNRNAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		_XENUM3_PROP_GEN_INDEX_PARMS(SCOPE CNTNRNAME :: Enum, size_t, LEVEL, Z)		\
+	) {											NWLN \
+IND1		return										\
+		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::	\
+		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
+			_XENUM3_PROP_GEN_INDEX_ARGS(BOOST_PP_INC(LEVEL), Z)			\
+		)										\
+		.size;										NWLN \
+	}											NWLN
+
+
+// =========================== get${PROPNAME}() ==============================
+/**
+ * Worker for _XENUM3_CSTRING_DEFC_FUNCS().
+ * Defines get${propname}() value getter.
+ * @hideinitializer
+ */
+#define _XENUM3_CSTRING_DEFC_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, CNTNRNAME, PROPDEF, Z)	\
+	const _XENUM3_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
+	SCOPE CNTNRNAME :: BOOST_PP_CAT(get, PROPNAME) (					\
+		_XENUM3_PROP_GEN_INDEX_PARMS(SCOPE CNTNRNAME :: Enum, size_t, DEPTH, Z)		\
+	) {											NWLN \
+IND1		return &(									\
+			(const _XENUM3_PROPDEF_GET_REAL_TYPE(PROPDEF)*)				\
+			& LOCALSCOPE BOOST_PP_CAT(PROPNAME, _Values)				\
+		)[										\
+			LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (		\
+				_XENUM3_PROP_GEN_INDEX_ARGS(BOOST_PP_INC(DEPTH), Z)		\
+			)									\
+			.index									\
+		];										NWLN \
+	}											NWLN
 
 
 #endif // _XENUM3_IMPL_CSTRING_DEFINE_HPP

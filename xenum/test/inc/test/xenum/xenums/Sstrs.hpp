@@ -26,10 +26,10 @@ namespace xenums {
 		(P1, cstring, "foo0")							\
 	))
 #define XENUM_VALS_Sstrs(V,C)				\
-	V(C, V0, 1, "1")				\
-	V(C, V1, 2, "2")				\
+	V(C, V0, 1, "s1")				\
+	V(C, V1, 2, "s2")				\
 	V(C, V2)					\
-	V(C, V3, 3, "3")				\
+	V(C, V3, 3, "s3")				\
 
 
 #elif SSTRS_DEPTH == 1

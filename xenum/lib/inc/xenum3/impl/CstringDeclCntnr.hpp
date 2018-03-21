@@ -10,51 +10,48 @@
 #define _XENUM3_IMPL_CSTRING_DECL_CNTNR_HPP
 
 
-
-
-
-
-
-// =================================== FIXME: OLD =======================================
+// ======================================= FUNCTIONS ============================================
 /**
- * Worker for _XENUM3_DECLARE_CNTNR_PROP_DATA(). Called as XENUM_VALS_* callback.
- * Counts the number of chars in all the string values of a single custom property, for a
- * single enum value.
- * VARARGS: All custom property data for the enum value.
+ * Worker for _XENUM3_PROP_DECLC_CSTRING().
+ * Declares the functions related to a single custom property, in container class.
  * @hideinitializer
  */
-/* FIXME: Move to other file.
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING(CTXT, IDENT, ...)			\
-	_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_DO					\
+#define _XENUM3_CSTRING_DECLC_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+public:												NWLN \
+	BOOST_PP_REPEAT_ ## Z									\
 	(											\
-		CTXT,										\
-		_XENUM3_PROPDEF_GET_DEPTH(_XENUM3_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM3_GET_VARARG(_XENUM3_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__)		\
+		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(DEPTH),								\
+		_XENUM3_CSTRING_DECLC_GET_SIZE,							\
+		PROPNAME									\
+	)											\
+	_XENUM3_CSTRING_DECLC_GET_VALUE(							\
+		PROPNAME,									\
+		DEPTH,										\
+		_XENUM3_CTXT_GET_PROPDEF(CTXT),							\
+		Z										\
 	)
-*/
-/*
-NWLN _DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING: ident=IDENT ctxt=CTXT argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) argv=BOOST_PP_VARIADIC_TO_SEQ(__VA_ARGS__) NWLN \
-*/
 
 /**
- * Worker for _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING().
+ * Callback worker for _XENUM3_CSTRING_DECLC_FUNCS() iteration over levels.
+ * Declares get${propname}Size() for this level.
  * @hideinitializer
  */
-/* FIXME: Move to other file.
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_DO(CTXT, DEPTH, DATA)			\
-	_XENUM3_TUPLETREE_ITERATE_DEPTH_GEN(							\
-		DATA,										\
-		DEPTH,										\
-		(_XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_ADD_ONE,			\
-		 _XENUM3_TUPLETREE_FILTER_LEAF),						\
-		CTXT										\
-	)											\
+#define _XENUM3_CSTRING_DECLC_GET_SIZE(Z, LEVEL, PROPNAME)					\
+IND1	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		_XENUM3_PROP_GEN_INDEX_PARMS(Enum, size_t, LEVEL, Z)				\
+	);											NWLN
 
-
-#define _XENUM3_DECLARE_CNTNR_PROP_COUNT_VALUES_CSTRING_ADD_ONE(ITERPOS, NODE, CTXT)		\
-	+sizeof(NODE)
-*/
-
+/**
+ * Worker for _XENUM3_CSTRING_DECLC_FUNCS_LV().
+ * Declares get${propname}() value getter.
+ * @hideinitializer
+ */
+#define _XENUM3_CSTRING_DECLC_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
+IND1	static const _XENUM3_PROPDEF_GET_REAL_TYPE(PROPDEF)*					\
+	BOOST_PP_CAT(get, PROPNAME) (								\
+		_XENUM3_PROP_GEN_INDEX_PARMS(Enum, size_t, DEPTH, Z)				\
+	);											NWLN
 
 
 

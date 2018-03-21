@@ -132,7 +132,7 @@
 
 // ====================================== COMMON UTILS =========================================
 
-// ============================== INDEXNODE NAME ==============================
+// ============================ INDEXNODE NAME ===============================
 /**
  * Utility to generate a node name.
  * @param CTXT Context object. Assumes the following fields are set: IDENT.
@@ -172,7 +172,7 @@
 	BOOST_PP_CAT(RESULT, BOOST_PP_CAT(_, INDEX))
 
 
-// ======================= ITERATE VALUES =======================
+// ============================ ITERATE VALUES ===============================
 /**
  * Iterate data structure, execute callback for each leaf value.
  * @param CALLBACK Callback to execute for each value.
@@ -186,7 +186,7 @@
 	)
 
 /**
- * Callback worker for _XENUM3_PLAIN_ITER_VALUES(); loop function for each node.
+ * Callback worker for _XENUM3_PROP_ITER_VALUES(); loop function for each node.
  * @hideinitializer
  */
 #define _XENUM3_PROP_ITER_VALUES_NODE(CTXT, IDENT, ...)					\
@@ -198,7 +198,7 @@
 	)
 
 /**
- * Worker for _XENUM3_PLAIN_ITER_VALUES_NODE().
+ * Worker for _XENUM3_PROP_ITER_VALUES_NODE().
  * Execute tupletree iteration.
  * @hideinitializer
  */
@@ -211,7 +211,7 @@
 	)
 
 
-// ======================= APPLY DEFAULT VALUE =======================
+// ========================= APPLY DEFAULT VALUE =============================
 /**
  * @param NODE A leaf-node (value).
  * @param CTXT Context object. Must have PROPDEF set.
@@ -225,6 +225,95 @@
 		_XENUM3_PROPDEF_GET_DEFAULTVALUE(_XENUM3_CTXT_GET_PROPDEF(CTXT)),		\
 		NODE										\
 	)
+
+
+// =========================== INDEX PARAMETERS ==============================
+/**
+ * Helper for function generators: Generate a list with a number of indexN function
+ * parameters (0..LEVELS, inclusive), where the first is of type ENUM_T, and the
+ * remaining of type INDEX_T.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX_PARMS(ENUM_T, INDEX_T, LEVELS, Z)				\
+	BOOST_PP_REPEAT_ ## Z(									\
+		BOOST_PP_INC(LEVELS),								\
+		_XENUM3_PROP_GEN_INDEX_PARM_N,							\
+		(ENUM_T, INDEX_T)								\
+	)											\
+
+/**
+ * Callback worker for _XENUM3_PROP_GEN_INDEX_PARMS() iteration over levels.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX_PARM_N(Z, N, TYPES)						\
+	BOOST_PP_COMMA_IF(N)									\
+	BOOST_PP_TUPLE_ELEM(2, BOOST_PP_BOOL(N), TYPES)						\
+	BOOST_PP_CAT(index, N)
+
+
+// =========================== INDEX ARGUMENTS ===============================
+/**
+ * Helper for function generators: Generate a list with a number of indexN
+ * arguments (0..COUNT-1).
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX_ARGS(COUNT, Z)							\
+	BOOST_PP_REPEAT_ ## Z(									\
+		COUNT,										\
+		_XENUM3_PROP_GEN_INDEX_ARG_N,							\
+												\
+	)
+
+/**
+ * Helper to generate a single indexN function argument.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX_ARG_N(Z, N, EMPTY)						\
+	BOOST_PP_COMMA_IF(BOOST_PP_BOOL(N)) BOOST_PP_CAT(index, N)
+
+
+// ========================== NODE-INDEX LOOKUP ==============================
+/**
+ * Helper for function generators: Generate a list with a number of indexN function
+ * parameters (0..LEVELS, inclusive), where the first is of type ENUM_T, and the
+ * remaining of type INDEX_T.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_NODE_INDEXING(PROPNAME, LEVELS, Z)					\
+	BOOST_PP_CAT(										\
+		_XENUM3_PROP_GEN_NODE_INDEXING_,						\
+		BOOST_PP_BOOL(LEVELS)								\
+	) (PROPNAME, LEVELS, Z)									\
+
+
+/**
+ * Worker for _XENUM3_PROP_GEN_NODE_INDEXING() iteration, for level==0.
+ * Adds node indexing for level 0; direct index.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_NODE_INDEXING_0(PROPNAME, LEVELS, Z)					\
+	static_cast<BOOST_PP_CAT(PROPNAME, _Index_t)>(index0)					\
+
+/**
+ * Worker for _XENUM3_PROP_GEN_NODE_INDEXING() iteration, for level!=0.
+ * Adds chained node indexing using calls.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_NODE_INDEXING_1(PROPNAME, LEVELS, Z)					\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
+		_XENUM3_PROP_GEN_INDEX_ARGS(LEVELS, Z)						\
+	)											\
+	.getNextIndex(BOOST_PP_CAT(index, LEVELS))
+
+
+
+
+
+
+
+
+
+
 
 
 #endif // _XENUM3_IMPL_PROPS_HPP

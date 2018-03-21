@@ -148,7 +148,7 @@ IND1	static const BOOST_PP_CAT(PROPNAME, _IndexNode_t)					\
  * Declares the functions related to a single custom property.
  * @hideinitializer
  */
-#define _XENUM3_PLAIN_DECLC_FUNCS(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
+#define _XENUM3_PLAIN_DECLC_FUNCS(CTXT, PROPDEF, PROPNAME, Z)					\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		_XENUM3_PROPDEF_GET_DEPTH(PROPDEF),						\
@@ -174,6 +174,7 @@ IND1	static const BOOST_PP_CAT(PROPNAME, _IndexNode_t)					\
  * Helper to generate a list with a number of indexN function parameters (0..LEVELS).
  * @hideinitializer
  */
+// FIXME: Use _XENUM3_PROP_GEN_INDEX_PARMS() instead.
 #define _XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS(PROPNAME, LEVELS, Z)				\
 	BOOST_PP_REPEAT_ ## Z(									\
 		BOOST_PP_INC(LEVELS),								\
@@ -239,6 +240,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(N), , constexpr) const					\
 		_XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS(PROPNAME, N, Z)				\
 	) {											\
 		return BOOST_PP_CAT(PROPNAME, _nodes_)[						\
+/* FIXME: Use _XENUM3_PROP_GEN_NODE_INDEXING() instead */ \
 			BOOST_PP_CAT(								\
 				_XENUM3_PLAIN_GEN_NODE_INDEXING_,				\
 				BOOST_PP_BOOL(N)						\
