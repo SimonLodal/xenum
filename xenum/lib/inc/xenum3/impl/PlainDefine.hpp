@@ -13,10 +13,10 @@
 // ======================================== DATA ================================================
 /**
  * Worker for _XENUM3_PROP_DEFINE_PLAIN().
- * Defines all the data of a single custom property, for "plain" data types.
+ * Defines all the data and functions of a single custom property, for "plain" data types.
  * @hideinitializer
  */
-#define _XENUM3_PLAIN_DEFINE_DATA(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
+#define _XENUM3_PLAIN_DEFINE(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
 	/* FIXME: Also define the _valuecount_ and _nodecount_ integers - ? */			\
 	constexpr const										\
 		SCOPE CNTNRNAME :: BOOST_PP_CAT(PROPNAME, _t)					\
@@ -115,10 +115,10 @@ IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 
 // ======================= COMMON LOOP FOR NODE ITERATION =======================
 /**
- * Iterate data structure, execute callback for each branch-node.
- * Used by both node data table and node names table, to ensure that they have identical
- * structure; that the placement of node data in the _nodes_ table match the names in the
- * _NodeNames_t struct.
+ * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
+ * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
+ * identical layout; that the placement of node data in the _Nodes table match the names
+ * in the _NodeNames_t struct.
  * Note: The root nodes (enum-values) must appear first in the tables so they can be directly
  * indexed by an enum-value.
  * Note: All node iteration sets depth-=1 because we are not iterating leaf values, only nodes.
@@ -231,7 +231,7 @@ IND1	_XENUM3_DECL_GET_SCOPE(_XENUM3_CTXT_GET_DECL(CTXT))					\
 	)											\
 	; NWLN
 /*
-_DEFINE_CNTNR_PROP_NODE_NAME: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] ctxt=[CTXT] NWLN \
+_PLAIN_NODE_NAME: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] ctxt=[CTXT] NWLN \
 */
 
 

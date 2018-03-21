@@ -38,7 +38,7 @@
  * @hideinitializer
  */
 #define _XENUM3_PROP_DEFINE_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM3_PLAIN_DEFINE_DATA								\
+	_XENUM3_PLAIN_DEFINE									\
 	(											\
 		CTXT,										\
 		PROPDEF,									\
@@ -47,9 +47,6 @@
 		_XENUM3_PROPDEF_GET_NAME(PROPDEF),						\
 		Z										\
 	)											\
-/* Nothing to define										\
-	_XENUM3_PLAIN_DEFINE_FUNCS(CTXT, PROPDEF, Z)						\
-*/												\
 	_XENUM3_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
 
 

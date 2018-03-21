@@ -23,37 +23,37 @@ namespace xenums {
 #if SSTRS_DEPTH == 0
 #define XENUM_DECL_Sstrs (test::xenum::xenums::, Sstrs, Sstr, , , (			\
 		(P0, int, -1),								\
-		(P1, cstring, "foo")							\
+		(P1, cstring, "foo0")							\
 	))
 #define XENUM_VALS_Sstrs(V,C)				\
-	V(C, V0, 1, "a")				\
-	V(C, V1, 2, "bc")				\
+	V(C, V0, 1, "1")				\
+	V(C, V1, 2, "2")				\
 	V(C, V2)					\
-	V(C, V3, 3, "def")				\
+	V(C, V3, 3, "3")				\
 
 
 #elif SSTRS_DEPTH == 1
 #define XENUM_DECL_Sstrs (test::xenum::xenums::, Sstrs, Sstr, , , (			\
 		(P0, int, -1, 1),							\
-		(P1, cstring, , 1)							\
+		(P1, cstring, "foo1", 1)						\
 	))
 #define XENUM_VALS_Sstrs(V,C)				\
-	V(C, V0, (1,2,3)	,("a", "b"))		\
-	V(C, V1, (4)		,("cd"))		\
+	V(C, V0, (1,2,3)	,("s1","s2","s3"))	\
+	V(C, V1, (4)		,("s4"))		\
 	V(C, V2)					\
-	V(C, V3, (5,6)		,("efg","hij","klm"))	\
+	V(C, V3, (5,6)		,("s5","s6"))		\
 
 
 #elif SSTRS_DEPTH == 2
 #define XENUM_DECL_Sstrs (test::xenum::xenums::, Sstrs, Sstr, , , (			\
 		(P0, int, -1, 2),							\
-		(P1, cstring, , 2)							\
+		(P1, cstring, "foo2", 2)						\
 	))
 #define XENUM_VALS_Sstrs(V,C)					\
-	V(C, V0, ((1),(2,3))		,(("a"),("b","c")))	\
-	V(C, V1, ((4),(5),(6,7,8))	,(("def")))		\
+	V(C, V0, ((1),(2,3))		,(("s1"),("s2","s3")))	\
+	V(C, V1, ((4),(5),(6,7,8))	,(("s4"),("s5"),("s6","s7","s8")))	\
 	V(C, V2)						\
-	V(C, V3, ((),(),())		,(("ghi","jkl","mno")))	\
+	V(C, V3, ((),,())		,((),,()))		\
 
 #endif
 

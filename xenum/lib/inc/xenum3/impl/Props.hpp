@@ -211,4 +211,20 @@
 	)
 
 
+// ======================= APPLY DEFAULT VALUE =======================
+/**
+ * @param NODE A leaf-node (value).
+ * @param CTXT Context object. Must have PROPDEF set.
+ * @return NODE if non-empty, else DEFAULT_VALUE from the PROPDEF.
+ * @hideinitializer
+ */
+// FIXME: Report error if value and defaultvalue are both empty.
+#define _XENUM3_PROP_GET_VALUE(NODE, CTXT)							\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(NODE),							\
+		_XENUM3_PROPDEF_GET_DEFAULTVALUE(_XENUM3_CTXT_GET_PROPDEF(CTXT)),		\
+		NODE										\
+	)
+
+
 #endif // _XENUM3_IMPL_PROPS_HPP
