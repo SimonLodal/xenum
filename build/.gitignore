@@ -3,5 +3,8 @@ CMakeFiles
 CTestTestfile.cmake
 Makefile
 cmake_install.cmake
+doxygen.conf
+dox
+err.log
 install_manifest.txt
 xenum
