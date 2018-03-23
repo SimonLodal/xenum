@@ -23,6 +23,7 @@
  *   limit of around 64 or 256 values in an enum, due to recursion limits in preprocessor
  *   and/or templates. Way too low for real life use. Xenum overcomes this by having the enum
  *   values declared as a list of macro calls, which can have unlimited length.
+ * - Can be placed inside a class, just like regular enums.
  * - Zero runtime overhead compared to using a native enum class.
  * - Extensible enum values: Add custom properties to each enum value. Normal Xenum values
  *   have a name and an index value (sequential), but no "ordinal" value. However, you can
@@ -85,8 +86,6 @@
  * Below are some examples that show how to create and use xenums.
  *
  * Further below complete reference of all the parameters.
- *
- * See also the unit tests for working examples.
  *
  * @section Example_Basic Example: Basic xenum
  * Here we declare a simple "Fruits" enum, with values "apple", "orange", "lemon".
@@ -204,10 +203,16 @@
  *	@endcode
  *
  * @section Example_Custom0 Example: Xenum with simple custom properties
+ * First the what and why. If you have some static data associated with each enum value, you
+ * could just create an external array, sized using the constexpr Fruits::size, and a custom
+ * lookup function for it. It is just not very OO'ish. Xenum's custom properties allows you
+ * to put the associated data into the enum declaration, and have getters generated on the
+ * enum value class.
+ *
  * Here we extend the xenum with three custom properties:
  * - "Ordinal" of type int, without any default value.
  * - "Sour" of type bool, with default value "false".
- * - "Color" of type string, without default value "varies".
+ * - "Color" of type string, with default value "varies".
  *
  * @subsection Custom0_Create Create the xenum
  * In your header file:
@@ -460,21 +465,35 @@
  *	- For each custom property, a number of ${property-name}_* symbols are created, as
  *	  well as the get${property-name}*() getters (several for array-type properties).
  * - No API doc for the generated Xenum classes. It is not really possible to generate API doc
- *   for macro-generated functions. However, you can inspect the generated code: Use the
- *   util/xenum-inspect script, it runs the preprocessor only on a file of your choice, and
- *   formats the output with indentation and newlines so it is readable.
+ *   for macro-generated functions.
  * - Poor error messages, due to how the preprocessor works. Since this is all implemented with
  *   preprocessor macros, when something goes wrong you tend to get 1000 lines of
  *   incomprehensible error messages, none of which point to where the actual comma is missing.
- *   When this happens, try to make your enum declaration simpler until it works, then start
- *   adding again - trial and error. And again, you may want or need to use the xenum-inspect
- *   script to preprocess only that source file where the problematic enum is defined, and
- *   inspect the preprocessed code.
  * - There is a limit on the number of custom properties, currently 64 or maybe a little less.
  *   This is due to the recursion limit in the preprocessor.
  * - Preprocessing time (wallclock) increases if you add a lot of custom properties, deep
  *   hierarchies, many values. It does not scale very well. Perhaps depends on the preprocessor
  *   used.
+ *
+ * @section Troubleshooting Troubleshooting / developing / debugging
+ * - First of all, when something goes wrong, use trial and error to make your xenum declaration
+ *   simpler, until it works.
+ * - If you are unsure about correct syntax, see the unit tests for working examples.
+ * - You can also use util/xenum-test-gen to generate xenums of any size, just to inspect
+ *   how it declares them, and perhaps to test the limits of your own compiler.
+ * - Use xenum-inspect script. It runs the preprocessor only on a file of your choice,
+ *   and formats the output with indentation and newlines so it is readable. It is the only way
+ *   you can actually inspect what all the macro code produces, so it is a crucial tool both in
+ *   troubleshooting and development.
+ *   - Troubleshooting: Run xenum-inspect only on the source file where the problematic enum is
+ *     defined (or even just on the header file where it is declared). Search the output for
+ *     "BOOST" and "_XENUM", this is usually the actual error location (a macro call that was
+ *     pasted literally instead of being executed). If no such error is found, inspect the
+ *     generated code/data, you should at least be able to find what the compiler complains
+ *     about.
+ *   - Developing/debugging: Normal development cycle is edit -> compile -> run. In Xenum, it is
+ *     edit -> xenum-inspect -> read output. At least until that produces correct output, then
+ *     back to compiling and running.
  *
  * @section Future_Plans Future plans
  * - Per-enum selection of features to generate, fx. to save the space of string tables if you
