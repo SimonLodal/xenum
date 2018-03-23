@@ -43,7 +43,7 @@ IND1	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
 	);											NWLN
 
 /**
- * Worker for _XENUM3_CSTRING_DECLC_FUNCS_LV().
+ * Worker for _XENUM3_CSTRING_DECLC_FUNCS().
  * Declares get${propname}() value getter.
  * @hideinitializer
  */

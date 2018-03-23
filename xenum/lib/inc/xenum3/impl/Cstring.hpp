@@ -30,14 +30,12 @@
  * @hideinitializer
  */
 #define _XENUM3_PROP_DECLV_CSTRING(CTXT, PROPDEF, Z)						\
-
-/* FIXME: !
-	_XENUM3_CSTRING_DECLV_FUNC_GET_SIZE(CTXT, PROPDEF, Z)					\
-	_XENUM3_CSTRING_DECLV_FUNC_GET_VALUE(CTXT, PROPDEF, Z)					\
-*/
-
-
-
+	_XENUM3_CSTRING_DECLV_FUNCS(								\
+		_XENUM3_PROPDEF_GET_NAME(PROPDEF),						\
+		_XENUM3_PROPDEF_GET_DEPTH(PROPDEF),						\
+		CTXT,										\
+		Z										\
+	)
 
 
 // ======================================= DEFINITION ==========================================
