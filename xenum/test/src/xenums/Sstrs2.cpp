@@ -5,7 +5,7 @@
  * @license GNU GPL version 3
  */
 
-#include <test/xenum/xenums/Sstrs.hpp>
+#include <test/xenum/xenums/Sstrs2.hpp>
 
-XENUM3_DEFINE(Sstrs)
+XENUM3_DEFINE(Sstrs2)
 

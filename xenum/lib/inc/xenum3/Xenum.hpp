@@ -506,6 +506,7 @@
  * - Efficient string-to-enum lookup. Requires a hashmap, which is difficult given these
  *   requirements: 1) Everything static-const(expr), 2 No external compile tools.
  *   Some template magic may be possible in C++14 but for now we stick with C++11.
+ * - Custom properties of type bool stored as bits.
  * - Faster compiling. Preprocessor can spend enormous amounts of CPU and RAM.
  * - Enum class inheritance (maybe).
  * - Custom code injection (maybe - if custom properties are not enough).
