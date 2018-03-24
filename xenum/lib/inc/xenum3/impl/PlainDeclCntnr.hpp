@@ -174,7 +174,7 @@ IND1	static const BOOST_PP_CAT(PROPNAME, _IndexNode_t)					\
  * Helper to generate a list with a number of indexN function parameters (0..LEVELS).
  * @hideinitializer
  */
-// FIXME: Use _XENUM3_PROP_GEN_INDEX_PARMS() instead.
+// FIXME: Use _XENUM3_PROP_GEN_INDEX0_PARMS() instead.
 #define _XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS(PROPNAME, LEVELS, Z)				\
 	BOOST_PP_REPEAT_ ## Z(									\
 		BOOST_PP_INC(LEVELS),								\

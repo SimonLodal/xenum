@@ -234,21 +234,61 @@
  * remaining of type INDEX_T.
  * @hideinitializer
  */
-#define _XENUM3_PROP_GEN_INDEX_PARMS(ENUM_T, INDEX_T, LEVELS, Z)				\
+#define _XENUM3_PROP_GEN_INDEX0_PARMS(ENUM_T, INDEX_T, LEVELS, Z)				\
 	BOOST_PP_REPEAT_ ## Z(									\
 		BOOST_PP_INC(LEVELS),								\
-		_XENUM3_PROP_GEN_INDEX_PARM_N,							\
+		_XENUM3_PROP_GEN_INDEX0_PARM_N,							\
 		(ENUM_T, INDEX_T)								\
 	)											\
 
 /**
- * Callback worker for _XENUM3_PROP_GEN_INDEX_PARMS() iteration over levels.
+ * Callback worker for _XENUM3_PROP_GEN_INDEX0_PARMS() iteration over levels.
  * @hideinitializer
  */
-#define _XENUM3_PROP_GEN_INDEX_PARM_N(Z, N, TYPES)						\
+#define _XENUM3_PROP_GEN_INDEX0_PARM_N(Z, N, TYPES)						\
 	BOOST_PP_COMMA_IF(N)									\
 	BOOST_PP_TUPLE_ELEM(2, BOOST_PP_BOOL(N), TYPES)						\
 	BOOST_PP_CAT(index, N)
+
+
+/**
+ * Helper to generate a list with a number of indexN function parameters (1..LEVELS) of
+ * type INDEX_T, or just void for LEVELS=0.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX1_PARMS(INDEX_T, LEVELS, Z)					\
+	BOOST_PP_CAT(										\
+		_XENUM3_PROP_GEN_INDEX1_PARMS_,							\
+		BOOST_PP_BOOL(LEVELS)								\
+	) (INDEX_T, LEVELS, Z)
+
+/**
+ * Worker for _XENUM3_PROP_GEN_INDEX1_PARMS().
+ * Declares no index parameters since level==0.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX1_PARMS_0(INDEX_T, LEVELS, Z)					\
+	void
+
+/**
+ * Worker for _XENUM3_PROP_GEN_INDEX1_PARMS().
+ * Generate a function parameter list with a number of indexN parameters (1..LEVELS).
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX1_PARMS_1(INDEX_T, LEVELS, Z)					\
+	BOOST_PP_REPEAT_ ## Z(									\
+		LEVELS,										\
+		_XENUM3_PROP_GEN_INDEX1_PARM_N,							\
+		INDEX_T										\
+	)											\
+
+/**
+ * Callback worker for _XENUM3_PROP_GEN_INDEX1_PARMS_1() iteration over levels.
+ * Generates a single index parameter.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX1_PARM_N(Z, N, INDEX_T)						\
+	BOOST_PP_COMMA_IF(BOOST_PP_BOOL(N)) INDEX_T BOOST_PP_CAT(index, BOOST_PP_INC(N))
 
 
 // =========================== INDEX ARGUMENTS ===============================
@@ -257,19 +297,38 @@
  * arguments (0..COUNT-1).
  * @hideinitializer
  */
-#define _XENUM3_PROP_GEN_INDEX_ARGS(COUNT, Z)							\
+#define _XENUM3_PROP_GEN_INDEX0_ARGS(COUNT, Z)							\
 	BOOST_PP_REPEAT_ ## Z(									\
 		COUNT,										\
-		_XENUM3_PROP_GEN_INDEX_ARG_N,							\
+		_XENUM3_PROP_GEN_INDEX0_ARG_N,							\
 												\
 	)
 
 /**
- * Helper to generate a single indexN function argument.
+ * Helper for _XENUM3_PROP_GEN_INDEX0_ARGS() to generate a single indexN function argument.
  * @hideinitializer
  */
-#define _XENUM3_PROP_GEN_INDEX_ARG_N(Z, N, EMPTY)						\
+#define _XENUM3_PROP_GEN_INDEX0_ARG_N(Z, N, EMPTY)						\
 	BOOST_PP_COMMA_IF(BOOST_PP_BOOL(N)) BOOST_PP_CAT(index, N)
+
+
+/**
+ * Helper to generate a list with a number of indexN arguments (1..COUNT).
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX1_ARGS(COUNT, Z)							\
+	BOOST_PP_REPEAT_ ## Z(									\
+		COUNT,										\
+		_XENUM3_PROP_GEN_INDEX1_ARG_N,							\
+												\
+	)
+
+/**
+ * Helper for _XENUM3_PROP_GEN_INDEX1_ARGS() to generate a single indexN function argument.
+ * @hideinitializer
+ */
+#define _XENUM3_PROP_GEN_INDEX1_ARG_N(Z, N, CTXT)						\
+	, BOOST_PP_CAT(index, BOOST_PP_INC(N))
 
 
 // ========================== NODE-INDEX LOOKUP ==============================
@@ -301,7 +360,7 @@
  */
 #define _XENUM3_PROP_GEN_NODE_INDEXING_1(PROPNAME, LEVELS, Z)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
-		_XENUM3_PROP_GEN_INDEX_ARGS(LEVELS, Z)						\
+		_XENUM3_PROP_GEN_INDEX0_ARGS(LEVELS, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, LEVELS))
 

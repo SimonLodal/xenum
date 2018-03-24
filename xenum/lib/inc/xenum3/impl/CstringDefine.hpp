@@ -411,7 +411,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM3_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 	BOOST_PP_CAT(PROPNAME, _IndexNode_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
-		_XENUM3_PROP_GEN_INDEX_PARMS(							\
+		_XENUM3_PROP_GEN_INDEX0_PARMS(							\
 			SCOPE CNTNRNAME :: Enum,						\
 			BOOST_PP_CAT(PROPNAME, _Index_t),					\
 			LEVEL,									\
@@ -472,12 +472,12 @@ IND1	}											NWLN
 #define _XENUM3_CSTRING_DEFC_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, CNTNRNAME, Z)			\
 	const size_t										\
 	SCOPE CNTNRNAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-		_XENUM3_PROP_GEN_INDEX_PARMS(SCOPE CNTNRNAME :: Enum, size_t, LEVEL, Z)		\
+		_XENUM3_PROP_GEN_INDEX0_PARMS(SCOPE CNTNRNAME :: Enum, size_t, LEVEL, Z)		\
 	) {											NWLN \
 IND1		return										\
 		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::	\
 		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
-			_XENUM3_PROP_GEN_INDEX_ARGS(BOOST_PP_INC(LEVEL), Z)			\
+			_XENUM3_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
 		.size;										NWLN \
 	}											NWLN
@@ -492,14 +492,14 @@ IND1		return										\
 #define _XENUM3_CSTRING_DEFC_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, CNTNRNAME, PROPDEF, Z)	\
 	const _XENUM3_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
 	SCOPE CNTNRNAME :: BOOST_PP_CAT(get, PROPNAME) (					\
-		_XENUM3_PROP_GEN_INDEX_PARMS(SCOPE CNTNRNAME :: Enum, size_t, DEPTH, Z)		\
+		_XENUM3_PROP_GEN_INDEX0_PARMS(SCOPE CNTNRNAME :: Enum, size_t, DEPTH, Z)		\
 	) {											NWLN \
 IND1		return &(									\
 			(const _XENUM3_PROPDEF_GET_REAL_TYPE(PROPDEF)*)				\
 			& LOCALSCOPE BOOST_PP_CAT(PROPNAME, _Values)				\
 		)[										\
 			LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (		\
-				_XENUM3_PROP_GEN_INDEX_ARGS(BOOST_PP_INC(DEPTH), Z)		\
+				_XENUM3_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\
 			)									\
 			.index									\
 		];										NWLN \
