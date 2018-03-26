@@ -3,7 +3,7 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 3.1.pre1
+ * @version 3.1
  *
  * @section Description
  * A better enum class for C++. Adds all the functionality that standard C++ enums lack.
