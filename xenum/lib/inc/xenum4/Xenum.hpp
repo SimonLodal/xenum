@@ -553,11 +553,11 @@
 #include <xenum4/impl/IndexNode.hpp>
 #include <xenum4/impl/Props.hpp>
 #include <xenum4/impl/Plain.hpp>
-#include <xenum4/impl/PlainDeclCntnr.hpp>
+#include <xenum4/impl/PlainDeclStore.hpp>
 #include <xenum4/impl/PlainDeclValue.hpp>
 #include <xenum4/impl/PlainDefine.hpp>
 #include <xenum4/impl/Cstring.hpp>
-#include <xenum4/impl/CstringDeclCntnr.hpp>
+#include <xenum4/impl/CstringDeclStore.hpp>
 #include <xenum4/impl/CstringDeclValue.hpp>
 #include <xenum4/impl/CstringDefine.hpp>
 #include <xenum4/impl/DeclareStore.hpp>

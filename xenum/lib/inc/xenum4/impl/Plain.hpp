@@ -10,16 +10,15 @@
 #define _XENUM4_IMPL_PLAIN_HPP
 
 
-
-// ============================= DECLARATION IN CONTAINER CLASS ================================
+// =============================== DECLARATION IN STORE CLASS ==================================
 /**
- * Entry point for declaring a custom property of plain type, in container class context.
+ * Entry point for declaring a custom property of plain type, in store class context.
  * @hideinitializer
  */
-#define _XENUM4_PROP_DECLC_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM4_PLAIN_DECLC_DATA(CTXT, DECL, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)	\
-	_XENUM4_PLAIN_DECLC_FUNCS(CTXT, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)		\
-	_XENUM4_PLAIN_DECLC_DEBUG(CTXT, DECL, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)	\
+#define _XENUM4_PROP_DECLS_PLAIN(CTXT, DECL, PROPDEF, Z)					\
+	_XENUM4_PLAIN_DECLS_DATA(CTXT, DECL, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)	\
+	_XENUM4_PLAIN_DECLS_FUNCS(CTXT, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)		\
+	_XENUM4_PLAIN_DECLS_DEBUG(CTXT, DECL, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)	\
 
 
 // =============================== DECLARATION IN VALUE CLASS ==================================
@@ -28,8 +27,12 @@
  * @hideinitializer
  */
 #define _XENUM4_PROP_DECLV_PLAIN(CTXT, PROPDEF, Z)						\
-	_XENUM4_PLAIN_DECLV_FUNC_GET_SIZE(CTXT, PROPDEF, Z)					\
-	_XENUM4_PLAIN_DECLV_FUNC_GET_VALUE(CTXT, PROPDEF, Z)					\
+	_XENUM4_PLAIN_DECLV_FUNCS(								\
+		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
+		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		CTXT,										\
+		Z										\
+	)
 
 
 // ======================================= DEFINITION ==========================================
@@ -43,7 +46,7 @@
 		CTXT,										\
 		PROPDEF,									\
 		_XENUM4_DECL_GET_SCOPE(DECL),							\
-		_XENUM4_DECL_GET_CNTNRNAME(DECL),						\
+		_XENUM4_STORE_NAME(DECL),							\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		Z										\
 	)											\

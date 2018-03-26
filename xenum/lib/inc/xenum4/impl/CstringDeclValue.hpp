@@ -14,7 +14,7 @@
 // ======================================= FUNCTIONS ============================================
 /**
  * Worker for _XENUM4_PROP_DECLV_CSTRING().
- * Declares the functions related to a single custom property, in container class.
+ * Declares the functions related to a single custom property, in value class.
  * @hideinitializer
  */
 #define _XENUM4_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
@@ -61,7 +61,7 @@ IND1	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
 	{											\
 		return										\
 		_XENUM4_DECL_GET_SCOPE(DECL)							\
-		_XENUM4_DECL_GET_CNTNRNAME(DECL)						\
+		_XENUM4_STORE_NAME(DECL)							\
 		:: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
 			value									\
 			_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
@@ -82,7 +82,7 @@ IND1	const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
 	{											\
 		return										\
 		_XENUM4_DECL_GET_SCOPE(DECL)							\
-		_XENUM4_DECL_GET_CNTNRNAME(DECL)						\
+		_XENUM4_STORE_NAME(DECL)							\
 		:: BOOST_PP_CAT(get, PROPNAME) (						\
 			value									\
 			_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\

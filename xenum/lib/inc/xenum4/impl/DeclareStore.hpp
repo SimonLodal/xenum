@@ -28,11 +28,13 @@
 	class _XENUM4_DECL_GET_CNTNRNAME(DECL);							NWLN \
 	class _XENUM4_STORE_NAME(DECL) {							NWLN \
 	friend class _XENUM4_DECL_GET_CNTNRNAME(DECL);						NWLN \
-	private:										NWLN \
+/* FIXME: Make everything private. */								\
+public:												NWLN \
 		_XENUM4_DECLS_ENUM(CTXT, DECL)							\
 		_XENUM4_DECLS_IDENTPOOL(CTXT)							\
 		_XENUM4_DECLS_VALUE_ACCESSORS(CTXT, DECL)					\
 		_XENUM4_DECLS_LOOKUP_FUNCS(CTXT, DECL)						\
+		_XENUM4_PROPS_DECLS(CTXT)							\
 	};											NWLN
 
 

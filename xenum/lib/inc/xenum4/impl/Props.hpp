@@ -11,25 +11,25 @@
 #define _XENUM4_IMPL_PROPS_HPP
 
 
-// ============================= DECLARATION IN CONTAINER CLASS ================================
+// =============================== DECLARATION IN STORE CLASS ==================================
 /**
  * Main entry point for declaring custom properties on the enum values.
- * Caller context: Container class declaration (header).
+ * Caller context: Store class declaration (header).
  * @hideinitializer
  */
-#define _XENUM4_PROPS_DECLC(CTXT)								\
+#define _XENUM4_PROPS_DECLS(CTXT)								\
 	BOOST_PP_REPEAT(									\
 		BOOST_PP_SEQ_SIZE(_XENUM4_DECL_GET_PROPDEFS(_XENUM4_CTXT_GET_DECL(CTXT))),	\
-		_XENUM4_PROP_DECLC,								\
+		_XENUM4_PROP_DECLS,								\
 		CTXT										\
 		)
 
 /**
- * Callback for _XENUM4_PROPS_DECLC() loop.
+ * Callback for _XENUM4_PROPS_DECLS() loop.
  * @hideinitializer
  */
-#define _XENUM4_PROP_DECLC(Z, N, CTXT)								\
-	_XENUM4_PROP_DECLC_I1									\
+#define _XENUM4_PROP_DECLS(Z, N, CTXT)								\
+	_XENUM4_PROP_DECLS_I1									\
 	(											\
 		_XENUM4_CTXT_SET_PROPINDEX(CTXT, N),						\
 		_XENUM4_DECL_GET_PROPDEFN(_XENUM4_CTXT_GET_DECL(CTXT), N),			\
@@ -37,11 +37,11 @@
 	)
 
 /**
- * Worker for _XENUM4_PROP_DECLC().
+ * Worker for _XENUM4_PROP_DECLS().
  * @hideinitializer
  */
-#define _XENUM4_PROP_DECLC_I1(CTXT, PROPDEF, Z)							\
-	BOOST_PP_CAT(_XENUM4_PROP_DECLC_, _XENUM4_PROPDEF_GET_TYPCAT(PROPDEF))			\
+#define _XENUM4_PROP_DECLS_I1(CTXT, PROPDEF, Z)							\
+	BOOST_PP_CAT(_XENUM4_PROP_DECLS_, _XENUM4_PROPDEF_GET_TYPCAT(PROPDEF))			\
 	(											\
 		_XENUM4_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
 		_XENUM4_CTXT_GET_DECL(CTXT),							\
@@ -95,10 +95,10 @@
  * Caller context: Source file.
  * @hideinitializer
  */
-#define _XENUM4_PROPS_DEFINE(CTXT)								\
+#define _XENUM4_PROPS_DEFINE(CTXT, DECL)							\
 	BOOST_PP_REPEAT										\
 	(											\
-		BOOST_PP_SEQ_SIZE(_XENUM4_DECL_GET_PROPDEFS(_XENUM4_CTXT_GET_DECL(CTXT))),	\
+		BOOST_PP_SEQ_SIZE(_XENUM4_DECL_GET_PROPDEFS(DECL)),				\
 		_XENUM4_PROP_DEFINE,								\
 		CTXT										\
 	)

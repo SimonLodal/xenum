@@ -11,7 +11,20 @@
 
 
 
+// ======================================= FUNCTIONS ============================================
+/**
+ * Worker for _XENUM4_PROP_DECLV_PLAIN().
+ * Declares the functions related to a single custom property, in value class.
+ * @hideinitializer
+ */
+#define _XENUM4_PLAIN_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+public:												NWLN \
+	_XENUM4_PLAIN_DECLV_GET_SIZE(DEPTH, CTXT, Z)						\
+	_XENUM4_PLAIN_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, _XENUM4_CTXT_GET_DECL(CTXT), Z)	\
+
+
 // ==================================== FUNC helpers ============================================
+// FIXME: Use common Props.hpp functions instead.
 /**
  * Helper to generate a list with a number of indexN function parameters (1..LEVELS).
  * @hideinitializer
@@ -49,7 +62,7 @@
 #define _XENUM4_PLAIN_DECLV_GEN_INDEX_PARM_N(Z, N, CTXT)					\
 	BOOST_PP_COMMA_IF(BOOST_PP_BOOL(N))							\
 	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
-	_XENUM4_DECL_GET_CNTNRNAME(_XENUM4_CTXT_GET_DECL(CTXT))					\
+	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
 	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), _index_t)	\
 	BOOST_PP_CAT(index, BOOST_PP_INC(N))
 
@@ -79,38 +92,38 @@
  * Declares the get${propname}Size() getter for each level.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE(CTXT, PROPDEF, Z)					\
+#define _XENUM4_PLAIN_DECLV_GET_SIZE(DEPTH, CTXT, Z)						\
 	BOOST_PP_CAT(										\
-		_XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_,						\
-		BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF))				\
-	) (CTXT, PROPDEF, Z)
+		_XENUM4_PLAIN_DECLV_GET_SIZE_,							\
+		BOOST_PP_BOOL(DEPTH)								\
+	) (DEPTH, CTXT, Z)
 
 /**
- * Worker for _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE().
+ * Worker for _XENUM4_PLAIN_DECLV_GET_SIZE().
  * Declares nothing since depth==0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_0(CTXT, PROPDEF, Z)					\
+#define _XENUM4_PLAIN_DECLV_GET_SIZE_0(DEPTH, CTXT, Z)						\
 
 /**
- * Worker for _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE().
+ * Worker for _XENUM4_PLAIN_DECLV_GET_SIZE().
  * Declares getters since depth!=0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_1(CTXT, PROPDEF, Z)					\
+#define _XENUM4_PLAIN_DECLV_GET_SIZE_1(DEPTH, CTXT, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
-		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
-		_XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_N,						\
+		DEPTH,										\
+		_XENUM4_PLAIN_DECLV_GET_SIZE_N,							\
 		CTXT										\
 	)
 
 /**
- * Worker for _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_1().
+ * Worker for _XENUM4_PLAIN_DECLV_GET_SIZE_1().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_N(Z, N, CTXT)						\
-	_XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_N_I1							\
+#define _XENUM4_PLAIN_DECLV_GET_SIZE_N(Z, N, CTXT)						\
+	_XENUM4_PLAIN_DECLV_GET_SIZE_N_I1							\
 	(											\
 		CTXT,										\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
@@ -122,10 +135,10 @@
  * Worker for _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_N().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)			\
+#define _XENUM4_PLAIN_DECLV_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)				\
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
-	_XENUM4_DECL_GET_CNTNRNAME(_XENUM4_CTXT_GET_DECL(CTXT))					\
+	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
 	:: BOOST_PP_CAT(PROPNAME, _index_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
 		_XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS(CTXT, LEVEL, Z)				\
@@ -134,7 +147,7 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 	{											\
 		return										\
 		_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))				\
-		_XENUM4_DECL_GET_CNTNRNAME(_XENUM4_CTXT_GET_DECL(CTXT))				\
+		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))					\
 		:: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
 			value									\
 			_XENUM4_PLAIN_DECLV_GEN_INDEX_ARGS(CTXT, LEVEL, Z)			\
@@ -149,28 +162,28 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
  * Declares the get${propname}() value getter.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNC_GET_VALUE(CTXT, PROPDEF, Z)					\
-	_XENUM4_PLAIN_DECLV_FUNC_GET_VALUE_I1(							\
+#define _XENUM4_PLAIN_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, DECL, Z)				\
+	_XENUM4_PLAIN_DECLV_GET_VALUE_I1(							\
 		CTXT,										\
-		_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT)),				\
-		_XENUM4_DECL_GET_CNTNRNAME(_XENUM4_CTXT_GET_DECL(CTXT)),			\
-		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		_XENUM4_DECL_GET_SCOPE(DECL),							\
+		_XENUM4_STORE_NAME(DECL),							\
+		PROPNAME,									\
+		DEPTH,										\
 		Z)										\
 
 /**
- * Worker for _XENUM4_PLAIN_DECLV_FUNC_GET_VALUE().
+ * Worker for _XENUM4_PLAIN_DECLV_GET_VALUE().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNC_GET_VALUE_I1(CTXT, SCOPE, CNTNRNAME, PROPNAME, DEPTH, Z)	\
+#define _XENUM4_PLAIN_DECLV_GET_VALUE_I1(CTXT, SCOPE, STORENAME, PROPNAME, DEPTH, Z)		\
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const					\
-	SCOPE CNTNRNAME :: BOOST_PP_CAT(PROPNAME, _t&)						\
+	SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _t&)						\
 	BOOST_PP_CAT(get, PROPNAME) (								\
 		_XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS(CTXT, DEPTH, Z)				\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
 	{											\
-		return SCOPE CNTNRNAME :: BOOST_PP_CAT(get, PROPNAME) (				\
+		return SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (				\
 			value									\
 			_XENUM4_PLAIN_DECLV_GEN_INDEX_ARGS(CTXT, DEPTH, Z)			\
 		);										\

@@ -19,6 +19,7 @@
 	_XENUM4_DEFS_SIZE(CTXT, DECL)								\
 	_XENUM4_DEFS_IDENTPOOL(CTXT, DECL)							\
 	_XENUM4_DEFS_LOOKUP_FUNCS(CTXT, DECL)							\
+	_XENUM4_PROPS_DEFINE(CTXT, DECL)							\
 
 
 // ==============================================================================================

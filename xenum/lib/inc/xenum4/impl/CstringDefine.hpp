@@ -16,17 +16,19 @@
  * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFINE(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
-	/* Wrap in both anonymous and named namespace */					\
+	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
+	/* Also wrap in named namespace to prevent name clashes. */				\
 	namespace BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) {	NWLN \
 		_XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)			\
 		_XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)			\
 		_XENUM4_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)					\
 	}}											NWLN \
-	_XENUM4_CSTRING_DEFC_FUNCS(								\
+	_XENUM4_CSTRING_DEFS_FUNCS(								\
 		PROPNAME,									\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
 		SCOPE,										\
+		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT)),				\
 		CNTNRNAME,									\
 		CTXT,										\
 		PROPDEF,									\
@@ -430,25 +432,26 @@ IND2		return BOOST_PP_CAT(PROPNAME, _Nodes)[						\
 IND1	}											NWLN
 
 
-// ================================== CONTAINER FUNCTIONS ======================================
+// ==================================== STORE FUNCTIONS ========================================
 /**
  * Worker for _XENUM4_CSTRING_DEFINE().
- * Defines the container class functions related to a single custom property.
+ * Defines the store class functions related to a single custom property.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFC_FUNCS(PROPNAME, DEPTH, SCOPE, CNTNRNAME, CTXT, PROPDEF, Z)		\
+#define _XENUM4_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, CNTNRNAME, CTXT, PROPDEF, Z)	\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
 		BOOST_PP_INC(DEPTH),								\
-		_XENUM4_CSTRING_DEFC_GET_SIZE,							\
+		_XENUM4_CSTRING_DEFS_GET_SIZE,							\
 		CTXT										\
 	)											\
-	_XENUM4_CSTRING_DEFC_GET_VALUE(								\
+	_XENUM4_CSTRING_DEFS_GET_VALUE(								\
 		PROPNAME,									\
 		DEPTH,										\
 		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::,	\
 		SCOPE,										\
+		STORENAME,									\
 		CNTNRNAME,									\
 		PROPDEF,									\
 		Z										\
@@ -457,27 +460,28 @@ IND1	}											NWLN
 
 // ============================== getSize() ==================================
 /**
- * Callback worker for _XENUM4_CSTRING_DEFC_FUNCS().
+ * Callback worker for _XENUM4_CSTRING_DEFS_FUNCS().
  * Defines get${propname}Size() getters.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFC_GET_SIZE(Z, N, CTXT)						\
-	_XENUM4_CSTRING_DEFC_GET_SIZE_I1(							\
+#define _XENUM4_CSTRING_DEFS_GET_SIZE(Z, N, CTXT)						\
+	_XENUM4_CSTRING_DEFS_GET_SIZE_I1(							\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
 		N,										\
 		_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT)),				\
+		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT)),				\
 		_XENUM4_DECL_GET_CNTNRNAME(_XENUM4_CTXT_GET_DECL(CTXT)),			\
 		Z										\
 	)
 
 /**
- * Worker for _XENUM4_CSTRING_DEFC_GET_SIZE().
+ * Worker for _XENUM4_CSTRING_DEFS_GET_SIZE().
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFC_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, CNTNRNAME, Z)			\
+#define _XENUM4_CSTRING_DEFS_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, STORENAME, CNTNRNAME, Z)	\
 	const size_t										\
-	SCOPE CNTNRNAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE CNTNRNAME :: Enum, size_t, LEVEL, Z)		\
+	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::_Enum, size_t, LEVEL, Z)		\
 	) {											NWLN \
 IND1		return										\
 		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::	\
@@ -490,14 +494,14 @@ IND1		return										\
 
 // =========================== get${PROPNAME}() ==============================
 /**
- * Worker for _XENUM4_CSTRING_DEFC_FUNCS().
+ * Worker for _XENUM4_CSTRING_DEFS_FUNCS().
  * Defines get${propname}() value getter.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFC_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, CNTNRNAME, PROPDEF, Z)	\
+#define _XENUM4_CSTRING_DEFS_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, CNTNRNAME, PROPDEF, Z)	\
 	const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
-	SCOPE CNTNRNAME :: BOOST_PP_CAT(get, PROPNAME) (					\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE CNTNRNAME :: Enum, size_t, DEPTH, Z)		\
+	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (					\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::_Enum, size_t, DEPTH, Z)		\
 	) {											NWLN \
 IND1		return &(									\
 			(const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*)				\

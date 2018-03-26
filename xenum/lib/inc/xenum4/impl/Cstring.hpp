@@ -12,11 +12,11 @@
 
 // ============================= DECLARATION IN CONTAINER CLASS ================================
 /**
- * Entry point for declaring a custom property of cstring type, in container class context.
+ * Entry point for declaring a custom property of cstring type, in store class context.
  * @hideinitializer
  */
-#define _XENUM4_PROP_DECLC_CSTRING(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM4_CSTRING_DECLC_FUNCS(								\
+#define _XENUM4_PROP_DECLS_CSTRING(CTXT, DECL, PROPDEF, Z)					\
+	_XENUM4_CSTRING_DECLS_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
 		CTXT,										\

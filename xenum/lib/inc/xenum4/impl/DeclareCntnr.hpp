@@ -21,8 +21,6 @@
 		_XENUM4_DECLC_ENUM(CTXT, DECL)							\
 		_XENUM4_DECLC_ENUM_COPY(CTXT)							\
 		_XENUM4_DECLC_FUNCS(CTXT, DECL)							\
-/* FIXME: Move content to store class, only leave wrappers. */					\
-	_XENUM4_PROPS_DECLC(CTXT)								\
 	};											NWLN
 
 
@@ -93,13 +91,13 @@ IND1		static constexpr const char* getIdentifier(Enum value) noexcept			\
 IND1		constexpr _XENUM4_DECL_GET_CNTNRNAME(DECL)(void) noexcept {}			NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	public:											NWLN \
-IND1		static Enum fromIndex(index_t index)						NWLN \
+IND1		static Enum fromIndex(index_t index)						\
 			{ return _XENUM4_STORE_NAME(DECL)::_fromIndex(index); }			NWLN \
-IND1		static bool fromIndex(index_t index, Enum& value) noexcept			NWLN \
+IND1		static bool fromIndex(index_t index, Enum& value) noexcept			\
 			{ return _XENUM4_STORE_NAME(DECL)::_fromIndex(index, value); }		NWLN \
-IND1		static Enum fromIdentifier(const char* identifier)				NWLN \
+IND1		static Enum fromIdentifier(const char* identifier)				\
 			{ return _XENUM4_STORE_NAME(DECL)::_fromIdent(identifier); }		NWLN \
-IND1		static bool fromIdentifier(const char* identifier, Enum& value) noexcept	NWLN \
+IND1		static bool fromIdentifier(const char* identifier, Enum& value) noexcept	\
 			{ return _XENUM4_STORE_NAME(DECL)::_fromIdent(identifier, value); }	NWLN \
 	/* Iteration support. */								\
 	public:											NWLN \
