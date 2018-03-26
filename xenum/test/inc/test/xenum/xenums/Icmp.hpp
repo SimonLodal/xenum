@@ -20,52 +20,50 @@ namespace xenums {
  */
 
 #define XENUM_DECL_IcmpTypes (test::xenum::xenums::, IcmpTypes, IcmpType, uint8_t, , (		\
-	(Ipv4, bool, false),									\
-	(Ipv6, bool, false)									\
+	 (Ipv4, bool, false)									\
+	,(Ipv6, bool, false)									\
+	,(NfName, cstring, , 1)									\
 	))
-// FIXME: Custom string not yet supported.
-//	  ((NfName, char[]))
 
 // FIXME:
 // - Is the IPv6 Redirect message semantically the same as in IPv4? Or is it only something NDP related?
-// - Also need to store iptables names; lowercased, dash-separated words.
-// - Also need to store multiple iptables names; some have aliases (ping, pong).
+// - Figure out missing iptables names.
 #define XENUM_VALS_IcmpTypes(V,C)	\
-	V(C, EchoReply,				true,	true,	"echo-reply")			\
-	V(C, PacketTooBig,			false,	true,	"")		\
-	V(C, DestinationUnreachable,		true,	true,	"destination-unreachable")	\
-	V(C, SourceQuench,			true,	false,	"source-quench")		\
-	V(C, Redirect,				true,	true,	"redirect")			\
-	V(C, EchoRequest,			true,	true,	"echo-request")			\
-	V(C, RouterAdvertisement,		true,	true,	"router-advertisement")		\
-	V(C, RouterSolicitation,		true,	true,	"router-solicitation")		\
-	V(C, TimeExceeded,			true,	true,	"time-exceeded")		\
-	V(C, ParameterProblem,			true,	true,	"parameter-problem")		\
-	V(C, TimestampRequest,			true,	false,	"timestamp-request")		\
-	V(C, TimestampReply,			true,	false,	"timestamp-reply")		\
-	V(C, AddressMaskRequest,		true,	false,	"address-mask-request")		\
-	V(C, AddressMaskReply,			true,	false,	"address-mask-reply")		\
-	V(C, MulticastListenerQuery,		false,	true,	"")		\
-	V(C, MulticastListenerReport,		false,	true,	"")		\
-	V(C, MulticastListenerDone,		false,	true,	"")		\
-	V(C, NeighborSolicitation,		false,	true,	"")		\
-	V(C, NeighborAdvertisement,		false,	true,	"")		\
-	V(C, RouterRenumbering,			false,	true,	"")		\
-	V(C, NodeInformationQuery,		false,	true,	"")		\
-	V(C, NodeInformationResponse,		false,	true,	"")		\
-	V(C, InverseNDSolicitation,		false,	true,	"")		\
-	V(C, InverseNDAdvertisement,		false,	true,	"")		\
-	V(C, MLDv2Report,			false,	true,	"")		\
-	V(C, HomeAgentDiscoveryRequest,		false,	true,	"")		\
-	V(C, HomeAgentDiscoveryReply,		false,	true,	"")		\
-	V(C, MobilePrefixSolicitation,		false,	true,	"")		\
-	V(C, MobilePrefixAdvertisement,		false,	true,	"")		\
-	V(C, CertificationPathSolicitation,	false,	true,	"")		\
-	V(C, CertificationPathAdvertisement,	false,	true,	"")		\
-	V(C, MulticastRouterAdvertisement,	false,	true,	"")		\
-	V(C, MulticastRouterSolicitation,	false,	true,	"")		\
-	V(C, MulticastRouterTermination,	false,	true,	"")		\
-	V(C, RplControl,			false,	true,	"")
+	V(C, EchoReply,				true,	true,	("echo-reply", "pong"))		\
+	V(C, PacketTooBig,			false,	true)					\
+	V(C, DestinationUnreachable,		true,	true,	("destination-unreachable"))	\
+	V(C, SourceQuench,			true,	false,	("source-quench"))		\
+	V(C, Redirect,				true,	true,	("redirect"))			\
+	V(C, EchoRequest,			true,	true,	("echo-request", "ping"))	\
+	V(C, RouterAdvertisement,		true,	true,	("router-advertisement"))	\
+	V(C, RouterSolicitation,		true,	true,	("router-solicitation"))	\
+	V(C, TimeExceeded,			true,	true,	("time-exceeded"))		\
+	V(C, ParameterProblem,			true,	true,	("parameter-problem"))		\
+	V(C, TimestampRequest,			true,	false,	("timestamp-request"))		\
+	V(C, TimestampReply,			true,	false,	("timestamp-reply"))		\
+	V(C, AddressMaskRequest,		true,	false,	("address-mask-request"))	\
+	V(C, AddressMaskReply,			true,	false,	("address-mask-reply"))		\
+	V(C, MulticastListenerQuery,		false,	true)					\
+	V(C, MulticastListenerReport,		false,	true)					\
+	V(C, MulticastListenerDone,		false,	true)					\
+	V(C, NeighborSolicitation,		false,	true)					\
+	V(C, NeighborAdvertisement,		false,	true)					\
+	V(C, RouterRenumbering,			false,	true)					\
+	V(C, NodeInformationQuery,		false,	true)					\
+	V(C, NodeInformationResponse,		false,	true)					\
+	V(C, InverseNDSolicitation,		false,	true)					\
+	V(C, InverseNDAdvertisement,		false,	true)					\
+	V(C, MLDv2Report,			false,	true)					\
+	V(C, HomeAgentDiscoveryRequest,		false,	true)					\
+	V(C, HomeAgentDiscoveryReply,		false,	true)					\
+	V(C, MobilePrefixSolicitation,		false,	true)					\
+	V(C, MobilePrefixAdvertisement,		false,	true)					\
+	V(C, CertificationPathSolicitation,	false,	true)					\
+	V(C, CertificationPathAdvertisement,	false,	true)					\
+	V(C, MulticastRouterAdvertisement,	false,	true)					\
+	V(C, MulticastRouterSolicitation,	false,	true)					\
+	V(C, MulticastRouterTermination,	false,	true)					\
+	V(C, RplControl,			false,	true)
 XENUM3_DECLARE(IcmpTypes)
 
 
@@ -73,15 +71,15 @@ XENUM3_DECLARE(IcmpTypes)
  * IP ICMP codes enum, for testing custom properties.
  */
 #define XENUM_DECL_IcmpCodes (test::xenum::xenums::, IcmpCodes, IcmpCode, uint8_t, , (		\
-	(Ipv4, bool, false),									\
-	(Ipv6, bool, false),									\
-	(IcmpType, test::xenum::xenums::IcmpType)						\
+	 (Ipv4, bool, false)									\
+	,(Ipv6, bool, false)									\
+	,(IcmpType, test::xenum::xenums::IcmpType)						\
+	,(NfName, cstring)									\
 	))
-// FIXME: Custom string not yet supported.
-//	  ((NfName, char[]))
 // FIXME: iptables seems to miss some codes:
 // - DestinationUNreachable.SourceHostIsolated.
 // - ParameterProblem.BadLength
+// - Figure out missing iptables names.
 #define XENUM_VALS_IcmpCodes(V,C)	\
 	V(C, NetworkUnreachable,		true,	true,	IcmpTypes::DestinationUnreachable,	"network-unreachable") \
 	V(C, HostUnreachable,			true,	true,	IcmpTypes::DestinationUnreachable,	"host-unreachable") \
