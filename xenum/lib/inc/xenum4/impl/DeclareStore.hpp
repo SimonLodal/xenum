@@ -132,7 +132,8 @@ IND1	static _Enum _fromIndex(_index_t index);						NWLN \
 	/*	enum value, if it exists, else it is not touched. */				\
 	/* @return True if enum-value with given index was found, */				\
 	/*	else false. */									\
-IND1	static bool _fromIndex(_index_t index, _Enum& value) noexcept;				NWLN \
+IND1	static bool _fromIndex(_index_t index,							\
+			::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>& value) noexcept;	NWLN \
 	/* Get enum value with given identifier. */						\
 	/* @param ident Identifier to look up. */						\
 	/* @return Requested enum value. */							\
@@ -144,7 +145,8 @@ IND1	static _Enum _fromIdent(const char* identifier);					NWLN \
 	/* @param value Return value; is set to the requested enum */				\
 	/*	value if it exists, else it is not touched. */					\
 	/* @return True if enum-value with given identifier was found, else false. */		\
-IND1	static bool _fromIdent(const char* identifier, _Enum& value) noexcept;			NWLN \
+IND1	static bool _fromIdent(const char* identifier,						\
+			::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>& value) noexcept;	NWLN \
 
 
 

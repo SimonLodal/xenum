@@ -62,7 +62,11 @@ IND1		using Enum = typename _XENUM4_STORE_NAME(DECL)::_Enum;				NWLN \
  * @hideinitializer
  */
 #define _XENUM4_DECLC_ENUM_COPY_MEMBER(CTXT, IDENT, ...)					\
-IND1	static constexpr const Enum IDENT = Enum::IDENT;					NWLN
+IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTXT))		\
+	IDENT = Enum::IDENT;									NWLN
+
+
+//IND1	static constexpr const Enum IDENT = Enum::IDENT;					NWLN
 
 
 // ==============================================================================================
@@ -70,16 +74,20 @@ IND1	static constexpr const Enum IDENT = Enum::IDENT;					NWLN
  * Declare ctors, comparison operators, other stuff.
  * @hideinitializer
  */
-// FIXME: Delete getIndex() and getIdentifier(), do not belong here.
 // FIXME: Underscore prefix on everything.
 #define _XENUM4_DECLC_FUNCS(CTXT, DECL)								\
-	public:											NWLN \
-		/* @return Index of an enum value. */						\
-IND1		static constexpr index_t getIndex(Enum value) noexcept				\
-			{ return static_cast<index_t>(value); }					NWLN \
-		/* @return Identifier of an enum value. */					\
-IND1		static constexpr const char* getIdentifier(Enum value) noexcept			\
-			{ return _XENUM4_STORE_NAME(DECL) ::_getIdentifier(value); }		NWLN \
+	_XENUM4_DECLC_FUNCS_I1(									\
+		CTXT,										\
+		_XENUM4_STORE_NAME(DECL),							\
+		_XENUM4_DECL_GET_CNTNRNAME(DECL),						\
+		_XENUM4_DECL_GET_VALUENAME(DECL)						\
+	)
+
+/**
+ * Worker for _XENUM4_DECLC_FUNCS().
+ * @hideinitializer
+ */
+#define _XENUM4_DECLC_FUNCS_I1(CTXT, STORENAME, CNTNRNAME, VALUENAME)				\
 	public:											NWLN \
 		/* Ctor. Do not use, except when iterating the enum-values. */			\
 		/* All members of this class are static, so there is no */			\
@@ -87,21 +95,21 @@ IND1		static constexpr const char* getIdentifier(Enum value) noexcept			\
 		/* directly as $EnumCntnr::Some_Value. */					\
 		/* However, range-based loops require an object, so use: */			\
 		/* for (EnumValue enumValue : EnumCntnr()) { ... } */				\
-IND1		constexpr _XENUM4_DECL_GET_CNTNRNAME(DECL)(void) noexcept {}			NWLN \
+IND1		constexpr CNTNRNAME (void) noexcept {}						NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	public:											NWLN \
-IND1		static Enum fromIndex(index_t index)						\
-			{ return _XENUM4_STORE_NAME(DECL)::_fromIndex(index); }			NWLN \
-IND1		static bool fromIndex(index_t index, Enum& value) noexcept			\
-			{ return _XENUM4_STORE_NAME(DECL)::_fromIndex(index, value); }		NWLN \
-IND1		static Enum fromIdentifier(const char* identifier)				\
-			{ return _XENUM4_STORE_NAME(DECL)::_fromIdent(identifier); }		NWLN \
-IND1		static bool fromIdentifier(const char* identifier, Enum& value) noexcept	\
-			{ return _XENUM4_STORE_NAME(DECL)::_fromIdent(identifier, value); }	NWLN \
+IND1		static VALUENAME fromIndex(index_t index)						\
+			{ return STORENAME::_fromIndex(index); }				NWLN \
+IND1		static bool fromIndex(index_t index, VALUENAME& value) noexcept			\
+			{ return STORENAME::_fromIndex(index, value); }				NWLN \
+IND1		static VALUENAME fromIdentifier(const char* identifier)				\
+			{ return STORENAME::_fromIdent(identifier); }				NWLN \
+IND1		static bool fromIdentifier(const char* identifier, VALUENAME& value) noexcept	\
+			{ return STORENAME::_fromIdent(identifier, value); }			NWLN \
 	/* Iteration support. */								\
 	public:											NWLN \
 		/* Iterator type for this container. */						\
-IND1		typedef ::_XENUM4_NS::XenumCntnrIterator<_XENUM4_DECL_GET_CNTNRNAME(DECL)> iterator; NWLN \
+IND1		typedef ::_XENUM4_NS::XenumCntnrIterator<CNTNRNAME> iterator;			NWLN \
 		/* Get iterator to beginning (before the first enum-value). */			\
 IND1		static iterator begin(void) noexcept { return iterator(0); }			NWLN \
 		/* Get iterator to end (past the last enum-value). */				\

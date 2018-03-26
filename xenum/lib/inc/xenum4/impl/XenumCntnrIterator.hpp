@@ -20,6 +20,8 @@ namespace xenum4 {
 template<class XenumCntnr>
 class XenumCntnrIterator {
 public:
+	/// Enum-value class.
+	using value_t = typename XenumCntnr::value_t;
 	/// Integer type used for enum values.
 	using index_t = typename XenumCntnr::index_t;
 	/// The native C++ enum class.
@@ -29,7 +31,7 @@ public:
 	XenumCntnrIterator(void) noexcept : index(0) {}
 
 	/// Ctor with initialization to a specific enum-value.
-	XenumCntnrIterator(const Enum& value) noexcept : index((index_t)value) {}
+	XenumCntnrIterator(const value_t& value) noexcept : index(value.getIndex()) {}
 
 	/// Prefix increment operator.
 	XenumCntnrIterator& operator++(void) noexcept { index++; return *this; }
@@ -38,7 +40,7 @@ public:
 	bool operator!=(const XenumCntnrIterator& other) noexcept { return index != other.index; }
 
 	/// Dereference operator.
-	const Enum operator*(void) { return XenumCntnr::fromIndex(index); }
+	value_t operator*(void) { return XenumCntnr::fromIndex(index); }
 protected:
 	/// Ctor with initialization to a specific index.
 	/// Not bounds-checked before dereferenced.

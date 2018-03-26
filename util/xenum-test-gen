@@ -2030,16 +2030,14 @@ sub generateTestFromIndex($)
 
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", FromIndex)");
 	push(@{$out}, "{");
-	push(@{$out}, "\t${valuens} ovalue;");
-	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	push(@{$out}, "\t${valuens} value;");
 	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
 		push(@{$out}, "");
 		$valname = "V" . sprintf($valnumfmt, $validx);
-		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIndex(${validx}, nvalue));");
-		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, nvalue);");
-		push(@{$out}, "\tovalue = nvalue;");
-		push(@{$out}, "\tEXPECT_EQ(${validx}, ovalue.getIndex());");
-		push(@{$out}, "\tEXPECT_EQ(nvalue, ${cntnrns}::fromIndex(${validx}));");
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIndex(${validx}, value));");
+		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, value);");
+		push(@{$out}, "\tEXPECT_EQ(${validx}, value.getIndex());");
+		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::fromIndex(${validx}));");
 	}
 	push(@{$out}, "}");
 	push(@{$out}, "");
@@ -2055,16 +2053,14 @@ sub generateTestFromIdentifier($)
 
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", FromIdentifier)");
 	push(@{$out}, "{");
-	push(@{$out}, "\t${valuens} ovalue;");
-	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	push(@{$out}, "\t${valuens} value;");
 	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
 		push(@{$out}, "");
 		$valname = "V" . sprintf($valnumfmt, $validx);
-		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIdentifier(\"${valname}\", nvalue));");
-		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, nvalue);");
-		push(@{$out}, "\tovalue = nvalue;");
-		push(@{$out}, "\tEXPECT_STREQ(\"${valname}\", ovalue.getIdentifier());");
-		push(@{$out}, "\tEXPECT_EQ(nvalue, ${cntnrns}::fromIdentifier(\"${valname}\"));");
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIdentifier(\"${valname}\", value));");
+		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, value);");
+		push(@{$out}, "\tEXPECT_STREQ(\"${valname}\", value.getIdentifier());");
+		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::fromIdentifier(\"${valname}\"));");
 	}
 	push(@{$out}, "}");
 	push(@{$out}, "");
@@ -2081,13 +2077,12 @@ sub generateTestIteration($)
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", Iteration)");
 	push(@{$out}, "{");
 	push(@{$out}, "\tsize_t index;");
-	push(@{$out}, "\t${valuens} ovalue;");
-	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	push(@{$out}, "\t${valuens} value;");
 
 	push(@{$out}, "");
 	push(@{$out}, "\tindex = 0;");
-	push(@{$out}, "\tfor (auto nvalue : ${cntnrns}()) {");
-	push(@{$out}, "\t\tEXPECT_EQ(index, ${valuens}(nvalue).getIndex());");
+	push(@{$out}, "\tfor (auto value : ${cntnrns}()) {");
+	push(@{$out}, "\t\tEXPECT_EQ(index, value.getIndex());");
 	push(@{$out}, "\t\tindex++;");
 	push(@{$out}, "\t}");
 	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", index);");
@@ -2096,7 +2091,7 @@ sub generateTestIteration($)
 	push(@{$out}, "\tindex = 0;");
 	push(@{$out}, "\tfor (${cntnrns}::iterator iter = ${cntnrns}::begin();");
 	push(@{$out}, "\t     iter != ${cntnrns}::end(); ++iter) {");
-	push(@{$out}, "\t\tEXPECT_EQ(index, ${valuens}(*iter).getIndex());");
+	push(@{$out}, "\t\tEXPECT_EQ(index, (*iter).getIndex());");
 	push(@{$out}, "\t\tindex++;");
 	push(@{$out}, "\t}");
 	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", index);");

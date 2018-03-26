@@ -111,7 +111,7 @@ IND2			return static_cast<SCOPE STORENAME::_Enum>(index);			NWLN \
 IND1		throw std::out_of_range("Index >= size.");					NWLN \
 	}											NWLN \
 	bool SCOPE STORENAME::_fromIndex(SCOPE STORENAME::_index_t index,			\
-					 SCOPE STORENAME::_Enum& value) noexcept		NWLN \
+					 ::_XENUM4_NS::XenumValue<STORENAME>& value) noexcept	NWLN \
 	{											NWLN \
 IND1		if (index < _size) {								NWLN \
 IND2			value = static_cast<SCOPE STORENAME::_Enum>(index);			NWLN \
@@ -130,7 +130,7 @@ IND1		}										NWLN \
 IND1		throw std::out_of_range("No such identifier.");					NWLN \
 	}											NWLN \
 	bool SCOPE STORENAME::_fromIdent(const char* identifier,				\
-					 SCOPE STORENAME::_Enum& value) noexcept		NWLN \
+					 ::_XENUM4_NS::XenumValue<STORENAME>& value) noexcept	NWLN \
 	{											NWLN \
 		/* FIXME: Linear search, terrible performance. */				NWLN \
 IND1		for (_index_t index=0; index<_size; index++) {					NWLN \
