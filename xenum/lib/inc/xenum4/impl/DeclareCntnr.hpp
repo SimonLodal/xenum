@@ -30,10 +30,9 @@
  * Not used here, but useful for XenumSet and others.
  * @hideinitializer
  */
-// FIXME: Move to store class. Change XenumValue template parameter from cntnr to store class.
 #define _XENUM4_DECLC_VALUE_T(CTXT, DECL)							\
 	public:											NWLN \
-IND1		typedef ::_XENUM4_NS::XenumValue<_XENUM4_DECL_GET_CNTNRNAME(DECL)> value_t;	NWLN \
+IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) value_t;				NWLN
 
 
 // ==============================================================================================

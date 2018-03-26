@@ -13,14 +13,7 @@
  * Declare the enum-value class.
  * @hideinitializer
  */
-#define _XENUM4_DECLARE_VALUE(CTXT)								\
-	_XENUM4_DECLARE_VALUE_DO(CTXT, _XENUM4_CTXT_GET_DECL(CTXT))
-
-/**
- * Worker for _XENUM4_DECLARE_VALUE().
- * @hideinitializer
- */
-#define _XENUM4_DECLARE_VALUE_DO(CTXT, DECL)							\
+#define _XENUM4_DECLARE_VALUE(CTXT, DECL)							\
 	BOOST_PP_CAT(										\
 		_XENUM4_DECLARE_VALUE_,								\
 		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM4_DECL_GET_PROPDEFS(DECL)))		\
@@ -36,8 +29,8 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE_0(CTXT, DECL)							\
-	typedef ::_XENUM4_NS::XenumValue<_XENUM4_DECL_GET_CNTNRNAME(DECL)>			\
-		_XENUM4_DECL_GET_VALUENAME(DECL);
+	typedef ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>				\
+		_XENUM4_DECL_GET_VALUENAME(DECL);						NWLN
 
 
 // ==============================================================================================
@@ -49,7 +42,7 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  */
 #define _XENUM4_DECLARE_VALUE_1(CTXT, DECL)							\
 class _XENUM4_DECL_GET_VALUENAME(DECL)								\
-	: public ::_XENUM4_NS::XenumValue<_XENUM4_DECL_GET_CNTNRNAME(DECL)> {			NWLN \
+	: public ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)> {				NWLN \
 	_XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM4_DECL_GET_VALUENAME(DECL))			\
 	_XENUM4_PROPS_DECLV(CTXT)								\
 };												\
@@ -65,8 +58,6 @@ public:												NWLN \
 IND1	constexpr VALUENAME(void) noexcept {}							NWLN \
 IND1	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}				NWLN \
 IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}		NWLN \
-
-
 
 
 #endif // _XENUM4_IMPL_DECLARE_VALUE_HPP

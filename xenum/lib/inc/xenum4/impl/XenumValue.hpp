@@ -13,17 +13,17 @@ namespace xenum4 {
 /**
  * Enum-value class.
  * Wraps a native enum value. Can never have an invalid value.
- * @param XenumCntnr The xenum container, containing the native C++ enum.
+ * @param XenumStore The xenum store class, containing the native C++ enum.
  */
-template<class XenumCntnr>
+template<class XenumStore>
 class XenumValue {
 public:
 	/// The container class.
-	typedef XenumCntnr cntnr_t;
+	typedef XenumStore store_t;
 	/// Integer type used for enum values.
-	using index_t = typename XenumCntnr::index_t;
+	using index_t = typename XenumStore::_index_t;
 	/// The native C++ enum class.
-	using Enum = typename XenumCntnr::Enum;
+	using Enum = typename XenumStore::_Enum;
 
 public:
 	/// Default ctor. Initialized with first native enum value.
@@ -49,7 +49,7 @@ public:
 	constexpr index_t getIndex(void) const noexcept { return static_cast<index_t>(value); }
 
 	/// @return Identifier of this enum value.
-	constexpr const char* getIdentifier(void) const noexcept { return XenumCntnr::getIdentifier(value); }
+	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::_getIdentifier(value); }
 
 public:
 	/// @name Comparison operators
