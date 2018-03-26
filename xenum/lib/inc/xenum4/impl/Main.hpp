@@ -13,9 +13,8 @@
  * @hideinitializer
  */
 #define _XENUM4_DO_DECLARE(CTXT)								\
-	/* Run all the header functions in order. */						\
+	_XENUM4_DECLARE_STORE(CTXT)								\
 	_XENUM4_DECLARE_CNTNR_BEGIN(CTXT)							\
-	_XENUM4_DECLARE_CNTNR_ENUM_NATIVE(CTXT)							\
 	_XENUM4_DECLARE_CNTNR_ENUM_COPY(CTXT)							\
 	_XENUM4_DECLARE_CNTNR_IDENTPOOL(CTXT)							\
 	_XENUM4_DECLARE_CNTNR_FUNCS(CTXT)							\
@@ -28,7 +27,7 @@
  * @hideinitializer
  */
 #define _XENUM4_DO_DEFINE(CTXT)									\
-	/* Run all the source functions in order. */						\
+	_XENUM4_DEFINE_STORE(CTXT)								\
 	_XENUM4_DEFINE_CNTNR_ENUMSIZE(CTXT, _XENUM4_CTXT_GET_DECL(CTXT))			\
 	_XENUM4_DEFINE_CNTNR_ENUM_COPY(CTXT)							\
 	_XENUM4_DEFINE_CNTNR_FUNCS(CTXT, _XENUM4_CTXT_GET_DECL(CTXT))				\

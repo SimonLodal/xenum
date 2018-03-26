@@ -25,34 +25,14 @@
 	class _XENUM4_DECL_GET_CNTNRNAME(DECL) {						NWLN \
 	public:											NWLN \
 		/* The enum-value class. Not used here, but useful for XenumSet and others. */	\
+/* FIXME: Move to store class */								\
 IND1		typedef ::_XENUM4_NS::XenumValue<_XENUM4_DECL_GET_CNTNRNAME(DECL)> value_t;	NWLN \
-		/* Number of values in this enum class. */					\
-IND1		static constexpr const size_t size = 0 _XENUM4_CALL_VALS(_XENUM4_ADD_ONE, CTXT);	NWLN \
-		/* Integer type used for enum values. */					\
-IND1		typedef BOOST_PP_IF(								\
-			BOOST_PP_IS_EMPTY(_XENUM4_DECL_GET_INTTYPE(DECL)),			\
-			::_XENUM4_NS::SelectInt<size>::type,					\
-			_XENUM4_DECL_GET_INTTYPE(DECL)						\
-		) index_t;									NWLN \
-
-
-// ==============================================================================================
-/**
- * Declare the native C++ enum.
- * @hideinitializer
- */
-#define _XENUM4_DECLARE_CNTNR_ENUM_NATIVE(CTXT)							\
-	public:											NWLN \
-IND1		enum class Enum : index_t {							NWLN \
-			_XENUM4_CALL_VALS(_XENUM4_DECLARE_CNTNR_ENUM_NATIVE_MEMBER, CTXT)	\
-IND1		};										NWLN
-
-/**
- * Callback worker for _XENUM4_DECLARE_CNTNR_ENUM().
- * @hideinitializer
- */
-#define _XENUM4_DECLARE_CNTNR_ENUM_NATIVE_MEMBER(CTXT, VALUEIDENT, ...)				\
-IND2		VALUEIDENT,									NWLN
+/* FIXME: Underscore prefix */									\
+IND1		static constexpr const size_t size = _XENUM4_STORE_NAME(CTXT)::_size;		NWLN \
+/* FIXME: Underscore prefix */									\
+IND1		using index_t = typename _XENUM4_STORE_NAME(CTXT)::_index_t;			NWLN \
+/* FIXME: Underscore prefix */									\
+IND1		using Enum = typename _XENUM4_STORE_NAME(CTXT)::_Enum;				NWLN \
 
 
 // ==============================================================================================

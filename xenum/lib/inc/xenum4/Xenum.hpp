@@ -560,8 +560,10 @@
 #include <xenum4/impl/CstringDeclCntnr.hpp>
 #include <xenum4/impl/CstringDeclValue.hpp>
 #include <xenum4/impl/CstringDefine.hpp>
+#include <xenum4/impl/DeclareStore.hpp>
 #include <xenum4/impl/DeclareCntnr.hpp>
 #include <xenum4/impl/DeclareValue.hpp>
+#include <xenum4/impl/DefineStore.hpp>
 #include <xenum4/impl/DefineCntnr.hpp>
 #include <xenum4/impl/Main.hpp>
 
