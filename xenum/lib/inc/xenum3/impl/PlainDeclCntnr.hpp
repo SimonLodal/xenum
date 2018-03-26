@@ -169,104 +169,34 @@ IND1	static const BOOST_PP_CAT(PROPNAME, _IndexNode_t)					\
 	_XENUM3_PLAIN_DECLC_FUNC_GET_SIZE(PROPNAME, N, Z)
 
 
-// ==================================== FUNC helpers ============================================
-/**
- * Helper to generate a list with a number of indexN function parameters (0..LEVELS).
- * @hideinitializer
- */
-// FIXME: Use _XENUM3_PROP_GEN_INDEX0_PARMS() instead.
-#define _XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS(PROPNAME, LEVELS, Z)				\
-	BOOST_PP_REPEAT_ ## Z(									\
-		BOOST_PP_INC(LEVELS),								\
-		_XENUM3_PLAIN_DECLC_GEN_INDEX_PARM_N,						\
-		PROPNAME									\
-	)											\
-
-/**
- * Callback worker for _XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS() iteration over levels.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_DECLC_GEN_INDEX_PARM_N(Z, N, PROPNAME)					\
-	BOOST_PP_CAT(_XENUM3_PLAIN_DECLC_GEN_INDEX_PARM_, BOOST_PP_BOOL(N))			\
-		(PROPNAME, N)
-
-/**
- * Helper for _XENUM3_PLAIN_DECLC_GEN_INDEX_PARM_N().
- * Generate the first index parameter.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_DECLC_GEN_INDEX_PARM_0(PROPNAME, LEVEL)					\
-	Enum index0
-
-/**
- * Helper for _XENUM3_PLAIN_DECLC_GEN_INDEX_PARM_N().
- * Generate the n'th index parameter (for n>0).
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_DECLC_GEN_INDEX_PARM_1(PROPNAME, LEVEL)					\
-	, BOOST_PP_CAT(PROPNAME, _index_t) BOOST_PP_CAT(index, LEVEL)
-
-
-/**
- * Helper to generate a list with a number of indexN arguments (0..COUNT-1).
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_DECLC_GEN_INDEX_ARGS(COUNT, Z)						\
-	BOOST_PP_REPEAT_ ## Z(									\
-		COUNT,										\
-		_XENUM3_PLAIN_DECLC_GEN_INDEX_ARG_N,						\
-												\
-	)
-
-/**
- * Helper to generate a single indexN function argument.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_DECLC_GEN_INDEX_ARG_N(Z, N, X)						\
-	BOOST_PP_COMMA_IF(BOOST_PP_BOOL(N)) BOOST_PP_CAT(index, N)
-
-
 // =================================== FUNC: getNode() ==========================================
 /**
  * Worker for _XENUM3_PLAIN_DECLC_FUNCS().
  * Generates get${propname}Node() getters.
  * @hideinitializer
  */
-#define _XENUM3_PLAIN_DECLC_FUNC_GET_NODE(PROPNAME, N, Z)					\
+#define _XENUM3_PLAIN_DECLC_FUNC_GET_NODE(PROPNAME, LEVEL, Z)					\
 protected:											NWLN \
-IND1	static BOOST_PP_IF(BOOST_PP_BOOL(N), , constexpr) const					\
+IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, _IndexNode_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
-		_XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS(PROPNAME, N, Z)				\
+		_XENUM3_PROP_GEN_INDEX0_PARMS(							\
+			Enum,									\
+			BOOST_PP_CAT(PROPNAME, _index_t),					\
+			LEVEL,									\
+			Z									\
+		)										\
 	) {											\
 		return BOOST_PP_CAT(PROPNAME, _nodes_)[						\
-/* FIXME: Use _XENUM3_PROP_GEN_NODE_INDEXING() instead */ \
-			BOOST_PP_CAT(								\
-				_XENUM3_PLAIN_GEN_NODE_INDEXING_,				\
-				BOOST_PP_BOOL(N)						\
-			) (PROPNAME, N, Z)							\
+			_XENUM3_PROP_GEN_NODE_INDEXING(						\
+				PROPNAME,							\
+				BOOST_PP_CAT(PROPNAME, _index_t),				\
+				LEVEL,								\
+				Z								\
+			)									\
 		];										\
 	}											\
 	NWLN
-
-/**
- * Worker for _XENUM3_PLAIN_DECLC_FUNC_GET_NODE() iteration, for level==0.
- * Adds node indexing for level 0; direct index.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_GEN_NODE_INDEXING_0(PROPNAME, N, Z)					\
-	static_cast<BOOST_PP_CAT(PROPNAME, _index_t)>(index0)					\
-
-/**
- * Worker for _XENUM3_PLAIN_DECLC_FUNC_GET_NODE() iteration, for level!=0.
- * Adds chained node indexing using calls.
- * @hideinitializer
- */
-#define _XENUM3_PLAIN_GEN_NODE_INDEXING_1(PROPNAME, N, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
-		_XENUM3_PLAIN_DECLC_GEN_INDEX_ARGS(N, Z)					\
-	)											\
-	.getNextIndex(BOOST_PP_CAT(index, N))
 
 
 // =================================== FUNC: getSize() ==========================================
@@ -275,15 +205,20 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(N), , constexpr) const					\
  * Generates get${propname}Size() getters.
  * @hideinitializer
  */
-#define _XENUM3_PLAIN_DECLC_FUNC_GET_SIZE(PROPNAME, N, Z)					\
+#define _XENUM3_PLAIN_DECLC_FUNC_GET_SIZE(PROPNAME, LEVEL, Z)					\
 public:												NWLN \
-IND1	static BOOST_PP_IF(BOOST_PP_BOOL(N), , constexpr) const					\
+IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, _index_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
-		_XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS(PROPNAME, N, Z)				\
+		_XENUM3_PROP_GEN_INDEX0_PARMS(							\
+			Enum,									\
+			BOOST_PP_CAT(PROPNAME, _index_t),					\
+			LEVEL,									\
+			Z									\
+		)										\
 	) {											\
 		return BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (			\
-			_XENUM3_PLAIN_DECLC_GEN_INDEX_ARGS(BOOST_PP_INC(N), Z)			\
+			_XENUM3_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
 		.size;										\
 	}											\
@@ -301,7 +236,12 @@ public:												NWLN \
 IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, _t&)								\
 	BOOST_PP_CAT(get, PROPNAME) (								\
-		_XENUM3_PLAIN_DECLC_GEN_INDEX_PARMS(PROPNAME, DEPTH, Z)				\
+		_XENUM3_PROP_GEN_INDEX0_PARMS(							\
+			Enum,									\
+			BOOST_PP_CAT(PROPNAME, _index_t),					\
+			DEPTH,									\
+			Z									\
+		)										\
 	) {											\
 		return BOOST_PP_CAT(PROPNAME, _values_)[					\
 			BOOST_PP_CAT(								\
@@ -325,7 +265,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
  */
 #define _XENUM3_PLAIN_GEN_VALUE_INDEXING_1(PROPNAME, DEPTH, Z)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
-		_XENUM3_PLAIN_DECLC_GEN_INDEX_ARGS(DEPTH, Z)					\
+		_XENUM3_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
 

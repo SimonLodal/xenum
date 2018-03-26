@@ -333,16 +333,14 @@
 
 // ========================== NODE-INDEX LOOKUP ==============================
 /**
- * Helper for function generators: Generate a list with a number of indexN function
- * parameters (0..LEVELS, inclusive), where the first is of type ENUM_T, and the
- * remaining of type INDEX_T.
+ * Helper for function generators: Generate an expression for resolving an index list.
  * @hideinitializer
  */
-#define _XENUM3_PROP_GEN_NODE_INDEXING(PROPNAME, LEVELS, Z)					\
+#define _XENUM3_PROP_GEN_NODE_INDEXING(PROPNAME, INDEX_T, LEVELS, Z)				\
 	BOOST_PP_CAT(										\
 		_XENUM3_PROP_GEN_NODE_INDEXING_,						\
 		BOOST_PP_BOOL(LEVELS)								\
-	) (PROPNAME, LEVELS, Z)									\
+	) (PROPNAME, INDEX_T, LEVELS, Z)							\
 
 
 /**
@@ -350,29 +348,19 @@
  * Adds node indexing for level 0; direct index.
  * @hideinitializer
  */
-#define _XENUM3_PROP_GEN_NODE_INDEXING_0(PROPNAME, LEVELS, Z)					\
-	static_cast<BOOST_PP_CAT(PROPNAME, _Index_t)>(index0)					\
+#define _XENUM3_PROP_GEN_NODE_INDEXING_0(PROPNAME, INDEX_T, LEVELS, Z)				\
+	static_cast<INDEX_T>(index0)								\
 
 /**
  * Worker for _XENUM3_PROP_GEN_NODE_INDEXING() iteration, for level!=0.
  * Adds chained node indexing using calls.
  * @hideinitializer
  */
-#define _XENUM3_PROP_GEN_NODE_INDEXING_1(PROPNAME, LEVELS, Z)					\
+#define _XENUM3_PROP_GEN_NODE_INDEXING_1(PROPNAME, INDEX_T, LEVELS, Z)				\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
 		_XENUM3_PROP_GEN_INDEX0_ARGS(LEVELS, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, LEVELS))
-
-
-
-
-
-
-
-
-
-
 
 
 #endif // _XENUM3_IMPL_PROPS_HPP

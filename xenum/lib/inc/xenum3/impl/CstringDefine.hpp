@@ -420,7 +420,12 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 	)											NWLN \
 IND1	{											NWLN \
 IND2		return BOOST_PP_CAT(PROPNAME, _Nodes)[						\
-			_XENUM3_PROP_GEN_NODE_INDEXING(PROPNAME, LEVEL, Z)			\
+			_XENUM3_PROP_GEN_NODE_INDEXING(						\
+				PROPNAME,							\
+				BOOST_PP_CAT(PROPNAME, _Index_t),				\
+				LEVEL,								\
+				Z								\
+			)									\
 		];										NWLN \
 IND1	}											NWLN
 
