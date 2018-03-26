@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_ICMP_HPP
 
 #include <cstdint>
-#include <xenum3/Xenum.hpp>
+#include <xenum4/Xenum.hpp>
 
 namespace test {
 namespace xenum {
@@ -64,7 +64,7 @@ namespace xenums {
 	V(C, MulticastRouterSolicitation,	false,	true)					\
 	V(C, MulticastRouterTermination,	false,	true)					\
 	V(C, RplControl,			false,	true)
-XENUM3_DECLARE(IcmpTypes)
+XENUM4_DECLARE(IcmpTypes)
 
 
 /**
@@ -117,7 +117,7 @@ XENUM3_DECLARE(IcmpTypes)
 	V(C, QueryRefused,			false,	true,	IcmpTypes::NodeInformationResponse,	"") \
 	V(C, QueryUnknown,			false,	true,	IcmpTypes::NodeInformationResponse,	"") \
 
-XENUM3_DECLARE(IcmpCodes)
+XENUM4_DECLARE(IcmpCodes)
 
 /* IPv6 codes:
 - DestinationUnreachable

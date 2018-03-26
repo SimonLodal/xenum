@@ -5,10 +5,10 @@ include_directories(
 )
 
 file(GLOB XENUM_LIB_HDRS_ROOT
-	inc/xenum3/*.hpp
+	inc/xenum4/*.hpp
 )
 file(GLOB XENUM_LIB_HDRS_IMPL
-	inc/xenum3/impl/*.hpp
+	inc/xenum4/impl/*.hpp
 )
 set(XENUM_LIB_HDRS
 	${XENUM_LIB_HDRS_ROOT}
@@ -34,8 +34,8 @@ file(GLOB XENUM_LIB_SRCS
 #	LIBRARY DESTINATION lib
 #	)
 install(FILES ${XENUM_LIB_HDRS_ROOT}
-	DESTINATION include/xenum3
+	DESTINATION include/xenum4
 	)
 install(FILES ${XENUM_LIB_HDRS_IMPL}
-	DESTINATION include/xenum3/impl
+	DESTINATION include/xenum4/impl
 	)

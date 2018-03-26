@@ -3,7 +3,7 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 3.1
+ * @version 4.0.pre1
  *
  * @section Description
  * A better enum class for C++. Adds all the functionality that standard C++ enums lack.
@@ -93,7 +93,7 @@
  * @subsection Basic_Create Create the xenum
  *
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - First some general declarations:
  *	@code
  *	#define XENUM_DECL_Fruits (, Fruits, Fruit)
@@ -108,18 +108,18 @@
  *	@endcode
  * - Finally trigger code generation (header part):
  *	@code
- *	XENUM3_DECLARE(Fruits)
+ *	XENUM4_DECLARE(Fruits)
  *	@endcode
  *
  * In your source file:
  * - Trigger code generation (source part):
  *	@code
- *	XENUM3_DEFINE(Fruits)
+ *	XENUM4_DEFINE(Fruits)
  *	@endcode
  *
  * In this example, "Fruits" is the suffix that ties it all together; The XENUM_DECL and
- * XENUM_VALS macros use this suffix, and the same suffix is passed to XENUM3_DECLARE() and
- * XENUM3_DEFINE() macros, which allows them to find and use the declaration macros. The suffix
+ * XENUM_VALS macros use this suffix, and the same suffix is passed to XENUM4_DECLARE() and
+ * XENUM4_DEFINE() macros, which allows them to find and use the declaration macros. The suffix
  * can be anything, it just needs to be unique (two xenums may not use same suffix, that
  * would redefine the declaration macros).
  *
@@ -127,7 +127,7 @@
  * are macro definitions. XENUM_DECL_${suffix} is a data definition, while XENUM_VALS_${suffix}
  * is a macro function that is evaluated by the xenum generator over and over.
  *
- * XENUM3_DECLARE() and XENUM3_DEFINE() macros are the actual generator functions, to be used
+ * XENUM4_DECLARE() and XENUM4_DEFINE() macros are the actual generator functions, to be used
  * in your header and source files respectively.
  *
  * @subsection Basic_Use Use the Xenum
@@ -216,7 +216,7 @@
  *
  * @subsection Custom0_Create Create the xenum
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - The general declaration:
  *	@code
  *	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int8_t, , (	\
@@ -246,11 +246,11 @@
  * Code generation is like in the first example:
  * - Header part:
  *	@code
- *	XENUM3_DECLARE(Fruits)
+ *	XENUM4_DECLARE(Fruits)
  *	@endcode
  * - Source part:
  *	@code
- *	XENUM3_DEFINE(Fruits)
+ *	XENUM4_DEFINE(Fruits)
  *	@endcode
  *
  * @subsection Custom0_Use Use the xenum
@@ -274,7 +274,7 @@
  *
  * @subsection Custom1_Create Create the xenum
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - The general declaration:
  *	@code
  *	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int8_t, , (	\
@@ -337,7 +337,7 @@
  *
  * @subsection Custom2_Create Create the xenum
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - The general declaration:
  *	@code
  *	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int8_t, , (	\
@@ -391,11 +391,11 @@
  *	@endcode
  * Again note the space between XENUM_DECL_${suffix} and the opening parenthesis.
  * @param scope The containing namespace and/or class. Define this if the call to
- *	XENUM3_DEFINE() is not inside the same namespace and class (if any) as the call to
- *	XENUM3_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
+ *	XENUM4_DEFINE() is not inside the same namespace and class (if any) as the call to
+ *	XENUM4_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
  *	"my::ns::" (do not quote the value). You may also use a :: prefix to denote
  *	the toplevel namespace, to avoid any relative resolution of namespace.
- *	Note that if the xenum is member in a class (XENUM3_DECLARE() is called from within
+ *	Note that if the xenum is member in a class (XENUM4_DECLARE() is called from within
  *	a class), the scope MUST contain at least the class name, if not also the namespace.
  * @param enumClassName Name of the generated enum-container class, fx. "Fruits" (not quoted).
  * @param enumValueName Name of the generated enum-value class, fx. "Fruit" (not quoted).
@@ -523,12 +523,12 @@
  * This allows different versions to be used in the same project. Very convenient
  * when you might want to upgrade, but not update all the enum definitions at once.
  */
-#ifndef _XENUM3_XENUM_HPP
-#define _XENUM3_XENUM_HPP
+#ifndef _XENUM4_XENUM_HPP
+#define _XENUM4_XENUM_HPP
 
 /// Namespace that Xenum lives in.
 /// Note that most of Xenum is macros that ignore namespaces anyway.
-#define _XENUM3_NS xenum3
+#define _XENUM4_NS xenum4
 
 //#include <cstdint>
 #include <iostream>
@@ -542,28 +542,28 @@
 #include <boost/preprocessor.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
 
-#include <xenum3/impl/Util.hpp>
-#include <xenum3/impl/SelectInt.hpp>
-#include <xenum3/impl/XenumCntnrIterator.hpp>
-#include <xenum3/impl/XenumValue.hpp>
-#include <xenum3/impl/TupleTree.hpp>
-#include <xenum3/impl/Decl.hpp>
-#include <xenum3/impl/PropDef.hpp>
-#include <xenum3/impl/Ctxt.hpp>
-#include <xenum3/impl/IndexNode.hpp>
-#include <xenum3/impl/Props.hpp>
-#include <xenum3/impl/Plain.hpp>
-#include <xenum3/impl/PlainDeclCntnr.hpp>
-#include <xenum3/impl/PlainDeclValue.hpp>
-#include <xenum3/impl/PlainDefine.hpp>
-#include <xenum3/impl/Cstring.hpp>
-#include <xenum3/impl/CstringDeclCntnr.hpp>
-#include <xenum3/impl/CstringDeclValue.hpp>
-#include <xenum3/impl/CstringDefine.hpp>
-#include <xenum3/impl/DeclareCntnr.hpp>
-#include <xenum3/impl/DeclareValue.hpp>
-#include <xenum3/impl/DefineCntnr.hpp>
-#include <xenum3/impl/Main.hpp>
+#include <xenum4/impl/Util.hpp>
+#include <xenum4/impl/SelectInt.hpp>
+#include <xenum4/impl/XenumCntnrIterator.hpp>
+#include <xenum4/impl/XenumValue.hpp>
+#include <xenum4/impl/TupleTree.hpp>
+#include <xenum4/impl/Decl.hpp>
+#include <xenum4/impl/PropDef.hpp>
+#include <xenum4/impl/Ctxt.hpp>
+#include <xenum4/impl/IndexNode.hpp>
+#include <xenum4/impl/Props.hpp>
+#include <xenum4/impl/Plain.hpp>
+#include <xenum4/impl/PlainDeclCntnr.hpp>
+#include <xenum4/impl/PlainDeclValue.hpp>
+#include <xenum4/impl/PlainDefine.hpp>
+#include <xenum4/impl/Cstring.hpp>
+#include <xenum4/impl/CstringDeclCntnr.hpp>
+#include <xenum4/impl/CstringDeclValue.hpp>
+#include <xenum4/impl/CstringDefine.hpp>
+#include <xenum4/impl/DeclareCntnr.hpp>
+#include <xenum4/impl/DeclareValue.hpp>
+#include <xenum4/impl/DefineCntnr.hpp>
+#include <xenum4/impl/Main.hpp>
 
 
 /**
@@ -571,16 +571,16 @@
  * @param SUFFIX Suffix of the declaration macros.
  * @hideinitializer
  */
-#define XENUM3_DECLARE(SUFFIX)									\
-	_XENUM3_DO_DECLARE(_XENUM3_CTXT_INIT(SUFFIX))
+#define XENUM4_DECLARE(SUFFIX)									\
+	_XENUM4_DO_DECLARE(_XENUM4_CTXT_INIT(SUFFIX))
 
 /**
  * Declares the source part of an Xenum.
  * @param SUFFIX Suffix of the declaration macros.
  * @hideinitializer
  */
-#define XENUM3_DEFINE(SUFFIX)									\
-	_XENUM3_DO_DEFINE(_XENUM3_CTXT_INIT(SUFFIX))
+#define XENUM4_DEFINE(SUFFIX)									\
+	_XENUM4_DO_DEFINE(_XENUM4_CTXT_INIT(SUFFIX))
 
 
 // Doxygen trouble: Everything below is internal. Would like to hide it from doxygen, but would
@@ -604,9 +604,9 @@
 
 /// Print an XenumValue.
 template<class XenumCntnr>
-inline std::ostream& operator<<(std::ostream& out, ::_XENUM3_NS::XenumValue<XenumCntnr> enumValue) {
+inline std::ostream& operator<<(std::ostream& out, ::_XENUM4_NS::XenumValue<XenumCntnr> enumValue) {
 	return out << enumValue.getIdentifier();
 }
 
 
-#endif // _XENUM3_XENUM_HPP
+#endif // _XENUM4_XENUM_HPP

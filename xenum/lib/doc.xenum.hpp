@@ -7,6 +7,6 @@
  * Documentation that is not easily placed elsewhere.
  */
 /**
-@namespace xenum3
+@namespace xenum4
 Top-level namespace for Xenum. See Xenum.hpp for general documentation.
 */

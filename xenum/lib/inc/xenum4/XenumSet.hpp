@@ -5,14 +5,14 @@
  * @license GNU GPL version 3
  * @version 3.0
  */
-#ifndef _XENUM3_XENUMSET_HPP
-#define _XENUM3_XENUMSET_HPP
+#ifndef _XENUM4_XENUMSET_HPP
+#define _XENUM4_XENUMSET_HPP
 
 #include <cstring>
 #include <iostream>
 #include "Xenum.hpp"
 
-namespace xenum3 {
+namespace xenum4 {
 
 
 /**
@@ -325,15 +325,15 @@ public:
 #endif
 };
 
-} // namespace xenum3
+} // namespace xenum4
 
 
 /// Print an XenumSet.
 template<typename XenumCntnr>
-std::ostream& operator<<(std::ostream& out, const ::_XENUM3_NS::XenumSet<XenumCntnr>& xenumSet) {
+std::ostream& operator<<(std::ostream& out, const ::_XENUM4_NS::XenumSet<XenumCntnr>& xenumSet) {
 	out<<"[";
 	bool any = false;
-	for (typename ::_XENUM3_NS::XenumSet<XenumCntnr>::index_t index=0; index<XenumCntnr::size; index++) {
+	for (typename ::_XENUM4_NS::XenumSet<XenumCntnr>::index_t index=0; index<XenumCntnr::size; index++) {
 		typename XenumCntnr::value_t value = XenumCntnr::fromIndex(index);
 		if (!xenumSet.contains(value))
 			continue;
@@ -347,4 +347,4 @@ std::ostream& operator<<(std::ostream& out, const ::_XENUM3_NS::XenumSet<XenumCn
 }
 
 
-#endif // _XENUM3_XENUMSET_HPP
+#endif // _XENUM4_XENUMSET_HPP

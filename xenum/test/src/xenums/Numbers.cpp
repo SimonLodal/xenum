@@ -7,5 +7,5 @@
 
 #include <test/xenum/xenums/Numbers.hpp>
 
-XENUM3_DEFINE(Numbers_InNsNoCls)
+XENUM4_DEFINE(Numbers_InNsNoCls)
 

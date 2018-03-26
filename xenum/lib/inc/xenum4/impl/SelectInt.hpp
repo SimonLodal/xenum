@@ -4,10 +4,10 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  */
-#ifndef _XENUM3_IMPL_SELECTINT_HPP
-#define _XENUM3_IMPL_SELECTINT_HPP
+#ifndef _XENUM4_IMPL_SELECTINT_HPP
+#define _XENUM4_IMPL_SELECTINT_HPP
 
-namespace xenum3 {
+namespace xenum4 {
 
 
 /**
@@ -56,5 +56,5 @@ struct SelectInt {
 };
 
 
-} // namespace xenum3
-#endif // _XENUM3_IMPL_SELECTINT_HPP
+} // namespace xenum4
+#endif // _XENUM4_IMPL_SELECTINT_HPP

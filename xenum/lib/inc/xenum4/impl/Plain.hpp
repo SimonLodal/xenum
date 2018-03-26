@@ -6,8 +6,8 @@
  *
  * Implementation of the "plain" data type category for custom properties.
  */
-#ifndef _XENUM3_IMPL_PLAIN_HPP
-#define _XENUM3_IMPL_PLAIN_HPP
+#ifndef _XENUM4_IMPL_PLAIN_HPP
+#define _XENUM4_IMPL_PLAIN_HPP
 
 
 
@@ -16,10 +16,10 @@
  * Entry point for declaring a custom property of plain type, in container class context.
  * @hideinitializer
  */
-#define _XENUM3_PROP_DECLC_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM3_PLAIN_DECLC_DATA(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
-	_XENUM3_PLAIN_DECLC_FUNCS(CTXT, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)		\
-	_XENUM3_PLAIN_DECLC_DEBUG(CTXT, DECL, PROPDEF, _XENUM3_PROPDEF_GET_NAME(PROPDEF), Z)	\
+#define _XENUM4_PROP_DECLC_PLAIN(CTXT, DECL, PROPDEF, Z)					\
+	_XENUM4_PLAIN_DECLC_DATA(CTXT, DECL, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)	\
+	_XENUM4_PLAIN_DECLC_FUNCS(CTXT, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)		\
+	_XENUM4_PLAIN_DECLC_DEBUG(CTXT, DECL, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)	\
 
 
 // =============================== DECLARATION IN VALUE CLASS ==================================
@@ -27,9 +27,9 @@
  * Entry point for declaring a custom property of plain type, in value class context.
  * @hideinitializer
  */
-#define _XENUM3_PROP_DECLV_PLAIN(CTXT, PROPDEF, Z)						\
-	_XENUM3_PLAIN_DECLV_FUNC_GET_SIZE(CTXT, PROPDEF, Z)					\
-	_XENUM3_PLAIN_DECLV_FUNC_GET_VALUE(CTXT, PROPDEF, Z)					\
+#define _XENUM4_PROP_DECLV_PLAIN(CTXT, PROPDEF, Z)						\
+	_XENUM4_PLAIN_DECLV_FUNC_GET_SIZE(CTXT, PROPDEF, Z)					\
+	_XENUM4_PLAIN_DECLV_FUNC_GET_VALUE(CTXT, PROPDEF, Z)					\
 
 
 // ======================================= DEFINITION ==========================================
@@ -37,19 +37,19 @@
  * Entry point for defining a custom property of plain type, in source file context.
  * @hideinitializer
  */
-#define _XENUM3_PROP_DEFINE_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM3_PLAIN_DEFINE									\
+#define _XENUM4_PROP_DEFINE_PLAIN(CTXT, DECL, PROPDEF, Z)					\
+	_XENUM4_PLAIN_DEFINE									\
 	(											\
 		CTXT,										\
 		PROPDEF,									\
-		_XENUM3_DECL_GET_SCOPE(DECL),							\
-		_XENUM3_DECL_GET_CNTNRNAME(DECL),						\
-		_XENUM3_PROPDEF_GET_NAME(PROPDEF),						\
+		_XENUM4_DECL_GET_SCOPE(DECL),							\
+		_XENUM4_DECL_GET_CNTNRNAME(DECL),						\
+		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		Z										\
 	)											\
-	_XENUM3_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
+	_XENUM4_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
 
 
 
 
-#endif // _XENUM3_IMPL_PLAIN_HPP
+#endif // _XENUM4_IMPL_PLAIN_HPP

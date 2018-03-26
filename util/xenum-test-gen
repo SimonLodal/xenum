@@ -1938,7 +1938,7 @@ sub generateHeader()
 
 	push(@{$out}, "#ifndef ${encaps}");
 	push(@{$out}, "#define ${encaps}");
-	push(@{$out}, "#include <xenum3/Xenum.hpp>");
+	push(@{$out}, "#include <xenum4/Xenum.hpp>");
 	foreach $nspart (@{$nsparts}) {
 		push(@{$out}, "namespace ${nspart} {");
 	}
@@ -1990,7 +1990,7 @@ sub generateHeader()
 	}
 
 	push(@{$out}, "");
-	push(@{$out}, "XENUM3_DECLARE(".$gopts->{cntnrName}.")");
+	push(@{$out}, "XENUM4_DECLARE(".$gopts->{cntnrName}.")");
 	foreach $nspart (reverse(@{$nsparts})) {
 		push(@{$out}, "} // namespace ${nspart}");
 	}
@@ -2004,7 +2004,7 @@ sub generateSource()
 {
 	my $out = [];
 	push(@{$out}, "#include \"".$gopts->{cntnrName}.".hpp\"");
-	push(@{$out}, "XENUM3_DEFINE(".$gopts->{cntnrName}.")");
+	push(@{$out}, "XENUM4_DEFINE(".$gopts->{cntnrName}.")");
 	print(XENUMSOURCE join("\n", @{$out}) . "\n");
 }
 

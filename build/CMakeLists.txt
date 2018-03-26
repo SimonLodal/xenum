@@ -1,6 +1,6 @@
 project(xenum)
 cmake_minimum_required(VERSION 2.8)
-set(APP_VERSION "3.1")
+set(APP_VERSION "4.0.pre1")
 
 ############################### COMPILER FLAGS ###############################
 # Do not use -ansi, it prevents boost.prepropcessor's variadic stuff from working.
@@ -73,7 +73,7 @@ if(DOXYGEN_FOUND)
 	add_custom_target(doc DEPENDS ${DOX_DST_DIR})
 	install(
 		DIRECTORY ${DOX_DST_DIR}/html/
-		DESTINATION share/doc/xenum3/api
+		DESTINATION share/doc/xenum4/api
 		OPTIONAL
 		)
 else()

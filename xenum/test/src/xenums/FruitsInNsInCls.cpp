@@ -7,4 +7,4 @@
 
 #include <test/xenum/xenums/FruitsInNsInCls.hpp>
 
-XENUM3_DEFINE(Fruits_InNsInCls)
+XENUM4_DEFINE(Fruits_InNsInCls)

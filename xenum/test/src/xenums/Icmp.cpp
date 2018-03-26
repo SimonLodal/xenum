@@ -7,6 +7,6 @@
 
 #include <test/xenum/xenums/Icmp.hpp>
 
-XENUM3_DEFINE(IcmpTypes)
-XENUM3_DEFINE(IcmpCodes)
+XENUM4_DEFINE(IcmpTypes)
+XENUM4_DEFINE(IcmpCodes)
 

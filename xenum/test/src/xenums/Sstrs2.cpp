@@ -7,5 +7,5 @@
 
 #include <test/xenum/xenums/Sstrs2.hpp>
 
-XENUM3_DEFINE(Sstrs2)
+XENUM4_DEFINE(Sstrs2)
 

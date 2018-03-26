@@ -4,10 +4,10 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  */
-#ifndef _XENUM3_IMPL_INDEXNODE_HPP
-#define _XENUM3_IMPL_INDEXNODE_HPP
+#ifndef _XENUM4_IMPL_INDEXNODE_HPP
+#define _XENUM4_IMPL_INDEXNODE_HPP
 
-namespace xenum3 {
+namespace xenum4 {
 
 
 /**
@@ -41,5 +41,5 @@ template class IndexNode<uint8_t>;
 template class IndexNode<uint16_t>;
 
 
-} // namespace xenum3
-#endif // _XENUM3_IMPL_INDEXNODE_HPP
+} // namespace xenum4
+#endif // _XENUM4_IMPL_INDEXNODE_HPP

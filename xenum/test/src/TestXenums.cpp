@@ -36,154 +36,154 @@ TEST_F(TestXenums, SelectInt)
 {
 	// 8 bits
 	constexpr uint64_t value0 = 0x7f;
-	typedef ::_XENUM3_NS::SelectInt<value0, false, false>::type type000;
+	typedef ::_XENUM4_NS::SelectInt<value0, false, false>::type type000;
 	EXPECT_EQ(1, sizeof(type000));
 	EXPECT_EQ(false, std::is_signed<type000>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value0, false, true>::type type001;
+	typedef ::_XENUM4_NS::SelectInt<value0, false, true>::type type001;
 	EXPECT_EQ(1, sizeof(type001));
 	EXPECT_EQ(false, std::is_signed<type001>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value0, true, false>::type type010;
+	typedef ::_XENUM4_NS::SelectInt<value0, true, false>::type type010;
 	EXPECT_EQ(1, sizeof(type010));
 	EXPECT_EQ(true, std::is_signed<type010>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value0, true, true>::type type011;
+	typedef ::_XENUM4_NS::SelectInt<value0, true, true>::type type011;
 	EXPECT_EQ(1, sizeof(type011));
 	EXPECT_EQ(true, std::is_signed<type011>::value);
 
 	// 8/16 bits
 	constexpr uint64_t value1 = 0xff;
-	typedef ::_XENUM3_NS::SelectInt<value1, false, false>::type type100;
+	typedef ::_XENUM4_NS::SelectInt<value1, false, false>::type type100;
 	EXPECT_EQ(1, sizeof(type100));
 	EXPECT_EQ(false, std::is_signed<type100>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value1, false, true>::type type101;
+	typedef ::_XENUM4_NS::SelectInt<value1, false, true>::type type101;
 	EXPECT_EQ(2, sizeof(type101));
 	EXPECT_EQ(false, std::is_signed<type101>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value1, true, false>::type type110;
+	typedef ::_XENUM4_NS::SelectInt<value1, true, false>::type type110;
 	EXPECT_EQ(2, sizeof(type110));
 	EXPECT_EQ(true, std::is_signed<type110>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value1, true, true>::type type111;
+	typedef ::_XENUM4_NS::SelectInt<value1, true, true>::type type111;
 	EXPECT_EQ(2, sizeof(type111));
 	EXPECT_EQ(true, std::is_signed<type111>::value);
 
 	// 16 bits
 	constexpr uint64_t value2 = 0x7fff;
-	typedef ::_XENUM3_NS::SelectInt<value2, false, false>::type type200;
+	typedef ::_XENUM4_NS::SelectInt<value2, false, false>::type type200;
 	EXPECT_EQ(2, sizeof(type200));
 	EXPECT_EQ(false, std::is_signed<type200>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value2, false, true>::type type201;
+	typedef ::_XENUM4_NS::SelectInt<value2, false, true>::type type201;
 	EXPECT_EQ(2, sizeof(type201));
 	EXPECT_EQ(false, std::is_signed<type201>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value2, true, false>::type type210;
+	typedef ::_XENUM4_NS::SelectInt<value2, true, false>::type type210;
 	EXPECT_EQ(2, sizeof(type210));
 	EXPECT_EQ(true, std::is_signed<type210>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value2, true, true>::type type211;
+	typedef ::_XENUM4_NS::SelectInt<value2, true, true>::type type211;
 	EXPECT_EQ(2, sizeof(type211));
 	EXPECT_EQ(true, std::is_signed<type211>::value);
 
 	// 16/32 bits
 	constexpr uint64_t value3 = 0xffff;
-	typedef ::_XENUM3_NS::SelectInt<value3, false, false>::type type300;
+	typedef ::_XENUM4_NS::SelectInt<value3, false, false>::type type300;
 	EXPECT_EQ(2, sizeof(type300));
 	EXPECT_EQ(false, std::is_signed<type300>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value3, false, true>::type type301;
+	typedef ::_XENUM4_NS::SelectInt<value3, false, true>::type type301;
 	EXPECT_EQ(4, sizeof(type301));
 	EXPECT_EQ(false, std::is_signed<type301>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value3, true, false>::type type310;
+	typedef ::_XENUM4_NS::SelectInt<value3, true, false>::type type310;
 	EXPECT_EQ(4, sizeof(type310));
 	EXPECT_EQ(true, std::is_signed<type310>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value3, true, true>::type type311;
+	typedef ::_XENUM4_NS::SelectInt<value3, true, true>::type type311;
 	EXPECT_EQ(4, sizeof(type311));
 	EXPECT_EQ(true, std::is_signed<type311>::value);
 
 	// 32 bits
 	constexpr uint64_t value4 = 0x7fffffff;
-	typedef ::_XENUM3_NS::SelectInt<value4, false, false>::type type400;
+	typedef ::_XENUM4_NS::SelectInt<value4, false, false>::type type400;
 	EXPECT_EQ(4, sizeof(type400));
 	EXPECT_EQ(false, std::is_signed<type400>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value4, false, true>::type type401;
+	typedef ::_XENUM4_NS::SelectInt<value4, false, true>::type type401;
 	EXPECT_EQ(4, sizeof(type401));
 	EXPECT_EQ(false, std::is_signed<type401>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value4, true, false>::type type410;
+	typedef ::_XENUM4_NS::SelectInt<value4, true, false>::type type410;
 	EXPECT_EQ(4, sizeof(type410));
 	EXPECT_EQ(true, std::is_signed<type410>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value4, true, true>::type type411;
+	typedef ::_XENUM4_NS::SelectInt<value4, true, true>::type type411;
 	EXPECT_EQ(4, sizeof(type411));
 	EXPECT_EQ(true, std::is_signed<type411>::value);
 
 	// 32/64 bits
 	constexpr uint64_t value5 = 0xffffffff;
-	typedef ::_XENUM3_NS::SelectInt<value5, false, false>::type type500;
+	typedef ::_XENUM4_NS::SelectInt<value5, false, false>::type type500;
 	EXPECT_EQ(4, sizeof(type500));
 	EXPECT_EQ(false, std::is_signed<type500>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value5, false, true>::type type501;
+	typedef ::_XENUM4_NS::SelectInt<value5, false, true>::type type501;
 	EXPECT_EQ(8, sizeof(type501));
 	EXPECT_EQ(false, std::is_signed<type501>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value5, true, false>::type type510;
+	typedef ::_XENUM4_NS::SelectInt<value5, true, false>::type type510;
 	EXPECT_EQ(8, sizeof(type510));
 	EXPECT_EQ(true, std::is_signed<type510>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value5, true, true>::type type511;
+	typedef ::_XENUM4_NS::SelectInt<value5, true, true>::type type511;
 	EXPECT_EQ(8, sizeof(type511));
 	EXPECT_EQ(true, std::is_signed<type511>::value);
 
 	// 64 bits
 	constexpr uint64_t value6 = 0x7fffffffffffffff;
-	typedef ::_XENUM3_NS::SelectInt<value6, false, false>::type type600;
+	typedef ::_XENUM4_NS::SelectInt<value6, false, false>::type type600;
 	EXPECT_EQ(8, sizeof(type600));
 	EXPECT_EQ(false, std::is_signed<type600>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value6, false, true>::type type601;
+	typedef ::_XENUM4_NS::SelectInt<value6, false, true>::type type601;
 	EXPECT_EQ(8, sizeof(type601));
 	EXPECT_EQ(false, std::is_signed<type601>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value6, true, false>::type type610;
+	typedef ::_XENUM4_NS::SelectInt<value6, true, false>::type type610;
 	EXPECT_EQ(8, sizeof(type610));
 	EXPECT_EQ(true, std::is_signed<type610>::value);
 
-	typedef ::_XENUM3_NS::SelectInt<value6, true, true>::type type611;
+	typedef ::_XENUM4_NS::SelectInt<value6, true, true>::type type611;
 	EXPECT_EQ(8, sizeof(type611));
 	EXPECT_EQ(true, std::is_signed<type611>::value);
 
 	// 64/128 bits
 	constexpr uint64_t value7 = 0x8000000000000000;
 
-	typedef ::_XENUM3_NS::SelectInt<value7, false, false>::type type700;
+	typedef ::_XENUM4_NS::SelectInt<value7, false, false>::type type700;
 	EXPECT_EQ(8, sizeof(type700));
 	EXPECT_EQ(false, std::is_signed<type700>::value);
 
 	// 128-bit ints not supported. Compiler should fail on static_assert.
-	//typedef ::_XENUM3_NS::SelectInt<value7, false, true>::type type701;
+	//typedef ::_XENUM4_NS::SelectInt<value7, false, true>::type type701;
 	//EXPECT_EQ(16, sizeof(type701));
 	//EXPECT_EQ(false, std::is_signed<type701>::value);
 
-	//typedef ::_XENUM3_NS::SelectInt<value7, true, false>::type type710;
+	//typedef ::_XENUM4_NS::SelectInt<value7, true, false>::type type710;
 	//EXPECT_EQ(16, sizeof(type710));
 	//EXPECT_EQ(true, std::is_signed<type710>::value);
 
-	//typedef ::_XENUM3_NS::SelectInt<value7, true, true>::type type711;
+	//typedef ::_XENUM4_NS::SelectInt<value7, true, true>::type type711;
 	//EXPECT_EQ(16, sizeof(type711));
 	//EXPECT_EQ(true, std::is_signed<type711>::value);
 
 	// Boundary check.
 	constexpr uint64_t value8 = 0xffffffffffffffff;
 
-	typedef ::_XENUM3_NS::SelectInt<value8, false, false>::type type800;
+	typedef ::_XENUM4_NS::SelectInt<value8, false, false>::type type800;
 	EXPECT_EQ(8, sizeof(type800));
 	EXPECT_EQ(false, std::is_signed<type800>::value);
 }
