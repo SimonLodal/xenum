@@ -53,6 +53,7 @@
 		_XENUM4_DECL_GET_SCOPE(DECL),							\
 		_XENUM4_DECL_GET_CNTNRNAME(DECL),						\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
+		_XENUM4_PROPDEF_GET_PFX(PROPDEF),						\
 		Z										\
 	)											\
 

@@ -15,17 +15,18 @@
  * Defines all the data and functions of a single custom property, for "cstring" data types.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFINE(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
+#define _XENUM4_CSTRING_DEFINE(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, PROPPFX, Z)		\
 	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
 	/* Also wrap in named namespace to prevent name clashes. */				\
 	namespace BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) {	NWLN \
-		_XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)			\
-		_XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)			\
+		_XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)		\
+		_XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)		\
 		_XENUM4_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)					\
 	}}											NWLN \
 	_XENUM4_CSTRING_DEFS_FUNCS(								\
 		PROPNAME,									\
+		PROPPFX,									\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
 		SCOPE,										\
 		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT)),				\
@@ -42,16 +43,16 @@
  * Defines the string values.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)				\
-	_XENUM4_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME)						\
-	_XENUM4_CSTRING_VALUES_DATA(CTXT, PROPNAME)						\
+#define _XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)			\
+	_XENUM4_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME, PROPPFX)				\
+	_XENUM4_CSTRING_VALUES_DATA(CTXT, PROPNAME, PROPPFX)					\
 
 /**
  * Worker for _XENUM4_CSTRING_DEFINE_VALUES().
  * Declares the ${propname}_Values_t struct.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME)					\
+#define _XENUM4_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME, PROPPFX)				\
 IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, _t);		NWLN \
 IND1	typedef struct {									NWLN \
 		_XENUM4_PROP_ITER_VALUES(_XENUM4_CSTRING_VALUE_NAME, CTXT)			\
@@ -73,7 +74,7 @@ IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), _t) 
  * Defines the ${propname}_Values struct.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_VALUES_DATA(CTXT, PROPNAME)						\
+#define _XENUM4_CSTRING_VALUES_DATA(CTXT, PROPNAME, PROPPFX)					\
 IND1	constexpr BOOST_PP_CAT(PROPNAME, _Values_t) BOOST_PP_CAT(PROPNAME, _Values) = {		NWLN \
 		_XENUM4_PROP_ITER_VALUES(_XENUM4_CSTRING_DEFINE_VALUE, CTXT)			\
 IND1	};											NWLN
@@ -94,7 +95,7 @@ IND2	_XENUM4_PROP_GET_VALUE(NODE, CTXT),							NWLN
  * we always need an indexnodes table since each string needs to be referenced by an indexnode.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)				\
+#define _XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)			\
 IND1	constexpr size_t BOOST_PP_CAT(PROPNAME, _ValuesSize) = 					\
 		sizeof(BOOST_PP_CAT(PROPNAME, _Values_t));					NWLN \
 IND1	constexpr size_t BOOST_PP_CAT(PROPNAME, _NodesSize) = 0					\
@@ -105,8 +106,8 @@ IND1	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
 		) >::type BOOST_PP_CAT(PROPNAME, _Index_t);					NWLN \
 IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, _Index_t)>			\
 		BOOST_PP_CAT(PROPNAME, _IndexNode_t);						NWLN \
-	_XENUM4_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, Z)					\
-	_XENUM4_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, Z)					\
+	_XENUM4_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)			\
+	_XENUM4_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)				\
 
 
 /*
@@ -240,7 +241,7 @@ IND1	};											NWLN
  * ${propname}_nodes_ table.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, Z)					\
+#define _XENUM4_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)			\
 IND1	typedef struct {									NWLN \
 		_XENUM4_CSTRING_ITER_NODES(_XENUM4_CSTRING_NODE_NAME, CTXT)			\
 IND1	} BOOST_PP_CAT(PROPNAME, _NodeNames_t);							NWLN \
@@ -267,7 +268,7 @@ _CSTRING_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE
  * Defines the ${propname}_Nodes node-data table.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, Z)					\
+#define _XENUM4_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, PROPPFX, Z)				\
 IND1	constexpr BOOST_PP_CAT(PROPNAME, _IndexNode_t) BOOST_PP_CAT(PROPNAME, _Nodes) [] =	\
 	{											NWLN \
 		_XENUM4_CSTRING_ITER_NODES(_XENUM4_CSTRING_NODE_DATA, CTXT)			\
@@ -305,6 +306,7 @@ IND2	{											\
 		_XENUM4_CSTRING_NODE_DATA_0_INDEX(						\
 			_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS),			\
 			_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),		\
+			_XENUM4_PROPDEF_GET_PFX(_XENUM4_CTXT_GET_PROPDEF(CTXT)),		\
 			CTXT									\
 		)										\
 	},											\
@@ -318,7 +320,7 @@ _CSTRING_NODE_DATA_0: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * Define IndexNode.index as an offset expression into a Values_t struct.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_NODE_DATA_0_INDEX(INDEXPATH, PROPNAME, CTXT)				\
+#define _XENUM4_CSTRING_NODE_DATA_0_INDEX(INDEXPATH, PROPNAME, PROPPFX, CTXT)			\
 	((intptr_t)&((BOOST_PP_CAT(PROPNAME, _Values_t)*)0)->					\
 	_XENUM4_PROP_GEN_NODE_NAME(CTXT, INDEXPATH))
 
@@ -360,6 +362,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 	_XENUM4_CSTRING_NODE_DATA_1_INDEX_1_DO(							\
 		_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS),				\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM4_PROPDEF_GET_PFX(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
 		CTXT										\
 	)
 
@@ -367,7 +370,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * Worker for _XENUM4_CSTRING_NODE_VALUE_INDEX_1().
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_NODE_DATA_1_INDEX_1_DO(INDEXPATH, PROPNAME, CTXT)			\
+#define _XENUM4_CSTRING_NODE_DATA_1_INDEX_1_DO(INDEXPATH, PROPNAME, PROPPFX, CTXT)		\
 	(((intptr_t)&((BOOST_PP_CAT(PROPNAME, _NodeNames_t)*)0)->				\
 	_XENUM4_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0)))			\
 	/ sizeof(BOOST_PP_CAT(PROPNAME, _IndexNode_t)))
@@ -399,6 +402,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 #define _XENUM4_CSTRING_DEFL_GET_NODE(Z, N, CTXT)						\
 	_XENUM4_CSTRING_DEFL_GET_NODE_I1(							\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM4_PROPDEF_GET_PFX(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
 		N,										\
 		_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT)),				\
 		_XENUM4_DECL_GET_CNTNRNAME(_XENUM4_CTXT_GET_DECL(CTXT)),			\
@@ -409,7 +413,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * Worker for _XENUM4_CSTRING_DEFL_GET_NODE().
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFL_GET_NODE_I1(PROPNAME, LEVEL, SCOPE, CNTNRNAME, Z)			\
+#define _XENUM4_CSTRING_DEFL_GET_NODE_I1(PROPNAME, PROPPFX, LEVEL, SCOPE, CNTNRNAME, Z)		\
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 	BOOST_PP_CAT(PROPNAME, _IndexNode_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
@@ -438,7 +442,7 @@ IND1	}											NWLN
  * Defines the store class functions related to a single custom property.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, CNTNRNAME, CTXT, PROPDEF, Z)	\
+#define _XENUM4_CSTRING_DEFS_FUNCS(PROPNAME, PROPPFX, DEPTH, SCOPE, STORENAME, CNTNRNAME, CTXT, PROPDEF, Z)	\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
@@ -448,6 +452,7 @@ IND1	}											NWLN
 	)											\
 	_XENUM4_CSTRING_DEFS_GET_VALUE(								\
 		PROPNAME,									\
+		PROPPFX,									\
 		DEPTH,										\
 		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::,	\
 		SCOPE,										\
@@ -498,7 +503,7 @@ IND1		return										\
  * Defines get${propname}() value getter.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFS_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, CNTNRNAME, PROPDEF, Z)	\
+#define _XENUM4_CSTRING_DEFS_GET_VALUE(PROPNAME, PROPPFX, DEPTH, LOCALSCOPE, SCOPE, STORENAME, CNTNRNAME, PROPDEF, Z)	\
 	const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
 	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::_Enum, size_t, DEPTH, Z)		\
