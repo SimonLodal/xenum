@@ -17,40 +17,34 @@
 #define _XENUM4_PROPDEF_GET_NAME(PROPDEF)		BOOST_PP_SEQ_ELEM(0, PROPDEF)
 
 /**
- * Get the computed prefix to use in variable names (underscore plus property name).
- * @hideinitializer
- */
-#define _XENUM4_PROPDEF_GET_PFX(PROPDEF)		BOOST_PP_SEQ_ELEM(1, PROPDEF)
-
-/**
  * Get the data type of a custom property.
  * @hideinitializer
  */
-#define _XENUM4_PROPDEF_GET_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(2, PROPDEF))
+#define _XENUM4_PROPDEF_GET_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(1, PROPDEF))
 
 /**
  * Get the actual data type to use.
  * @hideinitializer
  */
-#define _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(1, BOOST_PP_SEQ_ELEM(2, PROPDEF))
+#define _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(1, BOOST_PP_SEQ_ELEM(1, PROPDEF))
 
 /**
  * Get the type category; for branching handling of different types.
  * @hideinitializer
  */
-#define _XENUM4_PROPDEF_GET_TYPCAT(PROPDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(2, PROPDEF))
+#define _XENUM4_PROPDEF_GET_TYPCAT(PROPDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(1, PROPDEF))
 
 /**
  * Get the default value of a custom property.
  * @hideinitializer
  */
-#define _XENUM4_PROPDEF_GET_DEFAULTVALUE(PROPDEF)	BOOST_PP_SEQ_ELEM(3, PROPDEF)
+#define _XENUM4_PROPDEF_GET_DEFAULTVALUE(PROPDEF)	BOOST_PP_SEQ_ELEM(2, PROPDEF)
 
 /**
  * Get the depth of a custom property.
  * @hideinitializer
  */
-#define _XENUM4_PROPDEF_GET_DEPTH(PROPDEF)		BOOST_PP_SEQ_ELEM(4, PROPDEF)
+#define _XENUM4_PROPDEF_GET_DEPTH(PROPDEF)		BOOST_PP_SEQ_ELEM(3, PROPDEF)
 
 
 /**
@@ -78,7 +72,6 @@ _PROPDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
 		_XENUM4_ERROR(LOC, Missing custom property name.),				\
 		PROPNAME									\
 	))											\
-	(BOOST_PP_CAT(_, PROPNAME))								\
 	_XENUM4_PROPDEF_INIT_TYPE(DBGLOC, __VA_ARGS__)
 
 /**
