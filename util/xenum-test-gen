@@ -2015,7 +2015,7 @@ sub generateTestBasics($)
 
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", Basics)");
 	push(@{$out}, "{");
-	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", ".$gopts->{cntnrName}."::size);");
+	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", ".$gopts->{cntnrName}."::_size);");
 	push(@{$out}, "}");
 	push(@{$out}, "");
 }
@@ -2034,10 +2034,10 @@ sub generateTestFromIndex($)
 	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
 		push(@{$out}, "");
 		$valname = "V" . sprintf($valnumfmt, $validx);
-		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIndex(${validx}, value));");
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::_fromIndex(${validx}, value));");
 		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, value);");
 		push(@{$out}, "\tEXPECT_EQ(${validx}, value.getIndex());");
-		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::fromIndex(${validx}));");
+		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::_fromIndex(${validx}));");
 	}
 	push(@{$out}, "}");
 	push(@{$out}, "");
@@ -2057,10 +2057,10 @@ sub generateTestFromIdentifier($)
 	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
 		push(@{$out}, "");
 		$valname = "V" . sprintf($valnumfmt, $validx);
-		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIdentifier(\"${valname}\", value));");
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::_fromIdentifier(\"${valname}\", value));");
 		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, value);");
 		push(@{$out}, "\tEXPECT_STREQ(\"${valname}\", value.getIdentifier());");
-		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::fromIdentifier(\"${valname}\"));");
+		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::_fromIdentifier(\"${valname}\"));");
 	}
 	push(@{$out}, "}");
 	push(@{$out}, "");

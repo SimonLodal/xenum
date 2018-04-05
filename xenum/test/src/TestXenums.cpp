@@ -191,9 +191,9 @@ TEST_F(TestXenums, SelectInt)
 
 TEST_F(TestXenums, FruitsNoNsNoCls)
 {
-	EXPECT_EQ(1, sizeof(XenumFruits::index_t));
-	EXPECT_EQ(false, std::is_signed<XenumFruits::index_t>::value);
-	EXPECT_EQ(2, XenumFruits::size);
+	EXPECT_EQ(1, sizeof(XenumFruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<XenumFruits::_index_t>::value);
+	EXPECT_EQ(2, XenumFruits::_size);
 	XenumFruit fruit0 = XenumFruits::apple;
 	XenumFruit fruit1 = XenumFruits::grape;
 	EXPECT_EQ(0, fruit0.getIndex());
@@ -203,9 +203,9 @@ TEST_F(TestXenums, FruitsNoNsNoCls)
 
 TEST_F(TestXenums, FruitsNoNsInCls)
 {
-	EXPECT_EQ(1, sizeof(XenumWrapNoNs::Fruits::index_t));
-	EXPECT_EQ(false, std::is_signed<XenumWrapNoNs::Fruits::index_t>::value);
-	EXPECT_EQ(3, XenumWrapNoNs::Fruits::size);
+	EXPECT_EQ(1, sizeof(XenumWrapNoNs::Fruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<XenumWrapNoNs::Fruits::_index_t>::value);
+	EXPECT_EQ(3, XenumWrapNoNs::Fruits::_size);
 	XenumWrapNoNs::Fruit fruit0 = XenumWrapNoNs::Fruits::banana;
 	XenumWrapNoNs::Fruit fruit1 = XenumWrapNoNs::Fruits::orange;
 	XenumWrapNoNs::Fruit fruit2 = XenumWrapNoNs::Fruits::peanut;
@@ -217,9 +217,9 @@ TEST_F(TestXenums, FruitsNoNsInCls)
 
 TEST_F(TestXenums, FruitsInNsNoCls)
 {
-	EXPECT_EQ(4, sizeof(xenums::Fruits::index_t));
-	EXPECT_EQ(false, std::is_signed<xenums::Fruits::index_t>::value);
-	EXPECT_EQ(4, xenums::Fruits::size);
+	EXPECT_EQ(4, sizeof(xenums::Fruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::Fruits::_index_t>::value);
+	EXPECT_EQ(4, xenums::Fruits::_size);
 	xenums::Fruit fruit0 = xenums::Fruits::tomato;
 	xenums::Fruit fruit1 = xenums::Fruits::pear;
 	xenums::Fruit fruit2 = xenums::Fruits::lime;
@@ -233,9 +233,9 @@ TEST_F(TestXenums, FruitsInNsNoCls)
 
 TEST_F(TestXenums, FruitsInNsInCls)
 {
-	EXPECT_EQ(8, sizeof(xenums::WrapInNs::Fruits::index_t));
-	EXPECT_EQ(false, std::is_signed<xenums::WrapInNs::Fruits::index_t>::value);
-	EXPECT_EQ(5, xenums::WrapInNs::Fruits::size);
+	EXPECT_EQ(8, sizeof(xenums::WrapInNs::Fruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::WrapInNs::Fruits::_index_t>::value);
+	EXPECT_EQ(5, xenums::WrapInNs::Fruits::_size);
 	xenums::WrapInNs::Fruit fruit0 = xenums::WrapInNs::Fruits::plum;
 	xenums::WrapInNs::Fruit fruit1 = xenums::WrapInNs::Fruits::mango;
 	xenums::WrapInNs::Fruit fruit2 = xenums::WrapInNs::Fruits::melon;
@@ -252,9 +252,9 @@ TEST_F(TestXenums, FruitsInNsInCls)
 
 TEST_F(TestXenums, Numbers)
 {
-	EXPECT_EQ(2, sizeof(xenums::Numbers::index_t));
-	EXPECT_EQ(false, std::is_signed<xenums::Numbers::index_t>::value);
-	EXPECT_EQ(4100, xenums::Numbers::size);
+	EXPECT_EQ(2, sizeof(xenums::Numbers::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::Numbers::_index_t>::value);
+	EXPECT_EQ(4100, xenums::Numbers::_size);
 	xenums::Number number0001 = xenums::Numbers::n0001;
 	xenums::Number number0200 = xenums::Numbers::n0200;
 	xenums::Number number1768 = xenums::Numbers::n1718;
@@ -268,9 +268,9 @@ TEST_F(TestXenums, Numbers)
 
 TEST_F(TestXenums, IcmpTypes)
 {
-	EXPECT_EQ(1, sizeof(xenums::IcmpTypes::index_t));
-	EXPECT_EQ(false, std::is_signed<xenums::IcmpTypes::index_t>::value);
-	EXPECT_EQ(35, xenums::IcmpTypes::size);
+	EXPECT_EQ(1, sizeof(xenums::IcmpTypes::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::IcmpTypes::_index_t>::value);
+	EXPECT_EQ(35, xenums::IcmpTypes::_size);
 	xenums::IcmpType echoRequest = xenums::IcmpTypes::EchoRequest;
 	xenums::IcmpType timestampRequest = xenums::IcmpTypes::TimestampRequest;
 	xenums::IcmpType rplControl = xenums::IcmpTypes::RplControl;
@@ -291,9 +291,9 @@ TEST_F(TestXenums, IcmpTypes)
 
 TEST_F(TestXenums, IcmpCodes)
 {
-	EXPECT_EQ(1, sizeof(xenums::IcmpCodes::index_t));
-	EXPECT_EQ(false, std::is_signed<xenums::IcmpCodes::index_t>::value);
-	EXPECT_EQ(35, xenums::IcmpCodes::size);
+	EXPECT_EQ(1, sizeof(xenums::IcmpCodes::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::IcmpCodes::_index_t>::value);
+	EXPECT_EQ(35, xenums::IcmpCodes::_size);
 	xenums::IcmpCode networkUnreachable = xenums::IcmpCodes::NetworkUnreachable;
 	xenums::IcmpCode networkRedirect = xenums::IcmpCodes::NetworkRedirect;
 	xenums::IcmpCode unknownNextHeader = xenums::IcmpCodes::UnknownNextHeader;

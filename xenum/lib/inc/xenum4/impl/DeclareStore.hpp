@@ -38,14 +38,6 @@ public:												NWLN \
 	};											NWLN
 
 
-/* FIXME: Move from Cntnr:
-	public:											NWLN \
-		/ * The enum-value class. Not used here, but useful for XenumSet and others. * /	\
-IND1		typedef ::_XENUM4_NS::XenumValue<_XENUM4_DECL_GET_CNTNRNAME(DECL)> value_t;	NWLN \
-
-*/
-
-
 // ==============================================================================================
 /**
  * Declare the native C++ enum and associated stuff.

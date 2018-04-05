@@ -21,11 +21,11 @@ template<class XenumCntnr>
 class XenumCntnrIterator {
 public:
 	/// Enum-value class.
-	using value_t = typename XenumCntnr::value_t;
+	using value_t = typename XenumCntnr::_value_t;
 	/// Integer type used for enum values.
-	using index_t = typename XenumCntnr::index_t;
+	using index_t = typename XenumCntnr::_index_t;
 	/// The native C++ enum class.
-	using Enum = typename XenumCntnr::Enum;
+	using Enum = typename XenumCntnr::_Enum;
 public:
 	/// Default ctor, initializes to first value in the enum.
 	XenumCntnrIterator(void) noexcept : index(0) {}
@@ -40,7 +40,7 @@ public:
 	bool operator!=(const XenumCntnrIterator& other) noexcept { return index != other.index; }
 
 	/// Dereference operator.
-	value_t operator*(void) { return XenumCntnr::fromIndex(index); }
+	value_t operator*(void) { return XenumCntnr::_fromIndex(index); }
 protected:
 	/// Ctor with initialization to a specific index.
 	/// Not bounds-checked before dereferenced.

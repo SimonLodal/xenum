@@ -25,7 +25,7 @@
  */
 // FIXME: Is it really necessary to define this at all?
 #define _XENUM4_DEFC_SIZE(CTXT, DECL)								\
-	constexpr const size_t _XENUM4_DECL_GET_SCOPE(DECL) _XENUM4_DECL_GET_CNTNRNAME(DECL) ::size;	NWLN
+	constexpr const size_t _XENUM4_DECL_GET_SCOPE(DECL) _XENUM4_DECL_GET_CNTNRNAME(DECL) ::_size;	NWLN
 
 
 // ==============================================================================================

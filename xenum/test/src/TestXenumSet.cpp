@@ -136,47 +136,47 @@ TEST_F(TestXenumSet, AddRemoveContainsNumbers)
 	noneSet.removeAll();
 
 	// Check empty
-	for (index=0; index<xenums::Numbers::size; index++) {
-		EXPECT_EQ(false, numbersSet.contains(xenums::Numbers::fromIndex(index)));
+	for (index=0; index<xenums::Numbers::_size; index++) {
+		EXPECT_EQ(false, numbersSet.contains(xenums::Numbers::_fromIndex(index)));
 	}
 	EXPECT_EQ(numbersSet, noneSet);
 
 	// Add all, backwards
-	for (index=xenums::Numbers::size; index>0; index--) {
-		numbersSet.add(xenums::Numbers::fromIndex(index-1));
-		EXPECT_EQ(true, numbersSet.contains(xenums::Numbers::fromIndex(index-1)));
+	for (index=xenums::Numbers::_size; index>0; index--) {
+		numbersSet.add(xenums::Numbers::_fromIndex(index-1));
+		EXPECT_EQ(true, numbersSet.contains(xenums::Numbers::_fromIndex(index-1)));
 		/*
 		for (size_t index2=0; index2<index-1; index2++) {
-			ASSERT_EQ(false, numbersSet.contains(xenums::Numbers::fromIndex(index2)));
+			ASSERT_EQ(false, numbersSet.contains(xenums::Numbers::_fromIndex(index2)));
 		}
-		for (size_t index2=index-1; index2<xenums::Numbers::size; index2++) {
-			ASSERT_EQ(true, numbersSet.contains(xenums::Numbers::fromIndex(index2)));
+		for (size_t index2=index-1; index2<xenums::Numbers::_size; index2++) {
+			ASSERT_EQ(true, numbersSet.contains(xenums::Numbers::_fromIndex(index2)));
 		}
 		*/
 	}
 	// Check all contained
-	for (index=0; index<xenums::Numbers::size; index++) {
-		EXPECT_EQ(true, numbersSet.contains(xenums::Numbers::fromIndex(index)));
+	for (index=0; index<xenums::Numbers::_size; index++) {
+		EXPECT_EQ(true, numbersSet.contains(xenums::Numbers::_fromIndex(index)));
 	}
 	EXPECT_EQ(numbersSet, allSet);
 
 	// Remove all, forwards
-	for (index=0; index<xenums::Numbers::size; index++) {
-		numbersSet.remove(xenums::Numbers::fromIndex(index));
-		EXPECT_EQ(false, numbersSet.contains(xenums::Numbers::fromIndex(index)));
+	for (index=0; index<xenums::Numbers::_size; index++) {
+		numbersSet.remove(xenums::Numbers::_fromIndex(index));
+		EXPECT_EQ(false, numbersSet.contains(xenums::Numbers::_fromIndex(index)));
 		/*
 		for (size_t index2=0; index2<index+1; index2++) {
-			ASSERT_EQ(false, numbersSet.contains(xenums::Numbers::fromIndex(index2)));
+			ASSERT_EQ(false, numbersSet.contains(xenums::Numbers::_fromIndex(index2)));
 		}
-		for (size_t index2=index+1; index2<xenums::Numbers::size; index2++) {
-			ASSERT_EQ(true, numbersSet.contains(xenums::Numbers::fromIndex(index2)));
+		for (size_t index2=index+1; index2<xenums::Numbers::_size; index2++) {
+			ASSERT_EQ(true, numbersSet.contains(xenums::Numbers::_fromIndex(index2)));
 		}
 		*/
 	}
 
 	// Check empty
-	for (index=0; index<xenums::Numbers::size; index++) {
-		EXPECT_EQ(false, numbersSet.contains(xenums::Numbers::fromIndex(index)));
+	for (index=0; index<xenums::Numbers::_size; index++) {
+		EXPECT_EQ(false, numbersSet.contains(xenums::Numbers::_fromIndex(index)));
 	}
 	EXPECT_EQ(numbersSet, noneSet);
 }
@@ -192,8 +192,8 @@ TEST_F(TestXenumSet, CopyAssign)
 		      xenums::Numbers::n4100});
 
 	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers2(numbers1);
-	for (index=0; index<xenums::Numbers::size; index++) {
-		xenums::Number number = xenums::Numbers::fromIndex(index);
+	for (index=0; index<xenums::Numbers::_size; index++) {
+		xenums::Number number = xenums::Numbers::_fromIndex(index);
 		if (number == xenums::Numbers::n0001 ||
 		    number == xenums::Numbers::n1234 ||
 		    number == xenums::Numbers::n4100)
@@ -244,18 +244,18 @@ TEST_F(TestXenumSet, Comparison)
 
 	// Add/check every 5th number
 	lastIndex = 0;
-	for (index=1; index<xenums::Numbers::size; index+=5) {
-		numbers1.add(xenums::Numbers::fromIndex(index));
+	for (index=1; index<xenums::Numbers::_size; index+=5) {
+		numbers1.add(xenums::Numbers::_fromIndex(index));
 		EXPECT_EQ(false, numbers1 == numbers2);
 		EXPECT_EQ(true, numbers1 != numbers2);
 		lastIndex = index;
 	}
 	for (index=1; index<lastIndex; index+=5) {
-		numbers2.add(xenums::Numbers::fromIndex(index));
+		numbers2.add(xenums::Numbers::_fromIndex(index));
 		EXPECT_EQ(false, numbers1 == numbers2);
 		EXPECT_EQ(true, numbers1 != numbers2);
 	}
-	numbers2.add(xenums::Numbers::fromIndex(lastIndex));
+	numbers2.add(xenums::Numbers::_fromIndex(lastIndex));
 	EXPECT_EQ(true, numbers1 == numbers2);
 	EXPECT_EQ(false, numbers1 != numbers2);
 }
@@ -280,8 +280,8 @@ TEST_F(TestXenumSet, ContainsSet)
 	EXPECT_EQ(false, numbers1.containsAny(numbers2));
 	EXPECT_EQ(false, numbers1.containsAll(numbers2));
 
-	numbers1.add(xenums::Numbers::fromIndex(0));
-	numbers2.add(xenums::Numbers::fromIndex(1));
+	numbers1.add(xenums::Numbers::_fromIndex(0));
+	numbers2.add(xenums::Numbers::_fromIndex(1));
 
 	EXPECT_EQ(false, numbers1.containsAny(numbers2));
 	EXPECT_EQ(false, numbers1.containsAll(numbers2));
@@ -299,10 +299,10 @@ TEST_F(TestXenumSet, ContainsSet)
 	EXPECT_EQ(false, none.containsAll(numbers1));
 
 	// Add every other value to either set.
-	for (index=2; index<xenums::Numbers::size; index+=2)
-		numbers1.add(xenums::Numbers::fromIndex(index));
-	for (index=3; index<xenums::Numbers::size; index+=2)
-		numbers2.add(xenums::Numbers::fromIndex(index));
+	for (index=2; index<xenums::Numbers::_size; index+=2)
+		numbers1.add(xenums::Numbers::_fromIndex(index));
+	for (index=3; index<xenums::Numbers::_size; index+=2)
+		numbers2.add(xenums::Numbers::_fromIndex(index));
 
 	EXPECT_EQ(false, numbers1.containsAny(numbers2));
 	EXPECT_EQ(false, numbers1.containsAll(numbers2));
@@ -320,10 +320,10 @@ TEST_F(TestXenumSet, ContainsSet)
 	EXPECT_EQ(false, none.containsAll(numbers2));
 
 	// Add every other value to either set.
-	for (index=0; index<xenums::Numbers::size; index+=2)
-		numbers2.add(xenums::Numbers::fromIndex(index));
-	for (index=1; index<xenums::Numbers::size; index+=2)
-		numbers1.add(xenums::Numbers::fromIndex(index));
+	for (index=0; index<xenums::Numbers::_size; index+=2)
+		numbers2.add(xenums::Numbers::_fromIndex(index));
+	for (index=1; index<xenums::Numbers::_size; index+=2)
+		numbers1.add(xenums::Numbers::_fromIndex(index));
 
 	EXPECT_EQ(numbers1, all);
 	EXPECT_EQ(numbers2, all);

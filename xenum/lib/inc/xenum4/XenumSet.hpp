@@ -27,9 +27,9 @@ class XenumSet {
 private:
 public:
 	/// The XenumValue class.
-	typedef typename XenumCntnr::value_t value_t;
+	using value_t = typename XenumCntnr::_value_t;
 	/// Integer type used for enum values.
-	typedef typename XenumCntnr::index_t index_t;
+	using index_t = typename XenumCntnr::_index_t;
 
 protected:
 #if 1 // 64bit chunks
@@ -51,8 +51,8 @@ protected:
 
 protected:
 	/// Number of chunks.
-	static constexpr const index_t chunkCount = (XenumCntnr::size / chunkBitSize) +
-		(((XenumCntnr::size % chunkBitSize) != 0) ? 1 : 0);
+	static constexpr const index_t chunkCount = (XenumCntnr::_size / chunkBitSize) +
+		(((XenumCntnr::_size % chunkBitSize) != 0) ? 1 : 0);
 	/// Bit store with one bit for each possible enum-value. Excess bits are always zero.
 	chunk_t bitChunks[chunkCount];
 
@@ -144,7 +144,7 @@ public:
 	{
 		if (chunkCount > 1)
 			memset(bitChunks, -1, sizeof(bitChunks));
-		bitChunks[chunkCount-1] = (chunk_t)~(((chunk_t)-1) << (XenumCntnr::size % chunkBitSize));
+		bitChunks[chunkCount-1] = (chunk_t)~(((chunk_t)-1) << (XenumCntnr::_size % chunkBitSize));
 		return *this;
 	}
 
@@ -230,8 +230,8 @@ protected:
 	 */
 	index_t getNextValueIndex(index_t begin) const noexcept
 	{
-		if (begin >= XenumCntnr::size)
-			return XenumCntnr::size;
+		if (begin >= XenumCntnr::_size)
+			return XenumCntnr::_size;
 		index_t cidx = begin >> chunkIndexShift;
 		index_t bidx = begin & bitShiftMask;
 		if (bidx != 0) {
@@ -254,7 +254,7 @@ protected:
 					return ((cidx << chunkIndexShift) | bidx);
 			}
 		}
-		return XenumCntnr::size;
+		return XenumCntnr::_size;
 	}
 
 public:
@@ -285,7 +285,7 @@ public:
 		bool operator==(const iterator& other) noexcept { return xenumSet == other.xenumSet && index == other.index; }
 
 		/// Dereference operator.
-		const value_t operator*(void) { return value_t(XenumCntnr::fromIndex(index)); }
+		const value_t operator*(void) { return value_t(XenumCntnr::_fromIndex(index)); }
 	protected:
 		/// Ctor with initialization to a specific index.
 		iterator(const XenumSet<XenumCntnr>& xenumSet, index_t index) noexcept
@@ -307,7 +307,7 @@ public:
 	iterator begin(void) noexcept { return iterator(*this); }
 
 	/// Get iterator to end (past the last enum-value).
-	iterator end(void) noexcept { return iterator(*this, XenumCntnr::size); }
+	iterator end(void) noexcept { return iterator(*this, XenumCntnr::_size); }
 
 
 /// DEBUG
@@ -333,8 +333,8 @@ template<typename XenumCntnr>
 std::ostream& operator<<(std::ostream& out, const ::_XENUM4_NS::XenumSet<XenumCntnr>& xenumSet) {
 	out<<"[";
 	bool any = false;
-	for (typename ::_XENUM4_NS::XenumSet<XenumCntnr>::index_t index=0; index<XenumCntnr::size; index++) {
-		typename XenumCntnr::value_t value = XenumCntnr::fromIndex(index);
+	for (typename ::_XENUM4_NS::XenumSet<XenumCntnr>::index_t index=0; index<XenumCntnr::_size; index++) {
+		typename XenumCntnr::_value_t value = XenumCntnr::_fromIndex(index);
 		if (!xenumSet.contains(value))
 			continue;
 		if (any)

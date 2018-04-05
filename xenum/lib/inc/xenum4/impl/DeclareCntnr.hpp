@@ -19,7 +19,7 @@
 	class _XENUM4_DECL_GET_CNTNRNAME(DECL) {						NWLN \
 		_XENUM4_DECLC_VALUE_T(CTXT, DECL)						\
 		_XENUM4_DECLC_ENUM(CTXT, DECL)							\
-		_XENUM4_DECLC_ENUM_COPY(CTXT)							\
+		_XENUM4_DECLC_ENUM_OBJS(CTXT)							\
 		_XENUM4_DECLC_FUNCS(CTXT, DECL)							\
 	};											NWLN
 
@@ -32,7 +32,7 @@
  */
 #define _XENUM4_DECLC_VALUE_T(CTXT, DECL)							\
 	public:											NWLN \
-IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) value_t;				NWLN
+IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) _value_t;				NWLN
 
 
 // ==============================================================================================
@@ -43,30 +43,27 @@ IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) value_t;				NWLN
 // FIXME: Underscore prefix on everything.
 #define _XENUM4_DECLC_ENUM(CTXT, DECL)								\
 	public:											NWLN \
-IND1		static constexpr const size_t size = _XENUM4_STORE_NAME(DECL)::size;		NWLN \
-IND1		using index_t = typename _XENUM4_STORE_NAME(DECL)::index_t;			NWLN \
-IND1		using Enum = typename _XENUM4_STORE_NAME(DECL)::Enum;				NWLN \
+IND1		static constexpr const size_t _size = _XENUM4_STORE_NAME(DECL)::size;		NWLN \
+IND1		using _index_t = typename _XENUM4_STORE_NAME(DECL)::index_t;			NWLN \
+IND1		using _Enum = typename _XENUM4_STORE_NAME(DECL)::Enum;				NWLN \
 
 
 // ==============================================================================================
 /**
- * Declare the static enum-value copies.
+ * Declare the static enum-value objects.
  * @hideinitializer
  */
-#define _XENUM4_DECLC_ENUM_COPY(CTXT)								\
+#define _XENUM4_DECLC_ENUM_OBJS(CTXT)								\
 	public:											NWLN \
-	_XENUM4_CALL_VALS(_XENUM4_DECLC_ENUM_COPY_MEMBER, CTXT)
+	_XENUM4_CALL_VALS(_XENUM4_DECLC_ENUM_OBJ, CTXT)
 
 /**
- * Callback worker for _XENUM4_DECLC_ENUM_COPY().
+ * Callback worker for _XENUM4_DECLC_ENUM_OBJS().
  * @hideinitializer
  */
-#define _XENUM4_DECLC_ENUM_COPY_MEMBER(CTXT, IDENT, ...)					\
+#define _XENUM4_DECLC_ENUM_OBJ(CTXT, IDENT, ...)						\
 IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTXT))		\
-	IDENT = Enum::IDENT;									NWLN
-
-
-//IND1	static constexpr const Enum IDENT = Enum::IDENT;					NWLN
+	IDENT = _Enum::IDENT;									NWLN
 
 
 // ==============================================================================================
@@ -92,19 +89,19 @@ IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTX
 		/* Ctor. Do not use, except when iterating the enum-values. */			\
 		/* All members of this class are static, so there is no */			\
 		/* need to instantiate an object; just address the members */			\
-		/* directly as $EnumCntnr::Some_Value. */					\
+		/* directly as $EnumCntnr::SomeValue. */					\
 		/* However, range-based loops require an object, so use: */			\
 		/* for (EnumValue enumValue : EnumCntnr()) { ... } */				\
 IND1		constexpr CNTNRNAME (void) noexcept {}						NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	public:											NWLN \
-IND1		static VALUENAME fromIndex(index_t index)						\
+IND1		static VALUENAME _fromIndex(_index_t index)					\
 			{ return STORENAME::fromIndex(index); }					NWLN \
-IND1		static bool fromIndex(index_t index, VALUENAME& value) noexcept			\
+IND1		static bool _fromIndex(_index_t index, VALUENAME& value) noexcept		\
 			{ return STORENAME::fromIndex(index, value); }				NWLN \
-IND1		static VALUENAME fromIdentifier(const char* identifier)				\
+IND1		static VALUENAME _fromIdentifier(const char* identifier)			\
 			{ return STORENAME::fromIdent(identifier); }				NWLN \
-IND1		static bool fromIdentifier(const char* identifier, VALUENAME& value) noexcept	\
+IND1		static bool _fromIdentifier(const char* identifier, VALUENAME& value) noexcept	\
 			{ return STORENAME::fromIdent(identifier, value); }			NWLN \
 	/* Iteration support. */								\
 	public:											NWLN \
@@ -113,7 +110,7 @@ IND1		typedef ::_XENUM4_NS::XenumCntnrIterator<CNTNRNAME> iterator;			NWLN \
 		/* Get iterator to beginning (before the first enum-value). */			\
 IND1		static iterator begin(void) noexcept { return iterator(0); }			NWLN \
 		/* Get iterator to end (past the last enum-value). */				\
-IND1		static iterator end(void) noexcept { return iterator(size); }			NWLN
+IND1		static iterator end(void) noexcept { return iterator(_size); }			NWLN
 
 
 #endif // _XENUM4_IMPL_DECLARE_CNTNR_HPP
