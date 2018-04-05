@@ -39,7 +39,7 @@ public:												NWLN \
  */
 #define _XENUM4_CSTRING_DECLS_GET_SIZE(Z, LEVEL, PROPNAME)					\
 IND1	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(_Enum, size_t, LEVEL, Z)				\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
 	);											NWLN
 
 /**
@@ -50,7 +50,7 @@ IND1	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
 #define _XENUM4_CSTRING_DECLS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
 IND1	static const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*					\
 	BOOST_PP_CAT(get, PROPNAME) (								\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(_Enum, size_t, DEPTH, Z)				\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
 	);											NWLN
 
 

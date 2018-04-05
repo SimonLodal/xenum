@@ -24,12 +24,12 @@
 
 // ==============================================================================================
 /**
- * Define the _size var.
+ * Define the .size var.
  * @hideinitializer
  */
 // FIXME: Is it really necessary to define this at all?
 #define _XENUM4_DEFS_SIZE(CTXT, DECL)								\
-	constexpr const size_t _XENUM4_DECL_GET_SCOPE(DECL) _XENUM4_STORE_NAME(DECL) ::_size;	NWLN
+	constexpr const size_t _XENUM4_DECL_GET_SCOPE(DECL) _XENUM4_STORE_NAME(DECL) ::size;	NWLN
 
 
 // ==============================================================================================
@@ -50,8 +50,8 @@
  */
 #define _XENUM4_DEFS_IDENTPOOL_BEGIN(CTXT, DECL)						\
 	constexpr const										\
-	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::_IdentPool			\
-	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::_identPool = {			\
+	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::IdentPool				\
+	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::identPool = {			\
 
 /**
  * Callback worker for _XENUM4_DEFS_IDENTPOOL().
@@ -66,8 +66,8 @@ IND1	#IDENT,											NWLN
  */
 #define _XENUM4_DEFS_IDENTPOOL_OFFSETS_BEGIN(CTXT, DECL)					\
 	constexpr const										\
-	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::_IdentOffset			\
-	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::_identOffsets[] = {		\
+	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::IdentOffset			\
+	_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::identOffsets[] = {		\
 
 /**
  * Callback worker for _XENUM4_DEFS_IDENTPOOL().
@@ -82,7 +82,7 @@ IND1	_XENUM4_DEFS_IDENTPOOL_OFFSETS_MEMBER_BEGIN(CTXT, _XENUM4_CTXT_GET_DECL(CTX
  * @hideinitializer
  */
 #define _XENUM4_DEFS_IDENTPOOL_OFFSETS_MEMBER_BEGIN(CTXT, DECL)					\
-	(intptr_t)&((_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::_IdentPool*)0)
+	(intptr_t)&((_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::IdentPool*)0)
 
 
 // ==============================================================================================
@@ -104,40 +104,40 @@ IND1	_XENUM4_DEFS_IDENTPOOL_OFFSETS_MEMBER_BEGIN(CTXT, _XENUM4_CTXT_GET_DECL(CTX
  * @hideinitializer
  */
 #define _XENUM4_DEFS_LOOKUP_FUNCS_I1(CTXT, DECL, SCOPE, STORENAME, VALUENAME)			\
-	SCOPE STORENAME::_Enum SCOPE STORENAME::_fromIndex(SCOPE STORENAME::_index_t index)	NWLN \
+	SCOPE STORENAME::Enum SCOPE STORENAME::fromIndex(SCOPE STORENAME::index_t index)	NWLN \
 	{											NWLN \
-IND1		if (index < _size)								NWLN \
-IND2			return static_cast<SCOPE STORENAME::_Enum>(index);			NWLN \
+IND1		if (index < size)								NWLN \
+IND2			return static_cast<SCOPE STORENAME::Enum>(index);			NWLN \
 IND1		throw std::out_of_range("Index >= size.");					NWLN \
 	}											NWLN \
-	bool SCOPE STORENAME::_fromIndex(SCOPE STORENAME::_index_t index,			\
+	bool SCOPE STORENAME::fromIndex(SCOPE STORENAME::index_t index,				\
 					 ::_XENUM4_NS::XenumValue<STORENAME>& value) noexcept	NWLN \
 	{											NWLN \
-IND1		if (index < _size) {								NWLN \
-IND2			value = static_cast<SCOPE STORENAME::_Enum>(index);			NWLN \
+IND1		if (index < size) {								NWLN \
+IND2			value = static_cast<SCOPE STORENAME::Enum>(index);			NWLN \
 IND2			return true;								NWLN \
 IND1		}										NWLN \
 IND1		return false;									NWLN \
 	}											NWLN \
-	SCOPE STORENAME::_Enum SCOPE STORENAME::_fromIdent(const char* identifier)		NWLN \
+	SCOPE STORENAME::Enum SCOPE STORENAME::fromIdent(const char* identifier)		NWLN \
 	{											NWLN \
 		/* FIXME: Linear search, terrible performance. */				NWLN \
-IND1		for (_index_t index=0; index<_size; index++) {					NWLN \
-IND2			SCOPE VALUENAME value(static_cast<SCOPE STORENAME::_Enum>(index));	NWLN \
+IND1		for (index_t index=0; index<size; index++) {					NWLN \
+IND2			SCOPE VALUENAME value(static_cast<SCOPE STORENAME::Enum>(index));	NWLN \
 IND2			if (strcmp(value.getIdentifier(), identifier) == 0)			NWLN \
 IND3				return value();							NWLN \
 IND1		}										NWLN \
 IND1		throw std::out_of_range("No such identifier.");					NWLN \
 	}											NWLN \
-	bool SCOPE STORENAME::_fromIdent(const char* identifier,				\
+	bool SCOPE STORENAME::fromIdent(const char* identifier,					\
 					 ::_XENUM4_NS::XenumValue<STORENAME>& value) noexcept	NWLN \
 	{											NWLN \
 		/* FIXME: Linear search, terrible performance. */				NWLN \
-IND1		for (_index_t index=0; index<_size; index++) {					NWLN \
-IND2			if (strcmp(SCOPE VALUENAME(static_cast<SCOPE STORENAME::_Enum>(index))	\
+IND1		for (index_t index=0; index<size; index++) {					NWLN \
+IND2			if (strcmp(SCOPE VALUENAME(static_cast<SCOPE STORENAME::Enum>(index))	\
 				   .getIdentifier(), identifier) != 0)				NWLN \
 IND3				continue;							NWLN \
-IND2			value = static_cast<SCOPE STORENAME::_Enum>(index);			NWLN \
+IND2			value = static_cast<SCOPE STORENAME::Enum>(index);			NWLN \
 IND2			return true;								NWLN \
 IND1		}										NWLN \
 IND1		return false;									NWLN \

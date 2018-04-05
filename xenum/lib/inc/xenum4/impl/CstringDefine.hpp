@@ -109,14 +109,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, _Index_t)>			\
 	_XENUM4_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, Z)					\
 
 
-/*
-IND1	constexpr const BOOST_PP_CAT(PROPNAME, _IndexNode_t)					\
-		BOOST_PP_CAT(PROPNAME, _Nodes) [BOOST_PP_CAT(PROPNAME, _NodesSize)] = {		NWLN \
-		_XENUM4_CSTRING_ITER_NODES(_XENUM4_CSTRING_NODE_DATA, CTXT)			\
-IND1	};											NWLN
-*/
-
-
 // ============================= COUNT NODES =================================
 /**
  * Worker for _XENUM4_CSTRING_DEFINE_NODES(). Called as XENUM_VALS_* callback.
@@ -237,7 +229,7 @@ IND1	};											NWLN
 /**
  * Worker for _XENUM4_CSTRING_DEFINE_NODES().
  * Declares the ${propname}_NodeNames_t struct that contains a name for each index in the
- * ${propname}_nodes_ table.
+ * ${propname}_Nodes table.
  * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, Z)					\
@@ -481,7 +473,7 @@ IND1	}											NWLN
 #define _XENUM4_CSTRING_DEFS_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, STORENAME, CNTNRNAME, Z)	\
 	const size_t										\
 	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::_Enum, size_t, LEVEL, Z)		\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
 	) {											NWLN \
 IND1		return										\
 		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::	\
@@ -501,7 +493,7 @@ IND1		return										\
 #define _XENUM4_CSTRING_DEFS_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, CNTNRNAME, PROPDEF, Z)	\
 	const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
 	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (					\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::_Enum, size_t, DEPTH, Z)		\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, DEPTH, Z)		\
 	) {											NWLN \
 IND1		return &(									\
 			(const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*)				\

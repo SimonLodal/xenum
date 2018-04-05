@@ -181,7 +181,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, _IndexNode_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
-			_Enum,									\
+			Enum,									\
 			BOOST_PP_CAT(PROPNAME, _index_t),					\
 			LEVEL,									\
 			Z									\
@@ -211,7 +211,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, _index_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
-			_Enum,									\
+			Enum,									\
 			BOOST_PP_CAT(PROPNAME, _index_t),					\
 			LEVEL,									\
 			Z									\
@@ -237,7 +237,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, _t&)								\
 	BOOST_PP_CAT(get, PROPNAME) (								\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
-			_Enum,									\
+			Enum,									\
 			BOOST_PP_CAT(PROPNAME, _index_t),					\
 			DEPTH,									\
 			Z									\
@@ -257,7 +257,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_GEN_VALUE_INDEXING_0(PROPNAME, DEPTH, Z)					\
-	static_cast<_index_t>(index0)
+	static_cast<index_t>(index0)
 
 /**
  * Generate value indexing expression for a property having depth!=0.

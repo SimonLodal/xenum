@@ -43,9 +43,9 @@ IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) value_t;				NWLN
 // FIXME: Underscore prefix on everything.
 #define _XENUM4_DECLC_ENUM(CTXT, DECL)								\
 	public:											NWLN \
-IND1		static constexpr const size_t size = _XENUM4_STORE_NAME(DECL)::_size;		NWLN \
-IND1		using index_t = typename _XENUM4_STORE_NAME(DECL)::_index_t;			NWLN \
-IND1		using Enum = typename _XENUM4_STORE_NAME(DECL)::_Enum;				NWLN \
+IND1		static constexpr const size_t size = _XENUM4_STORE_NAME(DECL)::size;		NWLN \
+IND1		using index_t = typename _XENUM4_STORE_NAME(DECL)::index_t;			NWLN \
+IND1		using Enum = typename _XENUM4_STORE_NAME(DECL)::Enum;				NWLN \
 
 
 // ==============================================================================================
@@ -99,13 +99,13 @@ IND1		constexpr CNTNRNAME (void) noexcept {}						NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	public:											NWLN \
 IND1		static VALUENAME fromIndex(index_t index)						\
-			{ return STORENAME::_fromIndex(index); }				NWLN \
+			{ return STORENAME::fromIndex(index); }					NWLN \
 IND1		static bool fromIndex(index_t index, VALUENAME& value) noexcept			\
-			{ return STORENAME::_fromIndex(index, value); }				NWLN \
+			{ return STORENAME::fromIndex(index, value); }				NWLN \
 IND1		static VALUENAME fromIdentifier(const char* identifier)				\
-			{ return STORENAME::_fromIdent(identifier); }				NWLN \
+			{ return STORENAME::fromIdent(identifier); }				NWLN \
 IND1		static bool fromIdentifier(const char* identifier, VALUENAME& value) noexcept	\
-			{ return STORENAME::_fromIdent(identifier, value); }			NWLN \
+			{ return STORENAME::fromIdent(identifier, value); }			NWLN \
 	/* Iteration support. */								\
 	public:											NWLN \
 		/* Iterator type for this container. */						\

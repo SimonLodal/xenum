@@ -21,9 +21,9 @@ public:
 	/// The container class.
 	typedef XenumStore store_t;
 	/// Integer type used for enum values.
-	using index_t = typename XenumStore::_index_t;
+	using index_t = typename XenumStore::index_t;
 	/// The native C++ enum class.
-	using Enum = typename XenumStore::_Enum;
+	using Enum = typename XenumStore::Enum;
 
 public:
 	/// Default ctor. Initialized with first native enum value.
@@ -49,7 +49,7 @@ public:
 	constexpr index_t getIndex(void) const noexcept { return static_cast<index_t>(value); }
 
 	/// @return Identifier of this enum value.
-	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::_getIdentifier(value); }
+	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
 
 public:
 	/// @name Comparison operators
