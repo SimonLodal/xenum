@@ -12,16 +12,26 @@
 
 // ==============================================================================================
 /**
+ * @return Name of the container class.
+ * @hideinitializer
+ */
+#define _XENUM4_CNTNR_NAME(DECL)								\
+	BOOST_PP_CAT(_XenumCntnr_, _XENUM4_DECL_GET_CNTNRNAME(DECL))
+
+
+// ==============================================================================================
+/**
  * Main entry function.
  * @hideinitializer
  */
 #define _XENUM4_DECLARE_CNTNR(CTXT, DECL)							\
-	class _XENUM4_DECL_GET_CNTNRNAME(DECL) {						NWLN \
+	class _XENUM4_CNTNR_NAME(DECL) {							NWLN \
 		_XENUM4_DECLC_VALUE_T(CTXT, DECL)						\
 		_XENUM4_DECLC_ENUM(CTXT, DECL)							\
 		_XENUM4_DECLC_ENUM_OBJS(CTXT)							\
 		_XENUM4_DECLC_FUNCS(CTXT, DECL)							\
-	};											NWLN
+	};											NWLN \
+	typedef _XENUM4_CNTNR_NAME(DECL) _XENUM4_DECL_GET_CNTNRNAME(DECL);			NWLN
 
 
 // ==============================================================================================
@@ -76,7 +86,7 @@ IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTX
 	_XENUM4_DECLC_FUNCS_I1(									\
 		CTXT,										\
 		_XENUM4_STORE_NAME(DECL),							\
-		_XENUM4_DECL_GET_CNTNRNAME(DECL),						\
+		_XENUM4_CNTNR_NAME(DECL),							\
 		_XENUM4_DECL_GET_VALUENAME(DECL)						\
 	)
 
@@ -84,7 +94,7 @@ IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTX
  * Worker for _XENUM4_DECLC_FUNCS().
  * @hideinitializer
  */
-#define _XENUM4_DECLC_FUNCS_I1(CTXT, STORENAME, CNTNRNAME, VALUENAME)				\
+#define _XENUM4_DECLC_FUNCS_I1(CTXT, STORENAME, CREALNAME, VALUENAME)				\
 	public:											NWLN \
 		/* Ctor. Do not use, except when iterating the enum-values. */			\
 		/* All members of this class are static, so there is no */			\
@@ -92,7 +102,7 @@ IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTX
 		/* directly as $EnumCntnr::SomeValue. */					\
 		/* However, range-based loops require an object, so use: */			\
 		/* for (EnumValue enumValue : EnumCntnr()) { ... } */				\
-IND1		constexpr CNTNRNAME (void) noexcept {}						NWLN \
+IND1		constexpr CREALNAME (void) noexcept {}						NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	public:											NWLN \
 IND1		static VALUENAME _fromIndex(_index_t index)					\
@@ -106,7 +116,7 @@ IND1		static bool _fromIdentifier(const char* identifier, VALUENAME& value) noex
 	/* Iteration support. */								\
 	public:											NWLN \
 		/* Iterator type for this container. */						\
-IND1		typedef ::_XENUM4_NS::XenumCntnrIterator<CNTNRNAME> iterator;			NWLN \
+IND1		typedef ::_XENUM4_NS::XenumCntnrIterator<CREALNAME> iterator;			NWLN \
 		/* Get iterator to beginning (before the first enum-value). */			\
 IND1		static iterator begin(void) noexcept { return iterator(0); }			NWLN \
 		/* Get iterator to end (past the last enum-value). */				\
