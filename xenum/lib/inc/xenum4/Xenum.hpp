@@ -23,7 +23,8 @@
  *   limit of around 64 or 256 values in an enum, due to recursion limits in preprocessor
  *   and/or templates. Way too low for real life use. Xenum overcomes this by having the enum
  *   values declared as a list of macro calls, which can have unlimited length.
- * - Can be placed inside a class, just like regular enums.
+ * - Can be placed inside a class, just like regular enums (except if it has custom properties,
+ *   see Caveats).
  * - Zero runtime overhead compared to using a native enum class.
  * - Extensible: You can add custom properties to each enum value. Normal Xenum values
  *   have a name (an identifier) and an index value (assigned sequentially), but no "ordinal"
@@ -484,6 +485,15 @@
  *	- end
  *
  * @section Caveats
+ * - Xenum can not be declared inside a class if it has custom properties. The reason is C++'s
+ *   rule that class members are not considered complete before the whole class is complete.
+ *   This in turn means that one member class can not use another member class, which is what
+ *   the Xenum does; first the enum-value class is declared, then the enum-container is declared,
+ *   and populated with static constexpr enum-value objects. Which fails since the enum-value
+ *   class is not considered "complete" when it is all declared inside another class. The reason
+ *   why it works without custom properties is that in this case we do not create a new value
+ *   class, we just typedef the base XenumValue class. But when there are custom properties we
+ *   need to subclass XenumValue to add getters for the properties.
  * - Name lookup is currently very inefficient, uses linear search. Need to find a way to
  *   generate a static constexpr string-hashtable, or at least a constexpr way to sort the
  *   string list and use binary search.
@@ -522,6 +532,8 @@
  * - Per-enum selection of features to generate, fx. to save the space of string tables if you
  *   do not want conversion to/from string.
  * - Lookup of enum value by custom property value.
+ * - Make xenum with custom properties work when declared inside a class. Probably requires a
+ *   separate XENUM4_DECLARE_PRE() macro call outside the class, ugly.
  * - Efficient string-to-enum lookup. Requires a hashmap, which is difficult given these
  *   requirements: 1) Everything static-const(expr), 2 No external compile tools.
  *   Some template magic may be possible in C++14 but for now we stick with C++11.
