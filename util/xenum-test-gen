@@ -44,6 +44,8 @@ my $gopts = {
 	valueName => "",
 	execute => 0,
 	incpath => "",
+	makePp => 0,
+	make => 0,
 	namespace => "",
 	overwrite => 0,
 	enumSize => 0,
@@ -158,12 +160,15 @@ General options:
     -h, --help                This help.
     -I, --incPath PATH        Prepend this path to the include path when compiling. Useful to
                               compile with local Xenum.hpp instead of system installed version.
+    -m, --make-pp             Run 'make' after generating the test program, but only the target
+                              to preprocess the xenum.
+    -M, --make                Run 'make' after generating the test program, to compile it.
     -n, --namespace NAME      Namespace of the xenum.
     -p, --propCount NUMBER    Number of custom properties.
     -s, --enumSize NUMBER     Number of values in the xenum (required).
     -v, --version             Show version.
     -W, --overwrite           Overwrite existing output dir/files.
-    -x, --execute             Make and execute the generated test program.
+    -x, --execute             Make and execute the generated test program. Implies -M.
     -z                        Testing.
 
 Custom parameter options (only relevant with -p):
@@ -256,8 +261,17 @@ sub parseArgs()
 			$gopts->{overwrite} = 1;
 			next;
 		}
+		if ($arg =~ /^(?:-m|--make-pp)$/) {
+			$gopts->{makePp} = 1;
+			next;
+		}
+		if ($arg =~ /^(?:-M|--make)$/) {
+			$gopts->{make} = 1;
+			next;
+		}
 		if ($arg =~ /^(?:-x|--execute)$/) {
 			$gopts->{execute} = 1;
+			$gopts->{make} = 1;
 			next;
 		}
 		if ($arg =~ /^(?:-z)$/) {
@@ -354,6 +368,8 @@ sub dumpGopts()
 	      "\tcntnrName = '".$gopts->{cntnrName}."'\n".
 	      "\texecute = '".$gopts->{execute}."'\n".
 	      "\tincPath = '".$gopts->{incPath}."'\n".
+	      "\tmakePp = '".$gopts->{makePp}."'\n".
+	      "\tmake = '".$gopts->{make}."'\n".
 	      "\tnamespace = '".$gopts->{namespace}."'\n".
 	      "\toverwrite = ".$gopts->{overwrite}."\n".
 	      "\tenumSize = ".$gopts->{enumSize}."\n".
@@ -2232,7 +2248,9 @@ sub generateMakefile()
 		$incPaths = "-I " . $gopts->{incPath} . " " . $incPaths;
 	}
 
+# FIXME: Selectable compiler
 	push(@{$out}, "CCC = g++ -Wall -Wstrict-overflow=5 -std=c++11 -Os");
+#	push(@{$out}, "CCC = clang -Wall -Wstrict-overflow=5 -std=c++11 -Os");
 
 	push(@{$out}, "Test${cname} : ${cname}.ppp Test${cname}.o ${cname}.o");
 	push(@{$out}, "\t\$(CCC) -L ${gtestroot} -o Test${cname} Test${cname}.o ${cname}.o -l gtest -l gtest_main");
@@ -2258,20 +2276,36 @@ sub generateMakefile()
 ############################################# main() #############################################
 sub execute()
 {
-	my $res;
+	my ($cmd, $res);
 
-	return unless ($gopts->{execute});
+	return unless ($gopts->{makePp} || $gopts->{make} || $gopts->{execute});
 	my $outputdir = $gopts->{cntnrName};
 	chdir($outputdir) || die("ERROR: Could not change to output directory '${outputdir}'.\n");
-	system("make");
-	$res = $?;
-	if ($res == -1) {
-		die("ERROR: Could not exec 'make'.\n");
+	if ($gopts->{makePp}) {
+		$cmd = "make ".$gopts->{cntnrName}.".ppp";
+		system($cmd);
+		$res = $?;
+		if ($res == -1) {
+			die("ERROR: Could not execute 'make'.\n");
+		}
+		elsif ($res != 0) {
+			die("ERROR: Command '${cmd}' failed (${res}).\n");
+		}
 	}
-	elsif ($res != 0) {
-		die("ERROR: 'make' failed (${res}).\n");
+	if ($gopts->{make}) {
+		$cmd = "make Test".$gopts->{cntnrName};
+		system($cmd);
+		$res = $?;
+		if ($res == -1) {
+			die("ERROR: Could not execute 'make'.\n");
+		}
+		elsif ($res != 0) {
+			die("ERROR: Command '${cmd}' failed (${res}).\n");
+		}
 	}
-	exec("./Test".$gopts->{cntnrName})
+	if ($gopts->{execute}) {
+		exec("./Test".$gopts->{cntnrName})
+	}
 }
 
 
