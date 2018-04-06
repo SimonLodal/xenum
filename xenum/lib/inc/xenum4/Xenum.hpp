@@ -450,24 +450,43 @@
  *	XENUM_DECL_$suffix macro. If a value field is empty, the default defined in
  *	XENUM_DECL_$suffix is used, if there is one (if not all values must be specified).
  *
+ * @subsection SYMBOLS Generated symbols
+ * Everything in the generated code is named to minimize risk of name clashes with other code.
+ * But if you get errors about duplicate symbols you may want to check this list.
+ *
+ * @subsubsection XENUM4_DECLARE XENUM4_DECLARE()
+ *	- class \_XenumStore_${container-name} : The internal store class.
+ *	- ${valueclass-name} : The enum-value class; an actual class, or a typedef of XenumValue.
+ *	- class \_XenumCntnr_${container-name} : The container class.
+ *	- ${container-name} : Typedef of container class to desired name.
+ *
+ * @subsubsection XENUM4_DEFINEE XENUM4_DEFINE()
+ *	- namespace \_XenumImpl_${container-name}_[${property-name}] : Zero or more namespaces,
+ *	  inside an anonymous namespace, for data/functions that is not declared in the classes.
+ *
+ * @subsubsection CONTAINER The container class
+ * The generated container class contains all the enum values (as objects). Most other symbols
+ * in the class have an underscore prefix, to minimize risk of name clashes with your enum value
+ * names. This of course assumes that your enum values do not have an underscore prefix.
+ *
+ * Underscore-prefixed members are:
+ *	- \_value_t
+ *	- \_size
+ *	- \_index_t
+ *	- \_Enum
+ *	- \_fromIndex
+ *	- \_fromIdentifier
+ *	- \_XenumStore_${container-name}
+ *
+ * A few members do not have an underscore prefix, these are needed by for(:) loops:
+ *	- iterator
+ *	- begin
+ *	- end
+ *
  * @section Caveats
  * - Name lookup is currently very inefficient, uses linear search. Need to find a way to
  *   generate a static constexpr string-hashtable, or at least a constexpr way to sort the
  *   string list and use binary search.
- * - Reserved names: Each enum value exists as an enum-value object in the container class.
- *   Most other members of the container class have an underscore prefix, to minimize risk
- *   of name clashes with your enum value names (this of course assumes that your enum values
- *   do not have an underscore prefix). Underscore-prefixed members are:
- *	- _value_t
- *	- _size
- *	- _index_t
- *	- _Enum
- *	- _fromIndex
- *	- _fromIdentifier
- *
- *   A few members do not have an underscore prefix:
- *	- The constructor, having the same name as the enum-container class.
- *	- iterator, begin, end: Needed by for(:) loops.
  * - No API doc for the generated Xenum classes. It is not really possible to generate API doc
  *   for macro-generated functions.
  * - Poor error messages, due to how the preprocessor works. Since this is all implemented with
