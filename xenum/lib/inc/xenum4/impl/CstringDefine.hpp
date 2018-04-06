@@ -404,7 +404,7 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 	BOOST_PP_CAT(PROPNAME, _IndexNode_t&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
-			_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_STORE_NAME(DECL)::Enum,		\
+			_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_CNTNR_NAME(DECL)::_Enum,		\
 			BOOST_PP_CAT(PROPNAME, _Index_t),					\
 			LEVEL,									\
 			Z									\

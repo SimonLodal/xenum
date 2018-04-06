@@ -41,6 +41,12 @@
 #define _XENUM4_DECL_GET_FEATURES(DECL)		BOOST_PP_SEQ_ELEM(4, DECL)
 
 /**
+ * @return 0|1 if the xenum declaration contains any custom properties.
+ * @hideinitializer
+ */
+#define _XENUM4_DECL_HAS_PROPS(DECL)		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM4_DECL_GET_PROPDEFS(DECL)))
+
+/**
  * @return PROPDEFS field of the xenum declaration.
  * @hideinitializer
  */

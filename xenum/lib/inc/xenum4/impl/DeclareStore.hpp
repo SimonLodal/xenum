@@ -25,11 +25,19 @@
  * @hideinitializer
  */
 #define _XENUM4_DECLARE_STORE(CTXT, DECL)							\
+	BOOST_PP_EXPR_IF(									\
+		_XENUM4_DECL_HAS_PROPS(DECL),							\
+		class _XENUM4_DECL_GET_VALUENAME(DECL);						NWLN \
+	)											\
 	class _XENUM4_CNTNR_NAME(DECL);								NWLN \
 	class _XENUM4_STORE_NAME(DECL) {							NWLN \
-	friend class _XENUM4_CNTNR_NAME(DECL);							NWLN \
-/* FIXME: Make everything private. */								\
-public:												NWLN \
+IND1	friend class ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>;			NWLN \
+	BOOST_PP_EXPR_IF(									\
+		_XENUM4_DECL_HAS_PROPS(DECL),							\
+IND1		friend class _XENUM4_DECL_GET_VALUENAME(DECL);					NWLN \
+	)											\
+IND1	friend class _XENUM4_CNTNR_NAME(DECL);							NWLN \
+private: /* Everything in this class should be private, only accessed by friends. */		NWLN \
 		_XENUM4_DECLS_ENUM(CTXT, DECL)							\
 		_XENUM4_DECLS_IDENTPOOL(CTXT)							\
 		_XENUM4_DECLS_VALUE_ACCESSORS(CTXT, DECL)					\

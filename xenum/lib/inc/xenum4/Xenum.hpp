@@ -54,6 +54,9 @@
  *   - Boost.Preprocessor (boost-1.64.0 used).
  * - Runtime requirements: None.
  *
+ * @subsection Compilers Supported compilers
+ * Currently only g++-4.9. Others may or may not work.
+ *
  * @section DesignImpl Design / implementation
  * C/C++ enums have always confused me. There is the enum, and then there is the individual
  * values within it. But both are "the enum".
@@ -529,6 +532,7 @@
  *     back to compiling and running.
  *
  * @section Future_Plans Future plans
+ * - Support for common compilers.
  * - Per-enum selection of features to generate, fx. to save the space of string tables if you
  *   do not want conversion to/from string.
  * - Lookup of enum value by custom property value.
@@ -636,8 +640,8 @@
 
 
 /// Print an XenumValue.
-template<class XenumCntnr>
-inline std::ostream& operator<<(std::ostream& out, ::_XENUM4_NS::XenumValue<XenumCntnr> enumValue) {
+template<class XenumStore>
+inline std::ostream& operator<<(std::ostream& out, ::_XENUM4_NS::XenumValue<XenumStore> enumValue) {
 	return out << enumValue.getIdentifier();
 }
 
