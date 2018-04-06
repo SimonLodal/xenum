@@ -12,6 +12,17 @@
 
 // ==============================================================================================
 /**
+ * Implementation parts that are not declared in the store class are declared and defined inside
+ * a namespace with this name, to minimize risk of name clash with user code.
+ * @return Name of implementation namespace.
+ * @hideinitializer
+ */
+#define _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)							\
+	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_XenumImpl_, _XENUM4_DECL_GET_CNTNRNAME(DECL)), _), PROPNAME)
+
+
+// ==============================================================================================
+/**
  * Main entry function.
  * @hideinitializer
  */

@@ -49,9 +49,9 @@
 	_XENUM4_CSTRING_DEFINE									\
 	(											\
 		CTXT,										\
+		DECL,										\
 		PROPDEF,									\
 		_XENUM4_DECL_GET_SCOPE(DECL),							\
-		_XENUM4_DECL_GET_CNTNRNAME(DECL),						\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		Z										\
 	)											\

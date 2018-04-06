@@ -15,11 +15,11 @@
  * Defines all the data and functions of a single custom property, for "cstring" data types.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFINE(CTXT, PROPDEF, SCOPE, CNTNRNAME, PROPNAME, Z)			\
+#define _XENUM4_CSTRING_DEFINE(CTXT, DECL, PROPDEF, SCOPE, PROPNAME, Z)				\
 	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
 	/* Also wrap in named namespace to prevent name clashes. */				\
-	namespace BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) {	NWLN \
+	namespace _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) {					NWLN \
 		_XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)			\
 		_XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)			\
 		_XENUM4_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)					\
@@ -29,7 +29,6 @@
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
 		SCOPE,										\
 		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT)),				\
-		CNTNRNAME,									\
 		CTXT,										\
 		PROPDEF,									\
 		Z										\
@@ -368,7 +367,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 // ==================================== LOCAL FUNCTIONS ========================================
 /**
  * Worker for _XENUM4_CSTRING_DEFINE().
- * Defines the local functions (in anon namespace, not part of any class) related to a
+ * Defines the local functions (in local anon namespace, not part of any class) related to a
  * single custom property.
  * @hideinitializer
  */
@@ -429,7 +428,7 @@ IND1	}											NWLN
  * Defines the store class functions related to a single custom property.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, CNTNRNAME, CTXT, PROPDEF, Z)	\
+#define _XENUM4_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, CTXT, PROPDEF, Z)		\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
@@ -440,7 +439,7 @@ IND1	}											NWLN
 	_XENUM4_CSTRING_DEFS_GET_VALUE(								\
 		PROPNAME,									\
 		DEPTH,										\
-		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::,	\
+		_XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME) ::,		\
 		SCOPE,										\
 		STORENAME,									\
 		PROPDEF,									\
@@ -460,7 +459,7 @@ IND1	}											NWLN
 		N,										\
 		_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT)),				\
 		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT)),				\
-		_XENUM4_DECL_GET_CNTNRNAME(_XENUM4_CTXT_GET_DECL(CTXT)),			\
+		_XENUM4_CTXT_GET_DECL(CTXT),							\
 		Z										\
 	)
 
@@ -468,13 +467,13 @@ IND1	}											NWLN
  * Worker for _XENUM4_CSTRING_DEFS_GET_SIZE().
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DEFS_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, STORENAME, CNTNRNAME, Z)	\
+#define _XENUM4_CSTRING_DEFS_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
 	const size_t										\
 	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
 	) {											NWLN \
 IND1		return										\
-		BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_internal__, CNTNRNAME), __), PROPNAME) ::	\
+		_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) ::					\
 		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
 			_XENUM4_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
