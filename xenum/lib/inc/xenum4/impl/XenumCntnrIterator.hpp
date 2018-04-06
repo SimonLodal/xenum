@@ -47,10 +47,10 @@ protected:
 	XenumCntnrIterator(index_t index) noexcept : index(index) {}
 
 	/// Allow begin() to use the protected ctor.
-	friend XenumCntnrIterator XenumCntnr::begin(void);
+	friend XenumCntnrIterator XenumCntnr::begin(void) noexcept;
 
 	/// Allow end() to use the protected ctor.
-	friend XenumCntnrIterator XenumCntnr::end(void);
+	friend XenumCntnrIterator XenumCntnr::end(void) noexcept;
 protected:
 	/// Current position.
 	index_t index;

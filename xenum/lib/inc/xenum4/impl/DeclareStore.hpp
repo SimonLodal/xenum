@@ -39,9 +39,7 @@ IND1		friend class _XENUM4_DECL_GET_VALUENAME(DECL);					NWLN \
 IND1	friend class _XENUM4_CNTNR_NAME(DECL);							NWLN \
 private: /* Everything in this class should be private, only accessed by friends. */		NWLN \
 		_XENUM4_DECLS_ENUM(CTXT, DECL)							\
-		_XENUM4_DECLS_IDENTPOOL(CTXT)							\
-		_XENUM4_DECLS_VALUE_ACCESSORS(CTXT, DECL)					\
-		_XENUM4_DECLS_LOOKUP_FUNCS(CTXT, DECL)						\
+		_XENUM4_DECLS_FUNCS(CTXT, DECL)							\
 		_XENUM4_PROPS_DECLS(CTXT)							\
 	};											NWLN
 
@@ -62,7 +60,10 @@ IND1	typedef BOOST_PP_IF(									\
 	) index_t;										NWLN \
 IND1	enum class Enum : index_t {								NWLN \
 		_XENUM4_CALL_VALS(_XENUM4_DECLS_ENUM_MEMBER, CTXT)				\
-IND1	};											NWLN
+IND1	};											NWLN \
+	/* @return Index of an enum value. */							\
+IND1	static constexpr index_t getIndex(Enum value) noexcept					\
+		{ return static_cast<index_t>(value); }						NWLN \
 
 /**
  * Callback worker for _XENUM4_DECLARE_CNTNR_ENUM().
@@ -74,53 +75,12 @@ IND2		VALUEIDENT,									NWLN
 
 // ==============================================================================================
 /**
- * Declare identifier stringpool.
+ * Declare accessor and lookup functions.
  * @hideinitializer
  */
-// FIXME: Make it look more like custom-prop cstring.
-#define _XENUM4_DECLS_IDENTPOOL(CTXT)								\
-	/* Identifier stringpool type. */							\
-IND1	typedef struct {									NWLN \
-		_XENUM4_CALL_VALS(_XENUM4_DECLS_IDENTPOOL_MEMBER, CTXT)				\
-IND1	} IdentPool;										NWLN \
-	/* Identifier stringpool data. */							\
-IND1	static const IdentPool identPool;							NWLN \
-	/* Integer type big enough to hold offsets into the string pool. */			\
-IND1	typedef ::_XENUM4_NS::SelectInt<sizeof(IdentPool)>::type IdentOffset;			NWLN \
-	/* Table of offsets into the identifier stringpool. */					\
-IND1	static const IdentOffset identOffsets[size];						NWLN \
-	/* @return Offset into identifier stringpool for this enum-value. */			\
-IND1	static constexpr const IdentOffset* getIdentOffset(Enum value) noexcept			\
-		{ return &identOffsets[static_cast<index_t>(value)]; }				NWLN
-
-/**
- * Callback worker for _XENUM4_DECLS_IDENTPOOL().
- * @hideinitializer
- */
-#define _XENUM4_DECLS_IDENTPOOL_MEMBER(CTXT, IDENT, ...)					\
-IND2	char IDENT[sizeof(#IDENT)];								NWLN
-
-
-// ==============================================================================================
-/**
- * Declare functions to access value properties.
- * @hideinitializer
- */
-#define _XENUM4_DECLS_VALUE_ACCESSORS(CTXT, DECL)						\
-	/* @return Index of an enum value. */							\
-IND1	static constexpr index_t getIndex(Enum value) noexcept					\
-		{ return static_cast<index_t>(value); }						NWLN \
+#define _XENUM4_DECLS_FUNCS(CTXT, DECL)								\
 	/* @return Identifier of an enum value. */						\
-IND1	static constexpr const char* getIdentifier(Enum value) noexcept				\
-		{ return &((const char*)&identPool)[*getIdentOffset(value)]; }			NWLN \
-
-
-// ==============================================================================================
-/**
- * Declare functions to look up values.
- * @hideinitializer
- */
-#define _XENUM4_DECLS_LOOKUP_FUNCS(CTXT, DECL)							\
+IND1	static const char* getIdentifier(Enum value) noexcept;					NWLN \
 	/* Get enum value with given index. */							\
 	/* @param index Enum-value index to retrieve. */					\
 	/* @return Requested enum value. */							\
