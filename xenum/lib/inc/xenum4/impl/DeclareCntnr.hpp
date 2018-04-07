@@ -50,7 +50,6 @@ IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) _value_t;				NWLN
  * Copy native enum declaration from store class.
  * @hideinitializer
  */
-// FIXME: Underscore prefix on everything.
 #define _XENUM4_DECLC_ENUM(CTXT, DECL)								\
 	public:											NWLN \
 IND1		static constexpr const size_t _size = _XENUM4_STORE_NAME(DECL)::size;		NWLN \
@@ -81,7 +80,6 @@ IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTX
  * Declare ctors, comparison operators, other stuff.
  * @hideinitializer
  */
-// FIXME: Underscore prefix on everything.
 #define _XENUM4_DECLC_FUNCS(CTXT, DECL)								\
 	_XENUM4_DECLC_FUNCS_I1(									\
 		CTXT,										\

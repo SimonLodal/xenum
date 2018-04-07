@@ -538,7 +538,7 @@
  *     back to compiling and running.
  *
  * @section Future_Plans Future plans
- * - Support for common compilers.
+ * - Support for more compilers / versions.
  * - Per-enum selection of features to generate, fx. to save the space of string tables if you
  *   do not want conversion to/from string.
  * - Lookup of enum value by custom property value.
@@ -612,16 +612,16 @@
 
 
 /**
- * Declares the header part of an Xenum.
- * @param SUFFIX Suffix of the declaration macros.
+ * Generate the header parts (declarations) of an Xenum.
+ * @param SUFFIX Suffix of your xenum declaration macros.
  * @hideinitializer
  */
 #define XENUM4_DECLARE(SUFFIX)									\
 	_XENUM4_DO_DECLARE(_XENUM4_CTXT_INIT(SUFFIX))
 
 /**
- * Declares the source part of an Xenum.
- * @param SUFFIX Suffix of the declaration macros.
+ * Generate the source parts (definitions) of an Xenum.
+ * @param SUFFIX Suffix of your xenum declaration macros.
  * @hideinitializer
  */
 #define XENUM4_DEFINE(SUFFIX)									\

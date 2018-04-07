@@ -44,7 +44,6 @@
  * context.
  * @hideinitializer
  */
-//#define _XENUM4_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, PROPNAME, SCOPE, CNTNRNAME, Z)
 #define _XENUM4_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_CSTRING_DEFINE									\
 	(											\
@@ -55,10 +54,6 @@
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		Z										\
 	)											\
-
-// FIXME: Funcs?
-
-
 
 
 #endif // _XENUM4_IMPL_CSTRING_HPP
