@@ -258,7 +258,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_GEN_VALUE_INDEXING_0(PROPNAME, DEPTH, Z)					\
-	static_cast<index_t>(index0)
+	getIndex(index0)
 
 /**
  * Generate value indexing expression for a property having depth!=0.

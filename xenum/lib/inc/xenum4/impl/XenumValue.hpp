@@ -47,7 +47,7 @@ public:
 	constexpr Enum operator() (void) const noexcept { return value; }
 
 	/// @return Index of this enum value in it's enum class.
-	constexpr index_t getIndex(void) const noexcept { return static_cast<index_t>(value); }
+	constexpr index_t getIndex(void) const noexcept { return XenumStore::getIndex(value); }
 
 	/// @return Identifier of this enum value.
 	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
@@ -68,6 +68,7 @@ public:
 	constexpr bool operator>= (const XenumValue& other) const noexcept { return value >= other.value; }
 	constexpr bool operator>= (const Enum other) const noexcept { return value >= other; }
 	///@}
+
 protected:
 	/// The native enum value that this object wraps.
 	Enum value;
