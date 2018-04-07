@@ -30,7 +30,6 @@ public:												NWLN \
 		PROPNAME,									\
 		DEPTH,										\
 		_XENUM4_CTXT_GET_PROPDEF(CTXT),							\
-		_XENUM4_CTXT_GET_DECL(CTXT),							\
 		Z										\
 	)
 
@@ -44,8 +43,6 @@ public:												NWLN \
 	(											\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
 		N,										\
-		CTXT,										\
-		_XENUM4_CTXT_GET_DECL(CTXT),							\
 		Z										\
 	)
 
@@ -53,16 +50,13 @@ public:												NWLN \
  * Worker for _XENUM4_CSTRING_DECLV_GET_SIZE_N().
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DECLV_GET_SIZE_I1(PROPNAME, LEVEL, CTXT, DECL, Z)			\
+#define _XENUM4_CSTRING_DECLV_GET_SIZE_I1(PROPNAME, LEVEL, Z)					\
 IND1	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
 		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
 	{											\
-		return										\
-		_XENUM4_DECL_GET_SCOPE(DECL)							\
-		_XENUM4_STORE_NAME(DECL)							\
-		:: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
+		return store_t::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (		\
 			value									\
 			_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
 		);										\
@@ -73,17 +67,14 @@ IND1	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
  * Declares get${propname}() value getter.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DECLV_GET_VALUE(PROPNAME, DEPTH, PROPDEF, DECL, Z)			\
+#define _XENUM4_CSTRING_DECLV_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
 IND1	const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
 	BOOST_PP_CAT(get, PROPNAME) (								\
 		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
 	{											\
-		return										\
-		_XENUM4_DECL_GET_SCOPE(DECL)							\
-		_XENUM4_STORE_NAME(DECL)							\
-		:: BOOST_PP_CAT(get, PROPNAME) (						\
+		return store_t::BOOST_PP_CAT(get, PROPNAME) (					\
 			value									\
 			_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
 		);										\

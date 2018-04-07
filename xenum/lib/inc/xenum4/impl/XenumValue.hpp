@@ -17,9 +17,10 @@ namespace xenum4 {
  */
 template<class XenumStore>
 class XenumValue {
-public:
+protected:
 	/// The container class.
 	typedef XenumStore store_t;
+public:
 	/// Integer type used for enum values.
 	using index_t = typename XenumStore::index_t;
 	/// The native C++ enum class.
