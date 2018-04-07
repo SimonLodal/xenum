@@ -122,7 +122,7 @@ IND1	};											NWLN
  * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_OFFSET(CTXT, IDENT, ...)						\
-IND2	(intptr_t)&((IdentValues_t*)0)->IDENT,							NWLN
+IND2	(IdentIndex_t)offsetof(IdentValues_t, IDENT),						NWLN
 
 /**
  * Worker for _XENUM4_DEFL_IDENT().

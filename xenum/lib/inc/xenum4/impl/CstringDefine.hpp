@@ -310,8 +310,7 @@ _CSTRING_NODE_DATA_0: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA_0_INDEX(INDEXPATH, PROPNAME, CTXT)				\
-	((intptr_t)&((BOOST_PP_CAT(PROPNAME, _Values_t)*)0)->					\
-	_XENUM4_PROP_GEN_NODE_NAME(CTXT, INDEXPATH))
+	(offsetof(BOOST_PP_CAT(PROPNAME, _Values_t), _XENUM4_PROP_GEN_NODE_NAME(CTXT, INDEXPATH)))
 
 
 /**
@@ -359,9 +358,10 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA_1_INDEX_1_DO(INDEXPATH, PROPNAME, CTXT)			\
-	(((intptr_t)&((BOOST_PP_CAT(PROPNAME, _NodeNames_t)*)0)->				\
-	_XENUM4_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0)))			\
-	/ sizeof(BOOST_PP_CAT(PROPNAME, _IndexNode_t)))
+	(offsetof(										\
+		BOOST_PP_CAT(PROPNAME, _NodeNames_t),						\
+		_XENUM4_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
+	) / sizeof(BOOST_PP_CAT(PROPNAME, _IndexNode_t)))
 
 
 // ==================================== LOCAL FUNCTIONS ========================================

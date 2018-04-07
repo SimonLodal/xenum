@@ -571,8 +571,10 @@
 #include <type_traits>
 // For DeclareCntnr, DefineCntnr
 #include <stdexcept>
-// For DefineCntnr
+// For ?
 #include <cstring>
+// For offsetof()
+#include <cstddef>
 // For all generators
 #include <boost/preprocessor.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
