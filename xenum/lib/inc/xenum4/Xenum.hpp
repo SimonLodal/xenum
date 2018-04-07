@@ -47,15 +47,21 @@
  *   source file. The latter is minimal (no duplication of value list or other parameters).
  * - Includes XenumSet; a container with a set of values from an xenum, implemented as a bitset.
  *
- * @section Requirements
- * - Build requirements:
- *   - C++11 compiler. g++-4.9 is fine; use -std=c++11. But do not use -ansi, it
- *     prevents boost.preprocessor's variadic stuff from working.
- *   - Boost.Preprocessor (boost-1.64.0 used).
- * - Runtime requirements: None.
- *
  * @subsection Compilers Supported compilers
- * Currently only g++-4.9. Others may or may not work.
+ * - g++-4.9
+ * - clang-3.5
+ * - Others may or may not work.
+ *
+ * @subsection Platforms Supported platforms
+ * Xenum is being developed on Linux. I have no access to Windows or Mac systems so others
+ * will have to test on those. The Xenum headers should work everywhere but is it possible
+ * that some of the util scripts have some GNU or Unix ism's.
+ *
+ * @subsection Requirements
+ * - Build requirements:
+ *   - C++11 compiler
+ *   - Boost.Preprocessor (boost-1.64.0 used)
+ * - Runtime requirements: None.
  *
  * @section DesignImpl Design / implementation
  * C/C++ enums have always confused me. There is the enum, and then there is the individual

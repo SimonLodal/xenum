@@ -293,9 +293,9 @@ public:
 			, index(index)
 			{}
 		/// Allow begin() to use the protected ctor.
-		friend iterator XenumSet::begin(void);
+		friend iterator XenumSet::begin(void) noexcept;
 		/// Allow end() to use the protected ctor.
-		friend iterator XenumSet::end(void);
+		friend iterator XenumSet::end(void) noexcept;
 	protected:
 		/// XenumSet to iterate.
 		const XenumSet<XenumCntnr>& xenumSet;
