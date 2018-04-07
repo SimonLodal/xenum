@@ -49,67 +49,6 @@ IND1	using BOOST_PP_CAT(PROPNAME, _index_t) = typename store_t::BOOST_PP_CAT(PRO
 	_XENUM4_PLAIN_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)					\
 
 
-// ==================================== FUNC helpers ============================================
-// FIXME: Use common Props.hpp functions instead.
-/**
- * Helper to generate a list with a number of indexN function parameters (1..LEVELS).
- * @hideinitializer
- */
-#define _XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS(CTXT, LEVEL, Z)					\
-	BOOST_PP_CAT(										\
-		_XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS_,						\
-		BOOST_PP_BOOL(LEVEL)								\
-	) (CTXT, LEVEL, Z)
-
-/**
- * Worker for _XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS().
- * Declares no index parameters since level==0.
- * @hideinitializer
- */
-#define _XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS_0(CTXT, LEVEL, Z)					\
-
-/**
- * Worker for _XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS().
- * Generate a function parameter list with a number of indexN parameters (1..LEVELS).
- * @hideinitializer
- */
-#define _XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS_1(CTXT, LEVEL, Z)					\
-	BOOST_PP_REPEAT_ ## Z(									\
-		LEVEL,										\
-		_XENUM4_PLAIN_DECLV_GEN_INDEX_PARM_N,						\
-		CTXT										\
-	)											\
-
-/**
- * Callback worker for _XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS_1() iteration over levels.
- * Generates a single index parameter.
- * @hideinitializer
- */
-#define _XENUM4_PLAIN_DECLV_GEN_INDEX_PARM_N(Z, N, CTXT)					\
-	BOOST_PP_COMMA_IF(BOOST_PP_BOOL(N))							\
-	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), _index_t)	\
-	BOOST_PP_CAT(index, BOOST_PP_INC(N))
-
-
-/**
- * Helper to generate a list with a number of indexN arguments (1..COUNT).
- * @hideinitializer
- */
-#define _XENUM4_PLAIN_DECLV_GEN_INDEX_ARGS(CTXT, COUNT, Z)					\
-	BOOST_PP_REPEAT_ ## Z(									\
-		COUNT,										\
-		_XENUM4_PLAIN_DECLV_GEN_INDEX_ARG_N,						\
-		PROPNAME									\
-	)
-
-/**
- * Helper to generate a single indexN argument.
- * @hideinitializer
- */
-#define _XENUM4_PLAIN_DECLV_GEN_INDEX_ARG_N(Z, N, CTXT)						\
-	, BOOST_PP_CAT(index, BOOST_PP_INC(N))
-
-
 // =================================== FUNC: getSize() ==========================================
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
@@ -162,13 +101,13 @@ IND1	using BOOST_PP_CAT(PROPNAME, _index_t) = typename store_t::BOOST_PP_CAT(PRO
 #define _XENUM4_PLAIN_DECLV_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)				\
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const BOOST_PP_CAT(PROPNAME, _index_t)	\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
-		_XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS(CTXT, LEVEL, Z)				\
+		_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, _index_t), LEVEL, Z)	\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
 	{											\
 		return store_t::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (		\
 			value									\
-			_XENUM4_PLAIN_DECLV_GEN_INDEX_ARGS(CTXT, LEVEL, Z)			\
+			_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
 		);										\
 	}											\
 	NWLN
@@ -183,13 +122,13 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const BOOST_PP_CAT(PROPNAME,
 #define _XENUM4_PLAIN_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)					\
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const BOOST_PP_CAT(PROPNAME, _t&)	\
 	BOOST_PP_CAT(get, PROPNAME) (								\
-		_XENUM4_PLAIN_DECLV_GEN_INDEX_PARMS(CTXT, DEPTH, Z)				\
+		_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, _index_t), DEPTH, Z)	\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
 	{											\
 		return store_t::BOOST_PP_CAT(get, PROPNAME) (					\
 			value									\
-			_XENUM4_PLAIN_DECLV_GEN_INDEX_ARGS(CTXT, DEPTH, Z)			\
+			_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
 		);										\
 	}											\
 	NWLN

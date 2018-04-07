@@ -210,7 +210,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
  */
 #define _XENUM4_PLAIN_DECLS_FUNC_GET_SIZE(PROPNAME, LEVEL, Z)					\
 IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
-	BOOST_PP_CAT(PROPNAME, _index_t&)							\
+	BOOST_PP_CAT(PROPNAME, _index_t)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
