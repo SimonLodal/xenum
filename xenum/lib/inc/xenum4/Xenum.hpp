@@ -154,14 +154,16 @@
  *	Fruit fruit4 = Fruits::_fromIndex(1); // => orange
  *	Fruit fruit5 = Fruits::_fromIdentifier("lemon"); // => lemon (warning: inefficient string lookup)
  *	// Native enum values. Fruits::_Enum is the native C++ enum class.
- *	Fruits::_Enum value1 = Fruits::apple;
- *	Fruits::_Enum value2 = fruit2(); // copy apple
+ *	Fruits::_Enum value1 = Fruits::_Enum::apple;
+ *	Fruits::_Enum value2 = Fruits::orange(); // assign from object
+ *	Fruits::_Enum value5 = fruit5(); // assign from object
  *	@endcode
- *   Note the last one: The () operator on an enum value object returns the native enum value.
+ *   Note the last two: The () operator on an enum value object returns the native enum value.
+ *   Fruits::apple() and Fruits::_Enum::apple both yield the same native enum value.
  * - Access the properties of enum values:
  *	@code
  *	const char* ident = fruit1.getIdentifier(); // identifier is the name
- *	Fruits::index_t = fruit2.getIndex();
+ *	Fruits::_index_t = fruit2.getIndex();
  *	Fruits::_Enum nativeEnumValue = fruit3();
  *	@endcode
  *   These are the only properties that Xenum values have (plus any custom properties).
@@ -179,23 +181,23 @@
  * - Comparison works like with native enum values, and value objects can also compare against
  *   native values.
  *	@code
+ *	if (fruit1 == fruit3) { ... } // true
+ *	if (fruit1 == value1) { ... } // true
  *	if (fruit1 == fruit2) { ... } // false
  *	if (fruit1 != fruit2) { ... } // true
  *	if (fruit1 < fruit2) { ... } // true
  *	if (fruit1 > fruit2) { ... } // false
  *	@endcode
- * - Iterate - notice the parentheses on Fruits() - and notice that you can iterate with a native
- *   enum value or a value object:
+ * - Iterate - notice the parentheses on Fruits():
  *	@code
  *	for (Fruit fruit : Fruits()) { ... }
- *	for (Fruits::_Enum value : Fruits()) { ... }
- *	for (auto value : Fruits()) { ... }
+ *	for (auto fruit : Fruits()) { ... }
  *	@endcode
- *   The last two are the same; the iterator returns native enum values.
+ *   These are the same. The iterator returns enum value objects.
  * - Iterate old style:
  *	@code
- *	for (Fruit::iterator iter = Fruits.begin(); iter != Fruits.end(); ++iter) {
- *		std::cout << iter->getIdentifier() << std::endl;
+ *	for (Fruits::iterator iter = Fruits.begin(); iter != Fruits.end(); ++iter) {
+ *		std::cout << (*iter).getIdentifier() << std::endl;
  *	}
  *	@endcode
  * - Iterate with indexes:
@@ -209,10 +211,10 @@
  *   use the () operator to get the native enum value:
  *	@code
  *	switch (fruit()) { // notice the parentheses, retrieves the native enum value
- *	case Fruits::apple():	...; break;
- *	case Fruits::orange():	...; break;
- *	case Fruits::lemon():	...; break;
- *	default:		...; break;
+ *	case Fruits::apple():		...; break;
+ *	case Fruits::orange():		...; break;
+ *	case Fruits::_Enum::lemon:	...; break;
+ *	default:			...; break;
  *	}
  *	@endcode
  *
@@ -226,7 +228,7 @@
  * Here we extend the xenum with three custom properties:
  * - "Ordinal" of type int, without any default value.
  * - "Sour" of type bool, with default value "false".
- * - "Color" of type string, with default value "varies".
+ * - "Color" of type string, with default value "unknown".
  *
  * @subsection Custom0_Create Create the xenum
  * In your header file:
@@ -268,7 +270,7 @@
  *	@endcode
  *
  * @subsection Custom0_Use Use the xenum
- * A getter function is created for each property:
+ * A getter function is created for each property (in the xenum value class):
  *	@code
  *	const int& getOrdinal() const;
  *	const bool& getSour() const;
@@ -278,7 +280,7 @@
  *	@code
  *	Fruit fruit = Fruits::lemon;
  *	int ord = fruit.getOrdinal(); // => 17
- *	bool sour = fruit.getSource(); // => true
+ *	bool sour = fruit.getSour(); // => true
  *	const char* color = fruit.getColor(); // => "yellow"
  *	@endcode
  *
@@ -295,9 +297,10 @@
  *		(Color, cstring, "black", 1)	\
  *		))
  *	@endcode
- *   - Now the default value is "black", but more importantly, the "1" means that the data has
- *     one dimension, which means a single array of values (0 means data is an immediate value;
- *     this is the default we used in the previous example).
+ *   - Now the default value is "black".
+ *   - More importantly, the "1" means that the data has one dimension, which means a single
+ *     array of values (0 means data is an immediate value; this is the default we used in
+ *     the previous example).
  * - For each enum value, the custom property values are now defined as a list:
  *	@code
  *	#define XENUM_VALS_Fruits(V,C)				\
@@ -346,8 +349,8 @@
  * @section Example_Custom2 Example: Xenum with a multilevel-array custom property
  * You are not limited to one-dimensional arrays; any number of dimensions can be added.
  *
- * Arrays can only be indexed by an integer type, so whatever index 1 means, as opposed to
- * index 0, is up to the context you use it in.
+ * Arrays can only be indexed by an integer type, so whatever the indexes mean is up to the
+ * context you use it in.
  *
  * @subsection Custom2_Create Create the xenum
  * In your header file:

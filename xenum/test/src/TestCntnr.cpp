@@ -61,8 +61,8 @@ TEST_F(TestCntnr, Iteration)
 
 	// New-style iteration
 	index = 0;
-	//for (xenum::Number number : xenum::Numbers()) {
-	for (auto number : xenums::Numbers()) {
+	for (xenums::Number number : xenums::Numbers()) {
+	//for (auto number : xenums::Numbers()) {
 		EXPECT_EQ(index, number.getIndex());
 		index++;
 	}
@@ -72,6 +72,7 @@ TEST_F(TestCntnr, Iteration)
 	index = 0;
 	for (xenums::Numbers::iterator iter = xenums::Numbers::begin();
 	     iter != xenums::Numbers::end(); ++iter) {
+		//EXPECT_EQ(index, (*iter).getIndex());
 		xenums::Number number = *iter;
 		EXPECT_EQ(index, number.getIndex());
 		index++;
