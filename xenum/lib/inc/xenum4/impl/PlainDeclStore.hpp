@@ -17,19 +17,19 @@
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_DECLS_DATA(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
-/* FIXME: This should be private, but it is used in struct ${propname}_ValueNames_t		\
+/* FIXME: This should be private, but it is used in struct ${propname}ValueNames		\
  * which is declared outside this class. */							\
 public:												NWLN \
-IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, _t);		NWLN \
+IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		NWLN \
 private: /* FIXME: Redundant, everything should be private. */					NWLN \
-IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, _valuecount_) = 0			\
+IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 0			\
 		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_VALUES, CTXT);				NWLN \
 /* FIXME: This should be private, but it's size must be compared to struct			\
- * ${propname}_ValueNames_t which is declared outside this class. */				\
+ * ${propname}ValueNames which is declared outside this class. */				\
 public:												NWLN \
-IND1	static const BOOST_PP_CAT(PROPNAME, _t)							\
-		BOOST_PP_CAT(PROPNAME, _values_)						\
-		[BOOST_PP_CAT(PROPNAME, _valuecount_)];						NWLN \
+IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
+		BOOST_PP_CAT(PROPNAME, Values)							\
+		[BOOST_PP_CAT(PROPNAME, ValuesSize)];						NWLN \
 	/* Index-nodes only if depth != 0 */							\
 	BOOST_PP_CAT(_XENUM4_PLAIN_DECLS_NODES_, BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF))) \
 		(CTXT, DECL, PROPDEF, PROPNAME)
@@ -103,22 +103,22 @@ IND1	static const BOOST_PP_CAT(PROPNAME, _t)							\
  */
 #define _XENUM4_PLAIN_DECLS_NODES_1(CTXT, DECL, PROPDEF, PROPNAME)				\
 private: /* FIXME: Redundant, everything should be private. */					NWLN \
-IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, _nodecount_) = 0			\
+IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0			\
 		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_NODES, CTXT);				NWLN \
 IND1	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
-			BOOST_PP_CAT(PROPNAME, _valuecount_),					\
-			BOOST_PP_CAT(PROPNAME, _nodecount_)					\
-		) >::type BOOST_PP_CAT(PROPNAME, _index_t);					NWLN \
-/* FIXME: This should be private, but it is used by struct ${propname}_NodeNames_t		\
+			BOOST_PP_CAT(PROPNAME, ValuesSize),					\
+			BOOST_PP_CAT(PROPNAME, IndexSize)					\
+		) >::type BOOST_PP_CAT(PROPNAME, Index);					NWLN \
+/* FIXME: This should be private, but it is used by struct ${propname}NodeNames			\
  * which is declared outside this class. */							\
 public:												NWLN \
-IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, _index_t)>			\
-		BOOST_PP_CAT(PROPNAME, _IndexNode_t);						NWLN \
+IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
+		BOOST_PP_CAT(PROPNAME, IndexNode);						NWLN \
 /* FIXME: This should be private, but it's size must be compared to struct			\
- * ${propname}_NodeNames_t which is declared outside this class. */				\
+ * ${propname}NodeNames which is declared outside this class. */				\
 public:												NWLN \
-IND1	static const BOOST_PP_CAT(PROPNAME, _IndexNode_t)					\
-		BOOST_PP_CAT(PROPNAME, _nodes_) [BOOST_PP_CAT(PROPNAME, _nodecount_)];		NWLN \
+IND1	static const BOOST_PP_CAT(PROPNAME, IndexNode)						\
+		BOOST_PP_CAT(PROPNAME, IndexNodes) [BOOST_PP_CAT(PROPNAME, IndexSize)];		NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_DECLS_NODES_1(). Called as XENUM_VALS_* callback.
@@ -181,19 +181,19 @@ private: /* FIXME: Redundant, everything should be private. */					NWLN \
  */
 #define _XENUM4_PLAIN_DECLS_FUNC_GET_NODE(PROPNAME, LEVEL, Z)					\
 IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
-	BOOST_PP_CAT(PROPNAME, _IndexNode_t&)							\
+	BOOST_PP_CAT(PROPNAME, IndexNode&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
-			BOOST_PP_CAT(PROPNAME, _index_t),					\
+			BOOST_PP_CAT(PROPNAME, Index),						\
 			LEVEL,									\
 			Z									\
 		)										\
 	) {											\
-		return BOOST_PP_CAT(PROPNAME, _nodes_)[						\
+		return BOOST_PP_CAT(PROPNAME, IndexNodes)[					\
 			_XENUM4_PROP_GEN_NODE_INDEXING(						\
 				PROPNAME,							\
-				BOOST_PP_CAT(PROPNAME, _index_t),				\
+				BOOST_PP_CAT(PROPNAME, Index),					\
 				LEVEL,								\
 				Z								\
 			)									\
@@ -210,11 +210,11 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
  */
 #define _XENUM4_PLAIN_DECLS_FUNC_GET_SIZE(PROPNAME, LEVEL, Z)					\
 IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
-	BOOST_PP_CAT(PROPNAME, _index_t)							\
+	BOOST_PP_CAT(PROPNAME, Index)								\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
-			BOOST_PP_CAT(PROPNAME, _index_t),					\
+			BOOST_PP_CAT(PROPNAME, Index),						\
 			LEVEL,									\
 			Z									\
 		)										\
@@ -235,16 +235,16 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
  */
 #define _XENUM4_PLAIN_DECLS_FUNC_GET_VALUE(PROPNAME, DEPTH, Z)					\
 IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
-	BOOST_PP_CAT(PROPNAME, _t&)								\
+	BOOST_PP_CAT(PROPNAME, Value&)								\
 	BOOST_PP_CAT(get, PROPNAME) (								\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
-			BOOST_PP_CAT(PROPNAME, _index_t),					\
+			BOOST_PP_CAT(PROPNAME, Index),						\
 			DEPTH,									\
 			Z									\
 		)										\
 	) {											\
-		return BOOST_PP_CAT(PROPNAME, _values_)[					\
+		return BOOST_PP_CAT(PROPNAME, Values)[						\
 			BOOST_PP_CAT(								\
 				_XENUM4_PLAIN_GEN_VALUE_INDEXING_,				\
 				BOOST_PP_BOOL(DEPTH)						\

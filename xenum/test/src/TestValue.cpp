@@ -30,8 +30,8 @@ public:
 TEST_F(TestValue, Size)
 {
 	// Make sure we do not accidentally enlarge the enum-value objects.
-	EXPECT_EQ(sizeof(XenumFruits::_index_t), sizeof(XenumFruit));
-	EXPECT_EQ(sizeof(xenums::Fruits::_index_t), sizeof(xenums::Fruit));
+	EXPECT_EQ(sizeof(XenumFruits::_Index), sizeof(XenumFruit));
+	EXPECT_EQ(sizeof(xenums::Fruits::_Index), sizeof(xenums::Fruit));
 }
 
 
@@ -47,27 +47,27 @@ TEST_F(TestValue, CtorAssign)
 	xenums::Fruit fruit2(xenums::Fruits::_Enum::pear);
 	EXPECT_EQ(xenums::Fruits::pear, fruit2);
 	EXPECT_EQ(xenums::Fruits::_Enum::pear, fruit2());
-	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_Enum::pear, fruit2.getIndex());
+	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::pear, fruit2.getIndex());
 
 	// Assignment from native enum value
 	xenums::Fruit fruit3;
 	fruit3 = xenums::Fruits::_Enum::lemon;
 	EXPECT_EQ(xenums::Fruits::lemon, fruit3);
 	EXPECT_EQ(xenums::Fruits::_Enum::lemon, fruit3());
-	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_Enum::lemon, fruit3.getIndex());
+	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::lemon, fruit3.getIndex());
 
 	// Copy ctor
 	xenums::Fruit fruit4(fruit2);
 	EXPECT_EQ(xenums::Fruits::pear, fruit4);
 	EXPECT_EQ(xenums::Fruits::_Enum::pear, fruit4());
-	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_Enum::pear, fruit4.getIndex());
+	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::pear, fruit4.getIndex());
 
 	// Assignment from other enum-value object
 	xenums::Fruit fruit5;
 	fruit5 = fruit3;
 	EXPECT_EQ(xenums::Fruits::lemon, fruit5);
 	EXPECT_EQ(xenums::Fruits::_Enum::lemon, fruit5());
-	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_Enum::lemon, fruit5.getIndex());
+	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::lemon, fruit5.getIndex());
 }
 
 

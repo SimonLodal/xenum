@@ -21,9 +21,9 @@ template<class XenumCntnr>
 class XenumCntnrIterator {
 public:
 	/// Enum-value class.
-	using value_t = typename XenumCntnr::_value_t;
+	using Value = typename XenumCntnr::_Value;
 	/// Integer type used for enum values.
-	using index_t = typename XenumCntnr::_index_t;
+	using Index = typename XenumCntnr::_Index;
 	/// The native C++ enum class.
 	using Enum = typename XenumCntnr::_Enum;
 public:
@@ -31,7 +31,7 @@ public:
 	XenumCntnrIterator(void) noexcept : index(0) {}
 
 	/// Ctor with initialization to a specific enum-value.
-	XenumCntnrIterator(const value_t& value) noexcept : index(value.getIndex()) {}
+	XenumCntnrIterator(const Value& value) noexcept : index(value.getIndex()) {}
 
 	/// Prefix increment operator.
 	XenumCntnrIterator& operator++(void) noexcept { index++; return *this; }
@@ -40,11 +40,11 @@ public:
 	bool operator!=(const XenumCntnrIterator& other) noexcept { return index != other.index; }
 
 	/// Dereference operator.
-	value_t operator*(void) { return XenumCntnr::_fromIndex(index); }
+	Value operator*(void) { return XenumCntnr::_fromIndex(index); }
 protected:
 	/// Ctor with initialization to a specific index.
 	/// Not bounds-checked before dereferenced.
-	XenumCntnrIterator(index_t index) noexcept : index(index) {}
+	XenumCntnrIterator(Index index) noexcept : index(index) {}
 
 	/// Allow begin() to use the protected ctor.
 	friend XenumCntnrIterator XenumCntnr::begin(void) noexcept;
@@ -53,7 +53,7 @@ protected:
 	friend XenumCntnrIterator XenumCntnr::end(void) noexcept;
 protected:
 	/// Current position.
-	index_t index;
+	Index index;
 };
 
 

@@ -19,10 +19,10 @@ template<class XenumStore>
 class XenumValue {
 protected:
 	/// The container class.
-	typedef XenumStore store_t;
+	typedef XenumStore Store;
 public:
 	/// Integer type used for enum values.
-	using index_t = typename XenumStore::index_t;
+	using Index = typename XenumStore::Index;
 	/// The native C++ enum class.
 	using Enum = typename XenumStore::Enum;
 
@@ -47,7 +47,7 @@ public:
 	constexpr Enum operator() (void) const noexcept { return value; }
 
 	/// @return Index of this enum value in it's enum class.
-	constexpr index_t getIndex(void) const noexcept { return XenumStore::getIndex(value); }
+	constexpr Index getIndex(void) const noexcept { return XenumStore::getIndex(value); }
 
 	/// @return Identifier of this enum value.
 	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }

@@ -12,22 +12,22 @@ namespace xenum4 {
 
 /**
  * Multilevel arrays of custom property values are built by IndexNode's.
- * @param index_t An integer type large enough to index and count all values of the
+ * @param Index An integer type large enough to index and count all values of the
  *	custom property, and all IndexNode's of the custom property (whichever is larger).
  */
-template<typename index_t>
+template<typename Index>
 class IndexNode {
 public:
 	/// Integer type for indexing and counting.
-	using type = index_t;
+	using type = Index;
 	/// Number of elements on next level.
-	index_t size;
+	Index size;
 	/// Starting index of elements on next level.
-	index_t index;
+	Index index;
 	/// Get index at next level.
 	/// @param offset Offset relative to this node's index.
 	/// @throws std::out_of_range if offset >= number of elements at next level.
-	index_t getNextIndex(index_t offset) const
+	Index getNextIndex(Index offset) const
 	{
 		if (offset >= size)
 			throw std::out_of_range("Offset >= size");

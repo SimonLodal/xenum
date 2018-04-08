@@ -69,13 +69,13 @@
 
 /**
  * Worker for _XENUM4_IDENT_DEFL_VALUES().
- * Declares the IdentValues_t struct.
+ * Declares the IdentValues struct.
  * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_VALUES_STRUCT(CTXT)							\
 IND1	typedef struct {									NWLN \
 		_XENUM4_CALL_VALS(_XENUM4_IDENT_DEFL_VALUE_NAME, CTXT)				\
-IND1	} IdentValues_t;									NWLN
+IND1	} IdentValues;										NWLN
 
 /**
  * Worker for _XENUM4_IDENT_DEFL_VALUES_STRUCT(); loop function for each enum value.
@@ -91,7 +91,7 @@ IND2	char IDENT[sizeof(#IDENT)];								NWLN
  * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_VALUES_DATA(CTXT)							\
-IND1	constexpr const IdentValues_t identValues = {						NWLN \
+IND1	constexpr const IdentValues identValues = {						NWLN \
 		_XENUM4_CALL_VALS(_XENUM4_IDENT_DEFL_VALUE, CTXT)				NWLN \
 IND1	};											NWLN
 
@@ -111,9 +111,9 @@ IND2	#IDENT,											NWLN
  */
 #define _XENUM4_IDENT_DEFL_OFFSETS(CTXT)							\
 	/* Integer type big enough to hold offsets into the string pool. */			\
-IND1	typedef ::_XENUM4_NS::SelectInt<sizeof(IdentValues_t)>::type IdentIndex_t;		NWLN \
+IND1	typedef ::_XENUM4_NS::SelectInt<sizeof(IdentValues)>::type IdentIndex;			NWLN \
 	/* Table of offsets into the identifier stringpool. */					\
-IND1	constexpr const IdentIndex_t identOffsets[] = {						NWLN \
+IND1	constexpr const IdentIndex identOffsets[] = {						NWLN \
 		_XENUM4_CALL_VALS(_XENUM4_IDENT_DEFL_OFFSET, CTXT)				NWLN \
 IND1	};											NWLN
 
@@ -122,7 +122,7 @@ IND1	};											NWLN
  * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_OFFSET(CTXT, IDENT, ...)						\
-IND2	(IdentIndex_t)offsetof(IdentValues_t, IDENT),						NWLN
+IND2	(IdentIndex)offsetof(IdentValues, IDENT),						NWLN
 
 /**
  * Worker for _XENUM4_DEFL_IDENT().
@@ -130,11 +130,11 @@ IND2	(IdentIndex_t)offsetof(IdentValues_t, IDENT),						NWLN
  * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_FUNCS(CTXT, DECL)							\
-IND1	constexpr const IdentIndex_t getIdentOffset						\
+IND1	constexpr const IdentIndex getIdentOffset						\
 	(_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_CNTNR_NAME(DECL)::_Enum value) noexcept		NWLN \
 IND1	{											NWLN \
 IND2		return identOffsets[static_cast							\
-		<_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_CNTNR_NAME(DECL)::_index_t>		\
+		<_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_CNTNR_NAME(DECL)::_Index>		\
 		(value)];									NWLN \
 IND1	}											NWLN
 
@@ -163,13 +163,13 @@ IND1	}											NWLN
 IND1		return &((const char*)&_XENUM4_IMPL_LOCAL_NS(DECL, )::identValues)		\
 			[_XENUM4_IMPL_LOCAL_NS(DECL, )::getIdentOffset(value)];			NWLN \
 	}											NWLN \
-	SCOPE STORENAME::Enum SCOPE STORENAME::fromIndex(SCOPE STORENAME::index_t index)	NWLN \
+	SCOPE STORENAME::Enum SCOPE STORENAME::fromIndex(SCOPE STORENAME::Index index)		NWLN \
 	{											NWLN \
 IND1		if (index < size)								NWLN \
 IND2			return static_cast<SCOPE STORENAME::Enum>(index);			NWLN \
 IND1		throw std::out_of_range("Index >= size.");					NWLN \
 	}											NWLN \
-	bool SCOPE STORENAME::fromIndex(SCOPE STORENAME::index_t index,				\
+	bool SCOPE STORENAME::fromIndex(SCOPE STORENAME::Index index,				\
 					 ::_XENUM4_NS::XenumValue<STORENAME>& value) noexcept	NWLN \
 	{											NWLN \
 IND1		if (index < size) {								NWLN \
@@ -181,7 +181,7 @@ IND1		return false;									NWLN \
 	SCOPE STORENAME::Enum SCOPE STORENAME::fromIdent(const char* identifier)		NWLN \
 	{											NWLN \
 		/* FIXME: Linear search, terrible performance. */				NWLN \
-IND1		for (index_t index=0; index<size; index++) {					NWLN \
+IND1		for (Index index=0; index<size; index++) {					NWLN \
 IND2			SCOPE VALUENAME value(static_cast<SCOPE STORENAME::Enum>(index));	NWLN \
 IND2			if (strcmp(value.getIdentifier(), identifier) == 0)			NWLN \
 IND3				return value();							NWLN \
@@ -192,7 +192,7 @@ IND1		throw std::out_of_range("No such identifier.");					NWLN \
 					 ::_XENUM4_NS::XenumValue<STORENAME>& value) noexcept	NWLN \
 	{											NWLN \
 		/* FIXME: Linear search, terrible performance. */				NWLN \
-IND1		for (index_t index=0; index<size; index++) {					NWLN \
+IND1		for (Index index=0; index<size; index++) {					NWLN \
 IND2			if (strcmp(SCOPE VALUENAME(static_cast<SCOPE STORENAME::Enum>(index))	\
 				   .getIdentifier(), identifier) != 0)				NWLN \
 IND3				continue;							NWLN \

@@ -21,7 +21,7 @@
 public:												NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
-		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
+		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
 		BOOST_PP_INC(DEPTH),								\
 		_XENUM4_CSTRING_DECLV_GET_SIZE,							\
 		CTXT										\
@@ -56,7 +56,7 @@ IND1	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
 	{											\
-		return store_t::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (		\
+		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
 			value									\
 			_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
 		);										\
@@ -74,7 +74,7 @@ IND1	const _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)*						\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
 	{											\
-		return store_t::BOOST_PP_CAT(get, PROPNAME) (					\
+		return Store::BOOST_PP_CAT(get, PROPNAME) (					\
 			value									\
 			_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
 		);										\

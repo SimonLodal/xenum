@@ -17,12 +17,12 @@
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_DEFINE(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
-	/* FIXME: Also define the _valuecount_ and _nodecount_ integers - ? */			\
+	/* FIXME: Also define the ValuesSize and IndexSize integers - ? */			\
 	constexpr const										\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _t)					\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _values_)				\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)					\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)				\
 		/* Explicit size not needed */							\
-		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _valuecount_)] = */		\
+		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, ValuesSize)] = */			\
 		[] =										\
 		{										NWLN \
 			_XENUM4_PLAIN_VALUES_DATA(CTXT)						\
@@ -58,7 +58,7 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
 // ========================== VALUES DATA TABLE ==============================
 /**
  * Worker for _XENUM4_PLAIN_DEFINE_DATA().
- * Defines the ${propname}_values_ data table.
+ * Defines the ${propname}Values data table.
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_VALUES_DATA(CTXT)								\
@@ -82,21 +82,21 @@ IND1	BOOST_PP_IF(										\
 // ============================= VALUE NAMES =================================
 /**
  * Worker for _XENUM4_PLAIN_DATA_MULTILEVEL_1().
- * Declares the ${propname}_ValueNames_t struct that contains a name for each index in the
- * ${propname}_values_ table.
+ * Declares the ${propname}ValueNames struct that contains a name for each index in the
+ * ${propname}Values table.
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)			\
 	typedef struct										\
 	{ NWLN											\
 		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE_NAME, CTXT)			\
-	} BOOST_PP_CAT(PROPNAME, _ValueNames_t);						\
+	} BOOST_PP_CAT(PROPNAME, ValueNames);							\
 	NWLN											\
 	/* Data and names should match, but it can not hurt to check it again */		\
 	static_assert(										\
-		sizeof(BOOST_PP_CAT(PROPNAME, _ValueNames_t)) == 				\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _values_)),			\
-		"Struct/array size mismatch (Values/ValueNames)."				\
+		sizeof(BOOST_PP_CAT(PROPNAME, ValueNames)) == 					\
+		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),			\
+		"Struct/array size mismatch (ValueNames/Values)."				\
 	);											\
 	NWLN
 
@@ -108,7 +108,7 @@ IND1	BOOST_PP_IF(										\
 #define _XENUM4_PLAIN_VALUE_NAME(ITERPOS, NODE, CTXT)						\
 IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
-	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), _t)		\
+	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value)	\
 	_XENUM4_PROP_GEN_NODE_NAME(CTXT, _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
 	; NWLN
 
@@ -117,8 +117,8 @@ IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 /**
  * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
  * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
- * identical layout; that the placement of node data in the _Nodes table match the names
- * in the _NodeNames_t struct.
+ * identical layout; that the placement of node data in the IndexNodes table match the names
+ * in the NodeNames struct.
  * Note: The root nodes (enum-values) must appear first in the tables so they can be directly
  * indexed by an enum-value.
  * Note: All node iteration sets depth-=1 because we are not iterating leaf values, only nodes.
@@ -206,15 +206,15 @@ IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 // ============================== NODE NAMES =================================
 /**
  * Worker for _XENUM4_PLAIN_DATA_MULTILEVEL_1().
- * Declares the ${propname}_NodeNames_t struct that contains a name for each index in the
- * ${propname}_nodes_ table.
+ * Declares the ${propname}NodeNames struct that contains a name for each index in the
+ * ${propname}IndexNodes table.
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
 	typedef struct										\
 	{ NWLN											\
 		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_NODE_NAME, CTXT)				\
-	} BOOST_PP_CAT(PROPNAME, _NodeNames_t);							\
+	} BOOST_PP_CAT(PROPNAME, NodeNames);							\
 	NWLN
 
 /**
@@ -224,7 +224,7 @@ IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 #define _XENUM4_PLAIN_NODE_NAME(ITERPOS, NODE, CTXT)						\
 IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
-	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), _IndexNode_t)	\
+	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
 	_XENUM4_PROP_GEN_NODE_NAME(								\
 		CTXT,										\
 		_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
@@ -238,24 +238,24 @@ _PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] 
 // =========================== NODES DATA TABLE ==============================
 /**
  * Worker for _XENUM4_PLAIN_DATA_MULTILEVEL_1().
- * Defines the ${propname}_nodes_ node-data table.
+ * Defines the ${propname}IndexNodes node-data table.
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
 	constexpr const										\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _IndexNode_t)				\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _nodes_)				\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNode)				\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)				\
 		/* Explicit size not needed */							\
-		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _nodecount_)] = */			\
+		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexSize)] = */			\
 		[] =										\
 	{ NWLN											\
 		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_NODE_DATA, CTXT)				\
 	};											\
 	NWLN											\
 	static_assert(										\
-		sizeof(BOOST_PP_CAT(PROPNAME, _NodeNames_t)) == 				\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, _nodes_)),			\
-		"Struct/array size mismatch (Nodes/NodeNames)."					\
+		sizeof(BOOST_PP_CAT(PROPNAME, NodeNames)) == 					\
+		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)),			\
+		"Struct/array size mismatch (IndexNodes/NodeNames)."				\
 	);											\
 	NWLN
 
@@ -299,13 +299,13 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
 		_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS),				\
 		BOOST_PP_IF(									\
 			_XENUM4_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS),				\
-			_NodeNames_t,								\
-			_ValueNames_t								\
+			NodeNames,								\
+			ValueNames								\
 		),										\
 		BOOST_PP_IF(									\
 			_XENUM4_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS),				\
-			_IndexNode_t,								\
-			_t									\
+			IndexNode,								\
+			Value									\
 		)										\
 	)
 
@@ -339,19 +339,19 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
 	:: dumpNodes(void) noexcept								NWLN \
 	{											NWLN \
 IND1		std::cout									NWLN \
-IND2			<<BOOST_PP_STRINGIZE(PROPNAME)<<"_nodes_"				NWLN \
-IND2			<<" ("<<BOOST_PP_CAT(PROPNAME, _nodecount_)<<"/"<<sizeof(BOOST_PP_CAT(PROPNAME, _nodes_))<<")"	NWLN \
-IND2			<<" sizeof(IndexNode)="<<sizeof(BOOST_PP_CAT(PROPNAME, _IndexNode_t))	NWLN \
+IND2			<<BOOST_PP_STRINGIZE(PROPNAME)<<"IndexNodes"				NWLN \
+IND2			<<" ("<<BOOST_PP_CAT(PROPNAME, IndexSize)<<"/"<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNodes))<<")"	NWLN \
+IND2			<<" sizeof(IndexNode)="<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNode))	NWLN \
 IND2			<<":"									NWLN \
 IND2			<<std::endl;								NWLN \
-IND2		for (BOOST_PP_CAT(PROPNAME, _index_t) idx=0; idx<BOOST_PP_CAT(PROPNAME, _nodecount_); idx++) { NWLN \
+IND2		for (BOOST_PP_CAT(PROPNAME, Index) idx=0; idx<BOOST_PP_CAT(PROPNAME, IndexSize); idx++) { NWLN \
 IND3			std::cout								NWLN \
 IND4				<<"\t"								NWLN \
 IND4				<<" ["<<(int)idx<<"]"						NWLN \
 IND4				<<" {"								NWLN \
-IND4				<<(int)BOOST_PP_CAT(PROPNAME, _nodes_)[idx].size		NWLN \
+IND4				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].size		NWLN \
 IND4				<<","								NWLN \
-IND4				<<(int)BOOST_PP_CAT(PROPNAME, _nodes_)[idx].index		NWLN \
+IND4				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].index		NWLN \
 IND4				<<"}"								NWLN \
 IND4				<<std::endl;							NWLN \
 IND2		}										NWLN \

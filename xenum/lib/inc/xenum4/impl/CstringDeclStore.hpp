@@ -20,7 +20,7 @@
 private:											NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
-		/* INC() because _Nodes also has indexnodes for the leaf string values */	\
+		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
 		BOOST_PP_INC(DEPTH),								\
 		_XENUM4_CSTRING_DECLS_GET_SIZE,							\
 		PROPNAME									\

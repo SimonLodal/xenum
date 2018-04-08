@@ -57,13 +57,13 @@ IND1	typedef BOOST_PP_IF(									\
 		BOOST_PP_IS_EMPTY(_XENUM4_DECL_GET_INTTYPE(DECL)),				\
 		::_XENUM4_NS::SelectInt<size>::type,						\
 		_XENUM4_DECL_GET_INTTYPE(DECL)							\
-	) index_t;										NWLN \
-IND1	enum class Enum : index_t {								NWLN \
+	) Index;										NWLN \
+IND1	enum class Enum : Index {								NWLN \
 		_XENUM4_CALL_VALS(_XENUM4_DECLS_ENUM_MEMBER, CTXT)				\
 IND1	};											NWLN \
 	/* @return Index of an enum value. */							\
-IND1	static constexpr index_t getIndex(Enum value) noexcept					\
-		{ return static_cast<index_t>(value); }						NWLN \
+IND1	static constexpr Index getIndex(Enum value) noexcept					\
+		{ return static_cast<Index>(value); }						NWLN \
 
 /**
  * Callback worker for _XENUM4_DECLARE_CNTNR_ENUM().
@@ -85,14 +85,14 @@ IND1	static const char* getIdentifier(Enum value) noexcept;					NWLN \
 	/* @param index Enum-value index to retrieve. */					\
 	/* @return Requested enum value. */							\
 	/* @throws std::out_of_range if index >= number of enum values. */			\
-IND1	static Enum fromIndex(index_t index);							NWLN \
+IND1	static Enum fromIndex(Index index);							NWLN \
 	/* Get enum value with given index, without throwing on error. */			\
 	/* @param index Enum-value index to retrieve. */					\
 	/* @param value Return value; is set to the requested */				\
 	/*	enum value, if it exists, else it is not touched. */				\
 	/* @return True if enum-value with given index was found, */				\
 	/*	else false. */									\
-IND1	static bool fromIndex(index_t index,							\
+IND1	static bool fromIndex(Index index,							\
 			::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>& value) noexcept;	NWLN \
 	/* Get enum value with given identifier. */						\
 	/* @param ident Identifier to look up. */						\

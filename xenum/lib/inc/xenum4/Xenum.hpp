@@ -163,7 +163,7 @@
  * - Access the properties of enum values:
  *	@code
  *	const char* ident = fruit1.getIdentifier(); // identifier is the name
- *	Fruits::_index_t = fruit2.getIndex();
+ *	Fruits::_Index index = fruit2.getIndex();
  *	Fruits::_Enum nativeEnumValue = fruit3();
  *	@endcode
  *   These are the only properties that Xenum values have (plus any custom properties).
@@ -202,7 +202,7 @@
  *	@endcode
  * - Iterate with indexes:
  *	@code
- *	for (Fruits::_index_t index = 0; index < Fruits::_size; index++) {
+ *	for (Fruits::_Index index = 0; index < Fruits::_size; index++) {
  *		std::cout << Fruits::_fromIndex(index).getIdentifier() << std::endl;
  *	}
  *	@endcode
@@ -322,7 +322,7 @@
  *	size_t colors = fruit.getColorSize(); // => 2
  *	const char* color0 = fruit.getColor(0); // => "orange"
  *	const char* color1 = fruit.getColor(1); // => "green"
- *	const char* color2 = fruit.getColor(2); // => out-of-bounds exception
+ *	const char* color2 = fruit.getColor(2); // => throws std::out_of_range
  *	@endcode
  *
  * @subsection Custom1_Emptiness Some notes about emptiness
@@ -483,9 +483,9 @@
  * names. This of course assumes that your enum values do not have an underscore prefix.
  *
  * Underscore-prefixed members are:
- *	- \_value_t
+ *	- \_Value
+ *	- \_Index
  *	- \_size
- *	- \_index_t
  *	- \_Enum
  *	- \_fromIndex
  *	- \_fromIdentifier

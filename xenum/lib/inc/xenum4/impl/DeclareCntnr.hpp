@@ -42,7 +42,7 @@
  */
 #define _XENUM4_DECLC_VALUE_T(CTXT, DECL)							\
 	public:											NWLN \
-IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) _value_t;				NWLN
+IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) _Value;				NWLN
 
 
 // ==============================================================================================
@@ -53,7 +53,7 @@ IND1		typedef _XENUM4_DECL_GET_VALUENAME(DECL) _value_t;				NWLN
 #define _XENUM4_DECLC_ENUM(CTXT, DECL)								\
 	public:											NWLN \
 IND1		static constexpr const size_t _size = _XENUM4_STORE_NAME(DECL)::size;		NWLN \
-IND1		using _index_t = typename _XENUM4_STORE_NAME(DECL)::index_t;			NWLN \
+IND1		using _Index = typename _XENUM4_STORE_NAME(DECL)::Index;			NWLN \
 IND1		using _Enum = typename _XENUM4_STORE_NAME(DECL)::Enum;				NWLN \
 
 
@@ -103,9 +103,9 @@ IND1	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTX
 IND1		constexpr CREALNAME (void) noexcept {}						NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	public:											NWLN \
-IND1		static VALUENAME _fromIndex(_index_t index)					\
+IND1		static VALUENAME _fromIndex(_Index index)					\
 			{ return STORENAME::fromIndex(index); }					NWLN \
-IND1		static bool _fromIndex(_index_t index, VALUENAME& value) noexcept		\
+IND1		static bool _fromIndex(_Index index, VALUENAME& value) noexcept			\
 			{ return STORENAME::fromIndex(index, value); }				NWLN \
 IND1		static VALUENAME _fromIdentifier(const char* identifier)			\
 			{ return STORENAME::fromIdent(identifier); }				NWLN \
