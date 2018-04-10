@@ -50,10 +50,22 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_DATA_MULTILEVEL_1(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	_XENUM4_PLAIN_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)			\
-	_XENUM4_PLAIN_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+	_XENUM4_PLAIN_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 	_XENUM4_PLAIN_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
 
+/**
+ * Worker for _XENUM4_PLAIN_DEFINE_DATA_MULTILEVEL_1().
+ * Declares the source-local name structs for the custom property.
+ * @hideinitializer
+ */
+#define _XENUM4_PLAIN_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+	/* The symbols should never become visible outside this source unit. */			\
+	namespace {										\
+	/* Also wrap in named namespace to prevent name clashes. */				\
+	namespace _XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME) {		NWLN \
+	_XENUM4_PLAIN_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)			\
+	_XENUM4_PLAIN_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+	}}											NWLN \
 
 // ========================== VALUES DATA TABLE ==============================
 /**
@@ -87,18 +99,15 @@ IND1	BOOST_PP_IF(										\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)			\
-	typedef struct										\
-	{ NWLN											\
+IND1	typedef struct {									NWLN \
 		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE_NAME, CTXT)			\
-	} BOOST_PP_CAT(PROPNAME, ValueNames);							\
-	NWLN											\
+IND1	} BOOST_PP_CAT(PROPNAME, ValueNames);							NWLN \
 	/* Data and names should match, but it can not hurt to check it again */		\
-	static_assert(										\
+IND1	static_assert(										\
 		sizeof(BOOST_PP_CAT(PROPNAME, ValueNames)) == 					\
 		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),			\
 		"Struct/array size mismatch (ValueNames/Values)."				\
-	);											\
-	NWLN
+	);											NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_VALUES_NAMES(); loop function for each data node.
@@ -106,7 +115,7 @@ IND1	BOOST_PP_IF(										\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_VALUE_NAME(ITERPOS, NODE, CTXT)						\
-IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
+IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
 	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value)	\
 	_XENUM4_PROP_GEN_NODE_NAME(CTXT, _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
@@ -211,18 +220,16 @@ IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
-	typedef struct										\
-	{ NWLN											\
+IND1	typedef struct {									NWLN \
 		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_NODE_NAME, CTXT)				\
-	} BOOST_PP_CAT(PROPNAME, NodeNames);							\
-	NWLN
+IND1	} BOOST_PP_CAT(PROPNAME, NodeNames);							NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_NODES_NAMES().
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_NODE_NAME(ITERPOS, NODE, CTXT)						\
-IND1	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
+IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
 	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
 	_XENUM4_PROP_GEN_NODE_NAME(								\
@@ -248,17 +255,14 @@ _PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] 
 		/* Explicit size not needed */							\
 		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexSize)] = */			\
 		[] =										\
-	{ NWLN											\
+	{											NWLN \
 		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_NODE_DATA, CTXT)				\
-	};											\
-	NWLN											\
+	};											NWLN \
 	static_assert(										\
-		sizeof(BOOST_PP_CAT(PROPNAME, NodeNames)) == 					\
+		sizeof(_XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
 		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)),			\
 		"Struct/array size mismatch (IndexNodes/NodeNames)."				\
-	);											\
-	NWLN
-
+	);											NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_NODES_DATA().
@@ -315,7 +319,7 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  */
 #define _XENUM4_PLAIN_NODE_DATA_INDEX_1_DO(CTXT, PROPNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE)	\
 	(offsetof(										\
-		BOOST_PP_CAT(PROPNAME, NAMESTRUCT),						\
+		_XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME)::BOOST_PP_CAT(PROPNAME, NAMESTRUCT),	\
 		_XENUM4_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
 	) / sizeof(BOOST_PP_CAT(PROPNAME, MEMBERTYPE)))
 
