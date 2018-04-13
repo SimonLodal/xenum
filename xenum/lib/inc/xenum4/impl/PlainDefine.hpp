@@ -102,12 +102,6 @@ IND1	BOOST_PP_IF(										\
 IND1	typedef struct {									NWLN \
 		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE_NAME, CTXT)			\
 IND1	} BOOST_PP_CAT(PROPNAME, ValueNames);							NWLN \
-	/* Data and names should match, but it can not hurt to check it again */		\
-IND1	static_assert(										\
-		sizeof(BOOST_PP_CAT(PROPNAME, ValueNames)) == 					\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),			\
-		"Struct/array size mismatch (ValueNames/Values)."				\
-	);											NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_VALUES_NAMES(); loop function for each data node.
@@ -258,11 +252,6 @@ _PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] 
 	{											NWLN \
 		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_NODE_DATA, CTXT)				\
 	};											NWLN \
-	static_assert(										\
-		sizeof(_XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)),			\
-		"Struct/array size mismatch (IndexNodes/NodeNames)."				\
-	);											NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_NODES_DATA().
@@ -323,6 +312,47 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
 		_XENUM4_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
 	) / sizeof(BOOST_PP_CAT(PROPNAME, MEMBERTYPE)))
 
+
+
+// ==================================== STORE FUNCTIONS ========================================
+// =========================== _check() ==============================
+/**
+ * Worker for _XENUM4_PROP_CHECK_PLAIN().
+ * Defines final checks on data structures.
+ * @hideinitializer
+ */
+#define _XENUM4_PLAIN_CHECK(CXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+	BOOST_PP_CAT(_XENUM4_PLAIN_CHECK_, BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF)))	\
+		(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
+
+/**
+ * Worker for _XENUM4_PLAIN_CHECK().
+ * For depth==0, there is no final checks to be made.
+ * @hideinitializer
+ */
+#define _XENUM4_PLAIN_CHECK_0(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+
+
+/**
+ * Worker for _XENUM4_PLAIN_CHECK().
+ * For depth!=0, do check sizes of generated data.
+ * @hideinitializer
+ */
+#define _XENUM4_PLAIN_CHECK_1(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+IND1	static_assert(										\
+		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, ValueNames)) == 	\
+		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),			\
+		"Struct/array size mismatch (ValueNames / Values)."				\
+	);											NWLN \
+IND1	static_assert(										\
+		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
+		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)),			\
+		"Struct/array size mismatch (NodeNames / IndexNodes)."				\
+	);											NWLN \
+
+/*
+_XENUM4_PLAIN_CHECK: PROPNAME NWLN \
+*/
 
 // ====================================== DEBUG STUFF ===========================================
 /**

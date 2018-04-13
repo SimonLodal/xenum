@@ -101,7 +101,7 @@
 		BOOST_PP_SEQ_SIZE(_XENUM4_DECL_GET_PROPDEFS(DECL)),				\
 		_XENUM4_PROP_DEFINE,								\
 		CTXT										\
-	)
+	)											\
 
 /**
  * Callback for _XENUM4_PROPS_DEFINE() loop.
@@ -128,6 +128,32 @@
 		Z										\
 	)
 
+
+/**
+ * Callback for _XENUM4_DEFS_CHECK() loop.
+ * Generate static_assert() checks for the N'th property.
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_CHECK(Z, N, CTXT)								\
+	_XENUM4_PROP_CHECK_I1									\
+	(											\
+		_XENUM4_CTXT_SET_PROPINDEX(CTXT, N),						\
+		_XENUM4_DECL_GET_PROPDEFN(_XENUM4_CTXT_GET_DECL(CTXT), N),			\
+		Z										\
+	)
+
+/**
+ * Worker for _XENUM4_PROP_CHECK().
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_CHECK_I1(CTXT, PROPDEF, Z)							\
+	BOOST_PP_CAT(_XENUM4_PROP_CHECK_, _XENUM4_PROPDEF_GET_TYPCAT(PROPDEF))			\
+	(											\
+		_XENUM4_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
+		_XENUM4_CTXT_GET_DECL(CTXT),							\
+		PROPDEF,									\
+		Z										\
+	)
 
 
 // ====================================== COMMON UTILS =========================================
@@ -189,7 +215,7 @@
  * Callback worker for _XENUM4_PROP_ITER_VALUES(); loop function for each node.
  * @hideinitializer
  */
-#define _XENUM4_PROP_ITER_VALUES_NODE(CTXT, IDENT, ...)					\
+#define _XENUM4_PROP_ITER_VALUES_NODE(CTXT, IDENT, ...)						\
 	_XENUM4_PROP_ITER_VALUES_NODE_I1							\
 	(											\
 		_XENUM4_GET_VARARG(_XENUM4_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\

@@ -31,16 +31,17 @@
 	)											\
 	class _XENUM4_CNTNR_NAME(DECL);								NWLN \
 	class _XENUM4_STORE_NAME(DECL) {							NWLN \
+private: /* Everything in this class should be private, only accessed by friends. */		NWLN \
 IND1	friend class ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>;			NWLN \
 	BOOST_PP_EXPR_IF(									\
 		_XENUM4_DECL_HAS_PROPS(DECL),							\
 IND1		friend class _XENUM4_DECL_GET_VALUENAME(DECL);					NWLN \
 	)											\
 IND1	friend class _XENUM4_CNTNR_NAME(DECL);							NWLN \
-private: /* Everything in this class should be private, only accessed by friends. */		NWLN \
 		_XENUM4_DECLS_ENUM(CTXT, DECL)							\
 		_XENUM4_DECLS_FUNCS(CTXT, DECL)							\
 		_XENUM4_PROPS_DECLS(CTXT)							\
+		_XENUM4_DECLS_CHECK()								\
 	};											NWLN
 
 
@@ -108,6 +109,16 @@ IND1	static Enum fromIdent(const char* identifier);						NWLN \
 IND1	static bool fromIdent(const char* identifier,						\
 			::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>& value) noexcept;	NWLN \
 
+// ==============================================================================================
+/**
+ * Declare function for static_assert() checks on generated data structures.
+ * The function is never supposed to be called. It should only contain static_assert()'s, which
+ * are evaluated only by the compiler. The static_assert's can technically be placed anywhere,
+ * but they need access to the store class' private members, so needs to be part of it.
+ * @hideinitializer
+ */
+#define _XENUM4_DECLS_CHECK()									\
+IND1	static void _check(void);								NWLN \
 
 
 #endif // _XENUM4_IMPL_DECLARE_STORE_HPP

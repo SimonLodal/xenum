@@ -17,16 +17,13 @@
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_DECLS_DATA(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
-/* FIXME: This should be private, but it is used in struct ${propname}ValueNames		\
+/* Everything should be private, but this is used in struct ${propname}ValueNames		\
  * which is declared outside this class. */							\
 public:												NWLN \
 IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		NWLN \
-private: /* FIXME: Redundant, everything should be private. */					NWLN \
+private:											NWLN \
 IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 0			\
 		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_VALUES, CTXT);				NWLN \
-/* FIXME: This should be private, but it's size must be compared to struct			\
- * ${propname}ValueNames which is declared outside this class. */				\
-public:												NWLN \
 IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
 		BOOST_PP_CAT(PROPNAME, Values)							\
 		[BOOST_PP_CAT(PROPNAME, ValuesSize)];						NWLN \
@@ -102,21 +99,18 @@ IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_DECLS_NODES_1(CTXT, DECL, PROPDEF, PROPNAME)				\
-private: /* FIXME: Redundant, everything should be private. */					NWLN \
 IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0			\
 		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_NODES, CTXT);				NWLN \
 IND1	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
 			BOOST_PP_CAT(PROPNAME, ValuesSize),					\
 			BOOST_PP_CAT(PROPNAME, IndexSize)					\
 		) >::type BOOST_PP_CAT(PROPNAME, Index);					NWLN \
-/* FIXME: This should be private, but it is used by struct ${propname}NodeNames			\
+/* Everything should be private, but this is used by struct ${propname}NodeNames		\
  * which is declared outside this class. */							\
 public:												NWLN \
 IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 		BOOST_PP_CAT(PROPNAME, IndexNode);						NWLN \
-/* FIXME: This should be private, but it's size must be compared to struct			\
- * ${propname}NodeNames which is declared outside this class. */				\
-public:												NWLN \
+private:											NWLN \
 IND1	static const BOOST_PP_CAT(PROPNAME, IndexNode)						\
 		BOOST_PP_CAT(PROPNAME, IndexNodes) [BOOST_PP_CAT(PROPNAME, IndexSize)];		NWLN \
 
@@ -152,7 +146,6 @@ IND1	static const BOOST_PP_CAT(PROPNAME, IndexNode)						\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_DECLS_FUNCS(CTXT, PROPDEF, PROPNAME, Z)					\
-private: /* FIXME: Redundant, everything should be private. */					NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\

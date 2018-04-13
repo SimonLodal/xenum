@@ -235,11 +235,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 IND1	typedef struct {									NWLN \
 		_XENUM4_CSTRING_ITER_NODES(_XENUM4_CSTRING_NODE_NAME, CTXT)			\
 IND1	} BOOST_PP_CAT(PROPNAME, NodeNames);							NWLN \
-IND1	static_assert(										\
-		sizeof(BOOST_PP_CAT(PROPNAME, NodeNames)) ==					\
-		sizeof(BOOST_PP_CAT(PROPNAME, IndexNode)) * BOOST_PP_CAT(PROPNAME, IndexSize),	\
-		"BUG: Struct size mismatch (NodeNames / IndexSize)."				\
-	);											NWLN \
 
 /**
  * Worker for _XENUM4_CSTRING_NODES_NAMES().
@@ -268,12 +263,6 @@ IND1	constexpr BOOST_PP_CAT(PROPNAME, IndexNode) BOOST_PP_CAT(PROPNAME, IndexNod
 	{											NWLN \
 		_XENUM4_CSTRING_ITER_NODES(_XENUM4_CSTRING_NODE_DATA, CTXT)			\
 IND1	};											NWLN \
-	/* Name struct and data table must be identical, and it can not hurt to check */	\
-IND1	static_assert(										\
-		sizeof(BOOST_PP_CAT(PROPNAME, NodeNames)) == 					\
-		sizeof(BOOST_PP_CAT(PROPNAME, IndexNodes)),					\
-		"BUG: Struct/array size mismatch (NodeNames / IndexNodes)."			\
-	);											NWLN \
 
 /**
  * Worker for _XENUM4_CSTRING_NODES_DATA().
@@ -505,6 +494,30 @@ IND1		return &(									\
 			.index									\
 		];										NWLN \
 	}											NWLN
+
+
+// =========================== _check() ==============================
+/**
+ * Worker for _XENUM4_PROP_CHECK_CSTRING().
+ * Defines final checks on data structures.
+ * @hideinitializer
+ */
+#define _XENUM4_CSTRING_CHECK(CXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+IND1	static_assert(										\
+		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
+		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexNode)) *	\
+		_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexSize),	\
+		"BUG: Struct size mismatch (NodeNames / IndexSize)."				\
+	);											NWLN \
+IND1	static_assert(										\
+		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
+		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexNodes)),	\
+		"BUG: Struct/array size mismatch (NodeNames / IndexNodes)."			\
+	);											NWLN \
+
+/*
+_XENUM4_CSTRING_CHECK: PROPNAME NWLN \
+*/
 
 
 #endif // _XENUM4_IMPL_CSTRING_DEFINE_HPP

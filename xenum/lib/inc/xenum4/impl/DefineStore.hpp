@@ -18,7 +18,7 @@
  * @hideinitializer
  */
 #define _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)							\
-	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_XenumImpl_, _XENUM4_DECL_GET_CNTNRNAME(DECL)), _), PROPNAME)
+	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_XenumImplNs_, _XENUM4_DECL_GET_SUFFIX(DECL)), _), PROPNAME)
 
 
 // ==============================================================================================
@@ -31,6 +31,7 @@
 	_XENUM4_DEFL_IDENT(CTXT, DECL)								\
 	_XENUM4_DEFS_FUNCS(CTXT, DECL)								\
 	_XENUM4_PROPS_DEFINE(CTXT, DECL)							\
+	_XENUM4_DEFS_CHECK(CTXT, DECL)								\
 
 
 // ==============================================================================================
@@ -201,6 +202,43 @@ IND2			return true;								NWLN \
 IND1		}										NWLN \
 IND1		return false;									NWLN \
 	}											NWLN \
+
+
+// ==============================================================================================
+/**
+ * Define static_assert() checks on generated data structures.
+ * @hideinitializer
+ */
+#define _XENUM4_DEFS_CHECK(CTXT, DECL)								\
+	_XENUM4_DEFS_CHECK_I1(									\
+		CTXT,										\
+		DECL,										\
+		_XENUM4_DECL_GET_SCOPE(DECL),							\
+		_XENUM4_STORE_NAME(DECL),							\
+		_XENUM4_DECL_GET_VALUENAME(DECL)						\
+	)
+
+/**
+ * Worker for _XENUM4_DEFS_CHECK().
+ * @hideinitializer
+ */
+#define _XENUM4_DEFS_CHECK_I1(CTXT, DECL, SCOPE, STORENAME, VALUENAME)				\
+	void SCOPE STORENAME::_check(void)							\
+	{											NWLN \
+IND1		static_assert(									\
+			sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, )::identOffsets) ==			\
+			SCOPE STORENAME ::size *						\
+			sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, )::IdentIndex),			\
+			"BUG: Struct size mismatch (identOffsets / size)."			\
+		);										NWLN \
+		BOOST_PP_REPEAT									\
+		(										\
+			BOOST_PP_SEQ_SIZE(_XENUM4_DECL_GET_PROPDEFS(DECL)),			\
+			_XENUM4_PROP_CHECK,							\
+			CTXT									\
+		)										\
+	}											NWLN \
+
 
 
 #endif // _XENUM4_IMPL_DEFINE_STORE_HPP

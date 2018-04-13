@@ -56,7 +56,22 @@
 	)											\
 	_XENUM4_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
 
-
+/**
+ * Entry point for defining final checks for a custom property of plain type, in source file
+ * context.
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_CHECK_PLAIN(CTXT, DECL, PROPDEF, Z)					\
+	_XENUM4_PLAIN_CHECK									\
+	(											\
+		CTXT,										\
+		DECL,										\
+		PROPDEF,									\
+		_XENUM4_DECL_GET_SCOPE(DECL),							\
+		_XENUM4_STORE_NAME(DECL),							\
+		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
+		Z										\
+	)											\
 
 
 #endif // _XENUM4_IMPL_PLAIN_HPP

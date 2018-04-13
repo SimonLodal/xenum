@@ -11,34 +11,40 @@
 
 
 /**
+ * @return SUFFIX that the xenum is declared with.
+ * @hideinitializer
+ */
+#define _XENUM4_DECL_GET_SUFFIX(DECL)		BOOST_PP_SEQ_ELEM(0, DECL)
+
+/**
  * @return SCOPE field of the xenum declaration.
  * @hideinitializer
  */
-#define _XENUM4_DECL_GET_SCOPE(DECL)		BOOST_PP_SEQ_ELEM(0, DECL)
+#define _XENUM4_DECL_GET_SCOPE(DECL)		BOOST_PP_SEQ_ELEM(1, DECL)
 
 /**
  * @return CNTNRNAME field of the xenum declaration.
  * @hideinitializer
  */
-#define _XENUM4_DECL_GET_CNTNRNAME(DECL)	BOOST_PP_SEQ_ELEM(1, DECL)
+#define _XENUM4_DECL_GET_CNTNRNAME(DECL)	BOOST_PP_SEQ_ELEM(2, DECL)
 
 /**
  * @return VALUENAME field of the xenum declaration.
  * @hideinitializer
  */
-#define _XENUM4_DECL_GET_VALUENAME(DECL)	BOOST_PP_SEQ_ELEM(2, DECL)
+#define _XENUM4_DECL_GET_VALUENAME(DECL)	BOOST_PP_SEQ_ELEM(3, DECL)
 
 /**
  * @return INTTYPE field of the xenum declaration.
  * @hideinitializer
  */
-#define _XENUM4_DECL_GET_INTTYPE(DECL)		BOOST_PP_SEQ_ELEM(3, DECL)
+#define _XENUM4_DECL_GET_INTTYPE(DECL)		BOOST_PP_SEQ_ELEM(4, DECL)
 
 /**
  * @return FEATURES "object" of the xenum declaration.
  * @hideinitializer
  */
-#define _XENUM4_DECL_GET_FEATURES(DECL)		BOOST_PP_SEQ_ELEM(4, DECL)
+#define _XENUM4_DECL_GET_FEATURES(DECL)		BOOST_PP_SEQ_ELEM(5, DECL)
 
 /**
  * @return 0|1 if the xenum declaration contains any custom properties.
@@ -50,7 +56,7 @@
  * @return PROPDEFS field of the xenum declaration.
  * @hideinitializer
  */
-#define _XENUM4_DECL_GET_PROPDEFS(DECL)		BOOST_PP_SEQ_ELEM(5, DECL)
+#define _XENUM4_DECL_GET_PROPDEFS(DECL)		BOOST_PP_SEQ_ELEM(6, DECL)
 
 /**
  * Convenience getter.
@@ -68,6 +74,7 @@
  * @hideinitializer
  */
 #define _XENUM4_DECL_INIT(SUFFIX)								\
+	(SUFFIX)										\
 	_XENUM4_DECL_INIT_DO(SUFFIX, BOOST_PP_TUPLE_ENUM(BOOST_PP_CAT(XENUM_DECL_, SUFFIX)))
 
 /**
