@@ -13,10 +13,11 @@
 // ======================================== DATA ================================================
 /**
  * Worker for _XENUM4_PROP_DEFINE_PLAIN().
- * Defines all the data and functions of a single custom property, for "plain" data types.
+ * Defines all the data and functions of a single custom property, for "plain" data types,
+ * implemented in header.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DEFINE(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+#define _XENUM4_PLAIN_HDR_DEFINE(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
 	/* FIXME: Also define the ValuesSize and IndexSize integers - ? */			\
 	constexpr const										\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)					\
@@ -25,10 +26,10 @@
 		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, ValuesSize)] = */			\
 		[] =										\
 		{										NWLN \
-			_XENUM4_PLAIN_VALUES_DATA(CTXT)						\
+			_XENUM4_PLAIN_HDR_VALUES_DATA(CTXT)					\
 		};										NWLN \
 	BOOST_PP_CAT(										\
-		_XENUM4_PLAIN_DATA_MULTILEVEL_,							\
+		_XENUM4_PLAIN_HDR_DATA_MULTILEVEL_,						\
 		BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF))				\
 	) (CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
 
@@ -41,7 +42,7 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
  * Defines nothing since the custom property has depth==0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DATA_MULTILEVEL_0(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
+#define _XENUM4_PLAIN_HDR_DATA_MULTILEVEL_0(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
 
 
 /**
@@ -49,22 +50,22 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
  * Defines the data of a single multilevel custom property (only when depth!=0).
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DATA_MULTILEVEL_1(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	_XENUM4_PLAIN_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	_XENUM4_PLAIN_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+#define _XENUM4_PLAIN_HDR_DATA_MULTILEVEL_1(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)	\
+	_XENUM4_PLAIN_HDR_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+	_XENUM4_PLAIN_HDR_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 
 /**
  * Worker for _XENUM4_PLAIN_DEFINE_DATA_MULTILEVEL_1().
  * Declares the source-local name structs for the custom property.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+#define _XENUM4_PLAIN_HDR_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
 	/* Also wrap in named namespace to prevent name clashes. */				\
 	namespace _XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME) {		NWLN \
-	_XENUM4_PLAIN_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)			\
-	_XENUM4_PLAIN_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+	_XENUM4_PLAIN_HDR_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)		\
+	_XENUM4_PLAIN_HDR_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 	}}											NWLN \
 
 // ========================== VALUES DATA TABLE ==============================
@@ -73,8 +74,8 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
  * Defines the ${propname}Values data table.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_VALUES_DATA(CTXT)								\
-	_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE_DATA, CTXT)
+#define _XENUM4_PLAIN_HDR_VALUES_DATA(CTXT)							\
+	_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_HDR_VALUE_DATA, CTXT)
 
 /**
  * Callback worker for values iteration.
@@ -82,7 +83,7 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
  * @hideinitializer
  */
 // FIXME: What kind of error does it produce when there is no value and no default?
-#define _XENUM4_PLAIN_VALUE_DATA(ITERPOS, NODE, CTXT)						\
+#define _XENUM4_PLAIN_HDR_VALUE_DATA(ITERPOS, NODE, CTXT)					\
 IND1	BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(NODE),							\
 		_XENUM4_PROPDEF_GET_DEFAULTVALUE(_XENUM4_CTXT_GET_PROPDEF(CTXT)),		\
@@ -98,9 +99,9 @@ IND1	BOOST_PP_IF(										\
  * ${propname}Values table.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)			\
+#define _XENUM4_PLAIN_HDR_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)		\
 IND1	typedef struct {									NWLN \
-		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE_NAME, CTXT)			\
+		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_HDR_VALUE_NAME, CTXT)			\
 IND1	} BOOST_PP_CAT(PROPNAME, ValueNames);							NWLN \
 
 /**
@@ -108,7 +109,7 @@ IND1	} BOOST_PP_CAT(PROPNAME, ValueNames);							NWLN \
  * Declares a single value name.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_VALUE_NAME(ITERPOS, NODE, CTXT)						\
+#define _XENUM4_PLAIN_HDR_VALUE_NAME(ITERPOS, NODE, CTXT)					\
 IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
 	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value)	\
@@ -213,16 +214,16 @@ IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
  * ${propname}IndexNodes table.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+#define _XENUM4_PLAIN_HDR_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 IND1	typedef struct {									NWLN \
-		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_NODE_NAME, CTXT)				\
+		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_HDR_NODE_NAME, CTXT)			\
 IND1	} BOOST_PP_CAT(PROPNAME, NodeNames);							NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_NODES_NAMES().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_NODE_NAME(ITERPOS, NODE, CTXT)						\
+#define _XENUM4_PLAIN_HDR_NODE_NAME(ITERPOS, NODE, CTXT)					\
 IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
 	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
 	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
@@ -242,7 +243,7 @@ _PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] 
  * Defines the ${propname}IndexNodes node-data table.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
+#define _XENUM4_PLAIN_HDR_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 	constexpr const										\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNode)				\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)				\
@@ -250,20 +251,20 @@ _PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] 
 		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexSize)] = */			\
 		[] =										\
 	{											NWLN \
-		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_NODE_DATA, CTXT)				\
+		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_HDR_NODE_DATA, CTXT)			\
 	};											NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_NODES_DATA().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_NODE_DATA(ITERPOS, NODE, CTXT)						\
+#define _XENUM4_PLAIN_HDR_NODE_DATA(ITERPOS, NODE, CTXT)					\
 IND1	{											\
 		/* Size */									\
 		_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),				\
 		/* Index */									\
 		BOOST_PP_CAT(									\
-			_XENUM4_PLAIN_NODE_DATA_INDEX_,						\
+			_XENUM4_PLAIN_HDR_NODE_DATA_INDEX_,					\
 			BOOST_PP_BOOL(_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))	\
 		) (ITERPOS, CTXT)								\
 	},											\
@@ -277,7 +278,7 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  * Define IndexNode.index to 0 since node has no children.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_NODE_DATA_INDEX_0(ITERPOS, CTXT)						\
+#define _XENUM4_PLAIN_HDR_NODE_DATA_INDEX_0(ITERPOS, CTXT)					\
 	0
 
 /**
@@ -285,8 +286,8 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  * Define IndexNode.index as an offset expression into a names struct.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_NODE_DATA_INDEX_1(ITERPOS, CTXT)						\
-	_XENUM4_PLAIN_NODE_DATA_INDEX_1_DO(							\
+#define _XENUM4_PLAIN_HDR_NODE_DATA_INDEX_1(ITERPOS, CTXT)					\
+	_XENUM4_PLAIN_HDR_NODE_DATA_INDEX_1_DO(							\
 		CTXT,										\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
 		_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS),				\
@@ -306,7 +307,7 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  * Worker for _XENUM4_PLAIN_NODE_VALUE_INDEX_1().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_NODE_DATA_INDEX_1_DO(CTXT, PROPNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE)	\
+#define _XENUM4_PLAIN_HDR_NODE_DATA_INDEX_1_DO(CTXT, PROPNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE)	\
 	(offsetof(										\
 		_XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME)::BOOST_PP_CAT(PROPNAME, NAMESTRUCT),	\
 		_XENUM4_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
@@ -321,8 +322,8 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  * Defines final checks on data structures.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_CHECK(CXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
-	BOOST_PP_CAT(_XENUM4_PLAIN_CHECK_, BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF)))	\
+#define _XENUM4_PLAIN_HDR_CHECK(CXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+	BOOST_PP_CAT(_XENUM4_PLAIN_HDR_CHECK_, BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF)))	\
 		(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
 
 /**
@@ -330,7 +331,7 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  * For depth==0, there is no final checks to be made.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_CHECK_0(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+#define _XENUM4_PLAIN_HDR_CHECK_0(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 
 
 /**
@@ -338,7 +339,7 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  * For depth!=0, do check sizes of generated data.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_CHECK_1(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+#define _XENUM4_PLAIN_HDR_CHECK_1(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 IND1	static_assert(										\
 		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, ValueNames)) == 	\
 		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),			\

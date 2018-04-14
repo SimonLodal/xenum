@@ -4,7 +4,7 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  *
- * Implementation of declarations in value class context, for "plain" data type category.
+ * Declarations in value class context, for "plain" data type category.
  */
 #ifndef _XENUM4_IMPL_PLAIN_DECL_VALUE_HPP
 #define _XENUM4_IMPL_PLAIN_DECL_VALUE_HPP
@@ -14,27 +14,27 @@
 // ========================================== TYPES =============================================
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
- * Declares the types related to a single custom property, in value class.
+ * Declares the types related to a single custom property, implemented in header.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_TYPES(PROPNAME, DEPTH)						\
+#define _XENUM4_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
 public:												NWLN \
 IND1	using BOOST_PP_CAT(PROPNAME, Value) = typename Store::BOOST_PP_CAT(PROPNAME, Value);	NWLN \
-	BOOST_PP_CAT(_XENUM4_PLAIN_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PROPNAME)		\
+	BOOST_PP_CAT(_XENUM4_PLAIN_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PROPNAME)		\
 
 /**
  * Worker for _XENUM4_PLAIN_DECLV_TYPES().
  * Declares nothing since the property has depth=0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_INDEX_T_0(PROPNAME)							\
+#define _XENUM4_PLAIN_HDR_DECLV_INDEX_T_0(PROPNAME)						\
 
 /**
  * Worker for _XENUM4_PLAIN_DECLV_TYPES().
  * Declares the ${propname}Index type since the property has depth!=0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_INDEX_T_1(PROPNAME)							\
+#define _XENUM4_PLAIN_HDR_DECLV_INDEX_T_1(PROPNAME)						\
 IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME, Index);	NWLN \
 
 
@@ -44,9 +44,9 @@ IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME
  * Declares the functions related to a single custom property, in value class.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
-	_XENUM4_PLAIN_DECLV_GET_SIZE(DEPTH, CTXT, Z)						\
-	_XENUM4_PLAIN_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)					\
+#define _XENUM4_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+	_XENUM4_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
+	_XENUM4_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
 
 
 // =================================== FUNC: getSize() ==========================================
@@ -55,9 +55,9 @@ IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME
  * Declares the get${propname}Size() getter for each level.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_GET_SIZE(DEPTH, CTXT, Z)						\
+#define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
 	BOOST_PP_CAT(										\
-		_XENUM4_PLAIN_DECLV_GET_SIZE_,							\
+		_XENUM4_PLAIN_HDR_DECLV_GET_SIZE_,						\
 		BOOST_PP_BOOL(DEPTH)								\
 	) (DEPTH, CTXT, Z)
 
@@ -66,27 +66,27 @@ IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME
  * Declares nothing since depth==0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_GET_SIZE_0(DEPTH, CTXT, Z)						\
+#define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_0(DEPTH, CTXT, Z)					\
 
 /**
- * Worker for _XENUM4_PLAIN_DECLV_GET_SIZE().
+ * Worker for _XENUM4_PLAIN_HDR_DECLV_GET_SIZE().
  * Declares getters since depth!=0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_GET_SIZE_1(DEPTH, CTXT, Z)						\
+#define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_1(DEPTH, CTXT, Z)					\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\
-		_XENUM4_PLAIN_DECLV_GET_SIZE_N,							\
+		_XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N,						\
 		CTXT										\
 	)
 
 /**
- * Worker for _XENUM4_PLAIN_DECLV_GET_SIZE_1().
+ * Worker for _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_1().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_GET_SIZE_N(Z, N, CTXT)						\
-	_XENUM4_PLAIN_DECLV_GET_SIZE_N_I1							\
+#define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N(Z, N, CTXT)						\
+	_XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1							\
 	(											\
 		CTXT,										\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
@@ -95,10 +95,10 @@ IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME
 	)
 
 /**
- * Worker for _XENUM4_PLAIN_DECLV_FUNC_GET_SIZE_N().
+ * Worker for _XENUM4_PLAIN_HDR_DECLV_FUNC_GET_SIZE_N().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)				\
+#define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)				\
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const BOOST_PP_CAT(PROPNAME, Index)	\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
 		_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), LEVEL, Z)		\
@@ -119,7 +119,7 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const BOOST_PP_CAT(PROPNAME,
  * Declares the get${propname}() value getter.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)					\
+#define _XENUM4_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
 IND1	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const BOOST_PP_CAT(PROPNAME, Value&)	\
 	BOOST_PP_CAT(get, PROPNAME) (								\
 		_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), DEPTH, Z)		\

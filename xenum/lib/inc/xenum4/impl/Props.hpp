@@ -11,6 +11,7 @@
 #define _XENUM4_IMPL_PROPS_HPP
 
 
+
 // =============================== DECLARATION IN STORE CLASS ==================================
 /**
  * Main entry point for declaring custom properties on the enum values.
