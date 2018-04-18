@@ -596,6 +596,7 @@
 #include <boost/preprocessor.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
 
+#include <xenum4/impl/Debug.hpp>
 #include <xenum4/impl/Util.hpp>
 #include <xenum4/impl/SelectInt.hpp>
 #include <xenum4/impl/XenumCntnrIterator.hpp>
@@ -628,7 +629,9 @@
  * @hideinitializer
  */
 #define XENUM4_DECLARE(SUFFIX)									\
-	_XENUM4_DO_DECLARE(_XENUM4_CTXT_INIT(SUFFIX))
+	_XENUM4_MARK(declare SUFFIX begin)							\
+	_XENUM4_DO_DECLARE(_XENUM4_CTXT_INIT(SUFFIX))						\
+	_XENUM4_MARK(declare SUFFIX end)							\
 
 /**
  * Generate the source parts (definitions) of an Xenum.
@@ -636,7 +639,9 @@
  * @hideinitializer
  */
 #define XENUM4_DEFINE(SUFFIX)									\
-	_XENUM4_DO_DEFINE(_XENUM4_CTXT_INIT(SUFFIX))
+	_XENUM4_MARK(define SUFFIX begin)							\
+	_XENUM4_DO_DEFINE(_XENUM4_CTXT_INIT(SUFFIX))						\
+	_XENUM4_MARK(define SUFFIX end)								\
 
 
 // Doxygen trouble: Everything below is internal. Would like to hide it from doxygen, but would

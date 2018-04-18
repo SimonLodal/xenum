@@ -11,32 +11,6 @@ namespace xenum4 {
 
 
 // ===================================================================================================
-#if XENUM4_DEBUG_PP
-/// In debug mode, inserts a newline. Else empty.
-#define NWLN @\n@
-/// In debug mode, inserts a single indentation level. Else empty.
-#define IND1 @\t@
-/// In debug mode, inserts two indentation levels. Else empty.
-#define IND2 @\t\t@
-/// In debug mode, inserts three indentation levels. Else empty.
-#define IND3 @\t\t\t@
-/// In debug mode, inserts three indentation levels. Else empty.
-#define IND4 @\t\t\t\t@
-#else
-/// In debug mode, inserts a newline. Else empty.
-#define NWLN 
-/// In debug mode, inserts a single indentation level. Else empty.
-#define IND1 
-/// In debug mode, inserts two indentation levels. Else empty.
-#define IND2 
-/// In debug mode, inserts three indentation levels. Else empty.
-#define IND3 
-/// In debug mode, inserts three indentation levels. Else empty.
-#define IND4 
-#endif
-
-
-// ===================================================================================================
 /**
  * Report an error. This is tricky since we have no stderr channel, and sometimes not even a
  * stdout; any output from a macro may be gobbled up and discarded by the caller. So this only
