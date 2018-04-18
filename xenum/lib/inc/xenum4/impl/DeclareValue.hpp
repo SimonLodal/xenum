@@ -4,8 +4,8 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  */
-#ifndef _XENUM3_IMPL_DECLARE_VALUE_HPP
-#define _XENUM3_IMPL_DECLARE_VALUE_HPP
+#ifndef _XENUM4_IMPL_DECLARE_VALUE_HPP
+#define _XENUM4_IMPL_DECLARE_VALUE_HPP
 
 
 // ==============================================================================================
@@ -13,20 +13,13 @@
  * Declare the enum-value class.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_VALUE(CTXT)								\
-	_XENUM3_DECLARE_VALUE_DO(CTXT, _XENUM3_CTXT_GET_DECL(CTXT))
-
-/**
- * Worker for _XENUM3_DECLARE_VALUE().
- * @hideinitializer
- */
-#define _XENUM3_DECLARE_VALUE_DO(CTXT, DECL)							\
+#define _XENUM4_DECLARE_VALUE(CTXT, DECL)							\
 	BOOST_PP_CAT(										\
-		_XENUM3_DECLARE_VALUE_,								\
-		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM3_DECL_GET_PROPDEFS(DECL)))		\
+		_XENUM4_DECLARE_VALUE_,								\
+		_XENUM4_DECL_HAS_PROPS(DECL)							\
 	) (CTXT, DECL)
 /*
-_DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM3_DECL_GET_PROPDEFS(DECL))) NWLN \
+_DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM4_DECL_GET_PROPDEFS(DECL))) NWLN \
 */
 
 // ==============================================================================================
@@ -35,9 +28,9 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * For enums that do not have custom properties.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_VALUE_0(CTXT, DECL)							\
-	typedef ::_XENUM3_NS::XenumValue<_XENUM3_DECL_GET_CNTNRNAME(DECL)>			\
-		_XENUM3_DECL_GET_VALUENAME(DECL);
+#define _XENUM4_DECLARE_VALUE_0(CTXT, DECL)							\
+	typedef ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>				\
+		_XENUM4_DECL_GET_VALUENAME(DECL);						NWLN
 
 
 // ==============================================================================================
@@ -47,27 +40,24 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * Adds getters for the custom properties.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_VALUE_1(CTXT, DECL)							\
-class _XENUM3_DECL_GET_VALUENAME(DECL)								\
-	: public ::_XENUM3_NS::XenumValue<_XENUM3_DECL_GET_CNTNRNAME(DECL)> {			NWLN \
-	_XENUM3_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM3_DECL_GET_VALUENAME(DECL))			\
-public:												NWLN \
-	_XENUM3_PROPS_DECLV(CTXT)								\
+#define _XENUM4_DECLARE_VALUE_1(CTXT, DECL)							\
+class _XENUM4_DECL_GET_VALUENAME(DECL)								\
+	: public ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)> {				NWLN \
+	_XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM4_DECL_GET_VALUENAME(DECL))			\
+	_XENUM4_PROPS_DECLV(CTXT)								\
 };												\
 NWLN
 
 /**
- * Worker for _XENUM3_DECLARE_VALUE_1().
+ * Worker for _XENUM4_DECLARE_VALUE_1().
  * Creates ctors; we need to copy all the ctors of the base class.
  * @hideinitializer
  */
-#define _XENUM3_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
+#define _XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
 public:												NWLN \
 IND1	constexpr VALUENAME(void) noexcept {}							NWLN \
 IND1	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}				NWLN \
 IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}		NWLN \
 
 
-
-
-#endif // _XENUM3_IMPL_DECLARE_VALUE_HPP
+#endif // _XENUM4_IMPL_DECLARE_VALUE_HPP

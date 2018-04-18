@@ -1,8 +1,10 @@
 #!/bin/sh
 #
-# xenum-inspect - run the $CPP preprocessor on a selected header or source file,
+# xenum-inspect - run the preprocessor on a selected header or source file,
 # and run it through xenum-postprocess to make it readable, so you can inspect
 # the generated C++ code and data.
+#
+# Env-var CCC is the compiler name, defaults to g++.
 #
 # Copyright 2018 Simon Lodal <simonl@parknet.dk>
 # 
@@ -31,7 +33,7 @@ INC="${INC} -I xenum/test/inc/"
 # To use the local Xenum.hpp, not the system-installed one.
 INC="${INC} -I xenum/lib/inc/"
 
-if [ -z "$CPP" ]; then
-	CPP=cpp
+if [ -z "$CCC" ]; then
+	CCC=g++
 fi
-$CPP -x c++ -std=c++11 -P -DXENUM_DEBUG_PP=1 $INC $1 | util/xenum-postprocess "$marker"
+$CCC -E -x c++ -std=c++11 -P -DXENUM4_DEBUG_PP=1 $INC $1 | util/xenum-postprocess "$marker"

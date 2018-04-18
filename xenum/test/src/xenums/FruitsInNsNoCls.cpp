@@ -7,5 +7,5 @@
 
 #include <test/xenum/xenums/FruitsInNsNoCls.hpp>
 
-XENUM3_DEFINE(Fruits_InNsNoCls)
+XENUM4_DEFINE(Fruits_InNsNoCls)
 

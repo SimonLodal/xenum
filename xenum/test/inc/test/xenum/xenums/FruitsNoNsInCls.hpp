@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_FRUITSNONSINCLS_HPP
 
 #include <cstdint>
-#include <xenum3/Xenum.hpp>
+#include <xenum4/Xenum.hpp>
 
 
 class XenumWrapNoNs {
@@ -18,7 +18,7 @@ public:
 	V(C, banana)				\
 	V(C, orange)				\
 	V(C, peanut)
-XENUM3_DECLARE(Fruits_NoNsInCls)
+XENUM4_DECLARE(Fruits_NoNsInCls)
 };
 
 

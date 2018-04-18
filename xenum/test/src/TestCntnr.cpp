@@ -30,35 +30,28 @@ public:
 TEST_F(TestCntnr, FromIndex)
 {
 	xenums::Fruit fruit;
-	xenums::Fruits::Enum value;
-	for (size_t index=0; index<xenums::Fruits::size; index++) {
-		EXPECT_EQ(true, xenums::Fruits::fromIndex(index, value));
-		fruit = value;
+	for (size_t index=0; index<xenums::Fruits::_size; index++) {
+		EXPECT_EQ(true, xenums::Fruits::_fromIndex(index, fruit));
 		EXPECT_EQ(index, fruit.getIndex());
-		EXPECT_EQ(value, xenums::Fruits::fromIndex(index));
+		EXPECT_EQ(fruit, xenums::Fruits::_fromIndex(index));
 	}
-	EXPECT_EQ(false, xenums::Fruits::fromIndex(xenums::Fruits::size, value));
-	fruit = value;
-	EXPECT_EQ(xenums::Fruits::size-1, fruit.getIndex()); // unchanged since last loop
+	EXPECT_EQ(false, xenums::Fruits::_fromIndex(xenums::Fruits::_size, fruit));
+	EXPECT_EQ(xenums::Fruits::_size-1, fruit.getIndex()); // unchanged since last loop
 }
 
 
 TEST_F(TestCntnr, FromIdentifier)
 {
 	xenums::Fruit fruit1, fruit2;
-	xenums::Fruits::Enum value1, value2;
-	for (size_t index=0; index<xenums::Fruits::size; index++) {
-		EXPECT_EQ(true, xenums::Fruits::fromIndex(index, value1));
-		fruit1 = value1;
+	for (size_t index=0; index<xenums::Fruits::_size; index++) {
+		EXPECT_EQ(true, xenums::Fruits::_fromIndex(index, fruit1));
 		std::string ident = fruit1.getIdentifier();
-		EXPECT_EQ(true, xenums::Fruits::fromIdentifier(ident.c_str(), value2));
-		fruit2 = value2;
-		EXPECT_EQ(value2, value1);
+		EXPECT_EQ(true, xenums::Fruits::_fromIdentifier(ident.c_str(), fruit2));
 		EXPECT_EQ(fruit2, fruit1);
-		EXPECT_EQ(value1, xenums::Fruits::fromIdentifier(ident.c_str()));
+		EXPECT_EQ(fruit1, xenums::Fruits::_fromIdentifier(ident.c_str()));
 	}
-	EXPECT_EQ(false, xenums::Fruits::fromIdentifier("non-existing identifier", value1));
-	EXPECT_EQ(value2, value1); // untouched fruit1
+	EXPECT_EQ(false, xenums::Fruits::_fromIdentifier("non-existing identifier", fruit1));
+	EXPECT_EQ(fruit2, fruit1); // untouched fruit1
 }
 
 
@@ -68,22 +61,23 @@ TEST_F(TestCntnr, Iteration)
 
 	// New-style iteration
 	index = 0;
-	//for (xenum::Number number : xenum::Numbers()) {
-	for (auto number : xenums::Numbers()) {
-		EXPECT_EQ(index, (xenums::Numbers::index_t)number);
+	for (xenums::Number number : xenums::Numbers()) {
+	//for (auto number : xenums::Numbers()) {
+		EXPECT_EQ(index, number.getIndex());
 		index++;
 	}
-	EXPECT_EQ(index, xenums::Numbers::size);
+	EXPECT_EQ(index, xenums::Numbers::_size);
 
 	// Old-style iteration
 	index = 0;
 	for (xenums::Numbers::iterator iter = xenums::Numbers::begin();
 	     iter != xenums::Numbers::end(); ++iter) {
-		const xenums::Number number = *iter;
+		//EXPECT_EQ(index, (*iter).getIndex());
+		xenums::Number number = *iter;
 		EXPECT_EQ(index, number.getIndex());
 		index++;
 	}
-	EXPECT_EQ(index, xenums::Numbers::size);
+	EXPECT_EQ(index, xenums::Numbers::_size);
 }
 
 

@@ -44,6 +44,8 @@ my $gopts = {
 	valueName => "",
 	execute => 0,
 	incpath => "",
+	makePp => 0,
+	make => 0,
 	namespace => "",
 	overwrite => 0,
 	enumSize => 0,
@@ -158,12 +160,15 @@ General options:
     -h, --help                This help.
     -I, --incPath PATH        Prepend this path to the include path when compiling. Useful to
                               compile with local Xenum.hpp instead of system installed version.
+    -m, --make-pp             Run 'make' after generating the test program, but only the target
+                              to preprocess the xenum.
+    -M, --make                Run 'make' after generating the test program, to compile it.
     -n, --namespace NAME      Namespace of the xenum.
     -p, --propCount NUMBER    Number of custom properties.
     -s, --enumSize NUMBER     Number of values in the xenum (required).
     -v, --version             Show version.
     -W, --overwrite           Overwrite existing output dir/files.
-    -x, --execute             Make and execute the generated test program.
+    -x, --execute             Make and execute the generated test program. Implies -M.
     -z                        Testing.
 
 Custom parameter options (only relevant with -p):
@@ -190,9 +195,9 @@ Notes:
 - All the options (except depth) are max-value options, which means the program will make
   sure to create at most this number of nodes/values/etc. On the other hand, it will try
   hard to create exactly that number.
+- Generated Makefile uses env-var CCC as name of compiler, defaults to g++.
 
-
-Requirements: g++, gtest
+Requirements: C++ compiler, gtest
 
 HELP
 ;
@@ -256,8 +261,17 @@ sub parseArgs()
 			$gopts->{overwrite} = 1;
 			next;
 		}
+		if ($arg =~ /^(?:-m|--make-pp)$/) {
+			$gopts->{makePp} = 1;
+			next;
+		}
+		if ($arg =~ /^(?:-M|--make)$/) {
+			$gopts->{make} = 1;
+			next;
+		}
 		if ($arg =~ /^(?:-x|--execute)$/) {
 			$gopts->{execute} = 1;
+			$gopts->{make} = 1;
 			next;
 		}
 		if ($arg =~ /^(?:-z)$/) {
@@ -354,6 +368,8 @@ sub dumpGopts()
 	      "\tcntnrName = '".$gopts->{cntnrName}."'\n".
 	      "\texecute = '".$gopts->{execute}."'\n".
 	      "\tincPath = '".$gopts->{incPath}."'\n".
+	      "\tmakePp = '".$gopts->{makePp}."'\n".
+	      "\tmake = '".$gopts->{make}."'\n".
 	      "\tnamespace = '".$gopts->{namespace}."'\n".
 	      "\toverwrite = ".$gopts->{overwrite}."\n".
 	      "\tenumSize = ".$gopts->{enumSize}."\n".
@@ -1938,7 +1954,7 @@ sub generateHeader()
 
 	push(@{$out}, "#ifndef ${encaps}");
 	push(@{$out}, "#define ${encaps}");
-	push(@{$out}, "#include <xenum3/Xenum.hpp>");
+	push(@{$out}, "#include <xenum4/Xenum.hpp>");
 	foreach $nspart (@{$nsparts}) {
 		push(@{$out}, "namespace ${nspart} {");
 	}
@@ -1990,7 +2006,7 @@ sub generateHeader()
 	}
 
 	push(@{$out}, "");
-	push(@{$out}, "XENUM3_DECLARE(".$gopts->{cntnrName}.")");
+	push(@{$out}, "XENUM4_DECLARE(".$gopts->{cntnrName}.")");
 	foreach $nspart (reverse(@{$nsparts})) {
 		push(@{$out}, "} // namespace ${nspart}");
 	}
@@ -2004,7 +2020,7 @@ sub generateSource()
 {
 	my $out = [];
 	push(@{$out}, "#include \"".$gopts->{cntnrName}.".hpp\"");
-	push(@{$out}, "XENUM3_DEFINE(".$gopts->{cntnrName}.")");
+	push(@{$out}, "XENUM4_DEFINE(".$gopts->{cntnrName}.")");
 	print(XENUMSOURCE join("\n", @{$out}) . "\n");
 }
 
@@ -2015,7 +2031,7 @@ sub generateTestBasics($)
 
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", Basics)");
 	push(@{$out}, "{");
-	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", ".$gopts->{cntnrName}."::size);");
+	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", ".$gopts->{cntnrName}."::_size);");
 	push(@{$out}, "}");
 	push(@{$out}, "");
 }
@@ -2030,16 +2046,14 @@ sub generateTestFromIndex($)
 
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", FromIndex)");
 	push(@{$out}, "{");
-	push(@{$out}, "\t${valuens} ovalue;");
-	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	push(@{$out}, "\t${valuens} value;");
 	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
 		push(@{$out}, "");
 		$valname = "V" . sprintf($valnumfmt, $validx);
-		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIndex(${validx}, nvalue));");
-		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, nvalue);");
-		push(@{$out}, "\tovalue = nvalue;");
-		push(@{$out}, "\tEXPECT_EQ(${validx}, ovalue.getIndex());");
-		push(@{$out}, "\tEXPECT_EQ(nvalue, ${cntnrns}::fromIndex(${validx}));");
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::_fromIndex(${validx}, value));");
+		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, value);");
+		push(@{$out}, "\tEXPECT_EQ(${validx}, value.getIndex());");
+		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::_fromIndex(${validx}));");
 	}
 	push(@{$out}, "}");
 	push(@{$out}, "");
@@ -2055,16 +2069,14 @@ sub generateTestFromIdentifier($)
 
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", FromIdentifier)");
 	push(@{$out}, "{");
-	push(@{$out}, "\t${valuens} ovalue;");
-	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	push(@{$out}, "\t${valuens} value;");
 	for ($validx=0; $validx<$gopts->{enumSize}; $validx++) {
 		push(@{$out}, "");
 		$valname = "V" . sprintf($valnumfmt, $validx);
-		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::fromIdentifier(\"${valname}\", nvalue));");
-		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, nvalue);");
-		push(@{$out}, "\tovalue = nvalue;");
-		push(@{$out}, "\tEXPECT_STREQ(\"${valname}\", ovalue.getIdentifier());");
-		push(@{$out}, "\tEXPECT_EQ(nvalue, ${cntnrns}::fromIdentifier(\"${valname}\"));");
+		push(@{$out}, "\tEXPECT_EQ(true, ${cntnrns}::_fromIdentifier(\"${valname}\", value));");
+		push(@{$out}, "\tEXPECT_EQ(${cntnrns}::${valname}, value);");
+		push(@{$out}, "\tEXPECT_STREQ(\"${valname}\", value.getIdentifier());");
+		push(@{$out}, "\tEXPECT_EQ(value, ${cntnrns}::_fromIdentifier(\"${valname}\"));");
 	}
 	push(@{$out}, "}");
 	push(@{$out}, "");
@@ -2081,13 +2093,12 @@ sub generateTestIteration($)
 	push(@{$out}, "TEST_F(Test".$gopts->{cntnrName}.", Iteration)");
 	push(@{$out}, "{");
 	push(@{$out}, "\tsize_t index;");
-	push(@{$out}, "\t${valuens} ovalue;");
-	push(@{$out}, "\t${valuens}::Enum nvalue;");
+	push(@{$out}, "\t${valuens} value;");
 
 	push(@{$out}, "");
 	push(@{$out}, "\tindex = 0;");
-	push(@{$out}, "\tfor (auto nvalue : ${cntnrns}()) {");
-	push(@{$out}, "\t\tEXPECT_EQ(index, ${valuens}(nvalue).getIndex());");
+	push(@{$out}, "\tfor (auto value : ${cntnrns}()) {");
+	push(@{$out}, "\t\tEXPECT_EQ(index, value.getIndex());");
 	push(@{$out}, "\t\tindex++;");
 	push(@{$out}, "\t}");
 	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", index);");
@@ -2096,7 +2107,7 @@ sub generateTestIteration($)
 	push(@{$out}, "\tindex = 0;");
 	push(@{$out}, "\tfor (${cntnrns}::iterator iter = ${cntnrns}::begin();");
 	push(@{$out}, "\t     iter != ${cntnrns}::end(); ++iter) {");
-	push(@{$out}, "\t\tEXPECT_EQ(index, ${valuens}(*iter).getIndex());");
+	push(@{$out}, "\t\tEXPECT_EQ(index, (*iter).getIndex());");
 	push(@{$out}, "\t\tindex++;");
 	push(@{$out}, "\t}");
 	push(@{$out}, "\tEXPECT_EQ(".$gopts->{enumSize}.", index);");
@@ -2237,22 +2248,25 @@ sub generateMakefile()
 		$incPaths = "-I " . $gopts->{incPath} . " " . $incPaths;
 	}
 
-	push(@{$out}, "CCC = g++ -Wall -Wstrict-overflow=5 -std=c++11 -Os");
+	push(@{$out}, "ifeq (\$(CCC),)");
+	push(@{$out}, "CCC := g++");
+	push(@{$out}, "endif");
+	push(@{$out}, "CCMD := \$(CCC) -Wall -Wstrict-overflow=5 -std=c++11 -Os");
 
 	push(@{$out}, "Test${cname} : ${cname}.ppp Test${cname}.o ${cname}.o");
-	push(@{$out}, "\t\$(CCC) -L ${gtestroot} -o Test${cname} Test${cname}.o ${cname}.o -l gtest -l gtest_main");
+	push(@{$out}, "\t\$(CCMD) -L ${gtestroot} -o Test${cname} Test${cname}.o ${cname}.o -l gtest -l gtest_main -l stdc++");
 	push(@{$out}, "${cname}.o : ${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\$(CCC) ${incPaths} -DGTEST_ROOT=${gtestroot} -c ${cname}.cpp");
+	push(@{$out}, "\t\$(CCMD) ${incPaths} -DGTEST_ROOT=${gtestroot} -c ${cname}.cpp");
 	push(@{$out}, "Test${cname}.o : Test${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\$(CCC) ${incPaths} -DGTEST_ROOT=${gtestroot} -c Test${cname}.cpp");
+	push(@{$out}, "\t\$(CCMD) ${incPaths} -DGTEST_ROOT=${gtestroot} -c Test${cname}.cpp");
 
 	push(@{$out}, "${cname}.ppp : ${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\@cpp -P -DXENUM_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
+	push(@{$out}, "\t\@\$(CCC) -E -P -DXENUM4_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
 	push(@{$out}, "\t\t| ../xenum-postprocess \\");
 	push(@{$out}, "\t\t> ${cname}.ppp");
 
 	push(@{$out}, "Time${cname}.ppp : ${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\@ time -p cpp -P -DXENUM_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
+	push(@{$out}, "\t\@ time -p \$(CCC) -E -P -DXENUM4_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
 	push(@{$out}, "\t\t> /dev/null");
 
 	print(MAKEFILE join("\n", @{$out}) . "\n");
@@ -2263,20 +2277,36 @@ sub generateMakefile()
 ############################################# main() #############################################
 sub execute()
 {
-	my $res;
+	my ($cmd, $res);
 
-	return unless ($gopts->{execute});
+	return unless ($gopts->{makePp} || $gopts->{make} || $gopts->{execute});
 	my $outputdir = $gopts->{cntnrName};
 	chdir($outputdir) || die("ERROR: Could not change to output directory '${outputdir}'.\n");
-	system("make");
-	$res = $?;
-	if ($res == -1) {
-		die("ERROR: Could not exec 'make'.\n");
+	if ($gopts->{makePp}) {
+		$cmd = "make ".$gopts->{cntnrName}.".ppp";
+		system($cmd);
+		$res = $?;
+		if ($res == -1) {
+			die("ERROR: Could not execute 'make'.\n");
+		}
+		elsif ($res != 0) {
+			die("ERROR: Command '${cmd}' failed (${res}).\n");
+		}
 	}
-	elsif ($res != 0) {
-		die("ERROR: 'make' failed (${res}).\n");
+	if ($gopts->{make}) {
+		$cmd = "make Test".$gopts->{cntnrName};
+		system($cmd);
+		$res = $?;
+		if ($res == -1) {
+			die("ERROR: Could not execute 'make'.\n");
+		}
+		elsif ($res != 0) {
+			die("ERROR: Command '${cmd}' failed (${res}).\n");
+		}
 	}
-	exec("./Test".$gopts->{cntnrName})
+	if ($gopts->{execute}) {
+		exec("./Test".$gopts->{cntnrName})
+	}
 }
 
 

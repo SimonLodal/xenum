@@ -3,7 +3,7 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 3.1
+ * @version 4.0
  *
  * @section Description
  * A better enum class for C++. Adds all the functionality that standard C++ enums lack.
@@ -23,15 +23,19 @@
  *   limit of around 64 or 256 values in an enum, due to recursion limits in preprocessor
  *   and/or templates. Way too low for real life use. Xenum overcomes this by having the enum
  *   values declared as a list of macro calls, which can have unlimited length.
- * - Can be placed inside a class, just like regular enums.
+ * - Can be placed inside a class, just like regular enums (except if it has custom properties,
+ *   see Caveats).
  * - Zero runtime overhead compared to using a native enum class.
- * - Extensible enum values: Add custom properties to each enum value. Normal Xenum values
- *   have a name and an index value (sequential), but no "ordinal" value. However, you can
- *   just add an "ordinal" property if you want (example below). You can have multiple custom
- *   properties, and each can even be a multilevel array of values (fx. a list of strings, or
- *   list-of-lists-of-strings, etc).
- * - Type safety: The generated classes are unique for each enum, which provides type
- *   safety; you can not assign or compare with other enum classes.
+ * - Extensible: You can add custom properties to each enum value. Normal Xenum values
+ *   have a name (an identifier) and an index value (assigned sequentially), but no "ordinal"
+ *   value like a plain enum. However, if you want you can just add an "ordinal" property
+ *   (example below). You can have multiple custom properties. Their datatype can be any plain
+ *   type (integers), strings (C style), or objects, as long as they are constexpr.
+ *   Custom properties can even be multidimensional, fx. a list of strings, or a
+ *   list-of-lists-of-strings, etc.
+ * - Type safety: Inherently uses the type safety of C++11 enum class. Additionally, the
+ *   generated classes are unique for each enum, which also provides type safety; you can not
+ *   assign or compare with other enum classes.
  * - Implementation is only headers, no source files. Just include Xenum.hpp.
  * - Everything is static and const(expr). So an xenum can be used in template metaprogramming,
  *   and also in declaration of data structures, fx. array sizes based on the number of enum
@@ -43,11 +47,20 @@
  *   source file. The latter is minimal (no duplication of value list or other parameters).
  * - Includes XenumSet; a container with a set of values from an xenum, implemented as a bitset.
  *
- * @section Requirements
+ * @subsection Compilers Supported compilers
+ * - g++-4.9
+ * - clang-3.5
+ * - Others may or may not work.
+ *
+ * @subsection Platforms Supported platforms
+ * Xenum is being developed on Linux. I have no access to Windows or Mac systems so others
+ * will have to test on those. The Xenum headers should work everywhere but is it possible
+ * that some of the util scripts have some GNU or Unix ism's.
+ *
+ * @subsection Requirements
  * - Build requirements:
- *   - C++11 compiler. g++-4.9 is fine; use -std=c++11. But do not use -ansi, it
- *     prevents boost.preprocessor's variadic stuff from working.
- *   - Boost.Preprocessor (boost-1.64.0 used).
+ *   - C++11 compiler
+ *   - Boost.Preprocessor (boost-1.64.0 used)
  * - Runtime requirements: None.
  *
  * @section DesignImpl Design / implementation
@@ -58,20 +71,21 @@
  * values. They are distinct classes. And for semantic clarity, they should usually be
  * named in pluralis and singular form of the same word, fx. Fruits/Fruit, Cards/Card, etc.
  *
- * So when you create an xenum (say, "Fruits"), two classes are created. First the enum
- * container class (Fruits), then the value wrapper (Fruit).
+ * So when you create an xenum (say, "Fruits"), two classes are created, the enum container
+ * class (Fruits) and the value class (Fruit). Actually a third class is also generated, but
+ * only for internal purposes (storage of data related to the enum).
  *
- * The container class contains a native C++ enum (Fruits::Enum) with all the values. We would
- * inherit the container class from the native enum class if C++ allowed that, instead the
- * container class copies all the enum values into itself, so they are available as Fruits::apple,
- * Fruits::lemon, etc, just as if the container was the actual native C++ enum.
+ * The enum-value class (Fruit) is a very lightweight wrapper around a native enum value.
+ * Being a class, it adds several useful functions. But it adds no data or other overhead,
+ * so it's size is exactly the same as the native enum value.
  *
- * Next, the enum value class (Fruit) is created. It is a very lightweight wrapper around a
- * native enum value. Being a class, it adds several useful functions. But it adds no data or
- * other overhead, so it's size is exactly the same as the native enum value.
+ * The container class contains all the enum values as value objects, so you can refer to
+ * Fruits::apple and Fruits::lemon just like you would with a native C++11 enum class. The
+ * difference is that you get a enum-value objects, not just raw native enum values.
  *
- * In your own code you can use the native enum values or the value objects as you like, they are
- * equivalent and interchangeable. There is zero runtime overhead in using the value object.
+ * The container class makes the native C++11 enum class available as Fruits::_Enum, should
+ * you want to use them directly. They are equivalent and interchangeable with the enum-value
+ * objects. There is zero runtime overhead in using the value object.
  *
  * Implementation is based on preprocessor macros, not templates, at least the core task
  * of defining the enum values and associated data. Template metaprogramming would have been
@@ -93,7 +107,7 @@
  * @subsection Basic_Create Create the xenum
  *
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - First some general declarations:
  *	@code
  *	#define XENUM_DECL_Fruits (, Fruits, Fruit)
@@ -108,26 +122,26 @@
  *	@endcode
  * - Finally trigger code generation (header part):
  *	@code
- *	XENUM3_DECLARE(Fruits)
+ *	XENUM4_DECLARE(Fruits)
  *	@endcode
  *
  * In your source file:
  * - Trigger code generation (source part):
  *	@code
- *	XENUM3_DEFINE(Fruits)
+ *	XENUM4_DEFINE(Fruits)
  *	@endcode
  *
  * In this example, "Fruits" is the suffix that ties it all together; The XENUM_DECL and
- * XENUM_VALS macros use this suffix, and the same suffix is passed to XENUM3_DECLARE() and
- * XENUM3_DEFINE() macros, which allows them to find and use the declaration macros. The suffix
+ * XENUM_VALS macros use this suffix, and the same suffix is passed to XENUM4_DECLARE() and
+ * XENUM4_DEFINE() macros, which allows them to find and use the declaration macros. The suffix
  * can be anything, it just needs to be unique (two xenums may not use same suffix, that
  * would redefine the declaration macros).
  *
- * Note that the XENUM_DECL_${suffix} and XENUM_VALS_${suffix} macros are not macro calls, they
- * are macro definitions. XENUM_DECL_${suffix} is a data definition, while XENUM_VALS_${suffix}
- * is a macro function that is evaluated by the xenum generator over and over.
+ * Note that XENUM_DECL_${suffix} and XENUM_VALS_${suffix} are not macro calls, they are macro
+ * definitions. XENUM_DECL_${suffix} is a data definition, while XENUM_VALS_${suffix} is a
+ * macro function that is evaluated by the xenum generator over and over.
  *
- * XENUM3_DECLARE() and XENUM3_DEFINE() macros are the actual generator functions, to be used
+ * XENUM4_DECLARE() and XENUM4_DEFINE() macros are the actual generator functions, to be used
  * in your header and source files respectively.
  *
  * @subsection Basic_Use Use the Xenum
@@ -137,18 +151,20 @@
  *	Fruit fruit1 = Fruits::apple;
  *	Fruit fruit2 = Fruits::orange;
  *	Fruit fruit3(fruit1); // copy apple
- *	Fruit fruit4 = Fruits::fromIndex(1); // => orange
- *	Fruit fruit5 = Fruits::fromIdentifier("lemon"); // => lemon (warning: inefficient string lookup)
- *	// Native enum values. Fruits::Enum is the native C++ enum class.
- *	Fruits::Enum value1 = Fruits::apple;
- *	Fruits::Enum value2 = fruit2(); // copy apple
+ *	Fruit fruit4 = Fruits::_fromIndex(1); // => orange
+ *	Fruit fruit5 = Fruits::_fromIdentifier("lemon"); // => lemon (warning: inefficient string lookup)
+ *	// Native enum values. Fruits::_Enum is the native C++ enum class.
+ *	Fruits::_Enum value1 = Fruits::_Enum::apple;
+ *	Fruits::_Enum value2 = Fruits::orange(); // assign from object
+ *	Fruits::_Enum value5 = fruit5(); // assign from object
  *	@endcode
- *   Note the last one: The () operator on an enum value object returns the native enum value.
+ *   Note the last two: The () operator on an enum value object returns the native enum value.
+ *   Fruits::apple() and Fruits::_Enum::apple both yield the same native enum value.
  * - Access the properties of enum values:
  *	@code
  *	const char* ident = fruit1.getIdentifier(); // identifier is the name
- *	Fruits::index_t = fruit2.getIndex();
- *	Fruits::Enum nativeEnumValue = fruit3();
+ *	Fruits::_Index index = fruit2.getIndex();
+ *	Fruits::_Enum nativeEnumValue = fruit3();
  *	@endcode
  *   These are the only properties that Xenum values have (plus any custom properties).
  * - Print:
@@ -165,29 +181,29 @@
  * - Comparison works like with native enum values, and value objects can also compare against
  *   native values.
  *	@code
+ *	if (fruit1 == fruit3) { ... } // true
+ *	if (fruit1 == value1) { ... } // true
  *	if (fruit1 == fruit2) { ... } // false
  *	if (fruit1 != fruit2) { ... } // true
  *	if (fruit1 < fruit2) { ... } // true
  *	if (fruit1 > fruit2) { ... } // false
  *	@endcode
- * - Iterate - notice the parentheses on Fruits() - and notice that you can iterate with a native
- *   enum value or a value object:
+ * - Iterate - notice the parentheses on Fruits():
  *	@code
  *	for (Fruit fruit : Fruits()) { ... }
- *	for (Fruits::Enum value : Fruits()) { ... }
- *	for (auto value : Fruits()) { ... }
+ *	for (auto fruit : Fruits()) { ... }
  *	@endcode
- *   The last two are the same; the iterator returns native enum values.
+ *   These are the same. The iterator returns enum value objects.
  * - Iterate old style:
  *	@code
- *	for (Fruit::iterator iter = Fruits.begin(); iter != Fruits.end(); ++iter) {
- *		std::cout << iter->getIdentifier() << std::endl;
+ *	for (Fruits::iterator iter = Fruits.begin(); iter != Fruits.end(); ++iter) {
+ *		std::cout << (*iter).getIdentifier() << std::endl;
  *	}
  *	@endcode
  * - Iterate with indexes:
  *	@code
- *	for (Fruits::index_t index = 0; index < Fruits::size; index++) {
- *		std::cout << Fruits::fromIndex(index).getIdentifier() << std::endl;
+ *	for (Fruits::_Index index = 0; index < Fruits::_size; index++) {
+ *		std::cout << Fruits::_fromIndex(index).getIdentifier() << std::endl;
  *	}
  *	@endcode
  * - switch(): C++11 provides type safety for this, which can not be achieved in other ways. So
@@ -195,16 +211,16 @@
  *   use the () operator to get the native enum value:
  *	@code
  *	switch (fruit()) { // notice the parentheses, retrieves the native enum value
- *	case Fruits::apple:	...; break;
- *	case Fruits::orange:	...; break;
- *	case Fruits::lemon:	...; break;
- *	default:		...; break;
+ *	case Fruits::apple():		...; break;
+ *	case Fruits::orange():		...; break;
+ *	case Fruits::_Enum::lemon:	...; break;
+ *	default:			...; break;
  *	}
  *	@endcode
  *
  * @section Example_Custom0 Example: Xenum with simple custom properties
  * First the what and why. If you have some static data associated with each enum value, you
- * could just create an external array, sized using the constexpr Fruits::size, and a custom
+ * could just create an external array, sized using the constexpr Fruits::_size, and a custom
  * lookup function for it. It is just not very OO'ish. Xenum's custom properties allows you
  * to put the associated data into the enum declaration, and have getters generated on the
  * enum value class.
@@ -212,11 +228,11 @@
  * Here we extend the xenum with three custom properties:
  * - "Ordinal" of type int, without any default value.
  * - "Sour" of type bool, with default value "false".
- * - "Color" of type string, with default value "varies".
+ * - "Color" of type string, with default value "unknown".
  *
  * @subsection Custom0_Create Create the xenum
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - The general declaration:
  *	@code
  *	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int8_t, , (	\
@@ -225,7 +241,7 @@
  *		(Color, cstring, "unknown")	\
  *		))
  *	@endcode
- *   - Note the "cstring" type of Color. It is really a plain const char*, but strings require
+ *   - Note the "cstring" type of Color. It is really a plain const char*, but strings need
  *     special handling, so you must use this special cooked type name for them. All other
  *     types can just be used as is.
  *   - Besides declaring the custom properties, we also added a few other arguments:
@@ -246,15 +262,15 @@
  * Code generation is like in the first example:
  * - Header part:
  *	@code
- *	XENUM3_DECLARE(Fruits)
+ *	XENUM4_DECLARE(Fruits)
  *	@endcode
  * - Source part:
  *	@code
- *	XENUM3_DEFINE(Fruits)
+ *	XENUM4_DEFINE(Fruits)
  *	@endcode
  *
  * @subsection Custom0_Use Use the xenum
- * A getter function is created for each property:
+ * A getter function is created for each property (in the xenum value class):
  *	@code
  *	const int& getOrdinal() const;
  *	const bool& getSour() const;
@@ -264,7 +280,7 @@
  *	@code
  *	Fruit fruit = Fruits::lemon;
  *	int ord = fruit.getOrdinal(); // => 17
- *	bool sour = fruit.getSource(); // => true
+ *	bool sour = fruit.getSour(); // => true
  *	const char* color = fruit.getColor(); // => "yellow"
  *	@endcode
  *
@@ -274,16 +290,17 @@
  *
  * @subsection Custom1_Create Create the xenum
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - The general declaration:
  *	@code
  *	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int8_t, , (	\
  *		(Color, cstring, "black", 1)	\
  *		))
  *	@endcode
- *   - Now the default value is "black", but more importantly, the "1" means that the data has
- *     one dimension, which means a single array of values (0 means data is an immediate value;
- *     this is the default we used in the previous example).
+ *   - Now the default value is "black".
+ *   - More importantly, the "1" means that the data has one dimension, which means a single
+ *     array of values (0 means data is an immediate value; this is the default we used in
+ *     the previous example).
  * - For each enum value, the custom property values are now defined as a list:
  *	@code
  *	#define XENUM_VALS_Fruits(V,C)				\
@@ -305,7 +322,7 @@
  *	size_t colors = fruit.getColorSize(); // => 2
  *	const char* color0 = fruit.getColor(0); // => "orange"
  *	const char* color1 = fruit.getColor(1); // => "green"
- *	const char* color2 = fruit.getColor(2); // => out-of-bounds exception
+ *	const char* color2 = fruit.getColor(2); // => throws std::out_of_range
  *	@endcode
  *
  * @subsection Custom1_Emptiness Some notes about emptiness
@@ -332,12 +349,12 @@
  * @section Example_Custom2 Example: Xenum with a multilevel-array custom property
  * You are not limited to one-dimensional arrays; any number of dimensions can be added.
  *
- * Arrays can only be indexed by an integer type, so whatever index 1 means, as opposed to
- * index 0, is up to the case you use it for.
+ * Arrays can only be indexed by an integer type, so whatever the indexes mean is up to the
+ * context you use it in.
  *
  * @subsection Custom2_Create Create the xenum
  * In your header file:
- * - \#include <xenum3/Xenum.hpp>
+ * - \#include <xenum4/Xenum.hpp>
  * - The general declaration:
  *	@code
  *	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int8_t, , (	\
@@ -366,20 +383,20 @@
  * So:
  *	@code
  *	size_t size0;
- *	size0 = Fruit(Fruits::apple)::getRandNumSize(); // => 3
- *	size0 = Fruit(Fruits::orange)::getRandNumSize(); // => 1 (empty array is not empty, it contains one undefined child array)
- *	size0 = Fruit(Fruits::lemon)::getRandNumSize(); // => 0
+ *	size0 = Fruits::apple.getRandNumSize(); // => 3
+ *	size0 = Fruits::orange.getRandNumSize(); // => 1 (empty array is not empty, it contains one undefined child array)
+ *	size0 = Fruits::lemon.getRandNumSize(); // => 0
  *
  *	size_t size1;
- *	size1 = Fruit(Fruits::apple)::getRandNumSize(0); // => 3
- *	size1 = Fruit(Fruits::apple)::getRandNumSize(1); // => 2
- *	size1 = Fruit(Fruits::apple)::getRandNumSize(2); // => 4
- *	size1 = Fruit(Fruits::orange)::getRandNumSize(0); // => 0
+ *	size1 = Fruits::apple.getRandNumSize(0); // => 3
+ *	size1 = Fruits::apple.getRandNumSize(1); // => 2
+ *	size1 = Fruits::apple.getRandNumSize(2); // => 4
+ *	size1 = Fruits::orange.getRandNumSize(0); // => 0
  *
  *	int randNum:
- *	randNum = Fruit(Fruits::apple)::getRandNum(0, 0); // => 5
- *	randNum = Fruit(Fruits::apple)::getRandNum(1, 1); // => 8
- *	randNum = Fruit(Fruits::apple)::getRandNum(2, 3); // => -9
+ *	randNum = Fruits::apple.getRandNum(0, 0); // => 5
+ *	randNum = Fruits::apple.getRandNum(1, 1); // => 8
+ *	randNum = Fruits::apple.getRandNum(2, 3); // => -9
  *	@endcode
 
  * @section Reference Reference
@@ -391,11 +408,11 @@
  *	@endcode
  * Again note the space between XENUM_DECL_${suffix} and the opening parenthesis.
  * @param scope The containing namespace and/or class. Define this if the call to
- *	XENUM3_DEFINE() is not inside the same namespace and class (if any) as the call to
- *	XENUM3_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
+ *	XENUM4_DEFINE() is not inside the same namespace and class (if any) as the call to
+ *	XENUM4_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
  *	"my::ns::" (do not quote the value). You may also use a :: prefix to denote
  *	the toplevel namespace, to avoid any relative resolution of namespace.
- *	Note that if the xenum is member in a class (XENUM3_DECLARE() is called from within
+ *	Note that if the xenum is member in a class (XENUM4_DECLARE() is called from within
  *	a class), the scope MUST contain at least the class name, if not also the namespace.
  * @param enumClassName Name of the generated enum-container class, fx. "Fruits" (not quoted).
  * @param enumValueName Name of the generated enum-value class, fx. "Fruit" (not quoted).
@@ -413,9 +430,10 @@
  *	@endcode
  * @param propertyName Name of the custom property.
  * @param propertyType Data-type of the custom property. You may use simple types, like int/bool
- *	types, or even other Xenum's. If you want to store strings, you must use the special
- *	type "cstring" (not quoted), it is a plain const char*, but needs special handling in
- *	the generator.
+ *	types, or even other Xenum's, or other classes, as long as they have a fixed size and a
+ *      constexpr constructor. If you want to store strings, you must use the special type
+ *      "cstring" (not quoted), it is a plain const char*, but needs special handling in the
+ *      generator (because they are really variable-sized arrays).
  * @param defaultValue Optional (default=none). Default value to apply if an enum value does not
  *	define a value for this property.
  * @param depth Optional (default=0). Defines number of array levels. Depth=0 means each enum value
@@ -445,25 +463,52 @@
  *	XENUM_DECL_$suffix macro. If a value field is empty, the default defined in
  *	XENUM_DECL_$suffix is used, if there is one (if not all values must be specified).
  *
- * @section Caveats
- * - Name lookup is currently very inefficient, uses linear search. Need to find a way to
- *   generate a static constexpr string-hashtable, or at least a constexpr way to sort the
- *   string list and use binary search.
- * - Reserved names: All the common members of the enum-container class have names that can
- *   not be used for an enum-value, since the enum-value objects are also direct members of
- *   the container class. So these names can not be used as an enum-value (the list may grow
- *   in future versions):
- *	- index_t
- *	- size
- *	- Enum
- *	- fromIndex
- *	- fromIdentifier
+ * @subsection SYMBOLS Generated symbols
+ * Everything in the generated code is named to minimize risk of name clashes with other code.
+ * But if you get errors about duplicate symbols you may want to check this list.
+ *
+ * @subsubsection XENUM4_DECLARE XENUM4_DECLARE()
+ *	- class \_XenumStore_${container-name} : The internal store class.
+ *	- ${valueclass-name} : The enum-value class; an actual class, or a typedef of XenumValue.
+ *	- class \_XenumCntnr_${container-name} : The container class.
+ *	- ${container-name} : Typedef of container class to desired name.
+ *
+ * @subsubsection XENUM4_DEFINEE XENUM4_DEFINE()
+ *	- namespace \_XenumImpl_${container-name}_[${property-name}] : Zero or more namespaces,
+ *	  inside an anonymous namespace, for data/functions that is not declared in the classes.
+ *
+ * @subsubsection CONTAINER The container class
+ * The generated container class contains all the enum values (as objects). Most other symbols
+ * in the class have an underscore prefix, to minimize risk of name clashes with your enum value
+ * names. This of course assumes that your enum values do not have an underscore prefix.
+ *
+ * Underscore-prefixed members are:
+ *	- \_Value
+ *	- \_Index
+ *	- \_size
+ *	- \_Enum
+ *	- \_fromIndex
+ *	- \_fromIdentifier
+ *	- \_XenumStore_${container-name}
+ *
+ * A few members do not have an underscore prefix, these are needed by for(:) loops:
  *	- iterator
  *	- begin
  *	- end
- *	- the name of the enum-container class.
- *	- For each custom property, a number of ${property-name}_* symbols are created, as
- *	  well as the get${property-name}*() getters (several for array-type properties).
+ *
+ * @section Caveats
+ * - Xenum can not be declared inside a class if it has custom properties. The reason is C++'s
+ *   rule that class members are not considered complete before the whole class is complete.
+ *   This in turn means that one member class can not use another member class, which is what
+ *   the Xenum does; first the enum-value class is declared, then the enum-container is declared,
+ *   and populated with static constexpr enum-value objects. Which fails since the enum-value
+ *   class is not considered "complete" when it is all declared inside another class. The reason
+ *   why it works without custom properties is that in this case we do not create a new value
+ *   class, we just typedef the base XenumValue class. But when there are custom properties we
+ *   need to subclass XenumValue to add getters for the properties.
+ * - Name lookup is currently very inefficient, uses linear search. Need to find a way to
+ *   generate a static constexpr string-hashtable, or at least a constexpr way to sort the
+ *   string list and use binary search.
  * - No API doc for the generated Xenum classes. It is not really possible to generate API doc
  *   for macro-generated functions.
  * - Poor error messages, due to how the preprocessor works. Since this is all implemented with
@@ -496,18 +541,25 @@
  *     back to compiling and running.
  *
  * @section Future_Plans Future plans
- * - Per-enum selection of features to generate, fx. to save the space of string tables if you
- *   do not want conversion to/from string.
+ * - Support for more compilers / versions.
+ * - Per-enum options:
+ *   - Omit identifier string table, if you want to save some space and can do
+ *     without conversion to/from string.
+ *   - Placement of identifier string table (header/source).
+ *   - Omit iteration functions, and perhaps other parts.
  * - Lookup of enum value by custom property value.
- * - Make the container class only deal with value objects instead native enum values. Requires
- *   moving all data and functions to a separate third class that both container and value classes
- *   call into, so they do not call into each other, so the value class can be declared before the
- *   container class.
+ * - Per-custom-property options:
+ *   - Placement of property data (header/source).
+ *   - Generate lookup function.
+ *   - Custom getter prefix.
+ * - Make xenum with custom properties work when declared inside a class. Probably requires a
+ *   separate XENUM4_DECLARE_PRE() macro call outside the class, ugly.
  * - Efficient string-to-enum lookup. Requires a hashmap, which is difficult given these
- *   requirements: 1) Everything static-const(expr), 2 No external compile tools.
- *   Some template magic may be possible in C++14 but for now we stick with C++11.
+ *   requirements: 1) Everything static-const(expr), 2) No external compile tools.
+ *   Some template magic may be possible in C++14/17 but for now we stick with C++11.
  * - Custom properties of type bool stored as bits.
  * - Faster compiling. Preprocessor can spend enormous amounts of CPU and RAM.
+ * - Some way to generate documentation of the generated code.
  * - Enum class inheritance (maybe).
  * - Custom code injection (maybe - if custom properties are not enough).
  *
@@ -523,12 +575,12 @@
  * This allows different versions to be used in the same project. Very convenient
  * when you might want to upgrade, but not update all the enum definitions at once.
  */
-#ifndef _XENUM3_XENUM_HPP
-#define _XENUM3_XENUM_HPP
+#ifndef _XENUM4_XENUM_HPP
+#define _XENUM4_XENUM_HPP
 
 /// Namespace that Xenum lives in.
 /// Note that most of Xenum is macros that ignore namespaces anyway.
-#define _XENUM3_NS xenum3
+#define _XENUM4_NS xenum4
 
 //#include <cstdint>
 #include <iostream>
@@ -536,51 +588,55 @@
 #include <type_traits>
 // For DeclareCntnr, DefineCntnr
 #include <stdexcept>
-// For DefineCntnr
+// For ?
 #include <cstring>
+// For offsetof()
+#include <cstddef>
 // For all generators
 #include <boost/preprocessor.hpp>
 #include <boost/preprocessor/facilities/is_empty.hpp>
 
-#include <xenum3/impl/Util.hpp>
-#include <xenum3/impl/SelectInt.hpp>
-#include <xenum3/impl/XenumCntnrIterator.hpp>
-#include <xenum3/impl/XenumValue.hpp>
-#include <xenum3/impl/TupleTree.hpp>
-#include <xenum3/impl/Decl.hpp>
-#include <xenum3/impl/PropDef.hpp>
-#include <xenum3/impl/Ctxt.hpp>
-#include <xenum3/impl/IndexNode.hpp>
-#include <xenum3/impl/Props.hpp>
-#include <xenum3/impl/Plain.hpp>
-#include <xenum3/impl/PlainDeclCntnr.hpp>
-#include <xenum3/impl/PlainDeclValue.hpp>
-#include <xenum3/impl/PlainDefine.hpp>
-#include <xenum3/impl/Cstring.hpp>
-#include <xenum3/impl/CstringDeclCntnr.hpp>
-#include <xenum3/impl/CstringDeclValue.hpp>
-#include <xenum3/impl/CstringDefine.hpp>
-#include <xenum3/impl/DeclareCntnr.hpp>
-#include <xenum3/impl/DeclareValue.hpp>
-#include <xenum3/impl/DefineCntnr.hpp>
-#include <xenum3/impl/Main.hpp>
+#include <xenum4/impl/Util.hpp>
+#include <xenum4/impl/SelectInt.hpp>
+#include <xenum4/impl/XenumCntnrIterator.hpp>
+#include <xenum4/impl/XenumValue.hpp>
+#include <xenum4/impl/TupleTree.hpp>
+#include <xenum4/impl/Decl.hpp>
+#include <xenum4/impl/PropDef.hpp>
+#include <xenum4/impl/Ctxt.hpp>
+#include <xenum4/impl/IndexNode.hpp>
+#include <xenum4/impl/Props.hpp>
+#include <xenum4/impl/Plain.hpp>
+#include <xenum4/impl/PlainDeclStore.hpp>
+#include <xenum4/impl/PlainDeclValue.hpp>
+#include <xenum4/impl/PlainDefine.hpp>
+#include <xenum4/impl/Cstring.hpp>
+#include <xenum4/impl/CstringDeclStore.hpp>
+#include <xenum4/impl/CstringDeclValue.hpp>
+#include <xenum4/impl/CstringDefine.hpp>
+#include <xenum4/impl/DeclareStore.hpp>
+#include <xenum4/impl/DeclareCntnr.hpp>
+#include <xenum4/impl/DeclareValue.hpp>
+#include <xenum4/impl/DefineStore.hpp>
+#include <xenum4/impl/DefineCntnr.hpp>
+#include <xenum4/impl/Main.hpp>
 
 
 /**
- * Declares the header part of an Xenum.
- * @param SUFFIX Suffix of the declaration macros.
+ * Generate the header parts (declarations) of an Xenum.
+ * @param SUFFIX Suffix of your xenum declaration macros.
  * @hideinitializer
  */
-#define XENUM3_DECLARE(SUFFIX)									\
-	_XENUM3_DO_DECLARE(_XENUM3_CTXT_INIT(SUFFIX))
+#define XENUM4_DECLARE(SUFFIX)									\
+	_XENUM4_DO_DECLARE(_XENUM4_CTXT_INIT(SUFFIX))
 
 /**
- * Declares the source part of an Xenum.
- * @param SUFFIX Suffix of the declaration macros.
+ * Generate the source parts (definitions) of an Xenum.
+ * @param SUFFIX Suffix of your xenum declaration macros.
  * @hideinitializer
  */
-#define XENUM3_DEFINE(SUFFIX)									\
-	_XENUM3_DO_DEFINE(_XENUM3_CTXT_INIT(SUFFIX))
+#define XENUM4_DEFINE(SUFFIX)									\
+	_XENUM4_DO_DEFINE(_XENUM4_CTXT_INIT(SUFFIX))
 
 
 // Doxygen trouble: Everything below is internal. Would like to hide it from doxygen, but would
@@ -603,10 +659,10 @@
 
 
 /// Print an XenumValue.
-template<class XenumCntnr>
-inline std::ostream& operator<<(std::ostream& out, ::_XENUM3_NS::XenumValue<XenumCntnr> enumValue) {
+template<class XenumStore>
+inline std::ostream& operator<<(std::ostream& out, ::_XENUM4_NS::XenumValue<XenumStore> enumValue) {
 	return out << enumValue.getIdentifier();
 }
 
 
-#endif // _XENUM3_XENUM_HPP
+#endif // _XENUM4_XENUM_HPP

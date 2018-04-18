@@ -4,10 +4,10 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  */
-#ifndef _XENUM3_IMPL_XENUMCNTNRITERATOR_HPP
-#define _XENUM3_IMPL_XENUMCNTNRITERATOR_HPP
+#ifndef _XENUM4_IMPL_XENUMCNTNRITERATOR_HPP
+#define _XENUM4_IMPL_XENUMCNTNRITERATOR_HPP
 
-namespace xenum3 {
+namespace xenum4 {
 
 
 /**
@@ -20,16 +20,18 @@ namespace xenum3 {
 template<class XenumCntnr>
 class XenumCntnrIterator {
 public:
+	/// Enum-value class.
+	using Value = typename XenumCntnr::_Value;
 	/// Integer type used for enum values.
-	using index_t = typename XenumCntnr::index_t;
+	using Index = typename XenumCntnr::_Index;
 	/// The native C++ enum class.
-	using Enum = typename XenumCntnr::Enum;
+	using Enum = typename XenumCntnr::_Enum;
 public:
 	/// Default ctor, initializes to first value in the enum.
 	XenumCntnrIterator(void) noexcept : index(0) {}
 
 	/// Ctor with initialization to a specific enum-value.
-	XenumCntnrIterator(const Enum& value) noexcept : index((index_t)value) {}
+	XenumCntnrIterator(const Value& value) noexcept : index(value.getIndex()) {}
 
 	/// Prefix increment operator.
 	XenumCntnrIterator& operator++(void) noexcept { index++; return *this; }
@@ -38,22 +40,22 @@ public:
 	bool operator!=(const XenumCntnrIterator& other) noexcept { return index != other.index; }
 
 	/// Dereference operator.
-	const Enum operator*(void) { return XenumCntnr::fromIndex(index); }
+	Value operator*(void) { return XenumCntnr::_fromIndex(index); }
 protected:
 	/// Ctor with initialization to a specific index.
 	/// Not bounds-checked before dereferenced.
-	XenumCntnrIterator(index_t index) noexcept : index(index) {}
+	XenumCntnrIterator(Index index) noexcept : index(index) {}
 
 	/// Allow begin() to use the protected ctor.
-	friend XenumCntnrIterator XenumCntnr::begin(void);
+	friend XenumCntnrIterator XenumCntnr::begin(void) noexcept;
 
 	/// Allow end() to use the protected ctor.
-	friend XenumCntnrIterator XenumCntnr::end(void);
+	friend XenumCntnrIterator XenumCntnr::end(void) noexcept;
 protected:
 	/// Current position.
-	index_t index;
+	Index index;
 };
 
 
-} // namespace xenum3
-#endif // _XENUM3_IMPL_XENUMVALUE_HPP
+} // namespace xenum4
+#endif // _XENUM4_IMPL_XENUMVALUE_HPP

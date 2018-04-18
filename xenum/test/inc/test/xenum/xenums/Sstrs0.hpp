@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_SSTRS0_HPP
 
 #include <cstdint>
-#include <xenum3/Xenum.hpp>
+#include <xenum4/Xenum.hpp>
 
 namespace test {
 namespace xenum {
@@ -29,7 +29,7 @@ namespace xenums {
 	V(C, V3, 3, "s3")				\
 
 
-XENUM3_DECLARE(Sstrs0)
+XENUM4_DECLARE(Sstrs0)
 
 
 } // namespace xenums

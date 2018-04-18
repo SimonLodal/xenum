@@ -4,26 +4,27 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  */
-#ifndef _XENUM3_IMPL_XENUMVALUE_HPP
-#define _XENUM3_IMPL_XENUMVALUE_HPP
+#ifndef _XENUM4_IMPL_XENUMVALUE_HPP
+#define _XENUM4_IMPL_XENUMVALUE_HPP
 
-namespace xenum3 {
+namespace xenum4 {
 
 
 /**
  * Enum-value class.
  * Wraps a native enum value. Can never have an invalid value.
- * @param XenumCntnr The xenum container, containing the native C++ enum.
+ * @param XenumStore The xenum store class, containing the native C++ enum.
  */
-template<class XenumCntnr>
+template<class XenumStore>
 class XenumValue {
-public:
+protected:
 	/// The container class.
-	typedef XenumCntnr cntnr_t;
+	typedef XenumStore Store;
+public:
 	/// Integer type used for enum values.
-	using index_t = typename XenumCntnr::index_t;
+	using Index = typename XenumStore::Index;
 	/// The native C++ enum class.
-	using Enum = typename XenumCntnr::Enum;
+	using Enum = typename XenumStore::Enum;
 
 public:
 	/// Default ctor. Initialized with first native enum value.
@@ -46,10 +47,10 @@ public:
 	constexpr Enum operator() (void) const noexcept { return value; }
 
 	/// @return Index of this enum value in it's enum class.
-	constexpr index_t getIndex(void) const noexcept { return static_cast<index_t>(value); }
+	constexpr Index getIndex(void) const noexcept { return XenumStore::getIndex(value); }
 
 	/// @return Identifier of this enum value.
-	constexpr const char* getIdentifier(void) const noexcept { return XenumCntnr::getIdentifier(value); }
+	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
 
 public:
 	/// @name Comparison operators
@@ -67,11 +68,12 @@ public:
 	constexpr bool operator>= (const XenumValue& other) const noexcept { return value >= other.value; }
 	constexpr bool operator>= (const Enum other) const noexcept { return value >= other; }
 	///@}
+
 protected:
 	/// The native enum value that this object wraps.
 	Enum value;
 };
 
 
-} // namespace xenum3
-#endif // _XENUM3_IMPL_XENUMVALUE_HPP
+} // namespace xenum4
+#endif // _XENUM4_IMPL_XENUMVALUE_HPP

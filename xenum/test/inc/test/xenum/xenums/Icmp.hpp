@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_ICMP_HPP
 
 #include <cstdint>
-#include <xenum3/Xenum.hpp>
+#include <xenum4/Xenum.hpp>
 
 namespace test {
 namespace xenum {
@@ -64,7 +64,7 @@ namespace xenums {
 	V(C, MulticastRouterSolicitation,	false,	true)					\
 	V(C, MulticastRouterTermination,	false,	true)					\
 	V(C, RplControl,			false,	true)
-XENUM3_DECLARE(IcmpTypes)
+XENUM4_DECLARE(IcmpTypes)
 
 
 /**
@@ -81,43 +81,43 @@ XENUM3_DECLARE(IcmpTypes)
 // - ParameterProblem.BadLength
 // - Figure out missing iptables names.
 #define XENUM_VALS_IcmpCodes(V,C)	\
-	V(C, NetworkUnreachable,		true,	true,	IcmpTypes::DestinationUnreachable,	"network-unreachable") \
-	V(C, HostUnreachable,			true,	true,	IcmpTypes::DestinationUnreachable,	"host-unreachable") \
-	V(C, ProtocolUnreachable,		true,	,	IcmpTypes::DestinationUnreachable,	"protocol-unreachable") \
-	V(C, PortUnreachable,			true,	true,	IcmpTypes::DestinationUnreachable,	"port-unreachable") \
-	V(C, FragmentationRequired,		true,	,	IcmpTypes::DestinationUnreachable,	"fragmentation-needed") \
-	V(C, SourceRouteFailed,			true,	,	IcmpTypes::DestinationUnreachable,	"source-route-failed") \
-	V(C, NetworkUnknown,			true,	,	IcmpTypes::DestinationUnreachable,	"network-unknown") \
-	V(C, HostUnknown,			true,	,	IcmpTypes::DestinationUnreachable,	"host-unknown") \
-	V(C, NetworkProhibited,			true,	,	IcmpTypes::DestinationUnreachable,	"network-prohibited") \
-	V(C, HostProhibited,			true,	,	IcmpTypes::DestinationUnreachable,	"host-prohibited") \
-	V(C, TosNetworkUnreachable,		true,	,	IcmpTypes::DestinationUnreachable,	"TOS-network-unreachable") \
-	V(C, TosHostUnreachable,		true,	,	IcmpTypes::DestinationUnreachable,	"TOS-host-unreachable") \
-	V(C, CommunicationProhibited,		true,	true,	IcmpTypes::DestinationUnreachable,	"communication-prohibited") \
-	V(C, HostPrecedenceViolation,		true,	,	IcmpTypes::DestinationUnreachable,	"host-precedence-violation") \
-	V(C, PrecedenceCutoff,			true,	,	IcmpTypes::DestinationUnreachable,	"precedence-cutoff") \
-	V(C, NetworkRedirect,			true,	,	IcmpTypes::Redirect,			"network-redirect") \
-	V(C, HostRedirect,			true,	,	IcmpTypes::Redirect,			"host-redirect") \
-	V(C, TosNetworkRedirect,		true,	,	IcmpTypes::Redirect,			"TOS-network-redirect") \
-	V(C, TosHostRedirect,			true,	,	IcmpTypes::Redirect,			"TOS-host-redirect") \
-	V(C, TtlZeroInTransmit,			true,	true,	IcmpTypes::TimeExceeded,		"ttl-zero-during-transit") \
-	V(C, TtlZeroInReassembly,		true,	true,	IcmpTypes::TimeExceeded,		"ttl-zero-during-reassembly") \
-	V(C, IpHeaderBad,			true,	true,	IcmpTypes::ParameterProblem,		"ip-header-bad") \
-	V(C, MissingOption,			true,	false,	IcmpTypes::ParameterProblem,		"required-option-missing") \
-	V(C, BadLength,				true,	false,	IcmpTypes::ParameterProblem,		"") \
-	V(C, UnknownNextHeader,			false,	true,	IcmpTypes::ParameterProblem,		"") \
-	V(C, UnknownIpv6Option,			false,	true,	IcmpTypes::ParameterProblem,		"") \
-	V(C, RouterRenumberingCommand,		false,	true,	IcmpTypes::RouterRenumbering,		"") \
-	V(C, RouterRenumberingResult,		false,	true,	IcmpTypes::RouterRenumbering,		"") \
-	V(C, RouterRenumberingReset,		false,	true,	IcmpTypes::RouterRenumbering,		"") \
-	V(C, QueryIpv6Address,			false,	true,	IcmpTypes::NodeInformationQuery,	"") \
-	V(C, QueryName,				false,	true,	IcmpTypes::NodeInformationQuery,	"") \
-	V(C, QueryIpv4Address,			false,	true,	IcmpTypes::NodeInformationQuery,	"") \
-	V(C, QuerySuccess,			false,	true,	IcmpTypes::NodeInformationResponse,	"") \
-	V(C, QueryRefused,			false,	true,	IcmpTypes::NodeInformationResponse,	"") \
-	V(C, QueryUnknown,			false,	true,	IcmpTypes::NodeInformationResponse,	"") \
+	V(C, NetworkUnreachable,		true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"network-unreachable") \
+	V(C, HostUnreachable,			true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"host-unreachable") \
+	V(C, ProtocolUnreachable,		true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"protocol-unreachable") \
+	V(C, PortUnreachable,			true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"port-unreachable") \
+	V(C, FragmentationRequired,		true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"fragmentation-needed") \
+	V(C, SourceRouteFailed,			true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"source-route-failed") \
+	V(C, NetworkUnknown,			true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"network-unknown") \
+	V(C, HostUnknown,			true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"host-unknown") \
+	V(C, NetworkProhibited,			true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"network-prohibited") \
+	V(C, HostProhibited,			true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"host-prohibited") \
+	V(C, TosNetworkUnreachable,		true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"TOS-network-unreachable") \
+	V(C, TosHostUnreachable,		true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"TOS-host-unreachable") \
+	V(C, CommunicationProhibited,		true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"communication-prohibited") \
+	V(C, HostPrecedenceViolation,		true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"host-precedence-violation") \
+	V(C, PrecedenceCutoff,			true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"precedence-cutoff") \
+	V(C, NetworkRedirect,			true,	,	test::xenum::xenums::IcmpTypes::Redirect,			"network-redirect") \
+	V(C, HostRedirect,			true,	,	test::xenum::xenums::IcmpTypes::Redirect,			"host-redirect") \
+	V(C, TosNetworkRedirect,		true,	,	test::xenum::xenums::IcmpTypes::Redirect,			"TOS-network-redirect") \
+	V(C, TosHostRedirect,			true,	,	test::xenum::xenums::IcmpTypes::Redirect,			"TOS-host-redirect") \
+	V(C, TtlZeroInTransmit,			true,	true,	test::xenum::xenums::IcmpTypes::TimeExceeded,			"ttl-zero-during-transit") \
+	V(C, TtlZeroInReassembly,		true,	true,	test::xenum::xenums::IcmpTypes::TimeExceeded,			"ttl-zero-during-reassembly") \
+	V(C, IpHeaderBad,			true,	true,	test::xenum::xenums::IcmpTypes::ParameterProblem,		"ip-header-bad") \
+	V(C, MissingOption,			true,	false,	test::xenum::xenums::IcmpTypes::ParameterProblem,		"required-option-missing") \
+	V(C, BadLength,				true,	false,	test::xenum::xenums::IcmpTypes::ParameterProblem,		"") \
+	V(C, UnknownNextHeader,			false,	true,	test::xenum::xenums::IcmpTypes::ParameterProblem,		"") \
+	V(C, UnknownIpv6Option,			false,	true,	test::xenum::xenums::IcmpTypes::ParameterProblem,		"") \
+	V(C, RouterRenumberingCommand,		false,	true,	test::xenum::xenums::IcmpTypes::RouterRenumbering,		"") \
+	V(C, RouterRenumberingResult,		false,	true,	test::xenum::xenums::IcmpTypes::RouterRenumbering,		"") \
+	V(C, RouterRenumberingReset,		false,	true,	test::xenum::xenums::IcmpTypes::RouterRenumbering,		"") \
+	V(C, QueryIpv6Address,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationQuery,		"") \
+	V(C, QueryName,				false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationQuery,		"") \
+	V(C, QueryIpv4Address,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationQuery,		"") \
+	V(C, QuerySuccess,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationResponse,	"") \
+	V(C, QueryRefused,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationResponse,	"") \
+	V(C, QueryUnknown,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationResponse,	"") \
 
-XENUM3_DECLARE(IcmpCodes)
+XENUM4_DECLARE(IcmpCodes)
 
 /* IPv6 codes:
 - DestinationUnreachable

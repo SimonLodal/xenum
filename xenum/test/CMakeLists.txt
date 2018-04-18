@@ -19,8 +19,8 @@ link_directories(${GTEST_ROOT})
 #find_library(GTEST gtest)
 #find_library(GTEST_MAIN gtest_main)
 
-add_executable(xenum3-test ${XENUM_TEST_HDRS} ${XENUM_TEST_SRCS})
-target_link_libraries(xenum3-test gtest gtest_main
+add_executable(xenum-test ${XENUM_TEST_HDRS} ${XENUM_TEST_SRCS})
+target_link_libraries(xenum-test gtest gtest_main
 	# Not a library anymore, only headers.
 	#xenum
 	)
@@ -31,7 +31,7 @@ target_link_libraries(xenum3-test gtest gtest_main
 #	)
 
 add_test(
-	NAME xenum3-test
-	COMMAND xenum3-test
+	NAME xenum-test
+	COMMAND xenum-test
 )
 

@@ -7,7 +7,7 @@
 
 use strict;
 
-my $marker = (@ARGV > 0 && $ARGV[0]) ? $ARGV[0] : "^namespace xenum3";
+my $marker = (@ARGV > 0 && $ARGV[0]) ? $ARGV[0] : "^namespace xenum4";
 
 my $started = 0;
 my $line;
