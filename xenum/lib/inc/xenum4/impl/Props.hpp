@@ -12,7 +12,7 @@
 
 
 
-// =============================== DECLARATION IN STORE CLASS ==================================
+// =============================== DECLARATION IN STORE CLASS ===================================
 /**
  * Main entry point for declaring custom properties on the enum values.
  * Caller context: Store class declaration (header).
@@ -51,7 +51,7 @@
 	)
 
 
-// =============================== DECLARATION IN VALUE CLASS ==================================
+// =============================== DECLARATION IN VALUE CLASS ===================================
 /**
  * Main entry point for declaring custom properties on the enum values.
  * Caller context: Value class declaration (header).
@@ -90,7 +90,7 @@
 	)
 
 
-// ======================================= DEFINITION ==========================================
+// ======================================= DEFINITION ===========================================
 /**
  * Main entry function for defining the data for custom properties.
  * Caller context: Source file.
@@ -157,7 +157,7 @@
 	)
 
 
-// ====================================== COMMON UTILS =========================================
+// ====================================== COMMON UTILS ==========================================
 
 // ============================ INDEXNODE NAME ===============================
 /**
@@ -388,6 +388,74 @@
 		_XENUM4_PROP_GEN_INDEX0_ARGS(LEVELS, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, LEVELS))
+
+
+// ===================== FUNC (SRC): Store::getSize() ========================
+/**
+ * Callback worker for iteration over 0..DEPTH.
+ * Declares Store::get${propname}Size() for this level.
+ * For properties implemented in source.
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_SRC_DECLS_GET_SIZE(Z, LEVEL, PROPNAME)					\
+IND1	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
+	);											NWLN
+
+
+// ================== FUNC (SRC): Store::get$PROPNAME() ======================
+/**
+ * Declares Store::get${propname}() value getter.
+ * For properties implemented in source.
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_SRC_DECLS_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
+IND1	static const RETTYPE BOOST_PP_CAT(get, PROPNAME) (					\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
+	);											NWLN
+
+
+
+// ===================== FUNC (SRC): Value::getSize() ========================
+/**
+ * Callback worker for iteration over 0..DEPTH.
+ * Declares Value::get${propname}Size() for this level.
+ * For properties implemented in source.
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_SRC_DECLV_GET_SIZE(Z, LEVEL, PROPNAME)					\
+IND1	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
+		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
+	)											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
+	{											\
+		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+			value									\
+			_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
+		);										\
+	}											NWLN
+
+
+// ================== FUNC (SRC): Value::get$PROPNAME() ======================
+/**
+ * Declares Value::get${propname}() value getter.
+ * For properties implemented in source.
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_SRC_DECLV_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
+IND1	const RETTYPE BOOST_PP_CAT(get, PROPNAME) (						\
+		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
+	)											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
+	{											\
+		return Store::BOOST_PP_CAT(get, PROPNAME) (					\
+			value									\
+			_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
+		);										\
+	}											NWLN
+
+
+
 
 
 #endif // _XENUM4_IMPL_PROPS_HPP

@@ -38,10 +38,10 @@ IND1	using BOOST_PP_CAT(PROPNAME, Value) = typename Store::BOOST_PP_CAT(PROPNAME
 IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME, Index);	NWLN \
 
 
-// ======================================== FUNCTIONS ===========================================
+// ===================================== FUNCTIONS (HDR) ========================================
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
- * Declares the functions related to a single custom property, in value class.
+ * Declares the functions related to a single custom property, implemented in header.
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
@@ -49,7 +49,7 @@ IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME
 	_XENUM4_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
 
 
-// =================================== FUNC: getSize() ==========================================
+// ================================== FUNC (HDR): getSize() =====================================
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
  * Declares the get${propname}Size() getter for each level.
@@ -113,7 +113,7 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const BOOST_PP_CAT(PROPNAME,
 	NWLN
 
 
-// ================================ FUNC: get$PROPNAME() ========================================
+// =============================== FUNC (HDR): get$PROPNAME() ===================================
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
  * Declares the get${propname}() value getter.
@@ -132,6 +132,28 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const BOOST_PP_CAT(PROPNAME,
 		);										\
 	}											\
 	NWLN
+
+
+// ===================================== FUNCTIONS (SRC) ========================================
+/**
+ * Worker for _XENUM4_PROP_DECLV_PLAIN().
+ * Declares the functions related to a single custom property, implemented in source.
+ * @hideinitializer
+ */
+#define _XENUM4_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+public:												NWLN \
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM4_PROP_SRC_DECLV_GET_SIZE,						\
+		PROPNAME									\
+	)											\
+	_XENUM4_PROP_SRC_DECLV_GET_VALUE(							\
+		PROPNAME,									\
+		_XENUM4_PROPDEF_GET_REAL_TYPE(_XENUM4_CTXT_GET_PROPDEF(CTXT))&,			\
+		DEPTH,										\
+		Z										\
+	)
 
 
 #endif // _XENUM4_IMPL_PLAIN_DECL_VALUE_HPP

@@ -542,16 +542,24 @@
  *
  * @section Future_Plans Future plans
  * - Support for more compilers / versions.
- * - Per-enum selection of features to generate, fx. to save the space of string tables if you
- *   do not want conversion to/from string.
+ * - Per-enum options:
+ *   - Omit identifier string table, if you want to save some space and can do
+ *     without conversion to/from string.
+ *   - Placement of identifier string table (header/source).
+ *   - Omit iteration functions, and perhaps other parts.
  * - Lookup of enum value by custom property value.
+ * - Per-custom-property options:
+ *   - Placement of property data (header/source).
+ *   - Generate lookup function.
+ *   - Custom getter prefix.
  * - Make xenum with custom properties work when declared inside a class. Probably requires a
  *   separate XENUM4_DECLARE_PRE() macro call outside the class, ugly.
  * - Efficient string-to-enum lookup. Requires a hashmap, which is difficult given these
- *   requirements: 1) Everything static-const(expr), 2 No external compile tools.
- *   Some template magic may be possible in C++14 but for now we stick with C++11.
+ *   requirements: 1) Everything static-const(expr), 2) No external compile tools.
+ *   Some template magic may be possible in C++14/17 but for now we stick with C++11.
  * - Custom properties of type bool stored as bits.
  * - Faster compiling. Preprocessor can spend enormous amounts of CPU and RAM.
+ * - Some way to generate documentation of the generated code.
  * - Enum class inheritance (maybe).
  * - Custom code injection (maybe - if custom properties are not enough).
  *
