@@ -36,4 +36,4 @@ INC="${INC} -I xenum/lib/inc/"
 if [ -z "$CCC" ]; then
 	CCC=g++
 fi
-$CCC -E -x c++ -std=c++11 -P -DXENUM_DEBUG_PP=1 $INC $1 | util/xenum-postprocess "$marker"
+$CCC -E -x c++ -std=c++11 -P -DXENUM4_DEBUG_PP=1 $INC $1 | util/xenum-postprocess "$marker"

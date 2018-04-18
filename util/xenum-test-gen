@@ -2261,12 +2261,12 @@ sub generateMakefile()
 	push(@{$out}, "\t\$(CCMD) ${incPaths} -DGTEST_ROOT=${gtestroot} -c Test${cname}.cpp");
 
 	push(@{$out}, "${cname}.ppp : ${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\@\$(CCC) -E -P -DXENUM_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
+	push(@{$out}, "\t\@\$(CCC) -E -P -DXENUM4_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
 	push(@{$out}, "\t\t| ../xenum-postprocess \\");
 	push(@{$out}, "\t\t> ${cname}.ppp");
 
 	push(@{$out}, "Time${cname}.ppp : ${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\@ time -p \$(CCC) -E -P -DXENUM_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
+	push(@{$out}, "\t\@ time -p \$(CCC) -E -P -DXENUM4_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
 	push(@{$out}, "\t\t> /dev/null");
 
 	print(MAKEFILE join("\n", @{$out}) . "\n");

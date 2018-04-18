@@ -11,7 +11,7 @@ namespace xenum4 {
 
 
 // ===================================================================================================
-#if XENUM_DEBUG_PP
+#if XENUM4_DEBUG_PP
 /// In debug mode, inserts a newline. Else empty.
 #define NWLN @\n@
 /// In debug mode, inserts a single indentation level. Else empty.
