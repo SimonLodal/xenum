@@ -6,6 +6,9 @@
 ### Changed
 - Reorg API so container class contains enum-value objects instead of native enum values.
 - Generate implementation of plain custom properties in source rather than header, like cstring.
+- Many little API changes, like adding underscore prefix to container class functions,
+  to minimize risk of name clash with enum values.
+- Support clang.
 
 ## [3.1] - 2018-03-26
 ### Added
