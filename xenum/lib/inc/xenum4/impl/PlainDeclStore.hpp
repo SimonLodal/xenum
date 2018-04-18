@@ -256,7 +256,7 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 	)											\
 	_XENUM4_PROP_SRC_DECLS_GET_VALUE(							\
 		PROPNAME,									\
-		_XENUM4_PROPDEF_GET_REAL_TYPE(_XENUM4_CTXT_GET_PROPDEF(CTXT))&,			\
+		_XENUM4_PROPDEF_GET_PARM_TYPE(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
 		DEPTH,										\
 		Z										\
 	)

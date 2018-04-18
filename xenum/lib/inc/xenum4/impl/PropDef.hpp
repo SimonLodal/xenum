@@ -23,16 +23,22 @@
 #define _XENUM4_PROPDEF_GET_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(1, PROPDEF))
 
 /**
- * Get the actual data type to use.
+ * Get the actual data type used for storing data for this custom property.
  * @hideinitializer
  */
 #define _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(1, BOOST_PP_SEQ_ELEM(1, PROPDEF))
 
 /**
+ * Get the data type used as parameter type in functions handling data for this property.
+ * @hideinitializer
+ */
+#define _XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(1, PROPDEF))
+
+/**
  * Get the type category; for branching handling of different types.
  * @hideinitializer
  */
-#define _XENUM4_PROPDEF_GET_TYPCAT(PROPDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(1, PROPDEF))
+#define _XENUM4_PROPDEF_GET_TYPCAT(PROPDEF)		BOOST_PP_SEQ_ELEM(3, BOOST_PP_SEQ_ELEM(1, PROPDEF))
 
 /**
  * Get the default value of a custom property.
@@ -103,10 +109,10 @@ _PROPDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
 		BOOST_PP_IS_EMPTY(BOOST_PP_CAT(_XENUM4_PROPDEF_CATEGORY_, PROPTYPE)),		\
 		BOOST_PP_IF(									\
 			BOOST_PP_EQUAL(1, BOOST_PP_CAT(_XENUM4_PROPDEF_CATEGORY_IS_, PROPTYPE)),\
-			(char)(CSTRING),							\
+			(char)(char*)(CSTRING),							\
 			_XENUM4_ERROR(DBGLOC, Unhandled special type [PROPTYPE].)		\
 		),										\
-		(PROPTYPE)(PLAIN)								\
+		(PROPTYPE)(PROPTYPE&)(PLAIN)							\
 	)											\
 
 /**
