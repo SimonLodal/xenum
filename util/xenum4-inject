@@ -120,7 +120,7 @@ sub addOutputPart($$$)
 {
 	my ($inputText, $macro, $suffix) = @_;
 	#print("addOutputPart() macro='${macro}' suffix='${suffix}' inputText(".length($inputText)."):\n".("-"x60)."\n".$inputText."\n".("-"x60)."\n");
-	print("addOutputPart() macro='${macro}' suffix='${suffix}' inputText(".length($inputText).")\n");
+	#print("addOutputPart() macro='${macro}' suffix='${suffix}' inputText(".length($inputText).")\n");
 	my $outputPart = {
 		inputText => $inputText,
 		macro => $macro,
@@ -135,11 +135,11 @@ sub parseRawInput()
 {
 	my ($rawLines, $rawIndex, $rawLine);
 	my ($preInput, $remLine, $macro, $suffix);
-	open(RAWINPUT, "<${inputFileName}") || die("ERROR: ".
-						   "Could not open input file '${inputFileName}'.\n");
+	open(RAWINPUT, "<${inputFileName}")
+		|| die("ERROR: Could not open input file '${inputFileName}'.\n");
 	@{$rawLines} = <RAWINPUT>;
 	close(RAWINPUT);
-print("parseRawInput() rawLines:".@{$rawLines}."\n");
+	#print("parseRawInput() rawLines:".@{$rawLines}."\n");
 
 	$preInput = "";
 	for ($rawIndex=0; $rawIndex<@{$rawLines}; $rawIndex++) {
@@ -166,32 +166,8 @@ print("parseRawInput() rawLines:".@{$rawLines}."\n");
 	if (@{$output} != 0) {
 		$doPreProcess = 1;
 	}
-	if ($preInput ne "") {
-		addOutputPart($preInput, "", "");
-	}
-}
-
-
-sub addGenerated($$$$)
-{
-	my ($outputIndex, $macro, $suffix, $generated) = @_;
-	my ($outputPart);
-#print("addGenerated() outputIndex=${outputIndex} macro='${macro}' suffix='${suffix}' generated(".length($generated)."):\n".("-"x60)."\n".$generated."\n".("-"x60)."\n");
-print("addGenerated() outputIndex=${outputIndex} macro='${macro}' suffix='${suffix}' generated(".length($generated).")\n");
-
-	if ($outputIndex >= @{$output}) {
-		die("BUG: Found preprocessed section [${outputIndex}], but only found ".@{$output}." macros in input.\n");
-	}
-	$outputPart = $output->[$outputIndex];
-print("addGenerated() outputPart[${outputIndex}]: macro='".$outputPart->{macro}."' suffix='".$outputPart->{suffix}."'\n");
-	if (($outputPart->{macro} ne $macro) ||
-	    ($outputPart->{suffix} ne $suffix)) {
-		die("BUG: Input section '$outputPart->{macro}':'$outputPart->{suffix}' does not match ".
-		    "preprocessed section '${macro}':'${suffix}'.\n");
-	}
-	$outputPart->{generated} = $generated;
-	$outputIndex++;
-	return $outputIndex;
+	# Always add EOF part even if empty.
+	addOutputPart($preInput, "", "");
 }
 
 
@@ -199,19 +175,22 @@ sub parsePreProcessed()
 {
 	my ($cmd, $ppLines, $ppIndex, $ppLine);
 	my ($generated, $remLine, $macro, $mark, $suffix);
-	my ($curMacro, $curSuffix, $outputIndex);
+	my ($curMacro, $curSuffix, $outputIndex, $outputPart);
 
 	$cmd = "${compiler} -E -x c++ -std=c++11 -P -DXENUM4_DEBUG_PP=1" .
 		" ".join(" ", map {"-I $_"} @{$includeDirs}).
 		" ".join(" ", map {"-I $_"} @{$defaultIncludeDirs}).
 		" ".$inputFileName;
 	#print("preProcess() cmd: '${cmd}'\n");
-	open(PPINPUT, "${cmd} |") || die("ERROR: Could not execute preprocessor: ${cmd}\n");
+	open(PPINPUT, "${cmd} |")
+		|| die("ERROR: Could not execute preprocessor: ${cmd}\n");
 	@{$ppLines} = <PPINPUT>;
 	close(PPINPUT);
 
-	#print("preProcess() got preprocessed, ppLines:".@{$ppLines}."\n");
 	$outputIndex = 0;
+	$outputPart = $output->[$outputIndex];
+
+	#print("preProcess() got preprocessed, ppLines:".@{$ppLines}."\n");
 	$generated = "";
 	$curSuffix = "";
 	for ($ppIndex=0; $ppIndex<@{$ppLines}; $ppIndex++) {
@@ -236,7 +215,11 @@ sub parsePreProcessed()
 				    ($suffix ne $curSuffix)) {
 					die("BUG: Expected marker '${curMacro} end ${curSuffix}', found: ${macro} ${mark} ${suffix}\n");
 				}
-				$outputIndex = addGenerated($outputIndex, $macro, $suffix, $generated);
+				if (($macro eq $outputPart->{macro}) && ($suffix eq $outputPart->{suffix})) {
+					$outputPart->{generated} = $generated;
+					$outputIndex++;
+					$outputPart = $output->[$outputIndex];
+				}
 				$curSuffix = "";
 			}
 			$ppLine = $remLine;
@@ -247,9 +230,10 @@ sub parsePreProcessed()
 	if ($curSuffix ne "") {
 		die("BUG: End marker not found for macro='${curMacro} and suffix='${curSuffix}'.\n");
 	}
-# FIXME: Check that there is only the EOF output part left.
+	if ($outputIndex != (@{$output} - 1)) {
+		die("BUG: Did not find preprocessed section '$outputPart->{macro}':'$outputPart->{suffix}'.\n");
+	}
 }
-
 
 
 ############################################# main() #############################################
@@ -260,9 +244,7 @@ sub main()
 	if ($doPreProcess) {
 		parsePreProcessed();
 	}
-# FIXME:
-# - Iterate $output: Set ->generated in each output part.
-# - Write output (file/stdout).
+#	writeOutput();
 }
 
 
