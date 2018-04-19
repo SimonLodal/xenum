@@ -250,11 +250,11 @@ sub formatGenerated($)
 	my $line;
 	my $out = [];
 
-	foreach $line (split(/@\\n@/, $generated)) {
-		$line =~ s/@\\t@/\t/g;
-		$line =~ s/@\\t\\t@/\t\t/g;
-		$line =~ s/@\\t\\t\\t@/\t\t\t/g;
-		$line =~ s/@\\t\\t\\t\\t@/\t\t\t\t/g;
+	foreach $line (split(/\@XENUM4-NWLN\@/, $generated)) {
+		$line =~ s/\@XENUM4-IND:1\@/\t/g;
+		$line =~ s/\@XENUM4-IND:2\@/\t\t/g;
+		$line =~ s/\@XENUM4-IND:3\@/\t\t\t/g;
+		$line =~ s/\@XENUM4-IND:4\@/\t\t\t\t/g;
 		$line =~ s/^[ *]//;
 		$line =~ s/^[\s]*$//;
 		if ($line) {

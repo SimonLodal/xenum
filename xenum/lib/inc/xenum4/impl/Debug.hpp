@@ -37,15 +37,15 @@
 
 #if XENUM4_DEBUG_PP
 /// In debug mode, inserts a newline. Else empty.
-#define _XENUM4_NWLN @\n@
+#define _XENUM4_NWLN @XENUM4-NWLN@
 /// In debug mode, inserts a single indentation level. Else empty.
-#define _XENUM4_IND1 @\t@
+#define _XENUM4_IND1 @XENUM4-IND:1@
 /// In debug mode, inserts two indentation levels. Else empty.
-#define _XENUM4_IND2 @\t\t@
+#define _XENUM4_IND2 @XENUM4-IND:2@
 /// In debug mode, inserts three indentation levels. Else empty.
-#define _XENUM4_IND3 @\t\t\t@
+#define _XENUM4_IND3 @XENUM4-IND:3@
 /// In debug mode, inserts three indentation levels. Else empty.
-#define _XENUM4_IND4 @\t\t\t\t@
+#define _XENUM4_IND4 @XENUM4-IND:4@
 /// In debug mode, prints the text as a comment. Else empty.
 #define _XENUM4_CMNT(TXT) @XENUM4-CMNT:TXT@ _XENUM4_NWLN
 /// In debug mode, prints the text as a marker. Else empty.
