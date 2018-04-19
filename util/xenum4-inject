@@ -246,11 +246,17 @@ sub parsePreProcessed()
 
 sub formatGenerated($)
 {
-	my ($generated) = @_;
+	my ($outputPart) = @_;
 	my $line;
 	my $out = [];
 
-	foreach $line (split(/\@XENUM4-NWLN\@/, $generated)) {
+	if ($outputPart->{generated} eq "") {
+		return "";
+	}
+
+	$line = "/* ########## XENUM4-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' ########## */";
+	push(@{$out}, $line);
+	foreach $line (split(/\@XENUM4-NWLN\@/, $outputPart->{generated})) {
 		$line =~ s/\@XENUM4-IND:1\@/\t/g;
 		$line =~ s/\@XENUM4-IND:2\@/\t\t/g;
 		$line =~ s/\@XENUM4-IND:3\@/\t\t\t/g;
@@ -261,7 +267,9 @@ sub formatGenerated($)
 			push(@{$out}, $line);
 		}
 	}
-	return join("\n", @{$out});
+	$line = "/* ########## XENUM4-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' ########## */";
+	push(@{$out}, $line);
+	return join("\n", @{$out})."\n";
 }
 
 
@@ -272,7 +280,7 @@ sub writeOutput()
 
 	foreach $outputPart (@{$output}) {
 		push(@{$out}, $outputPart->{inputText});
-		push(@{$out}, formatGenerated($outputPart->{generated}));
+		push(@{$out}, formatGenerated($outputPart));
 	}
 
 	if ($outputFileName eq "") {
