@@ -629,9 +629,9 @@
  * @hideinitializer
  */
 #define XENUM4_DECLARE(SUFFIX)									\
-	_XENUM4_MARK(declare SUFFIX begin)							\
+	_XENUM4_MARK(declare begin SUFFIX)							\
 	_XENUM4_DO_DECLARE(_XENUM4_CTXT_INIT(SUFFIX))						\
-	_XENUM4_MARK(declare SUFFIX end)							\
+	_XENUM4_MARK(declare end SUFFIX)							\
 
 /**
  * Generate the source parts (definitions) of an Xenum.
@@ -639,9 +639,9 @@
  * @hideinitializer
  */
 #define XENUM4_DEFINE(SUFFIX)									\
-	_XENUM4_MARK(define SUFFIX begin)							\
+	_XENUM4_MARK(define begin SUFFIX)							\
 	_XENUM4_DO_DEFINE(_XENUM4_CTXT_INIT(SUFFIX))						\
-	_XENUM4_MARK(define SUFFIX end)								\
+	_XENUM4_MARK(define end SUFFIX)								\
 
 
 // Doxygen trouble: Everything below is internal. Would like to hide it from doxygen, but would

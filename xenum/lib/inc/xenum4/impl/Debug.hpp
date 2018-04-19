@@ -48,7 +48,7 @@
 /// In debug mode, prints the text as a comment. Else empty.
 #define CMNT(TXT) @XENUM4-CMNT:TXT@ NWLN
 /// In debug mode, prints the text as a marker. Else empty.
-#define _XENUM4_MARK(TXT) @XENUM4-MARK:TXT@ NWLN
+#define _XENUM4_MARK(TXT) @XENUM4-MARK:TXT@
 #else
 /// In debug mode, inserts a newline. Else empty.
 #define NWLN 
