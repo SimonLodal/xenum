@@ -236,6 +236,51 @@ sub parsePreProcessed()
 }
 
 
+########################################## WRITE OUTPUT ##########################################
+
+sub formatGenerated($)
+{
+	my ($generated) = @_;
+	my $line;
+	my $out = [];
+
+	foreach $line (split(/@\\n@/, $generated)) {
+		$line =~ s/@\\t@/\t/g;
+		$line =~ s/@\\t\\t@/\t\t/g;
+		$line =~ s/@\\t\\t\\t@/\t\t\t/g;
+		$line =~ s/@\\t\\t\\t\\t@/\t\t\t\t/g;
+		$line =~ s/^[ *]//;
+		$line =~ s/^[\s]*$//;
+		if ($line) {
+			push(@{$out}, $line);
+		}
+	}
+	return join("\n", @{$out});
+}
+
+
+sub writeOutput()
+{
+	my ($outputPart);
+	my $out = [];
+
+	foreach $outputPart (@{$output}) {
+		push(@{$out}, $outputPart->{inputText});
+		push(@{$out}, formatGenerated($outputPart->{generated}));
+	}
+
+	if ($outputFileName eq "") {
+		print(join("", @{$out}));
+	}
+	else {
+		open(OUTPUT, ">${outputFileName}")
+			|| die("ERROR: Could not open output file '${outputFileName}'.\n");
+		print(OUTPUT join("", @{$out}));
+		close(OUTPUT);
+	}
+}
+
+
 ############################################# main() #############################################
 sub main()
 {
@@ -244,7 +289,7 @@ sub main()
 	if ($doPreProcess) {
 		parsePreProcessed();
 	}
-#	writeOutput();
+	writeOutput();
 }
 
 
