@@ -2253,21 +2253,22 @@ sub generateMakefile()
 	push(@{$out}, "endif");
 	push(@{$out}, "CCMD := \$(CCC) -Wall -Wstrict-overflow=5 -std=c++11 -Os");
 
-	push(@{$out}, "Test${cname} : ${cname}.ppp Test${cname}.o ${cname}.o");
+	push(@{$out}, "Test${cname} : ${cname}.hpp.pp ${cname}.cpp.pp Test${cname}.o ${cname}.o");
 	push(@{$out}, "\t\$(CCMD) -L ${gtestroot} -o Test${cname} Test${cname}.o ${cname}.o -l gtest -l gtest_main -l stdc++");
 	push(@{$out}, "${cname}.o : ${cname}.cpp ${cname}.hpp");
 	push(@{$out}, "\t\$(CCMD) ${incPaths} -DGTEST_ROOT=${gtestroot} -c ${cname}.cpp");
 	push(@{$out}, "Test${cname}.o : Test${cname}.cpp ${cname}.hpp");
 	push(@{$out}, "\t\$(CCMD) ${incPaths} -DGTEST_ROOT=${gtestroot} -c Test${cname}.cpp");
 
-	push(@{$out}, "${cname}.ppp : ${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\@\$(CCC) -E -P -DXENUM4_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
-	push(@{$out}, "\t\t| ../xenum-postprocess \\");
-	push(@{$out}, "\t\t> ${cname}.ppp");
+	push(@{$out}, "${cname}.hpp.pp : ${cname}.hpp");
+	push(@{$out}, "\t\@../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o ${cname}.hpp.pp");
+	push(@{$out}, "${cname}.cpp.pp : ${cname}.hpp ${cname}.cpp");
+	push(@{$out}, "\t\@../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o ${cname}.cpp.pp");
 
-	push(@{$out}, "Time${cname}.ppp : ${cname}.cpp ${cname}.hpp");
-	push(@{$out}, "\t\@ time -p \$(CCC) -E -P -DXENUM4_DEBUG_PP=1 -std=c++11 ${incPaths} ${cname}.cpp \\");
-	push(@{$out}, "\t\t> /dev/null");
+	push(@{$out}, "Time${cname}.hpp.pp : ${cname}.hpp");
+	push(@{$out}, "\t\@time -p ../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o /dev/null");
+	push(@{$out}, "Time${cname}.cpp.pp : ${cname}.hpp ${cname}.cpp");
+	push(@{$out}, "\t\@time -p ../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o /dev/null");
 
 	print(MAKEFILE join("\n", @{$out}) . "\n");
 }
@@ -2283,7 +2284,7 @@ sub execute()
 	my $outputdir = $gopts->{cntnrName};
 	chdir($outputdir) || die("ERROR: Could not change to output directory '${outputdir}'.\n");
 	if ($gopts->{makePp}) {
-		$cmd = "make ".$gopts->{cntnrName}.".ppp";
+		$cmd = "make ".$gopts->{cntnrName}.".hpp.pp ".$gopts->{cntnrName}.".cpp.pp";
 		system($cmd);
 		$res = $?;
 		if ($res == -1) {
