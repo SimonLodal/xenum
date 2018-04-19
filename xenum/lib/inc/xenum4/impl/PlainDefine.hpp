@@ -39,9 +39,9 @@
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL0(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	namespace { namespace _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) {				NWLN \
+	namespace { namespace _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) {				_XENUM4_NWLN \
 		_XENUM4_PLAIN_SRC_DEFL0_VALUES(PROPNAME, PROPDEF, CTXT, Z)			\
-	}}											NWLN \
+	}}											_XENUM4_NWLN \
 
 /**
  * Generate definitions of store class members. For depth==0.
@@ -73,11 +73,11 @@
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL1(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	namespace { namespace _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) {				NWLN \
+	namespace { namespace _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) {				_XENUM4_NWLN \
 		_XENUM4_PLAIN_SRC_DEFL1_VALUES(PROPNAME, PROPDEF, CTXT, Z)			\
 		_XENUM4_PLAIN_SRC_DEFL1_NODES(PROPNAME, PROPDEF, CTXT, Z)			\
 		_XENUM4_PLAIN_SRC_DEFL1_FUNCS(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF), CTXT, Z)	\
-	}}											NWLN \
+	}}											_XENUM4_NWLN \
 
 
 /**
@@ -104,7 +104,7 @@
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_VALUE(ITERPOS, NODE, CTXT)						\
-IND2	_XENUM4_PROP_GET_VALUE(NODE, CTXT),							NWLN
+_XENUM4_IND2	_XENUM4_PROP_GET_VALUE(NODE, CTXT),						_XENUM4_NWLN
 
 
 // ================================= VALUES (SRC, DEPTH==0) =====================================
@@ -113,8 +113,8 @@ IND2	_XENUM4_PROP_GET_VALUE(NODE, CTXT),							NWLN
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL0_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
-IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		NWLN \
-	_XENUM4_PLAIN_SRC_DEFL0_VALUES_DATA(PROPNAME, CTXT)					\
+_XENUM4_IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);	_XENUM4_NWLN \
+		_XENUM4_PLAIN_SRC_DEFL0_VALUES_DATA(PROPNAME, CTXT)				\
 
 /**
  * Worker for _XENUM4_PLAIN_SRC_DEFL0_VALUES().
@@ -122,9 +122,10 @@ IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL0_VALUES_DATA(PROPNAME, CTXT)					\
-IND1	constexpr const BOOST_PP_CAT(PROPNAME, Value) BOOST_PP_CAT(PROPNAME, Values)[] = {	NWLN \
-		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE, CTXT)				\
-IND1	};											NWLN
+_XENUM4_IND1	constexpr const BOOST_PP_CAT(PROPNAME, Value)					\
+		BOOST_PP_CAT(PROPNAME, Values)[] = {						_XENUM4_NWLN \
+			_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE, CTXT)			\
+_XENUM4_IND1	};										_XENUM4_NWLN
 
 
 // ================================= VALUES (SRC, DEPTH!=0) =====================================
@@ -133,9 +134,9 @@ IND1	};											NWLN
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL1_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
-IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		NWLN \
-	_XENUM4_PLAIN_SRC_DEFL1_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)				\
-	_XENUM4_PLAIN_SRC_DEFL1_VALUES_DATA(PROPNAME, CTXT)					\
+_XENUM4_IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);	_XENUM4_NWLN \
+		_XENUM4_PLAIN_SRC_DEFL1_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)			\
+		_XENUM4_PLAIN_SRC_DEFL1_VALUES_DATA(PROPNAME, CTXT)				\
 
 /**
  * Worker for _XENUM4_PLAIN_SRC_DEFL1_VALUES().
@@ -143,9 +144,9 @@ IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL1_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)				\
-IND1	typedef struct {									NWLN \
-		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_SRC_DEFL1_VALUE_NAME, CTXT)		\
-IND1	} BOOST_PP_CAT(PROPNAME, Values_t);							NWLN \
+_XENUM4_IND1	typedef struct {								_XENUM4_NWLN \
+			_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_SRC_DEFL1_VALUE_NAME, CTXT)	\
+_XENUM4_IND1	} BOOST_PP_CAT(PROPNAME, Values_t);						_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_SRC_DEFL1_VALUES_STRUCT(); loop function for each data node.
@@ -153,8 +154,8 @@ IND1	} BOOST_PP_CAT(PROPNAME, Values_t);							NWLN \
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL1_VALUE_NAME(ITERPOS, NODE, CTXT)					\
-IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value) 		\
-	_XENUM4_PROP_GEN_NODE_NAME(CTXT, _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS));	NWLN \
+_XENUM4_IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value)	\
+		_XENUM4_PROP_GEN_NODE_NAME(CTXT, _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS));	_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_SRC_DEFL1_VALUES().
@@ -162,9 +163,10 @@ IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Valu
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL1_VALUES_DATA(PROPNAME, CTXT)					\
-IND1	constexpr const BOOST_PP_CAT(PROPNAME, Value) BOOST_PP_CAT(PROPNAME, Values)[] = {	NWLN \
-		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE, CTXT)				\
-IND1	};											NWLN
+_XENUM4_IND1	constexpr const BOOST_PP_CAT(PROPNAME, Value)					\
+		BOOST_PP_CAT(PROPNAME, Values)[] = {						_XENUM4_NWLN \
+			_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_VALUE, CTXT)			\
+_XENUM4_IND1	};										_XENUM4_NWLN
 
 
 // ====================================== NODES, COMMON =========================================
@@ -264,16 +266,16 @@ IND1	};											NWLN
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL1_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
-IND1	constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0				\
-		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_NODES, CTXT);				NWLN \
-IND1	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
-			sizeof(BOOST_PP_CAT(PROPNAME, Values)),					\
-			BOOST_PP_CAT(PROPNAME, IndexSize)					\
-		) >::type BOOST_PP_CAT(PROPNAME, Index);					NWLN \
-IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
-		BOOST_PP_CAT(PROPNAME, Node);							NWLN \
-	_XENUM4_PLAIN_SRC_NODES_STRUCT(PROPNAME, CTXT)						\
-	_XENUM4_PLAIN_SRC_NODES_DATA(PROPNAME, CTXT)						\
+_XENUM4_IND1	constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0			\
+			_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_NODES, CTXT);			_XENUM4_NWLN \
+_XENUM4_IND1	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(			\
+				sizeof(BOOST_PP_CAT(PROPNAME, Values)),				\
+				BOOST_PP_CAT(PROPNAME, IndexSize)				\
+			) >::type BOOST_PP_CAT(PROPNAME, Index);				_XENUM4_NWLN \
+_XENUM4_IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>			\
+			BOOST_PP_CAT(PROPNAME, Node);						_XENUM4_NWLN \
+		_XENUM4_PLAIN_SRC_NODES_STRUCT(PROPNAME, CTXT)					\
+		_XENUM4_PLAIN_SRC_NODES_DATA(PROPNAME, CTXT)					\
 
 
 // =========================== NODE NAMES (SRC) ==============================
@@ -282,20 +284,20 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_NODES_STRUCT(PROPNAME, CTXT)						\
-IND1	typedef struct {									NWLN \
-		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_SRC_NODES_FIELD, CTXT)			\
-IND1	} BOOST_PP_CAT(PROPNAME, Nodes_t);							NWLN \
+_XENUM4_IND1	typedef struct {								_XENUM4_NWLN \
+			_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_SRC_NODES_FIELD, CTXT)		\
+_XENUM4_IND1	} BOOST_PP_CAT(PROPNAME, Nodes_t);						_XENUM4_NWLN \
 
 /**
  * Define a single field of the Nodes_t struct.
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_NODES_FIELD(ITERPOS, NODE, CTXT)					\
-IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Node)		\
-	_XENUM4_PROP_GEN_NODE_NAME(								\
-		CTXT,										\
-		_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
-	);											NWLN \
+_XENUM4_IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Node)	\
+		_XENUM4_PROP_GEN_NODE_NAME(							\
+			CTXT,									\
+			_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)			\
+		);										_XENUM4_NWLN \
 
 
 // ======================== NODES DATA TABLE (SRC) ===========================
@@ -304,25 +306,25 @@ IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Node
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_NODES_DATA(PROPNAME, CTXT)						\
-IND1	constexpr const BOOST_PP_CAT(PROPNAME, Node) BOOST_PP_CAT(PROPNAME, Nodes)[] =		\
-	{											NWLN \
-		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_SRC_NODE_DATA, CTXT)			\
-IND1	};											NWLN \
+_XENUM4_IND1	constexpr const BOOST_PP_CAT(PROPNAME, Node) BOOST_PP_CAT(PROPNAME, Nodes)[] =	\
+		{										_XENUM4_NWLN \
+			_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_SRC_NODE_DATA, CTXT)		\
+_XENUM4_IND1	};										_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_SRC_NODES_DATA().
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_NODE_DATA(ITERPOS, NODE, CTXT)					\
-IND2	{											\
-		/* Size */									\
-		_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),				\
-		/* Index */									\
-		BOOST_PP_CAT(									\
-			_XENUM4_PLAIN_SRC_NODE_DATA_INDEX_,					\
-			BOOST_PP_BOOL(_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))	\
-		) (ITERPOS, CTXT)								\
-	},											NWLN \
+_XENUM4_IND2	{										\
+			/* Size */								\
+			_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),			\
+			/* Index */								\
+			BOOST_PP_CAT(								\
+				_XENUM4_PLAIN_SRC_NODE_DATA_INDEX_,				\
+				BOOST_PP_BOOL(_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))\
+			) (ITERPOS, CTXT)							\
+		},										_XENUM4_NWLN \
 
 /**
  * Define IndexNode.index to 0 since node has no children.
@@ -378,16 +380,16 @@ IND2	{											\
 		/* Explicit size not needed */							\
 		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, ValuesSize)] = */			\
 		[] =										\
-		{										NWLN \
+		{										_XENUM4_NWLN \
 			_XENUM4_PLAIN_HDR_VALUES_DATA(CTXT)					\
-		};										NWLN \
+		};										_XENUM4_NWLN \
 	BOOST_PP_CAT(										\
 		_XENUM4_PLAIN_HDR_DATA_MULTILEVEL_,						\
 		BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF))				\
 	) (CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
 
 /* DEBUG
-_PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAME inttype=INTTYPE propdef=PROPDEF NWLN \
+_PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAME inttype=INTTYPE propdef=PROPDEF _XENUM4_NWLN \
 */
 
 
@@ -416,10 +418,10 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
 	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
 	/* Also wrap in named namespace to prevent name clashes. */				\
-	namespace _XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME) {		NWLN \
+	namespace _XENUM4_IMPL_LOCAL_NS(_XENUM4_CTXT_GET_DECL(CTXT), PROPNAME) {		_XENUM4_NWLN \
 	_XENUM4_PLAIN_HDR_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)		\
 	_XENUM4_PLAIN_HDR_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	}}											NWLN \
+	}}											_XENUM4_NWLN \
 
 // ========================== VALUES DATA TABLE ==============================
 /**
@@ -437,12 +439,11 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
  */
 // FIXME: What kind of error does it produce when there is no value and no default?
 #define _XENUM4_PLAIN_HDR_VALUE_DATA(ITERPOS, NODE, CTXT)					\
-IND1	BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(NODE),							\
-		_XENUM4_PROPDEF_GET_DEFAULTVALUE(_XENUM4_CTXT_GET_PROPDEF(CTXT)),		\
-		NODE										\
-	)											\
-, NWLN
+_XENUM4_IND1	BOOST_PP_IF(									\
+			BOOST_PP_IS_EMPTY(NODE),						\
+			_XENUM4_PROPDEF_GET_DEFAULTVALUE(_XENUM4_CTXT_GET_PROPDEF(CTXT)),	\
+			NODE									\
+		) ,										_XENUM4_NWLN \
 
 
 // ========================== VALUE NAMES (HDR) ==============================
@@ -453,9 +454,9 @@ IND1	BOOST_PP_IF(										\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)		\
-IND1	typedef struct {									NWLN \
-		_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_HDR_VALUE_NAME, CTXT)			\
-IND1	} BOOST_PP_CAT(PROPNAME, ValueNames);							NWLN \
+_XENUM4_IND1	typedef struct {								_XENUM4_NWLN \
+			_XENUM4_PROP_ITER_VALUES(_XENUM4_PLAIN_HDR_VALUE_NAME, CTXT)		\
+_XENUM4_IND1	} BOOST_PP_CAT(PROPNAME, ValueNames);						_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_VALUES_NAMES(); loop function for each data node.
@@ -463,11 +464,11 @@ IND1	} BOOST_PP_CAT(PROPNAME, ValueNames);							NWLN \
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_VALUE_NAME(ITERPOS, NODE, CTXT)					\
-IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
-	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
-	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value)	\
-	_XENUM4_PROP_GEN_NODE_NAME(CTXT, _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
-	; NWLN
+_XENUM4_IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))				\
+		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))					\
+		:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value)	\
+		_XENUM4_PROP_GEN_NODE_NAME(CTXT, _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
+		; _XENUM4_NWLN
 
 
 // =========================== NODE NAMES (HDR) ==============================
@@ -478,25 +479,25 @@ IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-IND1	typedef struct {									NWLN \
-		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_HDR_NODE_NAME, CTXT)			\
-IND1	} BOOST_PP_CAT(PROPNAME, NodeNames);							NWLN \
+_XENUM4_IND1	typedef struct {								_XENUM4_NWLN \
+			_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_HDR_NODE_NAME, CTXT)		\
+_XENUM4_IND1	} BOOST_PP_CAT(PROPNAME, NodeNames);						_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_NODES_NAMES().
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_NODE_NAME(ITERPOS, NODE, CTXT)					\
-IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))					\
-	_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))						\
-	:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
-	_XENUM4_PROP_GEN_NODE_NAME(								\
-		CTXT,										\
-		_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
-	)											\
-	; NWLN
+_XENUM4_IND2	_XENUM4_DECL_GET_SCOPE(_XENUM4_CTXT_GET_DECL(CTXT))				\
+		_XENUM4_STORE_NAME(_XENUM4_CTXT_GET_DECL(CTXT))					\
+		:: BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
+		_XENUM4_PROP_GEN_NODE_NAME(							\
+			CTXT,									\
+			_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)			\
+		)										\
+		; _XENUM4_NWLN
 /*
-_PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] ctxt=[CTXT] NWLN \
+_PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] ctxt=[CTXT] _XENUM4_NWLN \
 */
 
 
@@ -513,27 +514,27 @@ _PLAIN_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] 
 		/* Explicit size not needed */							\
 		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexSize)] = */			\
 		[] =										\
-	{											NWLN \
+	{											_XENUM4_NWLN \
 		_XENUM4_PLAIN_ITER_NODES(_XENUM4_PLAIN_HDR_NODE_DATA, CTXT)			\
-	};											NWLN \
+	};											_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_NODES_DATA().
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_NODE_DATA(ITERPOS, NODE, CTXT)					\
-IND1	{											\
-		/* Size */									\
-		_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),				\
-		/* Index */									\
-		BOOST_PP_CAT(									\
-			_XENUM4_PLAIN_HDR_NODE_DATA_INDEX_,					\
-			BOOST_PP_BOOL(_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))	\
-		) (ITERPOS, CTXT)								\
-	},											\
-	NWLN
+_XENUM4_IND1	{										\
+			/* Size */								\
+			_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),			\
+			/* Index */								\
+			BOOST_PP_CAT(								\
+				_XENUM4_PLAIN_HDR_NODE_DATA_INDEX_,				\
+				BOOST_PP_BOOL(_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))\
+			) (ITERPOS, CTXT)							\
+		},										\
+		_XENUM4_NWLN
 /*
-_XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=[CTXT] node=[NODE] NWLN \
+_XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=[CTXT] node=[NODE] _XENUM4_NWLN \
 */
 
 /**
@@ -609,26 +610,26 @@ _XENUM4_PLAIN_NODE_DATA: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFL1_GET_NODE_I1(PROPNAME, LEVEL, DECL, Z)				\
-IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
-	BOOST_PP_CAT(PROPNAME, Node&)								\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
-			_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_CNTNR_NAME(DECL)::_Enum,		\
-			BOOST_PP_CAT(PROPNAME, Index),						\
-			LEVEL,									\
-			Z									\
-		)										\
-	)											NWLN \
-IND1	{											NWLN \
-IND2		return BOOST_PP_CAT(PROPNAME, Nodes)[						\
-			_XENUM4_PROP_GEN_NODE_INDEXING(						\
-				PROPNAME,							\
+_XENUM4_IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
+		BOOST_PP_CAT(PROPNAME, Node&)							\
+		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
+			_XENUM4_PROP_GEN_INDEX0_PARMS(						\
+				_XENUM4_DECL_GET_SCOPE(DECL)_XENUM4_CNTNR_NAME(DECL)::_Enum,	\
 				BOOST_PP_CAT(PROPNAME, Index),					\
 				LEVEL,								\
 				Z								\
 			)									\
-		];										NWLN \
-IND1	}											NWLN
+		)										_XENUM4_NWLN \
+_XENUM4_IND1	{										_XENUM4_NWLN \
+_XENUM4_IND2		return BOOST_PP_CAT(PROPNAME, Nodes)[					\
+				_XENUM4_PROP_GEN_NODE_INDEXING(					\
+					PROPNAME,						\
+					BOOST_PP_CAT(PROPNAME, Index),				\
+					LEVEL,							\
+					Z							\
+				)								\
+			];									_XENUM4_NWLN \
+_XENUM4_IND1	}										_XENUM4_NWLN
 
 
 // ==================================== STORE FUNCTIONS ========================================
@@ -702,17 +703,17 @@ IND1	}											NWLN
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFS1_GET_SIZE_I2(PROPNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
-	const size_t										\
-	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
-	)											NWLN \
-	{											NWLN \
-IND1		return _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) ::					\
-		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
-			_XENUM4_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
-		)										\
-		.size;										NWLN \
-	}											NWLN \
+		const size_t									\
+		SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (		\
+			_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)	\
+		)										_XENUM4_NWLN \
+		{										_XENUM4_NWLN \
+_XENUM4_IND1		return _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) ::				\
+			BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (			\
+				_XENUM4_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)		\
+			)									\
+			.size;									_XENUM4_NWLN \
+		}										_XENUM4_NWLN \
 
 
 // =================== get${PROPNAME}() (SRC, DEPTH==0) ======================
@@ -721,11 +722,11 @@ IND1		return _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) ::					\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFS0_GET_VALUE(PROPNAME, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
-	const _XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
-	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (SCOPE STORENAME::Enum index0)		NWLN \
-	{											NWLN \
-IND1		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[SCOPE STORENAME::getIndex(index0)];	NWLN \
-	}											NWLN
+		const _XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF)					\
+		SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (SCOPE STORENAME::Enum index0)	_XENUM4_NWLN \
+		{										_XENUM4_NWLN \
+_XENUM4_IND1		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[SCOPE STORENAME::getIndex(index0)];	_XENUM4_NWLN \
+		}										_XENUM4_NWLN
 
 
 // =================== get${PROPNAME}() (SRC, DEPTH!=0) ======================
@@ -734,17 +735,17 @@ IND1		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[SCOPE STORENAME::getIndex
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DEFS1_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
-	const _XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
-	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (					\
-		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, DEPTH, Z)		\
-	) {											NWLN \
-IND1		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[				\
-			LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (		\
-				_XENUM4_PROP_GEN_INDEX0_ARGS(DEPTH, Z)				\
-			)									\
-			.getNextIndex(BOOST_PP_CAT(index, DEPTH))				\
-		];										NWLN \
-	}											NWLN
+		const _XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF)					\
+		SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (				\
+			_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, DEPTH, Z)	\
+		) {										_XENUM4_NWLN \
+_XENUM4_IND1		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[			\
+				LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (	\
+					_XENUM4_PROP_GEN_INDEX0_ARGS(DEPTH, Z)			\
+				)								\
+				.getNextIndex(BOOST_PP_CAT(index, DEPTH))			\
+			];									_XENUM4_NWLN \
+		}										_XENUM4_NWLN
 
 
 // =========================== _check() ==============================
@@ -771,19 +772,19 @@ IND1		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[				\
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_CHECK_1(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-IND1	static_assert(										\
-		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, ValueNames)) == 	\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),			\
-		"Struct/array size mismatch (ValueNames / Values)."				\
-	);											NWLN \
-IND1	static_assert(										\
-		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)),			\
-		"Struct/array size mismatch (NodeNames / IndexNodes)."				\
-	);											NWLN \
+_XENUM4_IND1	static_assert(									\
+			sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, ValueNames)) == 	\
+			sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),		\
+			"Struct/array size mismatch (ValueNames / Values)."			\
+		);										_XENUM4_NWLN \
+_XENUM4_IND1	static_assert(									\
+			sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
+			sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)),		\
+			"Struct/array size mismatch (NodeNames / IndexNodes)."			\
+		);										_XENUM4_NWLN \
 
 /*
-_XENUM4_PLAIN_CHECK: PROPNAME NWLN \
+_XENUM4_PLAIN_CHECK: PROPNAME _XENUM4_NWLN \
 */
 
 /**
@@ -800,29 +801,29 @@ _XENUM4_PLAIN_CHECK: PROPNAME NWLN \
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_CHECK_0(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, DECL, CTXT, Z)	\
-IND1	static_assert(										\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Values)) ==				\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Value)) * SCOPE STORENAME::size,	\
-		"Data size mismatch (Values / enum-size)."					\
-	);											NWLN \
+_XENUM4_IND1	static_assert(										\
+			sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Values)) ==				\
+			sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Value)) * SCOPE STORENAME::size,	\
+			"Data size mismatch (Values / enum-size)."					\
+		);											_XENUM4_NWLN \
 
 
 /**
  * Worker for _XENUM4_PLAIN_SRC_CHECK(), for depth!=0.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_SRC_CHECK_1(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, DECL, CTXT, Z)		\
-IND1	static_assert(										\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Nodes_t)) ==				\
-		LOCALSCOPE::BOOST_PP_CAT(PROPNAME, IndexSize) *					\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Node)),				\
-		"Struct size mismatch (Nodes_t / IndexSize)."					\
-	);											NWLN \
-IND1	static_assert(										\
-		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes)) ==	\
-		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes_t)),	\
-		"Array/struct size mismatch (Nodes / Nodes_t)."					\
-	);											NWLN \
+#define _XENUM4_PLAIN_SRC_CHECK_1(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, DECL, CTXT, Z)	\
+_XENUM4_IND1	static_assert(										\
+			sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Nodes_t)) ==				\
+			LOCALSCOPE::BOOST_PP_CAT(PROPNAME, IndexSize) *					\
+			sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Node)),				\
+			"Struct size mismatch (Nodes_t / IndexSize)."					\
+		);											_XENUM4_NWLN \
+_XENUM4_IND1	static_assert(										\
+			sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes)) ==	\
+			sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes_t)),	\
+			"Array/struct size mismatch (Nodes / Nodes_t)."					\
+		);											_XENUM4_NWLN \
 
 
 // ====================================== DEBUG STUFF ===========================================
@@ -840,27 +841,27 @@ IND1	static_assert(										\
 #define _XENUM4_PLAIN_DEFINE_FUNC_DUMP_NODES(CTXT, PROPDEF, PROPNAME)				\
 
 /*
-	void _XENUM4_DECL_GET_SCOPE(DECL) _XENUM4_STORE_NAME(DECL)				\
-	:: dumpNodes(void) noexcept								NWLN \
-	{											NWLN \
-IND1		std::cout									NWLN \
-IND2			<<BOOST_PP_STRINGIZE(PROPNAME)<<"IndexNodes"				NWLN \
-IND2			<<" ("<<BOOST_PP_CAT(PROPNAME, IndexSize)<<"/"<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNodes))<<")"	NWLN \
-IND2			<<" sizeof(IndexNode)="<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNode))	NWLN \
-IND2			<<":"									NWLN \
-IND2			<<std::endl;								NWLN \
-IND2		for (BOOST_PP_CAT(PROPNAME, Index) idx=0; idx<BOOST_PP_CAT(PROPNAME, IndexSize); idx++) { NWLN \
-IND3			std::cout								NWLN \
-IND4				<<"\t"								NWLN \
-IND4				<<" ["<<(int)idx<<"]"						NWLN \
-IND4				<<" {"								NWLN \
-IND4				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].size		NWLN \
-IND4				<<","								NWLN \
-IND4				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].index		NWLN \
-IND4				<<"}"								NWLN \
-IND4				<<std::endl;							NWLN \
-IND2		}										NWLN \
-	}											NWLN \
+		void _XENUM4_DECL_GET_SCOPE(DECL) _XENUM4_STORE_NAME(DECL)				\
+		:: dumpNodes(void) noexcept								_XENUM4_NWLN \
+		{											_XENUM4_NWLN \
+_XENUM4_IND1		std::cout									_XENUM4_NWLN \
+_XENUM4_IND2			<<BOOST_PP_STRINGIZE(PROPNAME)<<"IndexNodes"				_XENUM4_NWLN \
+_XENUM4_IND2			<<" ("<<BOOST_PP_CAT(PROPNAME, IndexSize)<<"/"<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNodes))<<")"	_XENUM4_NWLN \
+_XENUM4_IND2			<<" sizeof(IndexNode)="<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNode))	_XENUM4_NWLN \
+_XENUM4_IND2			<<":"									_XENUM4_NWLN \
+_XENUM4_IND2			<<std::endl;								_XENUM4_NWLN \
+_XENUM4_IND2		for (BOOST_PP_CAT(PROPNAME, Index) idx=0; idx<BOOST_PP_CAT(PROPNAME, IndexSize); idx++) { _XENUM4_NWLN \
+_XENUM4_IND3			std::cout								_XENUM4_NWLN \
+_XENUM4_IND4				<<"\t"								_XENUM4_NWLN \
+_XENUM4_IND4				<<" ["<<(int)idx<<"]"						_XENUM4_NWLN \
+_XENUM4_IND4				<<" {"								_XENUM4_NWLN \
+_XENUM4_IND4				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].size		_XENUM4_NWLN \
+_XENUM4_IND4				<<","								_XENUM4_NWLN \
+_XENUM4_IND4				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].index		_XENUM4_NWLN \
+_XENUM4_IND4				<<"}"								_XENUM4_NWLN \
+_XENUM4_IND4				<<std::endl;							_XENUM4_NWLN \
+_XENUM4_IND2		}										_XENUM4_NWLN \
+		}											_XENUM4_NWLN \
 */
 
 

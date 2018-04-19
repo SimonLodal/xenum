@@ -5,7 +5,10 @@
 - util/xenum4-inject util script for inspecting the generated code.
 
 ### Removed
-- Util scripts xenum-inspect and xenum-postprocess replaced by xenum4-inject.
+- Util scripts xenum-inspect and xenum-postprocess (replaced by xenum4-inject).
+
+### Changed
+- Util script xenum-test-gen renamed to xenum4-test-gen.
 
 
 ## [4.0] - 2018-04-18

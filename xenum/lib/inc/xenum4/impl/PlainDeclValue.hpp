@@ -18,9 +18,10 @@
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
-public:												NWLN \
-IND1	using BOOST_PP_CAT(PROPNAME, Value) = typename Store::BOOST_PP_CAT(PROPNAME, Value);	NWLN \
-	BOOST_PP_CAT(_XENUM4_PLAIN_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PROPNAME)		\
+public:												_XENUM4_NWLN \
+_XENUM4_IND1	using BOOST_PP_CAT(PROPNAME, Value) =						\
+			typename Store::BOOST_PP_CAT(PROPNAME, Value);				_XENUM4_NWLN \
+		BOOST_PP_CAT(_XENUM4_PLAIN_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PROPNAME)	\
 
 /**
  * Worker for _XENUM4_PLAIN_DECLV_TYPES().
@@ -35,7 +36,8 @@ IND1	using BOOST_PP_CAT(PROPNAME, Value) = typename Store::BOOST_PP_CAT(PROPNAME
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_INDEX_T_1(PROPNAME)						\
-IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME, Index);	NWLN \
+_XENUM4_IND1	using BOOST_PP_CAT(PROPNAME, Index) =						\
+			typename Store::BOOST_PP_CAT(PROPNAME, Index);				_XENUM4_NWLN \
 
 
 // ===================================== FUNCTIONS (HDR) ========================================
@@ -99,18 +101,18 @@ IND1	using BOOST_PP_CAT(PROPNAME, Index) = typename Store::BOOST_PP_CAT(PROPNAME
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)				\
-IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const BOOST_PP_CAT(PROPNAME, Index)	\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
-		_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), LEVEL, Z)		\
-	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
-	{											\
-		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-			value									\
-			_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
-		);										\
-	}											\
-	NWLN
+_XENUM4_IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)					\
+		const BOOST_PP_CAT(PROPNAME, Index)						\
+		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
+			_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), LEVEL, Z)	\
+		)										\
+		const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)				\
+		{										\
+			return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (		\
+				value								\
+				_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)				\
+			);									\
+		}										_XENUM4_NWLN \
 
 
 // =============================== FUNC (HDR): get$PROPNAME() ===================================
@@ -120,18 +122,18 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const BOOST_PP_CAT(PROPNAME,
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
-IND1	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const BOOST_PP_CAT(PROPNAME, Value&)	\
-	BOOST_PP_CAT(get, PROPNAME) (								\
-		_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), DEPTH, Z)		\
-	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
-	{											\
-		return Store::BOOST_PP_CAT(get, PROPNAME) (					\
-			value									\
-			_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
-		);										\
-	}											\
-	NWLN
+_XENUM4_IND1	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr)					\
+		const BOOST_PP_CAT(PROPNAME, Value&)						\
+		BOOST_PP_CAT(get, PROPNAME) (							\
+			_XENUM4_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), DEPTH, Z)	\
+		)										\
+		const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)				\
+		{										\
+			return Store::BOOST_PP_CAT(get, PROPNAME) (				\
+				value								\
+				_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)				\
+			);									\
+		}										_XENUM4_NWLN \
 
 
 // ===================================== FUNCTIONS (SRC) ========================================
@@ -141,7 +143,7 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const BOOST_PP_CAT(PROPNAME,
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
-public:												NWLN \
+public:												_XENUM4_NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\

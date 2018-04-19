@@ -18,7 +18,7 @@
  * @hideinitializer
  */
 #define _XENUM4_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
-public:												NWLN \
+public:												_XENUM4_NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\

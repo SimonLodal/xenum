@@ -19,7 +19,7 @@
 		_XENUM4_DECL_HAS_PROPS(DECL)							\
 	) (CTXT, DECL)
 /*
-_DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM4_DECL_GET_PROPDEFS(DECL))) NWLN \
+_DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM4_DECL_GET_PROPDEFS(DECL))) _XENUM4_NWLN \
 */
 
 // ==============================================================================================
@@ -30,7 +30,7 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  */
 #define _XENUM4_DECLARE_VALUE_0(CTXT, DECL)							\
 	typedef ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>				\
-		_XENUM4_DECL_GET_VALUENAME(DECL);						NWLN
+		_XENUM4_DECL_GET_VALUENAME(DECL);						_XENUM4_NWLN
 
 
 // ==============================================================================================
@@ -42,11 +42,11 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  */
 #define _XENUM4_DECLARE_VALUE_1(CTXT, DECL)							\
 class _XENUM4_DECL_GET_VALUENAME(DECL)								\
-	: public ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)> {				NWLN \
+	: public ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)> {				_XENUM4_NWLN \
 	_XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM4_DECL_GET_VALUENAME(DECL))			\
 	_XENUM4_PROPS_DECLV(CTXT)								\
 };												\
-NWLN
+_XENUM4_NWLN
 
 /**
  * Worker for _XENUM4_DECLARE_VALUE_1().
@@ -54,10 +54,10 @@ NWLN
  * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
-public:												NWLN \
-IND1	constexpr VALUENAME(void) noexcept {}							NWLN \
-IND1	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}				NWLN \
-IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}		NWLN \
+	public:											_XENUM4_NWLN \
+_XENUM4_IND1	constexpr VALUENAME(void) noexcept {}						_XENUM4_NWLN \
+_XENUM4_IND1	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}			_XENUM4_NWLN \
+_XENUM4_IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}	_XENUM4_NWLN \
 
 
 #endif // _XENUM4_IMPL_DECLARE_VALUE_HPP
