@@ -524,7 +524,7 @@
  * - First of all, when something goes wrong, use trial and error to make your xenum declaration
  *   simpler, until it works.
  * - If you are unsure about correct syntax, see the unit tests for working examples.
- * - You can also use util/xenum-test-gen to generate xenums of any size, just to inspect
+ * - You can also use util/xenum4-test-gen to generate xenums of any size, just to inspect
  *   how it declares them, and perhaps to test the limits of your own compiler.
  * - Use util/xenum4-inject script to view the generated code. It runs the preprocessor on a
  *   single file of your choice, and replaces the main macros (XENUM4_DECLARE() and

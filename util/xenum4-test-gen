@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# xenum-test-gen - a utility to generate an Xenum and unit tests for it.
+# xenum4-test-gen - a utility to generate an Xenum and unit tests for it.
 # Copyright 2018 Simon Lodal <simonl@parknet.dk>
 # 
 # TODO:
@@ -68,8 +68,8 @@ my $popts = {
 
 
 ########################################## RUNTIME DATA ##########################################
-my $appname = "xenum-test-gen";
-my $filename = "xenum-test-gen";
+my $appname = "xenum4-test-gen";
+my $filename = "xenum4-test-gen";
 my $appversion = "0.1";
 
 my $nsparts = [];
