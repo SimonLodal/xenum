@@ -1,6 +1,12 @@
 # Changelog
 
 ## [Unreleased]
+### Added
+- util/xenum4-inject util script for inspecting the generated code.
+
+### Removed
+- Util scripts xenum-inspect and xenum-postprocess replaced by xenum4-inject.
+
 
 ## [4.0] - 2018-04-18
 ### Changed

@@ -526,18 +526,18 @@
  * - If you are unsure about correct syntax, see the unit tests for working examples.
  * - You can also use util/xenum-test-gen to generate xenums of any size, just to inspect
  *   how it declares them, and perhaps to test the limits of your own compiler.
- * - Use xenum-inspect script. It runs the preprocessor only on a file of your choice,
- *   and formats the output with indentation and newlines so it is readable. It is the only way
- *   you can actually inspect what all the macro code produces, so it is a crucial tool both in
- *   troubleshooting and development.
- *   - Troubleshooting: Run xenum-inspect only on the source file where the problematic enum is
- *     defined (or even just on the header file where it is declared). Search the output for
- *     "BOOST" and "_XENUM", this is usually the actual error location (a macro call that was
- *     pasted literally instead of being executed). If no such error is found, inspect the
- *     generated code/data, you should at least be able to find what the compiler complains
- *     about.
+ * - Use util/xenum4-inject script to view the generated code. It runs the preprocessor on a
+ *   single file of your choice, and replaces the main macros (XENUM4_DECLARE() and
+ *   XENUM4_DEFINE()) with the content they produce, formatted with indentation and newlines so
+ *   it is human readable. It is the only way you can actually inspect what all the macro code
+ *   produces, so it is a crucial tool both in troubleshooting and development.
+ *   - Troubleshooting: Run xenum4-inject only on the header or source file where the problematic
+ *     enum is defined. Search the output for "BOOST" and "_XENUM", this is usually the actual
+ *     error location (a macro call that was pasted literally instead of being executed). If no
+ *     such error is found, inspect the generated code/data, you should at least be able to find
+ *     what the compiler complains about.
  *   - Developing/debugging: Normal development cycle is edit -> compile -> run. In Xenum, it is
- *     edit -> xenum-inspect -> read output. At least until that produces correct output, then
+ *     edit -> xenum4-inject -> read output. At least until that produces correct output, then
  *     back to compiling and running.
  *
  * @section Future_Plans Future plans
