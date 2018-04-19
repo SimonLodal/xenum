@@ -62,6 +62,7 @@ General options:
     -c, --compiler BINARYNAME Name (or path) to compiler to use for preprocessing. If not
                               defined, 'g++' is used.
     -i, --input FILENAME      Input file to process. Can be a header or source file.
+    -I, --include PATH        Include path to add to the preprocessor command line.
     -o, --output FILENAME     Output file. Optional, writes to stdout if not defined.
 
 HELP
@@ -94,6 +95,11 @@ sub parseArgs()
 		if ($arg =~ /^(?:-i|--input)$/) {
 			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
 			$inputFileName = $ARGV[++$aidx];
+			next;
+		}
+		if ($arg =~ /^(?:-I|--include)$/) {
+			showHelp("Error: Value missing after $arg") if ($aidx == ($argc-1));
+			push(@{$includeDirs}, $ARGV[++$aidx]);
 			next;
 		}
 		if ($arg =~ /^(?:-o|--output)$/) {
