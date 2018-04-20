@@ -177,7 +177,7 @@ STRIP_FROM_PATH        = @XENUM_ROOT_DIR@
 
 # Changed
 #STRIP_FROM_INC_PATH    =
-STRIP_FROM_INC_PATH    = @DOX_INC_DIRS@
+STRIP_FROM_INC_PATH    = @DOX_INC_DIRS_STRIP@
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't

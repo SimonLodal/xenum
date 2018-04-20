@@ -19,7 +19,7 @@ namespace xenum4 {
 template<class XenumStore>
 class XenumValue {
 protected:
-	/// The container class.
+	/// The store class.
 	typedef XenumStore Store;
 public:
 	/// Integer type used for enum values.

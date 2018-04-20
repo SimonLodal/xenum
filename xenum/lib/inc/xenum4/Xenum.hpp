@@ -644,25 +644,6 @@
 	_XENUM4_MARK(define end SUFFIX)								\
 
 
-// Doxygen trouble: Everything below is internal. Would like to hide it from doxygen, but would
-// also like a simple (one line) way to turn it back on. Difficult. This instead groups most of
-// the internal members (but not the template class, argh) into an "Xenum Internals" group, and
-// moves the detailed documentation about them to a separate page. But they are still listed on
-// the main page's brief.
-/// @name Xenum Internals
-///@{
-/// @defgroup Xenum Internals2
-///@{
-
-
-// ===================================================================================================
-
-// End of doxygen groups.
-///@}
-///@}
-
-
-
 /// Print an XenumValue.
 template<class XenumStore>
 inline std::ostream& operator<<(std::ostream& out, ::_XENUM4_NS::XenumValue<XenumStore> enumValue) {

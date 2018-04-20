@@ -73,11 +73,13 @@ public:												_XENUM4_NWLN \
  * Declare the static enum-value objects.
  * @hideinitializer
  */
-// FIXME: Add some doxygen group wrapper so each value does not have to be documented.
 #define _XENUM4_DECLC_ENUM_OBJS(CTXT)								\
 _XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \
-	_XENUM4_CALL_VALS(_XENUM4_DECLC_ENUM_OBJ, CTXT)
+	_XENUM4_DOC(@name Enum values)								\
+	_XENUM4_DOC(@{)										\
+	_XENUM4_CALL_VALS(_XENUM4_DECLC_ENUM_OBJ, CTXT)						\
+	_XENUM4_DOC(@})										\
 
 /**
  * Callback worker for _XENUM4_DECLC_ENUM_OBJS().
