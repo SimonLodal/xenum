@@ -301,7 +301,9 @@ sub doFormatGenerated($)
 				$line = ("\t" x $finalIndent) . $line;
 			}
 		}
-		push(@{$out}, $line);
+		if ($line && $text) {
+			push(@{$out}, $line);
+		}
 	}
 	return $out;
 }
@@ -323,11 +325,11 @@ sub formatGenerated($)
 		return "";
 	}
 
-	$output = "/* ########## XENUM4-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' ########## */\n";
+	$output = "/* #################### XENUM4-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
 	$input = $outputPart->{generated};
 	$input =~ s/[\r\n]//g;
 	$output .= join("\n", @{doFormatGenerated($input)})."\n";
-	$output .= "/* ########## XENUM4-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' ########## */\n";
+	$output .= "/* #################### XENUM4-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
 	return $output;
 }
 
