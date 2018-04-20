@@ -28,6 +28,7 @@ public:
 };
 
 
+/// Test custom property functions and values of Sstrs0 xenum.
 TEST_F(TestSstrs, D0Values)
 {
 	xenums::Sstr0 value;
@@ -58,6 +59,7 @@ TEST_F(TestSstrs, D0Values)
 }
 
 
+/// Test custom property functions and values of Sstrs1 xenum.
 TEST_F(TestSstrs, D1Values)
 {
 	xenums::Sstr1 value;
@@ -108,6 +110,7 @@ TEST_F(TestSstrs, D1Values)
 }
 
 
+/// Test custom property functions and values of Sstrs2 xenum.
 TEST_F(TestSstrs, D2Values)
 {
 	xenums::Sstr2 value;

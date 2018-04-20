@@ -118,12 +118,15 @@
 // ==============================================================================================
 /**
  * Declare function for static_assert() checks on generated data structures.
- * The function is never supposed to be called. It should only contain static_assert()'s, which
- * are evaluated only by the compiler. The static_assert's can technically be placed anywhere,
- * but they need access to the store class' private members, so needs to be part of it.
  * @hideinitializer
  */
 #define _XENUM4_DECLS_CHECK()									\
+	_XENUM4_DOC(										\
+		This function is never supposed to be called. It only contains			_XENUM4_NWLN \
+		static_assert()s (for validating the generated data structures), which		_XENUM4_NWLN \
+		are evaluated by the compiler. The static_asserts can technically be		_XENUM4_NWLN \
+		placed anywhere, but they need access to private members of the store		_XENUM4_NWLN \
+		class, so need to be part of it.)						\
 	static void _check(void);								_XENUM4_NWLN \
 
 

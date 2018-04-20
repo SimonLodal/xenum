@@ -22,6 +22,7 @@ namespace xenums {
 		(P0, int, -1, 2),							\
 		(P1, cstring, "foo2", 2)						\
 	))
+/// Declaration of the xenum values.
 #define XENUM_VALS_Sstrs2(V,C)					\
 	V(C, V0, ((1),(2,3))		,(("s1"),("s2","s3")))	\
 	V(C, V1, ((4),(5),(6,7,8))	,(("s4"),("s5"),("s6","s7","s8")))	\

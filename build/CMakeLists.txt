@@ -52,7 +52,10 @@ if(DOXYGEN_FOUND)
 	set(DOX_INC_DIRS "${DOX_INC_DIRS} ${XENUM_ROOT_DIR}/xenum/lib/inc")
 	set(DOX_SRC_DIRS "${DOX_SRC_DIRS} ${XENUM_ROOT_DIR}/xenum/lib")
 
-	file(GLOB_RECURSE XENUM_FILES ${XENUM_ROOT_DIR}/xenum/lib/*.hpp)
+	set(DOX_INC_DIRS "${DOX_INC_DIRS} ${XENUM_ROOT_DIR}/xenum/test/inc")
+	set(DOX_SRC_DIRS "${DOX_SRC_DIRS} ${XENUM_ROOT_DIR}/xenum/test")
+
+#	file(GLOB_RECURSE XENUM_FILES ${XENUM_ROOT_DIR}/xenum/lib/*.hpp)
 
 	#MESSAGE("DOX_INC_DIRS = '${DOX_INC_DIRS}'")
 	#MESSAGE("DOX_SRC_DIRS = '${DOX_SRC_DIRS}'")

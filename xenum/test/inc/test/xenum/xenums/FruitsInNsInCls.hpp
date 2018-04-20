@@ -15,9 +15,12 @@ namespace xenum {
 namespace xenums {
 
 
+/// Empty wrapper class, for unit testing declaration of an xenum inside a class.
 class WrapInNs {
 public:
+/// Xenum for unit testing, declared inside namespace and class.
 #define XENUM_DECL_Fruits_InNsInCls (test::xenum::xenums::WrapInNs::, Fruits, Fruit, uint64_t)
+/// Declaration of the xenum values.
 #define XENUM_VALS_Fruits_InNsInCls(V,C)	\
 	V(C, plum)				\
 	V(C, mango)				\

@@ -14,7 +14,9 @@
 		((Foo, int, , 1))		\
 		((Bar, int, , 2))		\
 */
+/// Xenum for unit testing, declared outside any namespace or class.
 #define XENUM_DECL_Fruits_NoNsNoCls ( , XenumFruits, XenumFruit, , , )
+/// Declaration of the xenum values.
 #define XENUM_VALS_Fruits_NoNsNoCls(V,C)	\
 	V(C, apple)		\
 	V(C, grape)

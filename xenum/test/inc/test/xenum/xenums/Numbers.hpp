@@ -15,8 +15,10 @@ namespace xenum {
 namespace xenums {
 
 
+/// Xenum for unit testing, with large number of enum values.
 #define XENUM_DECL_Numbers_InNsNoCls (test::xenum::xenums::, Numbers, Number)
 // MAX=4100; echo -n "        "; for n in $(seq 1 $MAX); do printf "V(C,n%04d) " $n; if [ $((n % 8)) == 0 ]; then echo "\\"; echo -n "        "; fi; done; echo ""
+/// Declaration of the xenum values.
 #define XENUM_VALS_Numbers_InNsNoCls(V,C) \
 	V(C,n0001) V(C,n0002) V(C,n0003) V(C,n0004) V(C,n0005) V(C,n0006) V(C,n0007) V(C,n0008) \
 	V(C,n0009) V(C,n0010) V(C,n0011) V(C,n0012) V(C,n0013) V(C,n0014) V(C,n0015) V(C,n0016) \

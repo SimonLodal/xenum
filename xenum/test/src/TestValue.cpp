@@ -27,14 +27,15 @@ public:
 };
 
 
+/// Test that we do not accidentally enlarge the enum-value objects.
 TEST_F(TestValue, Size)
 {
-	// Make sure we do not accidentally enlarge the enum-value objects.
 	EXPECT_EQ(sizeof(XenumFruits::_Index), sizeof(XenumFruit));
 	EXPECT_EQ(sizeof(xenums::Fruits::_Index), sizeof(xenums::Fruit));
 }
 
 
+/// Test ctors, copy and assignment operators.
 TEST_F(TestValue, CtorAssign)
 {
 	// Default ctor
@@ -71,6 +72,7 @@ TEST_F(TestValue, CtorAssign)
 }
 
 
+/// Test that the enum-value identifiers are correct.
 TEST_F(TestValue, Identifiers)
 {
 	xenums::Fruit fruit;
@@ -84,6 +86,7 @@ TEST_F(TestValue, Identifiers)
 }
 
 
+/// Test that the ostream::operator<<() works.
 TEST_F(TestValue, OstreamOutput)
 {
 	std::stringstream stm;
@@ -94,6 +97,7 @@ TEST_F(TestValue, OstreamOutput)
 }
 
 
+/// Test comparison operators.
 TEST_F(TestValue, Comparison)
 {
 	xenums::Fruit fruit1 = xenums::Fruits::tomato;
@@ -201,6 +205,7 @@ TEST_F(TestValue, Comparison)
 }
 
 
+/// Test switch() statement.
 TEST_F(TestValue, Switch)
 {
 	xenums::Fruit fruit1(xenums::Fruits::_Enum::pear);

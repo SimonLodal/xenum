@@ -15,7 +15,9 @@ namespace xenum {
 namespace xenums {
 
 
+/// Xenum for unit testing, declared inside a namespace, but not inside a class.
 #define XENUM_DECL_Fruits_InNsNoCls (test::xenum::xenums:: , Fruits, Fruit, uint32_t, )
+/// Declaration of the xenum values.
 #define XENUM_VALS_Fruits_InNsNoCls(V,C)	\
 	V(C, tomato)				\
 	V(C, pear)				\

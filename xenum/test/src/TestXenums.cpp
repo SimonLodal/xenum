@@ -32,6 +32,7 @@ public:
 };
 
 
+/// Test the SelectInt template.
 TEST_F(TestXenums, SelectInt)
 {
 	// 8 bits
@@ -189,6 +190,7 @@ TEST_F(TestXenums, SelectInt)
 }
 
 
+/// Test basics of the FruitsNoNsNoCls xenum.
 TEST_F(TestXenums, FruitsNoNsNoCls)
 {
 	EXPECT_EQ(1, sizeof(XenumFruits::_Index));
@@ -201,6 +203,7 @@ TEST_F(TestXenums, FruitsNoNsNoCls)
 }
 
 
+/// Test basics of the FruitsNoNsInCls xenum.
 TEST_F(TestXenums, FruitsNoNsInCls)
 {
 	EXPECT_EQ(1, sizeof(XenumWrapNoNs::Fruits::_Index));
@@ -215,6 +218,7 @@ TEST_F(TestXenums, FruitsNoNsInCls)
 }
 
 
+/// Test basics of the FruitsInNsNoCls xenum.
 TEST_F(TestXenums, FruitsInNsNoCls)
 {
 	EXPECT_EQ(4, sizeof(xenums::Fruits::_Index));
@@ -231,6 +235,7 @@ TEST_F(TestXenums, FruitsInNsNoCls)
 }
 
 
+/// Test basics of the FruitsInNsInCls xenum.
 TEST_F(TestXenums, FruitsInNsInCls)
 {
 	EXPECT_EQ(8, sizeof(xenums::WrapInNs::Fruits::_Index));
@@ -250,6 +255,7 @@ TEST_F(TestXenums, FruitsInNsInCls)
 }
 
 
+/// Test basics of the Numbers xenum.
 TEST_F(TestXenums, Numbers)
 {
 	EXPECT_EQ(2, sizeof(xenums::Numbers::_Index));
@@ -266,6 +272,7 @@ TEST_F(TestXenums, Numbers)
 }
 
 
+/// Test basics of the IcmpTypes xenum.
 TEST_F(TestXenums, IcmpTypes)
 {
 	EXPECT_EQ(1, sizeof(xenums::IcmpTypes::_Index));
@@ -289,6 +296,7 @@ TEST_F(TestXenums, IcmpTypes)
 }
 
 
+/// Test basics of the IcmoCodes xenum.
 TEST_F(TestXenums, IcmpCodes)
 {
 	EXPECT_EQ(1, sizeof(xenums::IcmpCodes::_Index));
