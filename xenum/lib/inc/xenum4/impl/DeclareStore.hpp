@@ -16,7 +16,7 @@
  * @hideinitializer
  */
 #define _XENUM4_STORE_NAME(DECL)								\
-	BOOST_PP_CAT(_XenumStore_, _XENUM4_DECL_GET_CNTNRNAME(DECL))
+	BOOST_PP_CAT(_Xenum4Store_, _XENUM4_DECL_GET_CNTNRNAME(DECL))
 
 
 // ==============================================================================================
