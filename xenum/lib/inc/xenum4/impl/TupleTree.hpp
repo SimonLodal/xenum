@@ -216,7 +216,8 @@
  * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACK_DUMP_ENTRY(Z, N, STACK)						\
-_XENUM4_IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK))		_XENUM4_NWLN
+	_XENUM4_INDENT_ADD									\
+	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK))			_XENUM4_NWLN
 
 
 /// =============================================================================================

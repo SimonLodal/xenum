@@ -15,17 +15,17 @@
 #ifdef _XENUM4_NWLN
 #	error Macro '_XENUM4_NWLN' already defined.
 #endif
-#ifdef _XENUM4_IND1
-#	error Macro '_XENUM4_IND1' already defined.
+#ifdef _XENUM4_INDENT_INC
+#	error Macro '_XENUM4_INDENT_INC' already defined.
 #endif
-#ifdef _XENUM4_IND2
-#	error Macro '_XENUM4_IND2' already defined.
+#ifdef _XENUM4_INDENT_DEC
+#	error Macro '_XENUM4_INDENT_DEC' already defined.
 #endif
-#ifdef _XENUM4_IND3
-#	error Macro '_XENUM4_IND3' already defined.
+#ifdef _XENUM4_INDENT_ADD
+#	error Macro '_XENUM4_INDENT_ADD' already defined.
 #endif
-#ifdef _XENUM4_IND4
-#	error Macro '_XENUM4_IND4' already defined.
+#ifdef _XENUM4_INDENT_SUB
+#	error Macro '_XENUM4_INDENT_SUB' already defined.
 #endif
 #ifdef _XENUM4_CMNT
 #	error Macro '_XENUM4_CMNT' already defined.
@@ -38,33 +38,33 @@
 #if XENUM4_DEBUG_PP
 /// In debug mode, inserts a newline. Else empty.
 #define _XENUM4_NWLN @XENUM4-NWLN@
-/// In debug mode, inserts a single indentation level. Else empty.
-#define _XENUM4_IND1 @XENUM4-IND:1@
-/// In debug mode, inserts two indentation levels. Else empty.
-#define _XENUM4_IND2 @XENUM4-IND:2@
-/// In debug mode, inserts three indentation levels. Else empty.
-#define _XENUM4_IND3 @XENUM4-IND:3@
-/// In debug mode, inserts three indentation levels. Else empty.
-#define _XENUM4_IND4 @XENUM4-IND:4@
+/// Increase global indentation level.
+#define _XENUM4_INDENT_INC @XENUM4-INDENT-G:+1@
+/// Decrease global indentation level.
+#define _XENUM4_INDENT_DEC @XENUM4-INDENT-G:-1@
+/// Increase local indentation level (for current line only).
+#define _XENUM4_INDENT_ADD @XENUM4-INDENT-L:+1@
+/// Decrease local indentation level (for current line only).
+#define _XENUM4_INDENT_SUB @XENUM4-INDENT-L:-1@
 /// In debug mode, prints the text as a comment. Else empty.
 #define _XENUM4_CMNT(TXT) @XENUM4-CMNT:TXT@ _XENUM4_NWLN
 /// In debug mode, prints the text as a marker. Else empty.
 #define _XENUM4_MARK(TXT) @XENUM4-MARK:TXT@
 #else
 /// In debug mode, inserts a newline. Else empty.
-#define _XENUM4_NWLN 
-/// In debug mode, inserts a single indentation level. Else empty.
-#define _XENUM4_IND1 
-/// In debug mode, inserts two indentation levels. Else empty.
-#define _XENUM4_IND2 
-/// In debug mode, inserts three indentation levels. Else empty.
-#define _XENUM4_IND3 
-/// In debug mode, inserts three indentation levels. Else empty.
-#define _XENUM4_IND4 
+#define _XENUM4_NWLN
+/// Increase global indentation level.
+#define _XENUM4_INDENT_INC
+/// Decrease global indentation level.
+#define _XENUM4_INDENT_DEC
+/// Increase local indentation level (for current line only).
+#define _XENUM4_INDENT_ADD
+/// Decrease local indentation level (for current line only).
+#define _XENUM4_INDENT_SUB
 /// In debug mode, prints the text as a comment. Else empty.
-#define _XENUM4_CMNT(TXT) 
+#define _XENUM4_CMNT(TXT)
 /// In debug mode, prints the text as a marker. Else empty.
-#define _XENUM4_MARK(TXT) 
+#define _XENUM4_MARK(TXT)
 #endif
 
 

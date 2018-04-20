@@ -9,7 +9,7 @@
 
 ### Changed
 - Util script xenum-test-gen renamed to xenum4-test-gen.
-
+- Improved reformatting of preprocessed code.
 
 ## [4.0] - 2018-04-18
 ### Changed

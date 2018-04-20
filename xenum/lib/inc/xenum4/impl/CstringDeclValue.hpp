@@ -18,6 +18,7 @@
  * @hideinitializer
  */
 #define _XENUM4_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+_XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\

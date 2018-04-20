@@ -43,10 +43,11 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
 #define _XENUM4_DECLARE_VALUE_1(CTXT, DECL)							\
 class _XENUM4_DECL_GET_VALUENAME(DECL)								\
 	: public ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)> {				_XENUM4_NWLN \
+	_XENUM4_INDENT_INC									\
 	_XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM4_DECL_GET_VALUENAME(DECL))			\
 	_XENUM4_PROPS_DECLV(CTXT)								\
-};												\
-_XENUM4_NWLN
+	_XENUM4_INDENT_DEC									\
+};												_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_DECLARE_VALUE_1().
@@ -54,10 +55,11 @@ _XENUM4_NWLN
  * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
-	public:											_XENUM4_NWLN \
-_XENUM4_IND1	constexpr VALUENAME(void) noexcept {}						_XENUM4_NWLN \
-_XENUM4_IND1	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}			_XENUM4_NWLN \
-_XENUM4_IND1	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}	_XENUM4_NWLN \
+_XENUM4_INDENT_SUB										\
+public:												_XENUM4_NWLN \
+	constexpr VALUENAME(void) noexcept {}							_XENUM4_NWLN \
+	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}				_XENUM4_NWLN \
+	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}		_XENUM4_NWLN \
 
 
 #endif // _XENUM4_IMPL_DECLARE_VALUE_HPP

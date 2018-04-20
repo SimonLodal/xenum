@@ -398,9 +398,9 @@
  * @hideinitializer
  */
 #define _XENUM4_PROP_SRC_DECLS_GET_SIZE(Z, LEVEL, PROPNAME)					\
-_XENUM4_IND1	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (		\
-			_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)			\
-		);										_XENUM4_NWLN
+	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
+	);											_XENUM4_NWLN
 
 
 // ================== FUNC (SRC): Store::get$PROPNAME() ======================
@@ -410,10 +410,9 @@ _XENUM4_IND1	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size)
  * @hideinitializer
  */
 #define _XENUM4_PROP_SRC_DECLS_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
-_XENUM4_IND1	static const RETTYPE BOOST_PP_CAT(get, PROPNAME) (				\
-			_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)			\
-		);										_XENUM4_NWLN
-
+	static const RETTYPE BOOST_PP_CAT(get, PROPNAME) (					\
+		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
+	);											_XENUM4_NWLN
 
 
 // ===================== FUNC (SRC): Value::getSize() ========================
@@ -424,16 +423,16 @@ _XENUM4_IND1	static const RETTYPE BOOST_PP_CAT(get, PROPNAME) (				\
  * @hideinitializer
  */
 #define _XENUM4_PROP_SRC_DECLV_GET_SIZE(Z, LEVEL, PROPNAME)					\
-_XENUM4_IND1	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-			_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)				\
-		)										\
-		const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)				\
-		{										\
-			return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (		\
-				value								\
-				_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)				\
-			);									\
-		}										_XENUM4_NWLN
+	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
+		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
+	)											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
+	{											\
+		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+			value									\
+			_XENUM4_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
+		);										\
+	}											_XENUM4_NWLN
 
 
 // ================== FUNC (SRC): Value::get$PROPNAME() ======================
@@ -443,16 +442,16 @@ _XENUM4_IND1	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
  * @hideinitializer
  */
 #define _XENUM4_PROP_SRC_DECLV_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
-_XENUM4_IND1	const RETTYPE BOOST_PP_CAT(get, PROPNAME) (					\
-			_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)				\
-		)										\
-		const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)				\
-		{										\
-			return Store::BOOST_PP_CAT(get, PROPNAME) (				\
-				value								\
-				_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)				\
-			);									\
-		}										_XENUM4_NWLN
+	const RETTYPE BOOST_PP_CAT(get, PROPNAME) (						\
+		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
+	)											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
+	{											\
+		return Store::BOOST_PP_CAT(get, PROPNAME) (					\
+			value									\
+			_XENUM4_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
+		);										\
+	}											_XENUM4_NWLN
 
 
 #endif // _XENUM4_IMPL_PROPS_HPP
