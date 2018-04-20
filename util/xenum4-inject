@@ -244,47 +244,91 @@ sub parsePreProcessed()
 
 ########################################## WRITE OUTPUT ##########################################
 
-sub formatGenerated($)
+sub doFormatGenerated($)
 {
-	my ($outputPart) = @_;
-	my ($line, $globalIndent, $localIndent, $finalIndent);
-	my $out = [];
+	my ($text) = @_;
+	my ($line);
+	my ($globalIndent, $localIndent, $finalIndent);
+	my ($cmntText, $cmntType1, $cmntType2);
+	my ($out) = [];
 
-	if ($outputPart->{generated} eq "") {
-		return "";
-	}
-
-	$line = "/* ########## XENUM4-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' ########## */";
-	push(@{$out}, $line);
 	$globalIndent = 0;
-	foreach $line (split(/\@XENUM4-NWLN\@/, $outputPart->{generated})) {
+	while ($text) {
+		$line = "";
 		$localIndent = 0;
-		$line =~ s/\s*$//;
 		while (1) {
-			$line =~ s/^\s*//;
-			if ($line =~ /^\@XENUM4-INDENT-G:([+-]?[0-9]+)\@(.*)$/o) {
+			$text =~ s/^\s*//;
+			if ($text =~ /^\@XENUM4-INDENT-G:([+-]?[0-9]+)\@(.*)$/o) {
 				$globalIndent += $1;
-				$line = $2;
+				$text = $2;
 			}
-			elsif ($line =~ /^\@XENUM4-INDENT-L:([+-]?[0-9]+)\@(.*)$/o) {
+			elsif ($text =~ /^\@XENUM4-INDENT-L:([+-]?[0-9]+)\@(.*)$/o) {
 				$localIndent += $1;
-				$line = $2;
+				$text = $2;
 			}
 			else {
 				last;
 			}
 		}
+		$finalIndent = $globalIndent + $localIndent;
+		if ($text =~ /^\@XENUM4-(CMNT|DOC)-BEG:(.*?) XENUM4-(CMNT|DOC)-END\@(.*)$/o) {
+			($cmntType1, $cmntText, $cmntType2, $text) = ($1, $2, $3, $4);
+			if ($cmntType1 ne $cmntType2) {
+				die("BUG: Mismatched CMNT/DOC begin/end markers.\n");
+			}
+			foreach $line (@{doFormatGenerated_rec($cmntText)}) {
+				if (!($line =~ /^\s/o)) {
+					$line = " " . $line;
+				}
+				$line = ($cmntType1 eq "DOC" ? "/" : "") . "//" . $line;
+				if ($finalIndent > 0) {
+					$line = ("\t" x $finalIndent) . $line;
+				}
+				push(@{$out}, $line);
+			}
+			next;
+		}
+		elsif ($text =~ /^(.*?)\@XENUM4-NWLN\@(.*)$/) {
+			($line, $text) = ($1, $2);
+		}
+		else {
+			$line = $text;
+			$text = "";
+		}
+		$line =~ s/\s*$//o;
 		if ($line) {
-			$finalIndent = $globalIndent + $localIndent;
 			if ($finalIndent > 0) {
 				$line = ("\t" x $finalIndent) . $line;
 			}
 		}
 		push(@{$out}, $line);
 	}
-	$line = "/* ########## XENUM4-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' ########## */";
-	push(@{$out}, $line);
-	return join("\n", @{$out})."\n";
+	return $out;
+}
+
+
+sub doFormatGenerated_rec($)
+{
+	my ($text) = @_;
+	return doFormatGenerated($text);
+}
+
+
+sub formatGenerated($)
+{
+	my ($outputPart) = @_;
+	my ($input, $output);
+
+	if ($outputPart->{generated} eq "") {
+		return "";
+	}
+
+	$output = "/* ########## XENUM4-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' ########## */\n";
+	$input = $outputPart->{generated};
+	$input =~ s/[\r\n]//g;
+	$output .= join("\n", @{doFormatGenerated($input)})."\n";
+	$output .= "/* ########## XENUM4-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' ########## */\n";
+	return $output;
 }
 
 

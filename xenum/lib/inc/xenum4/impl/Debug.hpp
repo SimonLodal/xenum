@@ -12,29 +12,6 @@
 #define _XENUM4_IMPL_DEBUG_HPP
 
 
-#ifdef _XENUM4_NWLN
-#	error Macro '_XENUM4_NWLN' already defined.
-#endif
-#ifdef _XENUM4_INDENT_INC
-#	error Macro '_XENUM4_INDENT_INC' already defined.
-#endif
-#ifdef _XENUM4_INDENT_DEC
-#	error Macro '_XENUM4_INDENT_DEC' already defined.
-#endif
-#ifdef _XENUM4_INDENT_ADD
-#	error Macro '_XENUM4_INDENT_ADD' already defined.
-#endif
-#ifdef _XENUM4_INDENT_SUB
-#	error Macro '_XENUM4_INDENT_SUB' already defined.
-#endif
-#ifdef _XENUM4_CMNT
-#	error Macro '_XENUM4_CMNT' already defined.
-#endif
-#ifdef _XENUM4_MARK
-#	error Macro '_XENUM4_MARK' already defined.
-#endif
-
-
 #if XENUM4_DEBUG_PP
 /// In debug mode, inserts a newline. Else empty.
 #define _XENUM4_NWLN @XENUM4-NWLN@
@@ -47,7 +24,9 @@
 /// Decrease local indentation level (for current line only).
 #define _XENUM4_INDENT_SUB @XENUM4-INDENT-L:-1@
 /// In debug mode, prints the text as a comment. Else empty.
-#define _XENUM4_CMNT(TXT) @XENUM4-CMNT:TXT@ _XENUM4_NWLN
+#define _XENUM4_CMNT(...) @XENUM4-CMNT-BEG: __VA_ARGS__ XENUM4-CMNT-END@
+/// In debug mode, prints the text as a documentation comment. Else empty.
+#define _XENUM4_DOC(...) @XENUM4-DOC-BEG: __VA_ARGS__ XENUM4-DOC-END@
 /// In debug mode, prints the text as a marker. Else empty.
 #define _XENUM4_MARK(TXT) @XENUM4-MARK:TXT@
 #else
@@ -63,10 +42,11 @@
 #define _XENUM4_INDENT_SUB
 /// In debug mode, prints the text as a comment. Else empty.
 #define _XENUM4_CMNT(TXT)
+/// In debug mode, prints the text as a documentation comment. Else empty.
+#define _XENUM4_DOC(...)
 /// In debug mode, prints the text as a marker. Else empty.
-#define _XENUM4_MARK(TXT)
+#define _XENUM4_MARK(...)
 #endif
-
 
 
 #endif // _XENUM4_IMPL_DEBUG_HPP
