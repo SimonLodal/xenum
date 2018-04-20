@@ -247,7 +247,7 @@ sub parsePreProcessed()
 sub formatGenerated($)
 {
 	my ($outputPart) = @_;
-	my $line;
+	my ($line, $indlvl);
 	my $out = [];
 
 	if ($outputPart->{generated} eq "") {
@@ -257,15 +257,22 @@ sub formatGenerated($)
 	$line = "/* ########## XENUM4-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' ########## */";
 	push(@{$out}, $line);
 	foreach $line (split(/\@XENUM4-NWLN\@/, $outputPart->{generated})) {
-		$line =~ s/\@XENUM4-IND:1\@/\t/g;
-		$line =~ s/\@XENUM4-IND:2\@/\t\t/g;
-		$line =~ s/\@XENUM4-IND:3\@/\t\t\t/g;
-		$line =~ s/\@XENUM4-IND:4\@/\t\t\t\t/g;
-		$line =~ s/^[ *]//;
-		$line =~ s/^[\s]*$//;
-		if ($line) {
-			push(@{$out}, $line);
+		$indlvl = 0;
+		$line =~ s/\s*$//;
+		while (1) {
+			$line =~ s/^\s*//;
+			if ($line =~ /^\@XENUM4-IND:([0-9]+)\@(.*)$/o) {
+				$indlvl += $1;
+				$line = $2;
+			}
+			else {
+				last;
+			}
 		}
+		if ($line) {
+			$line = ("\t" x $indlvl) . $line;
+		}
+		push(@{$out}, $line);
 	}
 	$line = "/* ########## XENUM4-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' ########## */";
 	push(@{$out}, $line);
