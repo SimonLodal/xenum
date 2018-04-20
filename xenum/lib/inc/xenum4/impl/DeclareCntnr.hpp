@@ -16,7 +16,9 @@
  * @hideinitializer
  */
 #define _XENUM4_CNTNR_NAME(DECL)								\
-	BOOST_PP_CAT(_XenumCntnr_, _XENUM4_DECL_GET_CNTNRNAME(DECL))
+	_XENUM4_DECL_GET_CNTNRNAME(DECL)
+
+//	BOOST_PP_CAT(_Xenum4Cntnr_, _XENUM4_DECL_GET_CNTNRNAME(DECL))
 
 
 // ==============================================================================================
@@ -32,9 +34,8 @@
 		_XENUM4_DECLC_ENUM_OBJS(CTXT)							\
 		_XENUM4_DECLC_FUNCS(CTXT, DECL)							\
 		_XENUM4_INDENT_DEC								\
-	};											_XENUM4_NWLN \
-	typedef _XENUM4_CNTNR_NAME(DECL) _XENUM4_DECL_GET_CNTNRNAME(DECL);			_XENUM4_NWLN
-
+	};											_XENUM4_NWLN
+//	typedef _XENUM4_CNTNR_NAME(DECL) _XENUM4_DECL_GET_CNTNRNAME(DECL);
 
 // ==============================================================================================
 /**
