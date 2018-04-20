@@ -12,7 +12,8 @@ namespace xenum4 {
 
 /**
  * Enum-value class.
- * Wraps a native enum value. Can never have an invalid value.
+ * Thin wrapper around a native enum value.
+ * Can never have an invalid value.
  * @param XenumStore The xenum store class, containing the native C++ enum.
  */
 template<class XenumStore>

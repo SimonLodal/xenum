@@ -96,7 +96,7 @@
 		@param index Enum-value index to retrieve.					_XENUM4_NWLN \
 		@param value Return value; is set to the requested enum value,			_XENUM4_NWLN \
 			_XENUM4_INDENT_ADD							\
-			if it exists, else it is not touched.					\
+			if it exists, else it is not touched.					_XENUM4_NWLN \
 		@return True if enum-value with given index was found, else false.)		\
 	static bool fromIndex(Index index,							\
 		::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>& value) noexcept;		_XENUM4_NWLN \

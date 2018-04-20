@@ -301,7 +301,7 @@ sub doFormatGenerated($)
 				$line = ("\t" x $finalIndent) . $line;
 			}
 		}
-		if ($line && $text) {
+		if ($line || $text) {
 			push(@{$out}, $line);
 		}
 	}

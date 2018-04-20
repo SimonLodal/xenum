@@ -41,7 +41,7 @@
 /// Decrease local indentation level (for current line only).
 #define _XENUM4_INDENT_SUB
 /// In debug mode, prints the text as a comment. Else empty.
-#define _XENUM4_CMNT(TXT)
+#define _XENUM4_CMNT(...)
 /// In debug mode, prints the text as a documentation comment. Else empty.
 #define _XENUM4_DOC(...)
 /// In debug mode, prints the text as a marker. Else empty.

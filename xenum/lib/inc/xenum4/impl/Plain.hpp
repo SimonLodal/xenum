@@ -10,8 +10,8 @@
 #define _XENUM4_IMPL_PLAIN_HPP
 
 /// Define where the data of the custom property is defined; HDR or SRC.
-//#define _XENUM4_PLAIN_IMPL	HDR
-#define _XENUM4_PLAIN_IMPL	SRC
+#define _XENUM4_PLAIN_IMPL	HDR
+//#define _XENUM4_PLAIN_IMPL	SRC
 
 
 // =============================== DECLARATION IN STORE CLASS ==================================
@@ -41,6 +41,7 @@
 	_XENUM4_PLAIN_SRC_DECLS_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		PROPDEF,									\
 		CTXT,										\
 		Z										\
 	)

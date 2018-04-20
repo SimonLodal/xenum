@@ -16,17 +16,17 @@
  * Declares the functions related to a single custom property, in store class.
  * @hideinitializer
  */
-#define _XENUM4_CSTRING_DECLS_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+#define _XENUM4_CSTRING_DECLS_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
 		BOOST_PP_INC(DEPTH),								\
 		_XENUM4_PROP_SRC_DECLS_GET_SIZE,						\
-		PROPNAME									\
+		PROPDEF										\
 	)											\
 	_XENUM4_PROP_SRC_DECLS_GET_VALUE(							\
 		PROPNAME,									\
-		_XENUM4_PROPDEF_GET_PARM_TYPE(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF),						\
 		DEPTH,										\
 		Z										\
 	)

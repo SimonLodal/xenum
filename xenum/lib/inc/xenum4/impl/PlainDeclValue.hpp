@@ -20,6 +20,7 @@
 #define _XENUM4_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
 _XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \
+	_XENUM4_DOC(Native type of custom property PROPNAME values.)				\
 	using BOOST_PP_CAT(PROPNAME, Value) =							\
 		typename Store::BOOST_PP_CAT(PROPNAME, Value);					_XENUM4_NWLN \
 	BOOST_PP_CAT(_XENUM4_PLAIN_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PROPNAME)		\
@@ -37,6 +38,7 @@ public:												_XENUM4_NWLN \
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_INDEX_T_1(PROPNAME)						\
+	_XENUM4_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
 	using BOOST_PP_CAT(PROPNAME, Index) =							\
 		typename Store::BOOST_PP_CAT(PROPNAME, Index);					_XENUM4_NWLN \
 
@@ -102,6 +104,8 @@ public:												_XENUM4_NWLN \
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)				\
+	_XENUM4_DOC(@copydoc Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size)		\
+		(_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PROPNAME, Index), LEVEL, Z)))	\
 	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)						\
 	const BOOST_PP_CAT(PROPNAME, Index)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
@@ -123,6 +127,8 @@ public:												_XENUM4_NWLN \
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
+	_XENUM4_DOC(@copydoc Store::BOOST_PP_CAT(get, PROPNAME)					\
+		(_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PROPNAME, Index), DEPTH, Z)))	\
 	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr)						\
 	const BOOST_PP_CAT(PROPNAME, Value&)							\
 	BOOST_PP_CAT(get, PROPNAME) (								\

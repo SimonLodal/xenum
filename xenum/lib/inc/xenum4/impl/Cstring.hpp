@@ -19,6 +19,7 @@
 	_XENUM4_CSTRING_DECLS_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		PROPDEF,									\
 		CTXT,										\
 		Z										\
 	)
