@@ -12,7 +12,6 @@ Top-level namespace for Xenum.
 */
 
 /**
- *
  * @mainpage Xenum - an extended C++ enum
  *
  * @section Description
