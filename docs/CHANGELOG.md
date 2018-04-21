@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [4.1] - 2018-04-21
 ### Added
 - util/xenum4-inject util script for inspecting the generated code.
 - Documentation comments in generated code, so doxygen can make sense of xenum4-inject's output.
