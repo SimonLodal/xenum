@@ -481,11 +481,10 @@ Top-level namespace for Xenum.
  * @subsubsection XENUM4_DECLARE XENUM4_DECLARE()
  *	- class \_XenumStore_${container-name} : The internal store class.
  *	- ${valueclass-name} : The enum-value class; an actual class, or a typedef of XenumValue.
- *	- class \_XenumCntnr_${container-name} : The container class.
- *	- ${container-name} : Typedef of container class to desired name.
+ *	- class ${container-name} : The container class.
  *
- * @subsubsection XENUM4_DEFINEE XENUM4_DEFINE()
- *	- namespace \_XenumImpl_${container-name}_[${property-name}] : Zero or more namespaces,
+ * @subsubsection XENUM4_DEFINE XENUM4_DEFINE()
+ *	- namespace \_XenumImpl_${suffix}_* : Zero or more namespaces,
  *	  inside an anonymous namespace, for data/functions that is not declared in the classes.
  *
  * @subsubsection CONTAINER The container class

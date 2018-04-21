@@ -11,7 +11,6 @@
 // ==============================================================================================
 /**
  * Declare the enum-value class.
- * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE(CTXT, DECL)							\
 	BOOST_PP_CAT(										\
@@ -26,7 +25,6 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
 /**
  * Declare the enum-value class as a simple typedef of the template class.
  * For enums that do not have custom properties.
- * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE_0(CTXT, DECL)							\
 	_XENUM4_DOC(Enum-value class type.							_XENUM4_NWLN \
@@ -41,7 +39,6 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * Declare the enum-value class as a subclass of the template class.
  * For enums that have custom properties.
  * Adds getters for the custom properties.
- * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE_1(CTXT, DECL)							\
 _XENUM4_DOC(Enum-value class for xenum _XENUM4_DECL_GET_CNTNRNAME(DECL).			_XENUM4_NWLN \
@@ -58,7 +55,6 @@ class _XENUM4_DECL_GET_VALUENAME(DECL)								\
 /**
  * Worker for _XENUM4_DECLARE_VALUE_1().
  * Creates ctors; we need to copy all the ctors of the base class.
- * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
 _XENUM4_INDENT_SUB										\

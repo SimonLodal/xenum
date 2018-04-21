@@ -13,7 +13,6 @@
 // ==============================================================================================
 /**
  * @return Name of the store class.
- * @hideinitializer
  */
 #define _XENUM4_STORE_NAME(DECL)								\
 	BOOST_PP_CAT(_Xenum4Store_, _XENUM4_DECL_GET_CNTNRNAME(DECL))
@@ -22,7 +21,6 @@
 // ==============================================================================================
 /**
  * Main entry function.
- * @hideinitializer
  */
 #define _XENUM4_DECLARE_STORE(CTXT, DECL)							\
 	BOOST_PP_EXPR_IF(									\
@@ -53,7 +51,6 @@
 // ==============================================================================================
 /**
  * Declare the native C++ enum and associated stuff.
- * @hideinitializer
  */
 #define _XENUM4_DECLS_ENUM(CTXT, DECL)								\
 	_XENUM4_DOC(Number of enum values in this enum class.)					\
@@ -74,7 +71,6 @@
 
 /**
  * Callback worker for _XENUM4_DECLARE_CNTNR_ENUM().
- * @hideinitializer
  */
 #define _XENUM4_DECLS_ENUM_MEMBER(CTXT, VALUEIDENT, ...)					\
 	_XENUM4_INDENT_ADD VALUEIDENT,								_XENUM4_NWLN
@@ -83,7 +79,6 @@
 // ==============================================================================================
 /**
  * Declare accessor and lookup functions.
- * @hideinitializer
  */
 #define _XENUM4_DECLS_FUNCS(CTXT, DECL)								\
 	_XENUM4_DOC(@return Identifier (name) of an enum value.)				\
@@ -119,7 +114,6 @@
 // ==============================================================================================
 /**
  * Declare function for static_assert() checks on generated data structures.
- * @hideinitializer
  */
 #define _XENUM4_DECLS_CHECK()									\
 	_XENUM4_DOC(										\

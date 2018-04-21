@@ -13,7 +13,6 @@
 // ==============================================================================================
 /**
  * @return Name of the container class.
- * @hideinitializer
  */
 #define _XENUM4_CNTNR_NAME(DECL)								\
 	_XENUM4_DECL_GET_CNTNRNAME(DECL)
@@ -24,7 +23,6 @@
 // ==============================================================================================
 /**
  * Main entry function.
- * @hideinitializer
  */
 #define _XENUM4_DECLARE_CNTNR(CTXT, DECL)							\
 	_XENUM4_DOC(Container class for xenum _XENUM4_DECL_GET_CNTNRNAME(DECL).			_XENUM4_NWLN \
@@ -43,7 +41,6 @@
 /**
  * Declare the value class type.
  * Not used here, but useful for XenumSet and others.
- * @hideinitializer
  */
 #define _XENUM4_DECLC_VALUE_T(CTXT, DECL)							\
 _XENUM4_INDENT_SUB										\
@@ -55,7 +52,6 @@ public:												_XENUM4_NWLN \
 // ==============================================================================================
 /**
  * Copy native enum declaration from store class.
- * @hideinitializer
  */
 #define _XENUM4_DECLC_ENUM(CTXT, DECL)								\
 _XENUM4_INDENT_SUB										\
@@ -71,7 +67,6 @@ public:												_XENUM4_NWLN \
 // ==============================================================================================
 /**
  * Declare the static enum-value objects.
- * @hideinitializer
  */
 #define _XENUM4_DECLC_ENUM_OBJS(CTXT)								\
 _XENUM4_INDENT_SUB										\
@@ -83,7 +78,6 @@ public:												_XENUM4_NWLN \
 
 /**
  * Callback worker for _XENUM4_DECLC_ENUM_OBJS().
- * @hideinitializer
  */
 #define _XENUM4_DECLC_ENUM_OBJ(CTXT, IDENT, ...)						\
 	static constexpr const _XENUM4_DECL_GET_VALUENAME(_XENUM4_CTXT_GET_DECL(CTXT))		\
@@ -93,7 +87,6 @@ public:												_XENUM4_NWLN \
 // ==============================================================================================
 /**
  * Declare ctors, comparison operators, other stuff.
- * @hideinitializer
  */
 #define _XENUM4_DECLC_FUNCS(CTXT, DECL)								\
 	_XENUM4_DECLC_FUNCS_I1(									\
@@ -105,7 +98,6 @@ public:												_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_DECLC_FUNCS().
- * @hideinitializer
  */
 #define _XENUM4_DECLC_FUNCS_I1(CTXT, STORENAME, CREALNAME, VALUENAME)				\
 _XENUM4_INDENT_SUB										\

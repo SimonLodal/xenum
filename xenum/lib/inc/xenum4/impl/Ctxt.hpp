@@ -15,91 +15,76 @@
 
 /**
  * Get enum suffix. Must always be defined.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_SUFFIX(CTXT)			BOOST_PP_SEQ_ELEM(0, CTXT)
 
 /**
  * Get enum declaration; a seq containing all the parameters of the XENUM_DECL_$suffix macro.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_DECL(CTXT)			BOOST_PP_SEQ_ELEM(1, CTXT)
 
 /**
  * Get the current property index, if any.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_PROPINDEX(CTXT)		BOOST_PP_SEQ_ELEM(2, CTXT)
 
 /**
  * Set the current property index.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_SET_PROPINDEX(CTXT, PROPINDEX)	BOOST_PP_SEQ_REPLACE(CTXT, 2, PROPINDEX)
 
 /**
  * Get the current property definition field, if any.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_PROPDEF(CTXT)			BOOST_PP_SEQ_ELEM(3, CTXT)
 
 /**
  * Set the current property definition field.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_SET_PROPDEF(CTXT, PROPDEF)		BOOST_PP_SEQ_REPLACE(CTXT, 3, PROPDEF)
 
 /**
  * Get current enum-value identifier, if any.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_IDENT(CTXT)			BOOST_PP_SEQ_ELEM(4, CTXT)
 
 /**
  * Set the current enum-value identifier.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_SET_IDENT(CTXT, IDENT)		BOOST_PP_SEQ_REPLACE(CTXT, 4, IDENT)
 
 /**
  * Get current data tree iteration position, if any.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_ITERPOS(CTXT)			BOOST_PP_SEQ_ELEM(5, CTXT)
 
 /**
  * Set the current data tree iteration position.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_SET_ITERPOS(CTXT, ITERPOS)		BOOST_PP_SEQ_REPLACE(CTXT, 5, ITERPOS)
 
 /**
  * Get current data tree node, if any.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_NODE(CTXT)			BOOST_PP_SEQ_ELEM(6, CTXT)
 
 /**
  * Set the current data tree node.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_SET_NODE(CTXT, NODE)		BOOST_PP_SEQ_REPLACE(CTXT, 6, NODE)
 
 /**
  * Get current callback function, if any.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_GET_CALLBACK(CTXT)			BOOST_PP_SEQ_ELEM(7, CTXT)
 
 /**
  * Set the current callback function.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_SET_CALLBACK(CTXT, CALLBACK)	BOOST_PP_SEQ_REPLACE(CTXT, 7, CALLBACK)
 
 /**
  * Create a new context object.
- * @hideinitializer
  */
 #define _XENUM4_CTXT_INIT(SUFFIX)								\
 	(SUFFIX)										\

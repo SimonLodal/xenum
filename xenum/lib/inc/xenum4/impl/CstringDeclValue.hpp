@@ -15,7 +15,6 @@
 /**
  * Worker for _XENUM4_PROP_DECLV_CSTRING().
  * Declares the functions related to a single custom property, in value class.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 _XENUM4_INDENT_SUB										\

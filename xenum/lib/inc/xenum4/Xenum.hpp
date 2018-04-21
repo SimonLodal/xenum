@@ -56,7 +56,6 @@
 /**
  * Generate the header parts (declarations) of an Xenum.
  * @param SUFFIX Suffix of your xenum declaration macros.
- * @hideinitializer
  */
 #define XENUM4_DECLARE(SUFFIX)									\
 	_XENUM4_MARK(declare begin SUFFIX)							\
@@ -66,7 +65,6 @@
 /**
  * Generate the source parts (definitions) of an Xenum.
  * @param SUFFIX Suffix of your xenum declaration macros.
- * @hideinitializer
  */
 #define XENUM4_DEFINE(SUFFIX)									\
 	_XENUM4_MARK(define begin SUFFIX)							\

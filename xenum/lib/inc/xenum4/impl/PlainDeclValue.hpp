@@ -15,7 +15,6 @@
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
  * Declares the types related to a single custom property, implemented in header.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
 _XENUM4_INDENT_SUB										\
@@ -28,14 +27,12 @@ public:												_XENUM4_NWLN \
 /**
  * Worker for _XENUM4_PLAIN_DECLV_TYPES().
  * Declares nothing since the property has depth=0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_INDEX_T_0(PROPNAME)						\
 
 /**
  * Worker for _XENUM4_PLAIN_DECLV_TYPES().
  * Declares the ${propname}Index type since the property has depth!=0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_INDEX_T_1(PROPNAME)						\
 	_XENUM4_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
@@ -47,7 +44,6 @@ public:												_XENUM4_NWLN \
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
  * Declares the functions related to a single custom property, implemented in header.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
 	_XENUM4_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
@@ -58,7 +54,6 @@ public:												_XENUM4_NWLN \
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
  * Declares the get${propname}Size() getter for each level.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
 	BOOST_PP_CAT(										\
@@ -69,14 +64,12 @@ public:												_XENUM4_NWLN \
 /**
  * Worker for _XENUM4_PLAIN_DECLV_GET_SIZE().
  * Declares nothing since depth==0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_0(DEPTH, CTXT, Z)					\
 
 /**
  * Worker for _XENUM4_PLAIN_HDR_DECLV_GET_SIZE().
  * Declares getters since depth!=0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_1(DEPTH, CTXT, Z)					\
 	BOOST_PP_REPEAT_ ## Z									\
@@ -88,7 +81,6 @@ public:												_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_1().
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N(Z, N, CTXT)						\
 	_XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1							\
@@ -101,7 +93,6 @@ public:												_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_PLAIN_HDR_DECLV_FUNC_GET_SIZE_N().
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1(PROPNAME, DEPTH, LEVEL, Z)			\
 	_XENUM4_DOC(										\
@@ -133,7 +124,6 @@ public:												_XENUM4_NWLN \
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
  * Declares the get${propname}() value getter.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
 	_XENUM4_DOC(Get custom property PROPNAME value.)					\
@@ -155,7 +145,6 @@ public:												_XENUM4_NWLN \
 /**
  * Worker for _XENUM4_PROP_DECLV_PLAIN().
  * Declares the functions related to a single custom property, implemented in source.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
 _XENUM4_INDENT_SUB										\

@@ -14,7 +14,6 @@
 /**
  * Worker for _XENUM4_PROP_DECLS_CSTRING().
  * Declares the functions related to a single custom property, in store class.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DECLS_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 	BOOST_PP_REPEAT_ ## Z									\

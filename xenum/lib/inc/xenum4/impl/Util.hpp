@@ -25,7 +25,6 @@ namespace xenum4 {
  * the "Xenum4 error" prefix.
  * @param LOC String describing data location, to help user figure out where the error happened.
  * @param MSG The error message.
- * @hideinitializer
  */
 #define _XENUM4_ERROR(LOC, MSG)									\
 	static_assert(false, BOOST_PP_STRINGIZE(Xenum4 error (LOC): MSG));
@@ -40,13 +39,10 @@ namespace xenum4 {
 
 // ===================================================================================================
 /// Helper for _XENUM4_EXEC_IF*(): Executes if condition is true. Executes macro with args.
-/// @hideinitializer
 #define _XENUM4_EXEC_IF_1(MACRO, ...) MACRO(__VA_ARGS__)
 /// Helper for _XENUM4_EXEC_IF*(): Executes if condition is false. Does nothing, returns empty.
-/// @hideinitializer
 #define _XENUM4_EXEC_IF_0(MACRO, ...)
 /// Generic utility function: Execute MACRO with args if first arg is non-empty, else do nothing.
-/// @hideinitializer
 #define _XENUM4_EXEC_IF_NONEMPTY(MACRO, ...)							\
 	BOOST_PP_CAT(										\
 		_XENUM4_EXEC_IF_,								\
@@ -67,41 +63,34 @@ namespace xenum4 {
  * @param ... Commands to execute if COND is true or false respectively.
  * Each command is defined as a tuple, where the first field is the name of the macro to
  * execute, and all remaining value are passed as parameters to that macro when executed.
- * @hideinitializer
  */
 #define _XENUM4_EXEC_COND(COND, ...)								\
 	BOOST_PP_CAT(_XENUM4_EXEC_COND_, COND)							\
 	(BOOST_PP_TUPLE_ENUM(BOOST_PP_VARIADIC_ELEM(BOOST_PP_NOT(COND), __VA_ARGS__)))
 
 /// Helper for _XENUM4_EXEC_COND().
-/// @hideinitializer
 #define _XENUM4_EXEC_COND_0(...)		_XENUM4_EXEC_COND_DO(__VA_ARGS__)
 /// Helper for _XENUM4_EXEC_COND().
-/// @hideinitializer
 #define _XENUM4_EXEC_COND_1(...)		_XENUM4_EXEC_COND_DO(__VA_ARGS__)
 /// Helper for _XENUM4_EXEC_COND().
-/// @hideinitializer
 #define _XENUM4_EXEC_COND_DO(MACRO, ...)	MACRO(__VA_ARGS__)
 
 
 // ===================================================================================================
 /**
  * @return Size of tuple, or zero if the parameter empty.
- * @hideinitializer
  */
 #define _XENUM4_GET_TUPLE_OR_EMPTY_SIZE(DATA)							\
 	BOOST_PP_CAT(_XENUM4_GET_TUPLE_OR_EMPTY_SIZE_, BOOST_PP_NOT(BOOST_PP_IS_EMPTY(DATA))) (DATA)
 
 /**
  * Worker for _XENUM4_GET_TUPLE_OR_EMPTY_SIZE().
- * @hideinitializer
  */
 #define _XENUM4_GET_TUPLE_OR_EMPTY_SIZE_0(DATA)							\
 	0
 
 /**
  * Worker for _XENUM4_GET_TUPLE_OR_EMPTY_SIZE().
- * @hideinitializer
  */
 #define _XENUM4_GET_TUPLE_OR_EMPTY_SIZE_1(DATA)							\
 	BOOST_PP_TUPLE_SIZE(TUPLE)
@@ -110,21 +99,18 @@ namespace xenum4 {
 // ===================================================================================================
 /**
  * @return Size of seq, or zero if the parameter empty.
- * @hideinitializer
  */
 #define _XENUM4_GET_SEQ_OR_EMPTY_SIZE(DATA)							\
 	BOOST_PP_CAT(_XENUM4_GET_SEQ_OR_EMPTY_SIZE_, BOOST_PP_NOT(BOOST_PP_IS_EMPTY(DATA))) (DATA)
 
 /**
  * Worker for _XENUM4_GET_SEQ_OR_EMPTY_SIZE().
- * @hideinitializer
  */
 #define _XENUM4_GET_SEQ_OR_EMPTY_SIZE_0(DATA)							\
 	0
 
 /**
  * Worker for _XENUM4_GET_SEQ_OR_EMPTY_SIZE().
- * @hideinitializer
  */
 #define _XENUM4_GET_SEQ_OR_EMPTY_SIZE_1(DATA)							\
 	BOOST_PP_SEQ_SIZE(DATA)
@@ -133,21 +119,18 @@ namespace xenum4 {
 // ===================================================================================================
 /**
  * @return Size of tuple, if data looks like it might actually be a tuple, else zero.
- * @hideinitializer
  */
 #define _XENUM4_GET_TUPLE_SIZE_IF_TUPLE(DATA)							\
 	BOOST_PP_CAT(_XENUM4_GET_TUPLE_SIZE_IF_TUPLE_, BOOST_PP_IS_BEGIN_PARENS(DATA)) (DATA)
 
 /**
  * Worker for _XENUM4_GET_TUPLE_SIZE_IF_TUPLE().
- * @hideinitializer
  */
 #define _XENUM4_GET_TUPLE_SIZE_IF_TUPLE_0(DATA)							\
 	0
 
 /**
  * Worker for _XENUM4_GET_TUPLE_SIZE_IF_TUPLE().
- * @hideinitializer
  */
 #define _XENUM4_GET_TUPLE_SIZE_IF_TUPLE_1(DATA)							\
 	BOOST_PP_TUPLE_SIZE(DATA)
@@ -157,21 +140,18 @@ namespace xenum4 {
 /**
  * @return Tuple converted to seq, if data looks like it might be a tuple, else just the data
  *	itself.
- * @hideinitializer
  */
 #define _XENUM4_TUPLE_TO_SEQ_IF_TUPLE(DATA)							\
 	BOOST_PP_CAT(_XENUM4_TUPLE_TO_SEQ_IF_TUPLE_, BOOST_PP_IS_BEGIN_PARENS(DATA)) (DATA)
 
 /**
  * Worker for _XENUM4_TUPLE_TO_SEQ_IF_TUPLE().
- * @hideinitializer
  */
 #define _XENUM4_TUPLE_TO_SEQ_IF_TUPLE_0(DATA)							\
 	DATA
 
 /**
  * Worker for _XENUM4_TUPLE_TO_SEQ_IF_TUPLE().
- * @hideinitializer
  */
 #define _XENUM4_TUPLE_TO_SEQ_IF_TUPLE_1(DATA)							\
 	BOOST_PP_TUPLE_TO_SEQ(DATA)
@@ -181,7 +161,6 @@ namespace xenum4 {
 /**
  * @return Tuple converted to seq, if data looks like it might actually be a tuple,
  *	and COND is true; else just the data itself.
- * @hideinitializer
  */
 #define _XENUM4_TUPLE_TO_SEQ_COND(DATA, COND)							\
 	BOOST_PP_CAT(										\
@@ -191,14 +170,12 @@ namespace xenum4 {
 
 /**
  * Worker for _XENUM4_TUPLE_TO_SEQ_COND().
- * @hideinitializer
  */
 #define _XENUM4_TUPLE_TO_SEQ_COND_0(DATA)							\
 	DATA
 
 /**
  * Worker for _XENUM4_TUPLE_TO_SEQ_COND().
- * @hideinitializer
  */
 #define _XENUM4_TUPLE_TO_SEQ_COND_1(DATA)							\
 	BOOST_PP_TUPLE_TO_SEQ(DATA)
@@ -207,7 +184,6 @@ namespace xenum4 {
 // ===================================================================================================
 /**
  * Common helper to return the N'th vararg, if it is defined.
- * @hideinitializer
  */
 #define _XENUM4_GET_VARARG(N, ...)								\
 	BOOST_PP_IF(BOOST_PP_GREATER(BOOST_PP_VARIADIC_SIZE(__VA_ARGS__), N),			\

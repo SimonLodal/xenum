@@ -15,7 +15,6 @@
  * Implementation parts that are not declared in the store class are declared and defined inside
  * a namespace with this name, to minimize risk of name clash with user code.
  * @return Name of implementation namespace.
- * @hideinitializer
  */
 #define _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_XenumImplNs_, _XENUM4_DECL_GET_SUFFIX(DECL)), _), PROPNAME)
@@ -24,7 +23,6 @@
 // ==============================================================================================
 /**
  * Main entry function.
- * @hideinitializer
  */
 #define _XENUM4_DEFINE_STORE(CTXT, DECL)							\
 	_XENUM4_DEFS_SIZE(CTXT, DECL)								\
@@ -37,7 +35,6 @@
 // ==============================================================================================
 /**
  * Define the .size var.
- * @hideinitializer
  */
 // FIXME: Is it really necessary to define this at all?
 #define _XENUM4_DEFS_SIZE(CTXT, DECL)								\
@@ -47,7 +44,6 @@
 // ==============================================================================================
 /**
  * Define data and funcs for identifiers.
- * @hideinitializer
  */
 #define _XENUM4_DEFL_IDENT(CTXT, DECL)								\
 	/* The symbols should never become visible outside this source unit. */			\
@@ -64,7 +60,6 @@
 /**
  * Worker for _XENUM4_DEFL_IDENT().
  * Defines the identifier string values.
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_VALUES(CTXT)								\
 	_XENUM4_IDENT_DEFL_VALUES_STRUCT(CTXT)							\
@@ -73,7 +68,6 @@
 /**
  * Worker for _XENUM4_IDENT_DEFL_VALUES().
  * Declares the IdentValues struct.
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_VALUES_STRUCT(CTXT)							\
 	typedef struct {									_XENUM4_NWLN \
@@ -85,7 +79,6 @@
 /**
  * Worker for _XENUM4_IDENT_DEFL_VALUES_STRUCT(); loop function for each enum value.
  * Declares a single identifier field.
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_VALUE_NAME(CTXT, IDENT, ...)						\
 	char IDENT[sizeof(#IDENT)];								_XENUM4_NWLN
@@ -93,7 +86,6 @@
 /**
  * Worker for _XENUM4_IDENT_DEFINE_VALUES().
  * Defines the IdentValues struct.
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_VALUES_DATA(CTXT)							\
 	constexpr const IdentValues identValues = {						_XENUM4_NWLN \
@@ -105,7 +97,6 @@
 /**
  * Callback worker for enum-values iteration.
  * Defines a single identifier value.
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_VALUE(CTXT, IDENT, ...)						\
 	#IDENT,											_XENUM4_NWLN
@@ -114,7 +105,6 @@
 /**
  * Worker for _XENUM4_DEFL_IDENT().
  * Defines the identifier string values.
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_OFFSETS(CTXT)							\
 	/* Integer type big enough to hold offsets into the string pool. */			\
@@ -128,7 +118,6 @@
 
 /**
  * Callback worker for _XENUM4_IDENT_DEFL_OFFSETS().
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_OFFSET(CTXT, IDENT, ...)						\
 	(IdentIndex)offsetof(IdentValues, IDENT),						_XENUM4_NWLN
@@ -136,7 +125,6 @@
 /**
  * Worker for _XENUM4_DEFL_IDENT().
  * Defines getter function.
- * @hideinitializer
  */
 #define _XENUM4_IDENT_DEFL_FUNCS(CTXT, DECL)							\
 	constexpr const IdentIndex getIdentOffset						\
@@ -152,7 +140,6 @@
 // ==============================================================================================
 /**
  * Define accessor and lookup functions.
- * @hideinitializer
  */
 #define _XENUM4_DEFS_FUNCS(CTXT, DECL)								\
 	_XENUM4_DEFS_FUNCS_I1(									\
@@ -165,7 +152,6 @@
 
 /**
  * Worker for _XENUM4_DEFS_FUNCS().
- * @hideinitializer
  */
 #define _XENUM4_DEFS_FUNCS_I1(CTXT, DECL, SCOPE, STORENAME, VALUENAME)				\
 	const char* SCOPE STORENAME::getIdentifier(SCOPE STORENAME::Enum value) noexcept	_XENUM4_NWLN \
@@ -234,7 +220,6 @@
 // ==============================================================================================
 /**
  * Define static_assert() checks on generated data structures.
- * @hideinitializer
  */
 #define _XENUM4_DEFS_CHECK(CTXT, DECL)								\
 	_XENUM4_DEFS_CHECK_I1(									\
@@ -247,7 +232,6 @@
 
 /**
  * Worker for _XENUM4_DEFS_CHECK().
- * @hideinitializer
  */
 #define _XENUM4_DEFS_CHECK_I1(CTXT, DECL, SCOPE, STORENAME, VALUENAME)				\
 	void SCOPE STORENAME::_check(void)							\

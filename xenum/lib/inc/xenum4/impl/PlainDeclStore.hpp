@@ -14,7 +14,6 @@
 /**
  * Worker for _XENUM4_PROP_DECLS_PLAIN().
  * Declares the data related to a single custom property, implemented in header.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_DATA(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
 	_XENUM4_INDENT_SUB									\
@@ -42,7 +41,6 @@
  * Worker for _XENUM4_PLAIN_DECLS_DATA(). Called as XENUM_VALS_* callback.
  * Counts the values of a single custom property of plain type, for a single enum value.
  * VARARGS: All custom property data for the enum value.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES(CTXT, IDENT, ...)						\
 	_XENUM4_PLAIN_COUNT_VALUES_I1								\
@@ -54,7 +52,6 @@
 
 /**
  * Worker for _XENUM4_PLAIN_COUNT_VALUES().
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_I1(CTXT, DEPTH, DATA)					\
 	BOOST_PP_CAT(_XENUM4_PLAIN_COUNT_VALUES_, BOOST_PP_BOOL(DEPTH))				\
@@ -62,7 +59,6 @@
 
 /**
  * Worker for _XENUM4_PLAIN_COUNT_VALUES(), for DEPTH==0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_0(CTXT, DEPTH, DATA)						\
 	_XENUM4_ADD_ONE()
@@ -70,7 +66,6 @@
 /**
  * Worker for _XENUM4_PLAIN_COUNT_VALUES(), for DEPTH!=0.
  * Calc state is just a single number; count of values in the entire data tree.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_1(CTXT, DEPTH, DATA)						\
 	+_XENUM4_TUPLETREE_ITERATE_DEPTH_CALC(							\
@@ -86,7 +81,6 @@
 /**
  * Callback for _XENUM4_PLAIN_COUNT_VALUES_1() iteration. Called for each leaf node.
  * @return New state, with counter incremented with number of values in leaf node.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_ADD(ITERPOS, NODE, CTXT, STATE)				\
 	BOOST_PP_ADD(STATE, _XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))			\
@@ -95,13 +89,11 @@
 // ============================== COUNT NODES ==============================
 /**
  * Worker for _XENUM4_PLAIN_HDR_DECLS_DATA(). Does nothing since depth==0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_NODES_0(CTXT, DECL, PROPDEF, PROPNAME)
 
 /**
  * Worker for _XENUM4_PLAIN_HDR_DECLS_DATA(). Declares variables related to index nodes (depth>0).
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_NODES_1(CTXT, DECL, PROPDEF, PROPNAME)				\
 	_XENUM4_DOC(Total number of indexnodes for indexing PROPNAME values.)			\
@@ -130,7 +122,6 @@
 /**
  * Worker for _XENUM4_PROP_DECLS_PLAIN().
  * Declares the functions related to a single custom property, implemented in header.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNCS(CTXT, PROPDEF, PROPNAME, Z)				\
 	BOOST_PP_REPEAT_ ## Z									\
@@ -146,7 +137,6 @@
 
 /**
  * Callback worker for _XENUM4_PLAIN_DECLS_FUNCS() iteration.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNCS_I1(Z, N, PROPDEF)						\
 	_XENUM4_PLAIN_HDR_DECLS_FUNC_GET_NODE(							\
@@ -166,7 +156,6 @@
 /**
  * Worker for _XENUM4_PLAIN_DECLS_FUNCS().
  * Generates get${propname}Node() getters.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNC_GET_NODE(PROPNAME, LEVEL, Z)				\
 	_XENUM4_DOC(Retrieve a level LEVEL node of the PROPNAME data hierarchy.)		\
@@ -195,7 +184,6 @@
 /**
  * Worker for _XENUM4_PLAIN_DECLS_FUNCS().
  * Generates get${propname}Size() getters.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNC_GET_SIZE(PROPNAME, LEVEL, DEPTH, Z)			\
 	_XENUM4_DOC(Get number of								\
@@ -225,7 +213,6 @@
 /**
  * Worker for _XENUM4_PLAIN_DECLS_FUNCS().
  * Generates get${propname}() value getter.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNC_GET_VALUE(PROPNAME, DEPTH, Z)				\
 	_XENUM4_DOC(Get value of the custom property PROPNAME.)					\
@@ -249,14 +236,12 @@
 
 /**
  * Generate value indexing expression for a property having depth==0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_GEN_VALUE_INDEXING_0(PROPNAME, DEPTH, Z)					\
 	getIndex(index0)
 
 /**
  * Generate value indexing expression for a property having depth!=0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_GEN_VALUE_INDEXING_1(PROPNAME, DEPTH, Z)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
@@ -270,7 +255,6 @@
 /**
  * Worker for _XENUM4_PROP_DECLS_PLAIN().
  * Declares the functions related to a single custom property, implemented in source.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_SRC_DECLS_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
 	BOOST_PP_REPEAT_ ## Z									\
