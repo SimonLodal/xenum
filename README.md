@@ -1,4 +1,6 @@
 # xenum-4.0
-A better C++ enum. Native C++11 enums extended with enum size, iteration, conversion to/from string, custom properties on each enum value. All static/const(expr), and with zero runtime overhead.
+A better C++ enum. Native C++11 enums extended with enum size, iteration, conversion
+to/from string, and custom properties. All static/const(expr).
 
-See [Xenum.hpp](xenum/lib/inc/xenum4/Xenum.hpp) for doc (run 'make doc' in build/ to get doxygen generated html).
+See [doc.xenum.hpp](xenum/lib/src/doc.xenum.hpp) for doc source (run 'make doc' in
+build/ to get doxygen generated html).
