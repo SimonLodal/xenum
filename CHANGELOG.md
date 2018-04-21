@@ -3,6 +3,8 @@
 ## [Unreleased]
 ### Added
 - util/xenum4-inject util script for inspecting the generated code.
+- Documentation comments in generated code, so doxygen can make sense of xenum4-inject's output.
+- Include unit tests in doxygen, as an example of doxygen'izing generated code.
 
 ### Removed
 - Util scripts xenum-inspect and xenum-postprocess (replaced by xenum4-inject).

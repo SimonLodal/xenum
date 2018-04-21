@@ -57,7 +57,14 @@ Top-level namespace for Xenum.
  * - Reasonably simple declaration of an enum. Requires a few macros in header, and one in a
  *   source file. The latter is minimal (no duplication of value list or other parameters).
  * - Includes XenumSet; a container with a set of values from an xenum, implemented as a bitset.
+ * - Code generation is macro based.
+ * - Includes a tool (xenum4-inject) to reformat preprocessed output back into readable C++,
+ *   code, so you can inspect what gets generated. The post-processed code even includes
+ *   documentation that doxygen can read.
+ * - Code generation happens at compile time by default, but it is also possible to set up your
+ *   build system to use xenum4-inject as an external run-once code generator.
  *
+ * @section Environment
  * @subsection Compilers Supported compilers
  * - g++-4.9
  * - clang-3.5
@@ -69,10 +76,43 @@ Top-level namespace for Xenum.
  * that some of the util scripts have some GNU or Unix ism's.
  *
  * @subsection Requirements
- * - Build requirements:
+ * - Building your own project that uses Xenum:
  *   - C++11 compiler
  *   - Boost.Preprocessor (boost-1.64.0 used)
+ * - Building the xenum project:
+ *   - C++11 compiler
+ *   - Boost.Preprocessor (boost-1.64.0 used)
+ *   - gtest (Google Test), for compiling unit tests
+ *   - doxygen, for generating documentation
  * - Runtime requirements: None.
+ * - perl, if you use the util/ scripts.
+ *
+ * @subsection Installation Compile and install
+ * No compiling is *required*, as xenum is all implemented in headers.
+ *
+ * You only need to copy ${xenum-root}/xenum/lib/inc/xenum4 directory to somewhere that is in
+ * your compiler's include path, fx. /usr/local/include, so you can \#include <xenum4/Xenum.hpp>.
+ *
+ * However, it is very much recommended that you compile and run the unit tests, to make sure
+ * that xenum works with your compiler.
+ *
+ * @code
+ *	cd build
+ *	cmake .
+ *	make
+ * @endcode
+ * Run unit tests (must not fail):
+ * @code
+ *	make test
+ * @endcode
+ * Generate documentation (doxygen):
+ * @code
+ *	make doc
+ * @endcode
+ * Install headers and documentation:
+ * @code
+ *	make install
+ * @endcode
  *
  * @section DesignImpl Design / implementation
  * C/C++ enums have always confused me. There is the enum, and then there is the individual
@@ -82,13 +122,13 @@ Top-level namespace for Xenum.
  * values. They are distinct classes. And for semantic clarity, they should usually be
  * named in pluralis and singular form of the same word, fx. Fruits/Fruit, Cards/Card, etc.
  *
- * So when you create an xenum (say, "Fruits"), two classes are created, the enum container
- * class (Fruits) and the value class (Fruit). Actually a third class is also generated, but
+ * So when you create an xenum (say, "Fruits"), two classes are created, the value class
+ * (Fruit) and the container class (Fruits). Actually a third class is also generated, but
  * only for internal purposes (storage of data related to the enum).
  *
  * The enum-value class (Fruit) is a very lightweight wrapper around a native enum value.
- * Being a class, it adds several useful functions. But it adds no data or other overhead,
- * so it's size is exactly the same as the native enum value.
+ * Being a class, it adds several useful functions. But it adds no data or other overhead
+ * (and is not virtual), so it's size is exactly the same as the native enum value.
  *
  * The container class contains all the enum values as value objects, so you can refer to
  * Fruits::apple and Fruits::lemon just like you would with a native C++11 enum class. The
@@ -96,7 +136,8 @@ Top-level namespace for Xenum.
  *
  * The container class makes the native C++11 enum class available as Fruits::_Enum, should
  * you want to use them directly. They are equivalent and interchangeable with the enum-value
- * objects. There is zero runtime overhead in using the value object.
+ * objects. There should be zero runtime (CPU) overhead in using the value object as the
+ * compiler should treat the value object just like a native enum value.
  *
  * Implementation is based on preprocessor macros, not templates, at least the core task
  * of defining the enum values and associated data. Template metaprogramming would have been
@@ -105,7 +146,8 @@ Top-level namespace for Xenum.
  * - Big lists do not work (fx >256 entries), since all iteration over lists is recursive,
  *   and all preprocessors have a rather small recursion limit.
  *
- * So for now, we have to deal with incomprehensible error messages when something goes wrong.
+ * So for now, we have to deal with 1000 lines of incomprehensible preprocessor error
+ * messages when anything goes wrong.
  *
  * @section Documentation Documentation
  * Below are some examples that show how to create and use xenums.
@@ -506,6 +548,37 @@ Top-level namespace for Xenum.
  *	- begin
  *	- end
  *
+ * @subsection Limits Limits
+ * - Number of values in an enum: Unlimited
+ * - Custom properties: Almost everything is subject to preprocessor recursion limit of 64 (or
+ *   a little less). So:
+ *   - Max number of custom properties in an enum: 64
+ *   - Max depth of a custom property data hierarchy: 64
+ *   - Max number of childnodes (or values) at any point in the data hierarchy: 64.
+ *
+ *   So if you have a custom property with depth=1, the array of values (per enum value) can
+ *   be no larger than 64. However, if your have depth>1, each leafnode can contain it's own
+ *   array of up to 64 values.
+ *
+ * @section UsingGeneratedCode Using the generated code
+ * Xenum is macro-based. This has a disadvantage that the generated code is only readable to
+ * a compiler, not to a human. The util/xenum4-inject script helps to overcome this.
+ *
+ * xenum4-inject runs the preprocessor on a single file of your choice. It replaces the main
+ * macros (XENUM4_DECLARE() and XENUM4_DEFINE()) with the content they produce (and leaves
+ * everything else as is). The generated sections are reformatted with indentation, newlines
+ * and documentation comments. The result is both human readable, and valid C++ that can be
+ * compiled again (which would produce exactly the same result as compiling the input file).
+ *
+ * What you can use this for:
+ * - Inspecting the generated code.
+ * - Generate API documentation for the generated classes. See build/CMakeLists.txt for an
+ *   example of how to set this up (on the xenums used in the unit tests). Maybe not perfect,
+ *   but working.
+ * - Use as an external code generator that only runs when necessary. Basically the same setup
+ *   as for doxygen, except the output files must be compiled as part of your project, not the
+ *   input files (and you need to run xenum4-inject both on header and source files).
+ *
  * @section Caveats
  * - Xenum can not be declared inside a class if it has custom properties. The reason is C++'s
  *   rule that class members are not considered complete before the whole class is complete.
@@ -519,13 +592,9 @@ Top-level namespace for Xenum.
  * - Name lookup is currently very inefficient, uses linear search. Need to find a way to
  *   generate a static constexpr string-hashtable, or at least a constexpr way to sort the
  *   string list and use binary search.
- * - No API doc for the generated Xenum classes. It is not really possible to generate API doc
- *   for macro-generated functions.
  * - Poor error messages, due to how the preprocessor works. Since this is all implemented with
  *   preprocessor macros, when something goes wrong you tend to get 1000 lines of
  *   incomprehensible error messages, none of which point to where the actual comma is missing.
- * - There is a limit on the number of custom properties, currently 64 or maybe a little less.
- *   This is due to the recursion limit in the preprocessor.
  * - Preprocessing time (wallclock) increases if you add a lot of custom properties, deep
  *   hierarchies, many values. It does not scale very well. Perhaps depends on the preprocessor
  *   used.
@@ -536,11 +605,9 @@ Top-level namespace for Xenum.
  * - If you are unsure about correct syntax, see the unit tests for working examples.
  * - You can also use util/xenum4-test-gen to generate xenums of any size, just to inspect
  *   how it declares them, and perhaps to test the limits of your own compiler.
- * - Use util/xenum4-inject script to view the generated code. It runs the preprocessor on a
- *   single file of your choice, and replaces the main macros (XENUM4_DECLARE() and
- *   XENUM4_DEFINE()) with the content they produce, formatted with indentation and newlines so
- *   it is human readable. It is the only way you can actually inspect what all the macro code
- *   produces, so it is a crucial tool both in troubleshooting and development.
+ * - Use util/xenum4-inject script to view the generated code. It is the only way you can
+ *   actually inspect what all the macro code produces, so it is a crucial tool both in
+ *   troubleshooting and development.
  *   - Troubleshooting: Run xenum4-inject only on the header or source file where the problematic
  *     enum is defined. Search the output for "BOOST" and "_XENUM", this is usually the actual
  *     error location (a macro call that was pasted literally instead of being executed). If no
@@ -569,7 +636,6 @@ Top-level namespace for Xenum.
  *   Some template magic may be possible in C++14/17 but for now we stick with C++11.
  * - Custom properties of type bool stored as bits.
  * - Faster compiling. Preprocessor can spend enormous amounts of CPU and RAM.
- * - Some way to generate documentation of the generated code.
  * - Enum class inheritance (maybe).
  * - Custom code injection (maybe - if custom properties are not enough).
  *
