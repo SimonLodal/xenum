@@ -129,12 +129,12 @@ public:												_XENUM4_NWLN \
 	_XENUM4_DOC(@copydoc STORENAME::fromIndex(Index index, VALUENAME& value) noexcept)	\
 	static bool _fromIndex(_Index index, VALUENAME& value) noexcept				\
 		{ return STORENAME::fromIndex(index, value); }					_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc STORENAME::fromIdent(const char* identifier))			\
+	_XENUM4_DOC(@copydoc STORENAME::fromIdentifier(const char* identifier))			\
 	static VALUENAME _fromIdentifier(const char* identifier)				\
-		{ return STORENAME::fromIdent(identifier); }					_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc STORENAME::fromIdent(const char* identifier, VALUENAME& value) noexcept)	\
+		{ return STORENAME::fromIdentifier(identifier); }				_XENUM4_NWLN \
+	_XENUM4_DOC(@copydoc STORENAME::fromIdentifier(const char* identifier, VALUENAME& value) noexcept)	\
 	static bool _fromIdentifier(const char* identifier, VALUENAME& value) noexcept		\
-		{ return STORENAME::fromIdent(identifier, value); }				_XENUM4_NWLN \
+		{ return STORENAME::fromIdentifier(identifier, value); }			_XENUM4_NWLN \
 	/* Iteration support. */								\
 _XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \

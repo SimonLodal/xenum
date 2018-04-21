@@ -33,8 +33,8 @@ public:
 	 static constexpr const char* getIdentifier(Enum value) noexcept { return &((const char*)&identPool)[*getIdentOffset(value)]; } 
 	 static Enum fromIndex(index_t index); 
 	 static bool fromIndex(index_t index, ::xenum4::XenumValue<_XenumStore_Fruits>& value) noexcept; 
-	 static Enum fromIdent(const char* identifier); 
-	 static bool fromIdent(const char* identifier, ::xenum4::XenumValue<_XenumStore_Fruits>& value) noexcept; 
+	 static Enum fromIdentifier(const char* identifier); 
+	 static bool fromIdentifier(const char* identifier, ::xenum4::XenumValue<_XenumStore_Fruits>& value) noexcept; 
 }; 
 #if 0
 // Simple typedef of XenumValue

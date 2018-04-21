@@ -196,7 +196,7 @@
 		return false;									_XENUM4_NWLN \
 		_XENUM4_INDENT_DEC								\
 	}											_XENUM4_NWLN \
-	SCOPE STORENAME::Enum SCOPE STORENAME::fromIdent(const char* identifier)		_XENUM4_NWLN \
+	SCOPE STORENAME::Enum SCOPE STORENAME::fromIdentifier(const char* identifier)		_XENUM4_NWLN \
 	{											_XENUM4_NWLN \
 		_XENUM4_INDENT_INC								\
 		/* FIXME: Linear search, terrible performance. */				\
@@ -211,7 +211,7 @@
 		throw std::out_of_range("No such identifier.");					_XENUM4_NWLN \
 		_XENUM4_INDENT_DEC								\
 	}											_XENUM4_NWLN \
-	bool SCOPE STORENAME::fromIdent(const char* identifier,					\
+	bool SCOPE STORENAME::fromIdentifier(const char* identifier,				\
 				::_XENUM4_NS::XenumValue<STORENAME>& value) noexcept		_XENUM4_NWLN \
 	{											_XENUM4_NWLN \
 		_XENUM4_INDENT_INC								\
