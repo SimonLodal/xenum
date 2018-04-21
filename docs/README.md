@@ -1,4 +1,4 @@
-# xenum-4.1-pre1
+# xenum-4.1
 
 ## Description
 Xenum is a better C++ enum, a native C++11 enum extended with enum size, iteration,
