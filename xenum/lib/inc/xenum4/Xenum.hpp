@@ -5,8 +5,11 @@
  * @license GNU GPL version 3
  * @version 4.0
  *
+ * @mainpage Xenum - an extended C++ enum
+ *
  * @section Description
- * A better enum class for C++. Adds all the functionality that standard C++ enums lack.
+ * Xenum is a better enum class for C++. It extends a native C++ enum with all the functionality
+ * it lacks.
  *
  * C++11's "enum class" is already a big improvement over earlier plain "enum" which were
  * just dumb ints. The new "enum class" adds type safety and scoping. But there is still

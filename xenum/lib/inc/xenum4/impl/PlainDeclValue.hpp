@@ -93,8 +93,8 @@ public:												_XENUM4_NWLN \
 #define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N(Z, N, CTXT)						\
 	_XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1							\
 	(											\
-		CTXT,										\
 		_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM4_PROPDEF_GET_DEPTH(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
 		N,										\
 		Z										\
 	)
@@ -103,9 +103,18 @@ public:												_XENUM4_NWLN \
  * Worker for _XENUM4_PLAIN_HDR_DECLV_FUNC_GET_SIZE_N().
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1(CTXT, PROPNAME, LEVEL, Z)				\
-	_XENUM4_DOC(@copydoc Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size)		\
-		(_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PROPNAME, Index), LEVEL, Z)))	\
+#define _XENUM4_PLAIN_HDR_DECLV_GET_SIZE_N_I1(PROPNAME, DEPTH, LEVEL, Z)			\
+	_XENUM4_DOC(										\
+	BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, LEVEL),						\
+		Get size of custom property PROPNAME value (number of data elements).,		\
+		Get number of BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),		\
+			values in,								\
+			childnodes of								\
+		) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL),						\
+			a level LEVEL node in the data hierarchy of,				\
+												\
+		) custom property PROPNAME.							\
+	))											\
 	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)						\
 	const BOOST_PP_CAT(PROPNAME, Index)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
@@ -127,8 +136,7 @@ public:												_XENUM4_NWLN \
  * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
-	_XENUM4_DOC(@copydoc Store::BOOST_PP_CAT(get, PROPNAME)					\
-		(_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PROPNAME, Index), DEPTH, Z)))	\
+	_XENUM4_DOC(Get custom property PROPNAME value.)					\
 	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr)						\
 	const BOOST_PP_CAT(PROPNAME, Value&)							\
 	BOOST_PP_CAT(get, PROPNAME) (								\
@@ -149,18 +157,18 @@ public:												_XENUM4_NWLN \
  * Declares the functions related to a single custom property, implemented in source.
  * @hideinitializer
  */
-#define _XENUM4_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+#define _XENUM4_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
 _XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\
 		_XENUM4_PROP_SRC_DECLV_GET_SIZE,						\
-		PROPNAME									\
+		PROPDEF										\
 	)											\
 	_XENUM4_PROP_SRC_DECLV_GET_VALUE(							\
 		PROPNAME,									\
-		_XENUM4_PROPDEF_GET_PARM_TYPE(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF),						\
 		DEPTH,										\
 		Z										\
 	)

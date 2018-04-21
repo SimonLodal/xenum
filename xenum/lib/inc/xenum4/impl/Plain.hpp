@@ -82,6 +82,7 @@
 	_XENUM4_PLAIN_SRC_DECLV_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		PROPDEF,									\
 		CTXT,										\
 		Z										\
 	)

@@ -27,7 +27,7 @@
  * @hideinitializer
  */
 #define _XENUM4_DECLARE_CNTNR(CTXT, DECL)							\
-	_XENUM4_DOC(Enum container class.							_XENUM4_NWLN \
+	_XENUM4_DOC(Container class for xenum _XENUM4_DECL_GET_CNTNRNAME(DECL).			_XENUM4_NWLN \
 		Contains all the enum values as value objects, lookup functions, and iteration.)\
 	class _XENUM4_CNTNR_NAME(DECL) {							_XENUM4_NWLN \
 		_XENUM4_INDENT_INC								\
@@ -60,11 +60,11 @@ public:												_XENUM4_NWLN \
 #define _XENUM4_DECLC_ENUM(CTXT, DECL)								\
 _XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc _XENUM4_STORE_NAME(DECL)::size)					\
+	_XENUM4_DOC(Number of enum values in this enum class.)					\
 	static constexpr const size_t _size = _XENUM4_STORE_NAME(DECL)::size;			_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc _XENUM4_STORE_NAME(DECL)::Index)					\
+	_XENUM4_DOC(Integer type used for enum values.)						\
 	using _Index = typename _XENUM4_STORE_NAME(DECL)::Index;				_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc _XENUM4_STORE_NAME(DECL)::Enum)					\
+	_XENUM4_DOC(The native enum class.)							\
 	using _Enum = typename _XENUM4_STORE_NAME(DECL)::Enum;					_XENUM4_NWLN \
 
 
@@ -123,16 +123,32 @@ public:												_XENUM4_NWLN \
 	/* Wrapper for store class lookup functions. */						\
 _XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc STORENAME::fromIndex(Index index))					\
+	_XENUM4_DOC(Get enum value with given index.						_XENUM4_NWLN \
+		@param index Enum-value index to retrieve.					_XENUM4_NWLN \
+		@return Requested enum value.							_XENUM4_NWLN \
+		@throws std::out_of_range if index >= number of enum values.)			\
 	static VALUENAME _fromIndex(_Index index)						\
 		{ return STORENAME::fromIndex(index); }						_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc STORENAME::fromIndex(Index index, VALUENAME& value) noexcept)	\
+	_XENUM4_DOC(Get enum value with given index, without throwing on error.			_XENUM4_NWLN \
+		@param index Enum-value index to retrieve.					_XENUM4_NWLN \
+		@param value Return value; is set to the requested enum value,			_XENUM4_NWLN \
+			_XENUM4_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM4_NWLN \
+		@return True if enum-value with given index was found, else false.)		\
 	static bool _fromIndex(_Index index, VALUENAME& value) noexcept				\
 		{ return STORENAME::fromIndex(index, value); }					_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc STORENAME::fromIdentifier(const char* identifier))			\
+	_XENUM4_DOC(Get enum value with given identifier (name).				_XENUM4_NWLN \
+		@param identifier Identifier to look up.					_XENUM4_NWLN \
+		@return Requested enum value.							_XENUM4_NWLN \
+		@throws std::out_of_range if no such identifier exists.)			\
 	static VALUENAME _fromIdentifier(const char* identifier)				\
 		{ return STORENAME::fromIdentifier(identifier); }				_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc STORENAME::fromIdentifier(const char* identifier, VALUENAME& value) noexcept)	\
+	_XENUM4_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM4_NWLN \
+		@param identifier Identifier to look up.					_XENUM4_NWLN \
+		@param value Return value; is set to the requested enum value,			_XENUM4_NWLN \
+			_XENUM4_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM4_NWLN \
+		@return True if enum-value with given identifier was found, else false.)	\
 	static bool _fromIdentifier(const char* identifier, VALUENAME& value) noexcept		\
 		{ return STORENAME::fromIdentifier(identifier, value); }			_XENUM4_NWLN \
 	/* Iteration support. */								\

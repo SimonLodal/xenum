@@ -2284,7 +2284,7 @@ sub execute()
 	my $outputdir = $gopts->{cntnrName};
 	chdir($outputdir) || die("ERROR: Could not change to output directory '${outputdir}'.\n");
 	if ($gopts->{makePp}) {
-		$cmd = "make ".$gopts->{cntnrName}.".hpp.pp ".$gopts->{cntnrName}.".cpp.pp";
+		$cmd = "make pp.".$gopts->{cntnrName}.".hpp pp.".$gopts->{cntnrName}.".cpp";
 		system($cmd);
 		$res = $?;
 		if ($res == -1) {

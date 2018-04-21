@@ -44,7 +44,7 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * @hideinitializer
  */
 #define _XENUM4_DECLARE_VALUE_1(CTXT, DECL)							\
-_XENUM4_DOC(Enum-value class.									_XENUM4_NWLN \
+_XENUM4_DOC(Enum-value class for xenum _XENUM4_DECL_GET_CNTNRNAME(DECL).			_XENUM4_NWLN \
 	Thin wrapper around a native enum value.						_XENUM4_NWLN \
 	Can never have an invalid value.)							\
 class _XENUM4_DECL_GET_VALUENAME(DECL)								\
@@ -63,11 +63,11 @@ class _XENUM4_DECL_GET_VALUENAME(DECL)								\
 #define _XENUM4_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
 _XENUM4_INDENT_SUB										\
 public:												_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc _XENUM4_NS::XenumValue::XenumValue(void) noexcept)			\
+	_XENUM4_DOC(@copydoc _XENUM4_NS::XenumValue::XenumValue(void))				\
 	constexpr VALUENAME(void) noexcept {}							_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc _XENUM4_NS::XenumValue::XenumValue(Enum value) noexcept)		\
+	_XENUM4_DOC(@copydoc _XENUM4_NS::XenumValue::XenumValue(Enum value))			\
 	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}				_XENUM4_NWLN \
-	_XENUM4_DOC(@copydoc _XENUM4_NS::XenumValue::XenumValue(const XenumValue& other) noexcept)	\
+	_XENUM4_DOC(@copydoc _XENUM4_NS::XenumValue::XenumValue(const XenumValue& other))	\
 	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}		_XENUM4_NWLN \
 
 

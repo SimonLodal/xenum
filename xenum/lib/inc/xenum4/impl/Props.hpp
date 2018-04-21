@@ -398,12 +398,6 @@
  * @hideinitializer
  */
 #define _XENUM4_PROP_SRC_DECLS_GET_SIZE(Z, LEVEL, PROPDEF)					\
-	_XENUM4_DOC(Get number of								\
-		BOOST_PP_IF(									\
-			BOOST_PP_EQUAL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF), BOOST_PP_INC(LEVEL)),\
-			values in,								\
-			childnodes of								\
-		) a level LEVEL node in the _XENUM4_PROPDEF_GET_NAME(PROPDEF) data hierarchy.)	\
 	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM4_PROPDEF_GET_NAME(PROPDEF)), Size) (	\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
 	);											_XENUM4_NWLN
@@ -416,7 +410,6 @@
  * @hideinitializer
  */
 #define _XENUM4_PROP_SRC_DECLS_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
-	_XENUM4_DOC(Get value of the custom property PROPNAME.)					\
 	static const RETTYPE BOOST_PP_CAT(get, PROPNAME) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
 	);											_XENUM4_NWLN
@@ -429,9 +422,30 @@
  * For properties implemented in source.
  * @hideinitializer
  */
-#define _XENUM4_PROP_SRC_DECLV_GET_SIZE(Z, LEVEL, PROPNAME)					\
-	_XENUM4_DOC(@copydoc Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size)		\
-		(_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)))			\
+#define _XENUM4_PROP_SRC_DECLV_GET_SIZE(Z, LEVEL, PROPDEF)					\
+	_XENUM4_PROP_SRC_DECLV_GET_SIZE_I1(							\
+		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
+		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		LEVEL,										\
+		Z										\
+	)											\
+
+/**
+ * Worker for _XENUM4_PROP_SRC_DECLV_GET_SIZE().
+ * @hideinitializer
+ */
+#define _XENUM4_PROP_SRC_DECLV_GET_SIZE_I1(PROPNAME, DEPTH, LEVEL, Z)				\
+	_XENUM4_DOC(										\
+	BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, LEVEL),						\
+		Get size of custom property PROPNAME value (number of data elements).,		\
+		Get number of BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),		\
+			values in,								\
+			childnodes of								\
+		) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL),						\
+			a level LEVEL node in the data hierarchy of,				\
+												\
+		) custom property PROPNAME.							\
+	))											\
 	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
 		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
 	)											\
@@ -451,8 +465,7 @@
  * @hideinitializer
  */
 #define _XENUM4_PROP_SRC_DECLV_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
-	_XENUM4_DOC(@copydoc Store::BOOST_PP_CAT(get, PROPNAME)					\
-		(_XENUM4_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)))			\
+	_XENUM4_DOC(Get custom property PROPNAME value.)					\
 	const RETTYPE BOOST_PP_CAT(get, PROPNAME) (						\
 		_XENUM4_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
 	)											\

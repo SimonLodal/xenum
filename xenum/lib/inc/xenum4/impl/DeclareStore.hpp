@@ -30,10 +30,11 @@
 		class _XENUM4_DECL_GET_VALUENAME(DECL);						_XENUM4_NWLN \
 	)											\
 	class _XENUM4_CNTNR_NAME(DECL);								_XENUM4_NWLN \
-	_XENUM4_DOC(Internal/private class for data storage.					_XENUM4_NWLN \
+	_XENUM4_DOC(Internal/private class for xenum _XENUM4_DECL_GET_CNTNRNAME(DECL).		_XENUM4_NWLN \
+		Contains data and accessors for the enum.					_XENUM4_NWLN \
 		Only accessed by friends (value and container classes).)			\
 	class _XENUM4_STORE_NAME(DECL) {							_XENUM4_NWLN \
-	public:										_XENUM4_NWLN \
+	private:										_XENUM4_NWLN \
 		_XENUM4_INDENT_INC								\
 		friend class ::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>;		_XENUM4_NWLN \
 		BOOST_PP_EXPR_IF(								\
@@ -55,7 +56,7 @@
  * @hideinitializer
  */
 #define _XENUM4_DECLS_ENUM(CTXT, DECL)								\
-	_XENUM4_DOC(Number of values in this enum class.)					\
+	_XENUM4_DOC(Number of enum values in this enum class.)					\
 	static constexpr const size_t size = 0 _XENUM4_CALL_VALS(_XENUM4_ADD_ONE, CTXT);	_XENUM4_NWLN \
 	_XENUM4_DOC(Integer type used for enum values.)						\
 	typedef BOOST_PP_IF(									\
@@ -101,12 +102,12 @@
 	static bool fromIndex(Index index,							\
 		::_XENUM4_NS::XenumValue<_XENUM4_STORE_NAME(DECL)>& value) noexcept;		_XENUM4_NWLN \
 	_XENUM4_DOC(Get enum value with given identifier (name).				_XENUM4_NWLN \
-		@param ident Identifier to look up.						_XENUM4_NWLN \
+		@param identifier Identifier to look up.					_XENUM4_NWLN \
 		@return Requested enum value.							_XENUM4_NWLN \
 		@throws std::out_of_range if no such identifier exists.)			\
 	static Enum fromIdentifier(const char* identifier);					_XENUM4_NWLN \
 	_XENUM4_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM4_NWLN \
-		@param ident Identifier to look up.						_XENUM4_NWLN \
+		@param identifier Identifier to look up.					_XENUM4_NWLN \
 		@param value Return value; is set to the requested enum value,			_XENUM4_NWLN \
 			_XENUM4_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM4_NWLN \

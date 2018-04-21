@@ -11,7 +11,7 @@ namespace xenum4 {
 
 
 /**
- * Enum-value class.
+ * Enum-value base class.
  * Thin wrapper around a native enum value.
  * Can never have an invalid value.
  * @param XenumStore The xenum store class, containing the native C++ enum.
@@ -19,7 +19,7 @@ namespace xenum4 {
 template<class XenumStore>
 class XenumValue {
 protected:
-	/// The store class.
+	/// The internal store class.
 	typedef XenumStore Store;
 public:
 	/// Integer type used for enum values.
@@ -50,7 +50,7 @@ public:
 	/// @return Index of this enum value in it's enum class.
 	constexpr Index getIndex(void) const noexcept { return XenumStore::getIndex(value); }
 
-	/// @return Identifier of this enum value.
+	/// @return Identifier (name) of this enum value.
 	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
 
 public:
