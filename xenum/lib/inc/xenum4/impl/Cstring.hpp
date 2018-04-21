@@ -13,12 +13,12 @@
 // ============================= DECLARATION IN CONTAINER CLASS ================================
 /**
  * Entry point for declaring a custom property of cstring type, in store class context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLS_CSTRING(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_CSTRING_DECLS_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		PROPDEF,									\
 		CTXT,										\
 		Z										\
 	)
@@ -27,12 +27,12 @@
 // =============================== DECLARATION IN VALUE CLASS ==================================
 /**
  * Entry point for declaring a custom property of cstring type, in value class context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLV_CSTRING(CTXT, PROPDEF, Z)						\
 	_XENUM4_CSTRING_DECLV_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		PROPDEF,									\
 		CTXT,										\
 		Z										\
 	)
@@ -42,7 +42,6 @@
 /**
  * Entry point for defining the data of a custom properties of cstring type, in source file
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_CSTRING_DEFINE									\
@@ -58,7 +57,6 @@
 /**
  * Entry point for defining final checks for a custom property of cstring type, in source file
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_CHECK_CSTRING(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_CSTRING_CHECK									\

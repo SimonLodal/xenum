@@ -13,17 +13,18 @@
 /**
  * Worker for _XENUM4_PROP_DEFINE_CSTRING().
  * Defines all the data and functions of a single custom property, for "cstring" data types.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFINE(CTXT, DECL, PROPDEF, SCOPE, PROPNAME, Z)				\
 	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
 	/* Also wrap in named namespace to prevent name clashes. */				\
-	namespace _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) {					NWLN \
+	namespace _XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) {					_XENUM4_NWLN \
+		_XENUM4_INDENT_INC								\
 		_XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)			\
 		_XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)			\
 		_XENUM4_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)					\
-	}}											NWLN \
+		_XENUM4_INDENT_DEC								\
+	}}											_XENUM4_NWLN \
 	_XENUM4_CSTRING_DEFS_FUNCS(								\
 		PROPNAME,									\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
@@ -39,7 +40,6 @@
 /**
  * Worker for _XENUM4_CSTRING_DEFINE().
  * Defines the string values.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)				\
 	_XENUM4_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME)					\
@@ -48,42 +48,41 @@
 /**
  * Worker for _XENUM4_CSTRING_DEFINE_VALUES().
  * Declares the ${propname}Values_t struct.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME)					\
-IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		NWLN \
-IND1	typedef struct {									NWLN \
+	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM4_NWLN \
+	typedef struct {									_XENUM4_NWLN \
+		_XENUM4_INDENT_INC								\
 		_XENUM4_PROP_ITER_VALUES(_XENUM4_CSTRING_VALUE_NAME, CTXT)			\
-IND1	} BOOST_PP_CAT(PROPNAME, Values_t);							\
-	NWLN
+		_XENUM4_INDENT_DEC								\
+	} BOOST_PP_CAT(PROPNAME, Values_t);							_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_CSTRING_VALUES_STRUCT(); loop function for each data node.
  * Declares a single value field.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_VALUE_NAME(ITERPOS, NODE, CTXT)						\
-IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value) 		\
+	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), Value) 		\
 	_XENUM4_PROP_GEN_NODE_NAME(CTXT, _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
-	[sizeof(_XENUM4_PROP_GET_VALUE(NODE, CTXT))]; NWLN
+	[sizeof(_XENUM4_PROP_GET_VALUE(NODE, CTXT))];						_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_CSTRING_DEFINE_VALUES().
  * Defines the ${propname}Values struct.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_VALUES_DATA(CTXT, PROPNAME)						\
-IND1	constexpr BOOST_PP_CAT(PROPNAME, Values_t) BOOST_PP_CAT(PROPNAME, Values) = {		NWLN \
+	constexpr BOOST_PP_CAT(PROPNAME, Values_t) BOOST_PP_CAT(PROPNAME, Values) = {		_XENUM4_NWLN \
+		_XENUM4_INDENT_INC								\
 		_XENUM4_PROP_ITER_VALUES(_XENUM4_CSTRING_DEFINE_VALUE, CTXT)			\
-IND1	};											NWLN
+		_XENUM4_INDENT_DEC								\
+	};											_XENUM4_NWLN
 
 /**
  * Callback worker for values iteration.
  * Defines a single data value of a custom property.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFINE_VALUE(ITERPOS, NODE, CTXT)					\
-IND2	_XENUM4_PROP_GET_VALUE(NODE, CTXT),							NWLN
+	_XENUM4_PROP_GET_VALUE(NODE, CTXT),							_XENUM4_NWLN
 
 
 // ========================================= NODES =============================================
@@ -91,19 +90,18 @@ IND2	_XENUM4_PROP_GET_VALUE(NODE, CTXT),							NWLN
  * Worker for _XENUM4_CSTRING_DEFINE().
  * Defines the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
  * we always need an indexnodes table since each string needs to be referenced by an indexnode.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)				\
-IND1	constexpr size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 					\
-		sizeof(BOOST_PP_CAT(PROPNAME, Values_t));					NWLN \
-IND1	constexpr size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0					\
-		_XENUM4_CALL_VALS(_XENUM4_CSTRING_COUNT_NODES, CTXT);				NWLN \
-IND1	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
+	constexpr size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 					\
+		sizeof(BOOST_PP_CAT(PROPNAME, Values_t));					_XENUM4_NWLN \
+	constexpr size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0					\
+		_XENUM4_CALL_VALS(_XENUM4_CSTRING_COUNT_NODES, CTXT);				_XENUM4_NWLN \
+	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
 			BOOST_PP_CAT(PROPNAME, ValuesSize),					\
 			BOOST_PP_CAT(PROPNAME, IndexSize)					\
-		) >::type BOOST_PP_CAT(PROPNAME, Index);					NWLN \
-IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
-		BOOST_PP_CAT(PROPNAME, IndexNode);						NWLN \
+		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM4_NWLN \
+	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
+		BOOST_PP_CAT(PROPNAME, IndexNode);						_XENUM4_NWLN \
 	_XENUM4_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, Z)					\
 	_XENUM4_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, Z)					\
 
@@ -114,7 +112,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
  * Counts the indexnodes of a single custom property, for a single enum value.
  * Counts all nodes, including leaf values, since each string value needs to be referenced
  * by an indexnode.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_COUNT_NODES(CTXT, IDENT, ...)						\
 	+_XENUM4_TUPLETREE_ITERATE_DEPTH_CALC(							\
@@ -128,7 +125,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 /**
  * Callback for _XENUM4_CSTRING_COUNT_NODES() iteration. Called for each node.
  * Add +1 for each indexnode.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_COUNT_NODES_ADD(ITERPOS, NODE, CTXT, STATE)				\
 	BOOST_PP_INC(STATE)
@@ -144,7 +140,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
  * indexed by an enum-value.
  * Note: Contrary to _PLAIN_ITER_NODES, this loop iterates all nodes, including the leafs
  * (values), else we could share these functions.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_ITER_NODES(CALLBACK, CTXT)						\
 	/* First, execute callback only for the enum values (root nodes), so they are */	\
@@ -162,7 +157,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 /**
  * Callback worker for _XENUM4_CSTRING_ITER_NODES(); loop function for each root node
  * (enum-value). Execute the callback only for the root node (no further iteration).
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_ITER_NODES_ROOT(CTXT, IDENT, ...)						\
 	_XENUM4_CSTRING_ITER_NODES_ROOT_I1							\
@@ -174,7 +168,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 
 /**
  * Worker for _XENUM4_CSTRING_ITER_NODES_ROOT().
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_ITER_NODES_ROOT_I1(DATA, DEPTH, CTXT)					\
 	_XENUM4_CTXT_GET_CALLBACK(CTXT) (							\
@@ -190,7 +183,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 
 /**
  * Callback worker for _XENUM4_CSTRING_ITER_NODES(); loop function for each node.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_ITER_NODES_NONROOT(CTXT, IDENT, ...)					\
 	_XENUM4_CSTRING_ITER_NODES_NONROOT_I1							\
@@ -203,7 +195,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 /**
  * Worker for _XENUM4_CSTRING_ITER_NODES_NONROOT().
  * Execute tupletree iteration.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_ITER_NODES_NONROOT_I1(DATA, DEPTH, CTXT)					\
 	_XENUM4_TUPLETREE_ITERATE_FLAT_GEN(							\
@@ -215,7 +206,6 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 
 /**
  * Filter function for non-root nodes iteration.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_ITER_NODES_NONROOT_FLT(ITERPOS, NODE, CTXT)				\
 	BOOST_PP_AND(										\
@@ -229,26 +219,25 @@ IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
  * Worker for _XENUM4_CSTRING_DEFINE_NODES().
  * Declares the ${propname}NodeNames struct that contains a name for each index in the
  * ${propname}IndexNodes table.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, Z)					\
-IND1	typedef struct {									NWLN \
+	typedef struct {									_XENUM4_NWLN \
+		_XENUM4_INDENT_INC								\
 		_XENUM4_CSTRING_ITER_NODES(_XENUM4_CSTRING_NODE_NAME, CTXT)			\
-IND1	} BOOST_PP_CAT(PROPNAME, NodeNames);							NWLN \
+		_XENUM4_INDENT_DEC								\
+	} BOOST_PP_CAT(PROPNAME, NodeNames);							_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_CSTRING_NODES_NAMES().
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_NAME(ITERPOS, NODE, CTXT)						\
-IND2	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
+	BOOST_PP_CAT(_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
 	_XENUM4_PROP_GEN_NODE_NAME(								\
 		CTXT,										\
 		_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
-	)											\
-	; NWLN
+	);											_XENUM4_NWLN
 /*
-_CSTRING_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] ctxt=[CTXT] NWLN \
+_CSTRING_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] ctxt=[CTXT] _XENUM4_NWLN \
 */
 
 
@@ -256,17 +245,16 @@ _CSTRING_NODE_NAME: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE
 /**
  * Worker for _XENUM4_CSTRING_DEFINE_NODES().
  * Defines the ${propname}IndexNodes node-data table.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, Z)					\
-IND1	constexpr BOOST_PP_CAT(PROPNAME, IndexNode) BOOST_PP_CAT(PROPNAME, IndexNodes) [] =	\
-	{											NWLN \
+	constexpr BOOST_PP_CAT(PROPNAME, IndexNode) BOOST_PP_CAT(PROPNAME, IndexNodes) [] = {	_XENUM4_NWLN \
+		_XENUM4_INDENT_INC								\
 		_XENUM4_CSTRING_ITER_NODES(_XENUM4_CSTRING_NODE_DATA, CTXT)			\
-IND1	};											NWLN \
+		_XENUM4_INDENT_DEC								\
+	};											_XENUM4_NWLN \
 
 /**
  * Worker for _XENUM4_CSTRING_NODES_DATA().
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA(ITERPOS, NODE, CTXT)						\
 	BOOST_PP_CAT(										\
@@ -278,10 +266,9 @@ IND1	};											NWLN \
 /**
  * Worker for _XENUM4_CSTRING_NODE_DATA().
  * Define a node for level==0.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA_0(ITERPOS, NODE, CTXT)					\
-IND2	{											\
+	{											\
 		/* Size */									\
 		sizeof(_XENUM4_PROP_GET_VALUE(NODE, CTXT)),					\
 		/* Index */									\
@@ -290,16 +277,15 @@ IND2	{											\
 			_XENUM4_PROPDEF_GET_NAME(_XENUM4_CTXT_GET_PROPDEF(CTXT)),		\
 			CTXT									\
 		)										\
-	},											\
-	NWLN
+	},											_XENUM4_NWLN \
+
 /*
-_CSTRING_NODE_DATA_0: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] NWLN \
+_CSTRING_NODE_DATA_0: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] _XENUM4_NWLN \
 */
 
 /**
  * Worker for _XENUM4_CSTRING_NODE_DATA_0().
  * Define IndexNode.index as an offset expression into a Values_t struct.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA_0_INDEX(INDEXPATH, PROPNAME, CTXT)				\
 	(offsetof(BOOST_PP_CAT(PROPNAME, Values_t), _XENUM4_PROP_GEN_NODE_NAME(CTXT, INDEXPATH)))
@@ -308,10 +294,9 @@ _CSTRING_NODE_DATA_0: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 /**
  * Worker for _XENUM4_CSTRING_NODE_DATA().
  * Define a node for level>0.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA_1(ITERPOS, NODE, CTXT)					\
-IND2	{											\
+	{											\
 		/* Size */									\
 		_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),				\
 		/* Index */									\
@@ -319,24 +304,22 @@ IND2	{											\
 			_XENUM4_CSTRING_NODE_DATA_1_INDEX_,					\
 			BOOST_PP_BOOL(_XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))	\
 		) (ITERPOS, CTXT)								\
-	},											\
-	NWLN
+	},											_XENUM4_NWLN \
+
 /*
-_CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] NWLN \
+_CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] _XENUM4_NWLN \
 */
 
 /**
  * Worker for _XENUM4_CSTRING_NODE_DATA_1().
  * Define IndexNode.index to 0 since node has no children.
- * @hideinitializer
  */
-#define _XENUM4_CSTRING_NODE_DATA_1_INDEX_0(ITERPOS, CTXT)						\
+#define _XENUM4_CSTRING_NODE_DATA_1_INDEX_0(ITERPOS, CTXT)					\
 	0
 
 /**
  * Worker for _XENUM4_CSTRING_NODE_DATA_1().
  * Define IndexNode.index as an offset expression into an IndexNode table.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA_1_INDEX_1(ITERPOS, CTXT)					\
 	_XENUM4_CSTRING_NODE_DATA_1_INDEX_1_DO(							\
@@ -347,7 +330,6 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 
 /**
  * Worker for _XENUM4_CSTRING_NODE_VALUE_INDEX_1().
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_NODE_DATA_1_INDEX_1_DO(INDEXPATH, PROPNAME, CTXT)			\
 	(offsetof(										\
@@ -361,7 +343,6 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * Worker for _XENUM4_CSTRING_DEFINE().
  * Defines the local functions (in local anon namespace, not part of any class) related to a
  * single custom property.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
@@ -377,7 +358,6 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 /**
  * Worker for _XENUM4_CSTRING_DEFINE_FUNCS_LV().
  * Defines get${propname}Node() getters.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFL_GET_NODE(Z, N, CTXT)						\
 	_XENUM4_CSTRING_DEFL_GET_NODE_I1(							\
@@ -389,10 +369,9 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 
 /**
  * Worker for _XENUM4_CSTRING_DEFL_GET_NODE().
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFL_GET_NODE_I1(PROPNAME, LEVEL, DECL, Z)				\
-IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
+	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 	BOOST_PP_CAT(PROPNAME, IndexNode&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
@@ -401,24 +380,24 @@ IND1	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const					\
 			LEVEL,									\
 			Z									\
 		)										\
-	)											NWLN \
-IND1	{											NWLN \
-IND2		return BOOST_PP_CAT(PROPNAME, IndexNodes)[					\
+	)											_XENUM4_NWLN \
+	{											_XENUM4_NWLN \
+		_XENUM4_INDENT_ADD								\
+		return BOOST_PP_CAT(PROPNAME, IndexNodes)[					\
 			_XENUM4_PROP_GEN_NODE_INDEXING(						\
 				PROPNAME,							\
 				BOOST_PP_CAT(PROPNAME, Index),					\
 				LEVEL,								\
 				Z								\
 			)									\
-		];										NWLN \
-IND1	}											NWLN
+		];										_XENUM4_NWLN \
+	}											_XENUM4_NWLN
 
 
 // ==================================== STORE FUNCTIONS ========================================
 /**
  * Worker for _XENUM4_CSTRING_DEFINE().
  * Defines the store class functions related to a single custom property.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, CTXT, PROPDEF, Z)		\
 	BOOST_PP_REPEAT_ ## Z									\
@@ -443,7 +422,6 @@ IND1	}											NWLN
 /**
  * Callback worker for _XENUM4_CSTRING_DEFS_FUNCS().
  * Defines get${propname}Size() getters.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFS_GET_SIZE(Z, N, CTXT)						\
 	_XENUM4_CSTRING_DEFS_GET_SIZE_I1(							\
@@ -457,34 +435,36 @@ IND1	}											NWLN
 
 /**
  * Worker for _XENUM4_CSTRING_DEFS_GET_SIZE().
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFS_GET_SIZE_I1(PROPNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
 	const size_t										\
 	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
-	) {											NWLN \
-IND1		return										\
+	)											_XENUM4_NWLN \
+	{											_XENUM4_NWLN \
+		_XENUM4_INDENT_ADD								\
+		return										\
 		_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME) ::					\
 		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
 			_XENUM4_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
-		.size;										NWLN \
-	}											NWLN
+		.size;										_XENUM4_NWLN \
+	}											_XENUM4_NWLN
 
 
 // =========================== get${PROPNAME}() ==============================
 /**
  * Worker for _XENUM4_CSTRING_DEFS_FUNCS().
  * Defines get${propname}() value getter.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_DEFS_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
 	const _XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
 	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, DEPTH, Z)		\
-	) {											NWLN \
-IND1		return &(									\
+	)											_XENUM4_NWLN \
+	{											_XENUM4_NWLN \
+		_XENUM4_INDENT_ADD								\
+		return &(									\
 			(const _XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF))				\
 			& LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)				\
 		)[										\
@@ -492,31 +472,30 @@ IND1		return &(									\
 				_XENUM4_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\
 			)									\
 			.index									\
-		];										NWLN \
-	}											NWLN
+		];										_XENUM4_NWLN \
+	}											_XENUM4_NWLN
 
 
 // =========================== _check() ==============================
 /**
  * Worker for _XENUM4_PROP_CHECK_CSTRING().
  * Defines final checks on data structures.
- * @hideinitializer
  */
 #define _XENUM4_CSTRING_CHECK(CXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-IND1	static_assert(										\
+	static_assert(										\
 		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
 		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexNode)) *	\
 		_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexSize),	\
 		"BUG: Struct size mismatch (NodeNames / IndexSize)."				\
-	);											NWLN \
-IND1	static_assert(										\
+	);											_XENUM4_NWLN \
+	static_assert(										\
 		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
 		sizeof(_XENUM4_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexNodes)),	\
 		"BUG: Struct/array size mismatch (NodeNames / IndexNodes)."			\
-	);											NWLN \
+	);											_XENUM4_NWLN \
 
 /*
-_XENUM4_CSTRING_CHECK: PROPNAME NWLN \
+_XENUM4_CSTRING_CHECK: PROPNAME _XENUM4_NWLN \
 */
 
 

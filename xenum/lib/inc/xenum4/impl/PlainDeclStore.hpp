@@ -14,19 +14,23 @@
 /**
  * Worker for _XENUM4_PROP_DECLS_PLAIN().
  * Declares the data related to a single custom property, implemented in header.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_DATA(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
-/* Everything should be private, but this is used in struct ${propname}ValueNames		\
- * which is declared outside this class. */							\
-public:												NWLN \
-IND1	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		NWLN \
-private:											NWLN \
-IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 0			\
-		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_VALUES, CTXT);				NWLN \
-IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
+	_XENUM4_INDENT_SUB									\
+	public:											_XENUM4_NWLN \
+	_XENUM4_DOC(Native type of custom property PROPNAME values.				_XENUM4_NWLN \
+		Should be private, but is used in struct BOOST_PP_CAT(PROPNAME, ValueNames)	\
+		which is declared outside this class.)						\
+	typedef _XENUM4_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM4_NWLN \
+	_XENUM4_INDENT_SUB									\
+	private:										_XENUM4_NWLN \
+	_XENUM4_DOC(Total number of PROPNAME values.)						\
+	static constexpr const size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 0			\
+		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_VALUES, CTXT);				_XENUM4_NWLN \
+	_XENUM4_DOC(Array of all PROPNAME values.)						\
+	static const BOOST_PP_CAT(PROPNAME, Value)						\
 		BOOST_PP_CAT(PROPNAME, Values)							\
-		[BOOST_PP_CAT(PROPNAME, ValuesSize)];						NWLN \
+		[BOOST_PP_CAT(PROPNAME, ValuesSize)];						_XENUM4_NWLN \
 	/* Index-nodes only if depth != 0 */							\
 	BOOST_PP_CAT(_XENUM4_PLAIN_HDR_DECLS_NODES_, BOOST_PP_BOOL(_XENUM4_PROPDEF_GET_DEPTH(PROPDEF))) \
 		(CTXT, DECL, PROPDEF, PROPNAME)
@@ -37,7 +41,6 @@ IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
  * Worker for _XENUM4_PLAIN_DECLS_DATA(). Called as XENUM_VALS_* callback.
  * Counts the values of a single custom property of plain type, for a single enum value.
  * VARARGS: All custom property data for the enum value.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES(CTXT, IDENT, ...)						\
 	_XENUM4_PLAIN_COUNT_VALUES_I1								\
@@ -49,7 +52,6 @@ IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
 
 /**
  * Worker for _XENUM4_PLAIN_COUNT_VALUES().
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_I1(CTXT, DEPTH, DATA)					\
 	BOOST_PP_CAT(_XENUM4_PLAIN_COUNT_VALUES_, BOOST_PP_BOOL(DEPTH))				\
@@ -57,7 +59,6 @@ IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
 
 /**
  * Worker for _XENUM4_PLAIN_COUNT_VALUES(), for DEPTH==0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_0(CTXT, DEPTH, DATA)						\
 	_XENUM4_ADD_ONE()
@@ -65,7 +66,6 @@ IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
 /**
  * Worker for _XENUM4_PLAIN_COUNT_VALUES(), for DEPTH!=0.
  * Calc state is just a single number; count of values in the entire data tree.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_1(CTXT, DEPTH, DATA)						\
 	+_XENUM4_TUPLETREE_ITERATE_DEPTH_CALC(							\
@@ -81,7 +81,6 @@ IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
 /**
  * Callback for _XENUM4_PLAIN_COUNT_VALUES_1() iteration. Called for each leaf node.
  * @return New state, with counter incremented with number of values in leaf node.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_VALUES_ADD(ITERPOS, NODE, CTXT, STATE)				\
 	BOOST_PP_ADD(STATE, _XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))			\
@@ -90,43 +89,46 @@ IND1	static const BOOST_PP_CAT(PROPNAME, Value)							\
 // ============================== COUNT NODES ==============================
 /**
  * Worker for _XENUM4_PLAIN_HDR_DECLS_DATA(). Does nothing since depth==0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_NODES_0(CTXT, DECL, PROPDEF, PROPNAME)
 
 /**
  * Worker for _XENUM4_PLAIN_HDR_DECLS_DATA(). Declares variables related to index nodes (depth>0).
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_NODES_1(CTXT, DECL, PROPDEF, PROPNAME)				\
-IND1	static constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0			\
-		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_NODES, CTXT);				NWLN \
-IND1	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
+	_XENUM4_DOC(Total number of indexnodes for indexing PROPNAME values.)			\
+	static constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0			\
+		_XENUM4_CALL_VALS(_XENUM4_PLAIN_COUNT_NODES, CTXT);				_XENUM4_NWLN \
+	_XENUM4_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
+	typedef typename ::_XENUM4_NS::SelectInt< ::_XENUM4_NS::cmax(				\
 			BOOST_PP_CAT(PROPNAME, ValuesSize),					\
 			BOOST_PP_CAT(PROPNAME, IndexSize)					\
-		) >::type BOOST_PP_CAT(PROPNAME, Index);					NWLN \
-/* Everything should be private, but this is used by struct ${propname}NodeNames		\
- * which is declared outside this class. */							\
-public:												NWLN \
-IND1	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
-		BOOST_PP_CAT(PROPNAME, IndexNode);						NWLN \
-private:											NWLN \
-IND1	static const BOOST_PP_CAT(PROPNAME, IndexNode)						\
-		BOOST_PP_CAT(PROPNAME, IndexNodes) [BOOST_PP_CAT(PROPNAME, IndexSize)];		NWLN \
+		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM4_NWLN \
+	_XENUM4_INDENT_SUB									\
+	public:											_XENUM4_NWLN \
+	_XENUM4_DOC(Indexnode type for PROPNAME, to map the PROPNAME value hierarchy.		_XENUM4_NWLN \
+		Should be private, but is used in struct BOOST_PP_CAT(PROPNAME, NodeNames)	\
+		which is declared outside this class.)						\
+	typedef ::_XENUM4_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
+		BOOST_PP_CAT(PROPNAME, IndexNode);						_XENUM4_NWLN \
+	_XENUM4_INDENT_SUB									\
+	private:										_XENUM4_NWLN \
+	_XENUM4_DOC(Mapping of all nodes and values in the PROPNAME data hierarchy.)		\
+	static const BOOST_PP_CAT(PROPNAME, IndexNode)						\
+		BOOST_PP_CAT(PROPNAME, IndexNodes) [BOOST_PP_CAT(PROPNAME, IndexSize)];		_XENUM4_NWLN \
 
 
 // ===================================== FUNCTIONS (HDR) ========================================
 /**
  * Worker for _XENUM4_PROP_DECLS_PLAIN().
  * Declares the functions related to a single custom property, implemented in header.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNCS(CTXT, PROPDEF, PROPNAME, Z)				\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
 		_XENUM4_PLAIN_HDR_DECLS_FUNCS_I1,						\
-		PROPNAME									\
+		PROPDEF										\
 	)											\
 	_XENUM4_PLAIN_HDR_DECLS_FUNC_GET_VALUE(							\
 		PROPNAME,									\
@@ -135,21 +137,29 @@ IND1	static const BOOST_PP_CAT(PROPNAME, IndexNode)						\
 
 /**
  * Callback worker for _XENUM4_PLAIN_DECLS_FUNCS() iteration.
- * @hideinitializer
  */
-#define _XENUM4_PLAIN_HDR_DECLS_FUNCS_I1(Z, N, PROPNAME)					\
-	_XENUM4_PLAIN_HDR_DECLS_FUNC_GET_NODE(PROPNAME, N, Z)					\
-	_XENUM4_PLAIN_HDR_DECLS_FUNC_GET_SIZE(PROPNAME, N, Z)
+#define _XENUM4_PLAIN_HDR_DECLS_FUNCS_I1(Z, N, PROPDEF)						\
+	_XENUM4_PLAIN_HDR_DECLS_FUNC_GET_NODE(							\
+		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
+		N,										\
+		Z										\
+	)											\
+	_XENUM4_PLAIN_HDR_DECLS_FUNC_GET_SIZE(							\
+		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
+		N,										\
+		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		Z										\
+	)											\
 
 
 // ================================== FUNC (HDR): getNode() =====================================
 /**
  * Worker for _XENUM4_PLAIN_DECLS_FUNCS().
  * Generates get${propname}Node() getters.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNC_GET_NODE(PROPNAME, LEVEL, Z)				\
-IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
+	_XENUM4_DOC(Retrieve a level LEVEL node of the PROPNAME data hierarchy.)		\
+	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, IndexNode&)							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
@@ -167,18 +177,22 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 				Z								\
 			)									\
 		];										\
-	}											\
-	NWLN
+	}											_XENUM4_NWLN \
 
 
 // ================================== FUNC (HDR): getSize() =====================================
 /**
  * Worker for _XENUM4_PLAIN_DECLS_FUNCS().
  * Generates get${propname}Size() getters.
- * @hideinitializer
  */
-#define _XENUM4_PLAIN_HDR_DECLS_FUNC_GET_SIZE(PROPNAME, LEVEL, Z)				\
-IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
+#define _XENUM4_PLAIN_HDR_DECLS_FUNC_GET_SIZE(PROPNAME, LEVEL, DEPTH, Z)			\
+	_XENUM4_DOC(Get number of								\
+		BOOST_PP_IF(									\
+			BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),				\
+			values in,								\
+			childnodes of								\
+		) a level LEVEL node in the PROPNAME data hierarchy.)				\
+	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, Index)								\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
@@ -192,18 +206,17 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
 			_XENUM4_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
 		.size;										\
-	}											\
-	NWLN
+	}											_XENUM4_NWLN \
 
 
 // =============================== FUNC (HDR): get$PROPNAME() ===================================
 /**
  * Worker for _XENUM4_PLAIN_DECLS_FUNCS().
  * Generates get${propname}() value getter.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_HDR_DECLS_FUNC_GET_VALUE(PROPNAME, DEPTH, Z)				\
-IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
+	_XENUM4_DOC(Get value of the custom property PROPNAME.)					\
+	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 	BOOST_PP_CAT(PROPNAME, Value&)								\
 	BOOST_PP_CAT(get, PROPNAME) (								\
 		_XENUM4_PROP_GEN_INDEX0_PARMS(							\
@@ -219,19 +232,16 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 				BOOST_PP_BOOL(DEPTH)						\
 			) (PROPNAME, DEPTH, Z)							\
 		];										\
-	}											\
-	NWLN
+	}											_XENUM4_NWLN \
 
 /**
  * Generate value indexing expression for a property having depth==0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_GEN_VALUE_INDEXING_0(PROPNAME, DEPTH, Z)					\
 	getIndex(index0)
 
 /**
  * Generate value indexing expression for a property having depth!=0.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_GEN_VALUE_INDEXING_1(PROPNAME, DEPTH, Z)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
@@ -245,18 +255,17 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 /**
  * Worker for _XENUM4_PROP_DECLS_PLAIN().
  * Declares the functions related to a single custom property, implemented in source.
- * @hideinitializer
  */
-#define _XENUM4_PLAIN_SRC_DECLS_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+#define _XENUM4_PLAIN_SRC_DECLS_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\
 		_XENUM4_PROP_SRC_DECLS_GET_SIZE,						\
-		PROPNAME									\
+		PROPDEF										\
 	)											\
 	_XENUM4_PROP_SRC_DECLS_GET_VALUE(							\
 		PROPNAME,									\
-		_XENUM4_PROPDEF_GET_PARM_TYPE(_XENUM4_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF),						\
 		DEPTH,										\
 		Z										\
 	)
@@ -270,8 +279,9 @@ IND1	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 #define _XENUM4_PLAIN_DECLS_DEBUG(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
 
 /*
-public:												NWLN \
-IND1	static void dumpNodes(void) noexcept;							NWLN \
+_XENUM4_INDENT_SUB										\
+public:												_XENUM4_NWLN \
+	static void dumpNodes(void) noexcept;							_XENUM4_NWLN \
 */
 
 

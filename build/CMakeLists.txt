@@ -1,6 +1,6 @@
 project(xenum)
 cmake_minimum_required(VERSION 2.8)
-set(APP_VERSION "4.0")
+set(APP_VERSION "4.1")
 
 ############################### COMPILER FLAGS ###############################
 # Do not use -ansi, it prevents boost.prepropcessor's variadic stuff from working.
@@ -38,6 +38,9 @@ include (${CMAKE_ROOT}/Modules/FindDoxygen.cmake)
 if(DOXYGEN_FOUND)
 	get_filename_component(XENUM_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 	set(DOX_CFG_DIR ${XENUM_ROOT_DIR}/dox)
+	set(PP_BASE_DIR ${CMAKE_BINARY_DIR}/pp)
+	set(XENUMS_IN_DIR ${XENUM_ROOT_DIR}/xenum/test/inc/test/xenum/xenums)
+	set(XENUMS_PP_DIR ${PP_BASE_DIR}/test/xenum/xenums)
 
 	#MESSAGE("XENUM_ROOT_DIR = '${XENUM_ROOT_DIR}'")
 	#MESSAGE("DOX_CFG_DIR = '${DOX_CFG_DIR}'")
@@ -52,11 +55,114 @@ if(DOXYGEN_FOUND)
 	set(DOX_INC_DIRS "${DOX_INC_DIRS} ${XENUM_ROOT_DIR}/xenum/lib/inc")
 	set(DOX_SRC_DIRS "${DOX_SRC_DIRS} ${XENUM_ROOT_DIR}/xenum/lib")
 
-	file(GLOB_RECURSE XENUM_FILES ${XENUM_ROOT_DIR}/xenum/lib/*.hpp)
+	set(DOX_INC_DIRS "${DOX_INC_DIRS} ${XENUM_ROOT_DIR}/xenum/test/inc")
+	set(DOX_SRC_DIRS "${DOX_SRC_DIRS} ${XENUM_ROOT_DIR}/xenum/test/src")
+
+	# Argh. doxygen trouble in so many ways...
+	# If added as include files they are just ignored.
+	# If added as input files, they are of course included. However...
+	# - They easily conflict with the original header files.
+	# - They are not recognized as headers at all.
+	# - They appear in the file list, but the link leads to the original header,
+	#   not the preprocessed one.
+	# - The build/pp dir has to be added manually to STRIP_FROM_INC_PATH since
+	#   it is not an include dir.
+	# Headache...
+	#set(DOX_INC_DIRS "${DOX_INC_DIRS} ${PP_BASE_DIR}")
+	set(DOX_SRC_DIRS "${DOX_SRC_DIRS} ${PP_BASE_DIR}")
+
+	set(DOX_SRC_DIRS "${DOX_SRC_DIRS} ${XENUM_ROOT_DIR}/docs")
+
+#	file(GLOB_RECURSE XENUM_FILES ${XENUM_ROOT_DIR}/xenum/lib/*.hpp)
+
+	set(DOX_INC_DIRS_STRIP "${DOX_INC_DIRS} ${PP_BASE_DIR}")
 
 	#MESSAGE("DOX_INC_DIRS = '${DOX_INC_DIRS}'")
 	#MESSAGE("DOX_SRC_DIRS = '${DOX_SRC_DIRS}'")
 	#MESSAGE("XENUM_FILES = '${XENUM_FILES}'")
+
+	file(MAKE_DIRECTORY ${XENUMS_PP_DIR})
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/FruitsInNsInCls.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/FruitsInNsInCls.hpp -o ${XENUMS_PP_DIR}/FruitsInNsInCls.hpp
+		DEPENDS ${XENUMS_IN_DIR}/FruitsInNsInCls.hpp
+		COMMENT "Preprocessing FruitsInNsInCls.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/FruitsInNsNoCls.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/FruitsInNsNoCls.hpp -o ${XENUMS_PP_DIR}/FruitsInNsNoCls.hpp
+		DEPENDS ${XENUMS_IN_DIR}/FruitsInNsNoCls.hpp
+		COMMENT "Preprocessing FruitsInNsNoCls.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/FruitsNoNsInCls.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/FruitsNoNsInCls.hpp -o ${XENUMS_PP_DIR}/FruitsNoNsInCls.hpp
+		DEPENDS ${XENUMS_IN_DIR}/FruitsNoNsInCls.hpp
+		COMMENT "Preprocessing FruitsNoNsInCls.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/FruitsNoNsNoCls.hpp -o ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
+		DEPENDS ${XENUMS_IN_DIR}/FruitsNoNsNoCls.hpp
+		COMMENT "Preprocessing FruitsNoNsNoCls.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Icmp.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/Icmp.hpp -o ${XENUMS_PP_DIR}/Icmp.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Icmp.hpp
+		COMMENT "Preprocessing Icmp.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Numbers.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/Numbers.hpp -o ${XENUMS_PP_DIR}/Numbers.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Numbers.hpp
+		COMMENT "Preprocessing Numbers.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Sstrs0.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/Sstrs0.hpp -o ${XENUMS_PP_DIR}/Sstrs0.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Sstrs0.hpp
+		COMMENT "Preprocessing Sstrs0.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Sstrs1.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/Sstrs1.hpp -o ${XENUMS_PP_DIR}/Sstrs1.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Sstrs1.hpp
+		COMMENT "Preprocessing Sstrs1.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Sstrs2.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum4-inject
+		ARGS -i ${XENUMS_IN_DIR}/Sstrs2.hpp -o ${XENUMS_PP_DIR}/Sstrs2.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Sstrs2.hpp
+		COMMENT "Preprocessing Sstrs2.hpp ..."
+		VERBATIM
+	)
 
 	configure_file(
 		"${DOX_CFG_DIR}/doxygen.conf.in"
@@ -70,6 +176,15 @@ if(DOXYGEN_FOUND)
 		DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/doxygen.conf"
 		DEPENDS "${DOX_CFG_DIR}/DoxygenLayout.xml"
 		#DEPENDS "${XENUM_FILES}"
+		DEPENDS ${XENUMS_PP_DIR}/FruitsInNsInCls.hpp
+		DEPENDS ${XENUMS_PP_DIR}/FruitsInNsNoCls.hpp
+		DEPENDS ${XENUMS_PP_DIR}/FruitsNoNsInCls.hpp
+		DEPENDS ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Icmp.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Numbers.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Sstrs0.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Sstrs1.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Sstrs2.hpp
 		COMMENT "Generating documentation (doxygen) ..."
 		VERBATIM
 	)

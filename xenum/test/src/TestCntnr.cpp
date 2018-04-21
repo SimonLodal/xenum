@@ -27,6 +27,7 @@ public:
 };
 
 
+/// Test fromIndex().
 TEST_F(TestCntnr, FromIndex)
 {
 	xenums::Fruit fruit;
@@ -40,6 +41,7 @@ TEST_F(TestCntnr, FromIndex)
 }
 
 
+/// Test fromIdentifier().
 TEST_F(TestCntnr, FromIdentifier)
 {
 	xenums::Fruit fruit1, fruit2;
@@ -55,6 +57,7 @@ TEST_F(TestCntnr, FromIdentifier)
 }
 
 
+/// Test enum-value iteration().
 TEST_F(TestCntnr, Iteration)
 {
 	size_t index;

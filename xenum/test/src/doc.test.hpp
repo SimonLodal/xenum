@@ -7,6 +7,14 @@
  * Documentation that is not easily placed elsewhere.
  */
 /**
-@namespace xenum4
-Top-level namespace for Xenum.
+@namespace test
+Top-level namespace for unit-test stuff.
+*/
+/**
+@namespace test::xenum
+Xenum unit-tests.
+*/
+/**
+@namespace test::xenum::xenums
+Xenums used in unit tests.
 */

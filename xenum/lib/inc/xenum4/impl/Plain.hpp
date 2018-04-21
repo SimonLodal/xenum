@@ -17,7 +17,6 @@
 // =============================== DECLARATION IN STORE CLASS ==================================
 /**
  * Entry point for declaring a custom property of plain type, in store class context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLS_PLAIN(CTXT, DECL, PROPDEF, Z)					\
 	BOOST_PP_CAT(_XENUM4_PROP_DECLS_PLAIN_, _XENUM4_PLAIN_IMPL) (CTXT, DECL, PROPDEF, Z)
@@ -25,7 +24,6 @@
 /**
  * Declaratation for a custom property of plain type, implemented in header, in store class
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLS_PLAIN_HDR(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_PLAIN_HDR_DECLS_DATA(CTXT, DECL, PROPDEF, _XENUM4_PROPDEF_GET_NAME(PROPDEF), Z)	\
@@ -35,12 +33,12 @@
 /**
  * Declaratation for a custom property of plain type, implemented in source, in store class
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLS_PLAIN_SRC(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_PLAIN_SRC_DECLS_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		PROPDEF,									\
 		CTXT,										\
 		Z										\
 	)
@@ -49,7 +47,6 @@
 // =============================== DECLARATION IN VALUE CLASS ==================================
 /**
  * Entry point for declaring a custom property of plain type, in value class context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLV_PLAIN(CTXT, PROPDEF, Z)						\
 	BOOST_PP_CAT(_XENUM4_PROP_DECLV_PLAIN_, _XENUM4_PLAIN_IMPL) (CTXT, PROPDEF, Z)
@@ -58,7 +55,6 @@
 /**
  * Declaratation for a custom property of plain type, implemented in header, in value class
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLV_PLAIN_HDR(CTXT, PROPDEF, Z)						\
 	_XENUM4_PLAIN_HDR_DECLV_TYPES(								\
@@ -75,12 +71,12 @@
 /**
  * Declaratation for a custom property of plain type, implemented in source, in value class
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DECLV_PLAIN_SRC(CTXT, PROPDEF, Z)						\
 	_XENUM4_PLAIN_SRC_DECLV_FUNCS(								\
 		_XENUM4_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM4_PROPDEF_GET_DEPTH(PROPDEF),						\
+		PROPDEF,									\
 		CTXT,										\
 		Z										\
 	)
@@ -89,14 +85,12 @@
 // ======================================= DEFINITION ==========================================
 /**
  * Entry point for defining a custom property of plain type, in source file context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DEFINE_PLAIN(CTXT, DECL, PROPDEF, Z)					\
 	BOOST_PP_CAT(_XENUM4_PROP_DEFINE_PLAIN_, _XENUM4_PLAIN_IMPL) (CTXT, DECL, PROPDEF, Z)
 
 /**
  * Definitions for a custom property of plain type, implemented in header, in source file context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DEFINE_PLAIN_HDR(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_PLAIN_HDR_DEFINE								\
@@ -113,7 +107,6 @@
 /**
  * Definitions for a custom property of plain type, implemented in source, in source file
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_DEFINE_PLAIN_SRC(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_PLAIN_SRC_DEFINE								\
@@ -131,7 +124,6 @@
 /**
  * Entry point for defining final checks for a custom property of plain type, in source file
  * context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_CHECK_PLAIN(CTXT, DECL, PROPDEF, Z)					\
 	BOOST_PP_CAT(_XENUM4_PROP_CHECK_PLAIN_, _XENUM4_PLAIN_IMPL) (CTXT, DECL, PROPDEF, Z)
@@ -139,7 +131,6 @@
 /**
  * Define final checks for a custom property of plain type, implemented in header, in source
  * file context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_CHECK_PLAIN_HDR(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_PLAIN_HDR_CHECK									\
@@ -156,7 +147,6 @@
 /**
  * Define final checks for a custom property of plain type, implemented in source, in source
  * file context.
- * @hideinitializer
  */
 #define _XENUM4_PROP_CHECK_PLAIN_SRC(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM4_PLAIN_SRC_CHECK									\
@@ -178,7 +168,6 @@
  * Call as XENUM_VALS_* callback.
  * Counts the indexnodes of a single custom property, for a single enum value.
  * VARARGS: All custom property data for the enum value.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_NODES(CTXT, IDENT, ...)						\
 	+_XENUM4_TUPLETREE_ITERATE_DEPTH_CALC(							\
@@ -193,7 +182,6 @@
 /**
  * Callback for _XENUM4_PLAIN_COUNT_NODES() iteration. Called for each node.
  * Add +1 for each indexnode.
- * @hideinitializer
  */
 #define _XENUM4_PLAIN_COUNT_NODES_ADD(ITERPOS, NODE, CTXT, STATE)				\
 	BOOST_PP_INC(STATE)

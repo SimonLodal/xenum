@@ -18,7 +18,6 @@ namespace xenums {
 /**
  * IP ICMP types enum, for testing custom properties.
  */
-
 #define XENUM_DECL_IcmpTypes (test::xenum::xenums::, IcmpTypes, IcmpType, uint8_t, , (		\
 	 (Ipv4, bool, false)									\
 	,(Ipv6, bool, false)									\
@@ -28,6 +27,7 @@ namespace xenums {
 // FIXME:
 // - Is the IPv6 Redirect message semantically the same as in IPv4? Or is it only something NDP related?
 // - Figure out missing iptables names.
+/// Declaration of the xenum values.
 #define XENUM_VALS_IcmpTypes(V,C)	\
 	V(C, EchoReply,				true,	true,	("echo-reply", "pong"))		\
 	V(C, PacketTooBig,			false,	true)					\
@@ -80,6 +80,7 @@ XENUM4_DECLARE(IcmpTypes)
 // - DestinationUNreachable.SourceHostIsolated.
 // - ParameterProblem.BadLength
 // - Figure out missing iptables names.
+/// Declaration of the xenum values.
 #define XENUM_VALS_IcmpCodes(V,C)	\
 	V(C, NetworkUnreachable,		true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"network-unreachable") \
 	V(C, HostUnreachable,			true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"host-unreachable") \

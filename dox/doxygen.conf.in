@@ -177,7 +177,7 @@ STRIP_FROM_PATH        = @XENUM_ROOT_DIR@
 
 # Changed
 #STRIP_FROM_INC_PATH    =
-STRIP_FROM_INC_PATH    = @DOX_INC_DIRS@
+STRIP_FROM_INC_PATH    = @DOX_INC_DIRS_STRIP@
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -673,7 +673,9 @@ ENABLED_SECTIONS       =
 # documentation regardless of this setting.
 # Minimum value: 0, maximum value: 10000, default value: 30.
 
-MAX_INITIALIZER_LINES  = 30
+# Changed : Do not show source code of macro functions.
+#MAX_INITIALIZER_LINES  = 30
+MAX_INITIALIZER_LINES  = 0
 
 # Set the SHOW_USED_FILES tag to NO to disable the list of files generated at
 # the bottom of the documentation of classes and structs. If set to YES the list
@@ -824,7 +826,7 @@ INPUT_ENCODING         = UTF-8
 # *.qsf, *.as and *.js.
 
 # Changed
-FILE_PATTERNS          = *.hpp *.cpp
+FILE_PATTERNS          = *.hpp *.cpp *.md
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
@@ -942,7 +944,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE =
+USE_MDFILE_AS_MAINPAGE = README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -1428,9 +1430,9 @@ ECLIPSE_DOC_ID         = org.doxygen.Project
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-# Changed
-#DISABLE_INDEX          = NO
-DISABLE_INDEX          = YES
+# Default=NO (not changed)
+DISABLE_INDEX          = NO
+#DISABLE_INDEX          = YES
 
 # The GENERATE_TREEVIEW tag is used to specify whether a tree-like index
 # structure should be generated to display hierarchical information. If the tag
@@ -1447,9 +1449,9 @@ DISABLE_INDEX          = YES
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-# Changed
-#GENERATE_TREEVIEW      = NO
-GENERATE_TREEVIEW      = YES
+# Default=NO (not changed)
+GENERATE_TREEVIEW      = NO
+#GENERATE_TREEVIEW      = YES
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.

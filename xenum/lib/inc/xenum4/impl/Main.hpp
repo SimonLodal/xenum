@@ -10,7 +10,6 @@
 
 /**
  * Generate header file contents.
- * @hideinitializer
  */
 #define _XENUM4_DO_DECLARE(CTXT)								\
 	_XENUM4_DECLARE_STORE(CTXT, _XENUM4_CTXT_GET_DECL(CTXT))				\
@@ -19,7 +18,6 @@
 
 /**
  * Generate source file contents.
- * @hideinitializer
  */
 #define _XENUM4_DO_DEFINE(CTXT)									\
 	_XENUM4_DEFINE_STORE(CTXT, _XENUM4_CTXT_GET_DECL(CTXT))					\

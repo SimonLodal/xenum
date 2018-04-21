@@ -31,14 +31,16 @@ public:
 
 };
 
-
+/*
 TEST_F(TestXenumSet, CtorAdd)
 {
 //	::_XENUM4_NS::XenumSet<xenums::Fruits> fruitsSet({xenums::Fruits::tomato, xenums::Fruits::lemon});
 //	::_XENUM4_NS::XenumSet<xenums::Numbers> numbersSet({xenums::Numbers::n0001});
 }
+*/
 
 
+/// Test the add*(), remove*() and contains() functions, with the Fruits xenum (small).
 TEST_F(TestXenumSet, AddRemoveContainsCompareFruits)
 {
 	::_XENUM4_NS::XenumSet<xenums::Fruits> fruitsSet;
@@ -125,6 +127,7 @@ TEST_F(TestXenumSet, AddRemoveContainsCompareFruits)
 }
 
 
+/// Test the add*(), remove*() and contains() functions, with the Numbers xenum (large).
 TEST_F(TestXenumSet, AddRemoveContainsNumbers)
 {
 	size_t index;
@@ -182,6 +185,7 @@ TEST_F(TestXenumSet, AddRemoveContainsNumbers)
 }
 
 
+/// Test copy and assignment of XenumSet's.
 TEST_F(TestXenumSet, CopyAssign)
 {
 	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers1;
@@ -212,6 +216,7 @@ TEST_F(TestXenumSet, CopyAssign)
 }
 
 
+/// Test comparison between XenumSet's.
 TEST_F(TestXenumSet, Comparison)
 {
 	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers1, numbers2;
@@ -261,6 +266,7 @@ TEST_F(TestXenumSet, Comparison)
 }
 
 
+/// Test the containsAny() and containsAll() functions.
 TEST_F(TestXenumSet, ContainsSet)
 {
 	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers1, numbers2, all, none;
@@ -347,6 +353,7 @@ TEST_F(TestXenumSet, ContainsSet)
 }
 
 
+/// Test iteration over the values in an XenumSet.
 TEST_F(TestXenumSet, Iteration)
 {
 	::_XENUM4_NS::XenumSet<xenums::Numbers> numbersSet;
@@ -428,6 +435,7 @@ TEST_F(TestXenumSet, Iteration)
 }
 
 
+/// Test the ostream::operator<<().
 TEST_F(TestXenumSet, OutputNumbers)
 {
 	::_XENUM4_NS::XenumSet<xenums::Numbers> numbersSet;

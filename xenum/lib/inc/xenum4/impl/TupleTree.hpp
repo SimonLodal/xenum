@@ -20,50 +20,42 @@
 /**
  * @return Current level in the data structure. Goes in reverse (decreases); the root node
  *	has level=$DEPTH, it children have level=$DEPTH-1, and so on. Leaf values are level 0.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS) BOOST_PP_SEQ_ELEM(0, ITERPOS)
 
 /**
  * Set LEVEL field and return new iterpos object.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_SET_LEVEL(ITERPOS, LEVEL) BOOST_PP_SEQ_REPLACE(ITERPOS, 0, LEVEL)
 
 /**
  * @return Path through the data tree to the current node, as a seq of indexes.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS) BOOST_PP_SEQ_ELEM(1, ITERPOS)
 
 /**
  * Set INDEXPATH field and return new iterpos object.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_SET_INDEXPATH(ITERPOS, INDEXPATH) BOOST_PP_SEQ_REPLACE(ITERPOS, 1, INDEXPATH)
 
 /**
  * @return Index of next child of this node.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_GET_NEXTCHILD(ITERPOS) BOOST_PP_SEQ_ELEM(2, ITERPOS)
 
 /**
  * Set NEXTCHILD field and return new iterpos object.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_SET_NEXTCHILD(ITERPOS, NEXTCHILD) BOOST_PP_SEQ_REPLACE(ITERPOS, 2, NEXTCHILD)
 
 /**
  * @return Number of child nodes in the original data structure (does not change as .NODE is
  *	processed and elements removed from it).
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS) BOOST_PP_SEQ_ELEM(3, ITERPOS)
 
 /**
  * Create a new iteration-position "object".
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_INIT(LEVEL, INDEXPATH, NEXTCHILD, CHILDCOUNT)			\
 	(LEVEL)											\
@@ -74,7 +66,6 @@
 /**
  * DEBUG
  * Dump an ITERPOS object.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)							\
 /*	iv=_XENUM4_TUPLETREE_ITERPOS_IS_VALUE(ITERPOS) */					\
@@ -86,7 +77,6 @@
 /**
  * DEBUG
  * Helper for _XENUM4_TUPLETREE_ITERPOS_DUMP().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_DUMP_INDEXPATH(INDEXPATH)					\
 	[BOOST_PP_CAT(										\
@@ -97,14 +87,12 @@
 /**
  * DEBUG
  * Helper for _XENUM4_TUPLETREE_ITERPOS_DUMP().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_DUMP_INDEXPATH_0(INDEXPATH)					\
 
 /**
  * DEBUG
  * Helper for _XENUM4_TUPLETREE_ITERPOS_DUMP().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERPOS_DUMP_INDEXPATH_1(INDEXPATH)					\
 	BOOST_PP_SEQ_ENUM(INDEXPATH)
@@ -115,7 +103,6 @@
 /**
  * DEBUG
  * Helper for _XENUM4_TUPLETREE_ITERPOS_DUMP().
- * @hideinitializer
  */
 /*
 #define _XENUM4_TUPLETREE_ITERPOS_DUMP_INDEXPATH_APPEND(S, STATE, ELEM)				\
@@ -127,14 +114,12 @@
 /// =============================================================================================
 /**
  * @return Path through the data tree to the current node, as a seq of indexes.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACKENTRY_GET_INDEXPATH(STACKENTRY)					\
 	_XENUM4_TUPLETREE_ITERPOS_GET_INDEXPATH(_XENUM4_TUPLETREE_STACKENTRY_GET_ITERPOS(STACKENTRY))
 
 /**
  * @return Object describing current position in the data tree.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACKENTRY_GET_ITERPOS(STACKENTRY) BOOST_PP_SEQ_ELEM(0, STACKENTRY)
 
@@ -142,7 +127,6 @@
  * @return Contents of this node in the data tree, as a seq (converted from tuple)
  *	of childnodes. Each time a childnode has been processed it is removed from the
  *	seq, so the seq ends up empty.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACKENTRY_GET_NODE(STACKENTRY) BOOST_PP_SEQ_ELEM(1, STACKENTRY)
 
@@ -156,7 +140,6 @@
 /**
  * DEBUG
  * Dump an STACKENTRY object.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACKENTRY_DUMP(STACKENTRY)						\
 	iterpos:{_XENUM4_TUPLETREE_ITERPOS_DUMP(_XENUM4_TUPLETREE_STACKENTRY_GET_ITERPOS(STACKENTRY))} \
@@ -169,7 +152,6 @@
  * Create the initial stack.
  * @param DATA The data structure.
  * @param DEPTH Max depth of the data structure.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACK_INIT(DATA, DEPTH)						\
 	(_XENUM4_TUPLETREE_STACKENTRY_INIT(							\
@@ -185,23 +167,20 @@
 /**
  * DEBUG
  * Dump an STACK object.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACK_DUMP(STACK)							\
-	Stack(_XENUM4_GET_SEQ_OR_EMPTY_SIZE(STACK)):						NWLN \
+	Stack(_XENUM4_GET_SEQ_OR_EMPTY_SIZE(STACK)):						_XENUM4_NWLN \
 	BOOST_PP_CAT(_XENUM4_TUPLETREE_STACK_DUMP_, BOOST_PP_NOT(BOOST_PP_IS_EMPTY(STACK))) (STACK)
 
 /**
  * DEBUG
  * Helper for _XENUM4_TUPLETREE_STACK_DUMP().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACK_DUMP_0(STACK)
 
 /**
  * DEBUG
  * Helper for _XENUM4_TUPLETREE_STACK_DUMP().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACK_DUMP_1(STACK)							\
 	BOOST_PP_REPEAT(									\
@@ -213,10 +192,10 @@
 /**
  * DEBUG
  * Helper for _XENUM4_TUPLETREE_STACK_DUMP_1().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STACK_DUMP_ENTRY(Z, N, STACK)						\
-IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
+	_XENUM4_INDENT_ADD									\
+	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK))			_XENUM4_NWLN
 
 
 /// =============================================================================================
@@ -224,63 +203,54 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
 /// =============================================================================================
 /**
  * @return Iteration stack.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_GET_STACK(ITERSTATE)						\
 	BOOST_PP_SEQ_ELEM(0, ITERSTATE)
 
 /**
  * @return Head of iteration stack.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_GET_STACKHEAD(ITERSTATE)					\
 	BOOST_PP_SEQ_HEAD(_XENUM4_TUPLETREE_STATE_GET_STACK(ITERSTATE))
 
 /**
  * Set the STACK field.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_SET_STACK(ITERSTATE, STACK)					\
 	BOOST_PP_SEQ_REPLACE(ITERSTATE, 0, STACK)
 
 /**
  * @return Name of callback function to be executed for each node in the data tree.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_GET_CALLBACK(ITERSTATE)						\
 	BOOST_PP_TUPLE_ELEM(2, 0, BOOST_PP_SEQ_ELEM(1, ITERSTATE))
 
 /**
  * @return Name of filter function to be executed for each node in the data tree.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_GET_FILTER(ITERSTATE)						\
 	BOOST_PP_TUPLE_ELEM(2, 1, BOOST_PP_SEQ_ELEM(1, ITERSTATE))
 
 /**
  * @return Caller-provided context object that is passed to callback function.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_GET_CTXT(ITERSTATE)						\
 	BOOST_PP_SEQ_ELEM(2, ITERSTATE)
 
 /**
  * @return Caller data store.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_GET_CDATA(ITERSTATE)						\
 	BOOST_PP_SEQ_ELEM(3, ITERSTATE)
 
 /**
  * Set caller data store.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_SET_CDATA(ITERSTATE, CDATA)					\
 	BOOST_PP_SEQ_REPLACE(ITERSTATE, 3, CDATA)
 
 /**
  * Set both the CDATA and STACK fields.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_SET_CDATA_AND_STACK(ITERSTATE, CDATA, STACK)			\
 	BOOST_PP_SEQ_REPLACE(BOOST_PP_SEQ_REPLACE(ITERSTATE, 3, CDATA), 0, STACK)
@@ -290,7 +260,6 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
  * Filter function for iteration: Only trigger when entering a new node; do not trigger
  * on return from childnodes.
  * This is the default filtering function.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FILTER_NODE_ENTRY(ITERPOS, NODE, CTXT, ...)				\
 	BOOST_PP_NOT(_XENUM4_TUPLETREE_ITERPOS_GET_NEXTCHILD(ITERPOS))
@@ -298,7 +267,6 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
 /**
  * Filter function for iteration: Only trigger on leaf values; ignore all the branch nodes in
  * the tree.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FILTER_LEAF(ITERPOS, NODE, CTXT, ...)					\
 	BOOST_PP_NOT(_XENUM4_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS))
@@ -313,7 +281,6 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
  * So we need an alternative IS_EMPTY(), and the only method found to work is the one
  * used here; define a tuple of one or two functions, and decide if the FILTER function
  * is defined by checking tuple size.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_INIT_FUNCS(FUNCS)						\
 	BOOST_PP_IF(										\
@@ -329,7 +296,6 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
  * @param FUNCS Tuple of callback and optional filter functions.
  * @param CTXT Caller-provided context data that is passed to the callback function.
  * @param CDATA Caller data object.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_STATE_INIT(DATA, DEPTH, FUNCS, CTXT, CDATA)				\
 	(_XENUM4_TUPLETREE_STACK_INIT(DATA, DEPTH))						\
@@ -343,7 +309,6 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
 /// =============================================================================================
 /**
  * Called by main loop to check if we should continue or stop.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_CMP(N, ITERSTATE)							\
 	BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM4_TUPLETREE_STATE_GET_STACK(ITERSTATE)))
@@ -352,7 +317,6 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
 /**
  * Called from OP/MACRO parts to increment the main loop.
  * @return New stack.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_INC(ITERSTATE)							\
 	_XENUM4_TUPLETREE_DEPTH_INC_I1(								\
@@ -363,7 +327,6 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_INC().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_INC_I1(ITERSTATE, STACK, HEAD)					\
 	BOOST_PP_CAT(										\
@@ -371,13 +334,12 @@ IND1	[N] _XENUM4_TUPLETREE_STACKENTRY_DUMP(BOOST_PP_SEQ_ELEM(N, STACK)) NWLN
 		_XENUM4_TUPLETREE_DEPTH_INC_STACKENTRY_DONE(_XENUM4_TUPLETREE_STACKENTRY_GET_ITERPOS(HEAD))	\
 	) (ITERSTATE, STACK, HEAD)
 /*
-_TUPLETREE_DEPTH_INC_I1: head=_XENUM4_TUPLETREE_STACKENTRY_DUMP(HEAD) done=_XENUM4_TUPLETREE_DEPTH_INC_STACKENTRY_DONE(_XENUM4_TUPLETREE_STACKENTRY_GET_ITERPOS(HEAD)) NWLN \
+_TUPLETREE_DEPTH_INC_I1: head=_XENUM4_TUPLETREE_STACKENTRY_DUMP(HEAD) done=_XENUM4_TUPLETREE_DEPTH_INC_STACKENTRY_DONE(_XENUM4_TUPLETREE_STACKENTRY_GET_ITERPOS(HEAD)) _XENUM4_NWLN \
 */
 
 /**
  * Helper for _XENUM4_TUPLETREE_DEPTH_INC_I1().
  * Determine if this current stack entry has completed iterating it's children.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_INC_STACKENTRY_DONE(ITERPOS)					\
 	BOOST_PP_OR(										\
@@ -391,7 +353,6 @@ _TUPLETREE_DEPTH_INC_I1: head=_XENUM4_TUPLETREE_STACKENTRY_DUMP(HEAD) done=_XENU
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_INC_I1().
  * Not done with childnodes: Iterate to next child.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_INC_I1_0(ITERSTATE, STACK, HEAD)				\
 	_XENUM4_TUPLETREE_DEPTH_INC_NEXT_CHILD(							\
@@ -404,17 +365,15 @@ _TUPLETREE_DEPTH_INC_I1: head=_XENUM4_TUPLETREE_STACKENTRY_DUMP(HEAD) done=_XENU
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_INC_I1().
  * Done with childnodes: Return to parent so it can continue.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_INC_I1_1(ITERSTATE, STACK, HEAD)				\
 	BOOST_PP_SEQ_POP_FRONT(STACK)
 /*
-_TUPLETREE_DEPTH_INC_I1_1: pop self NWLN \
+_TUPLETREE_DEPTH_INC_I1_1: pop self _XENUM4_NWLN \
 */
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_INC_I1().
  * Push next child to the stack.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_INC_NEXT_CHILD(ITERSTATE, STACK, NODE, ITERPOS)			\
 	_XENUM4_TUPLETREE_DEPTH_INC_NEXT_CHILD_I1(						\
@@ -430,7 +389,6 @@ _TUPLETREE_DEPTH_INC_I1_1: pop self NWLN \
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_INC_NEXT_CHILD().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_INC_NEXT_CHILD_I1(ITERSTATE, STACK, NODE, ITERPOS,		\
 						LEVEL, INDEXPATH, NEXTCHILD, CHILDCOUNT)	\
@@ -464,18 +422,16 @@ _TUPLETREE_DEPTH_INC_I1_1: pop self NWLN \
 /// =============================================================================================
 /**
  * Called by main loop in every iteration. Calls supplied callback.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_GEN_EXEC(N, ITERSTATE)						\
 	_XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I1(ITERSTATE, _XENUM4_TUPLETREE_STATE_GET_STACKHEAD(ITERSTATE))
 /*
-_TUPLETREE_DEPTH_GEN_EXEC: n=N callback=_XENUM4_TUPLETREE_STATE_GET_CALLBACK(ITERSTATE) filter=_XENUM4_TUPLETREE_STATE_GET_FILTER(ITERSTATE) NWLN \
+_TUPLETREE_DEPTH_GEN_EXEC: n=N callback=_XENUM4_TUPLETREE_STATE_GET_CALLBACK(ITERSTATE) filter=_XENUM4_TUPLETREE_STATE_GET_FILTER(ITERSTATE) _XENUM4_NWLN \
 _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_GET_STACK(ITERSTATE)) \
 */
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_GEN_EXEC().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I1(ITERSTATE, HEAD)					\
 	_XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I2							\
@@ -488,7 +444,6 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I1().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I2(ITERSTATE, ITERPOS, NODE, CTXT)			\
 	BOOST_PP_CAT(										\
@@ -499,14 +454,12 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I2().
  * Do NOT execute callback since filter returned 0.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_0(ITERSTATE, ITERPOS, NODE, CTXT)			\
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I2().
  * Do execute callback since filter returned 1.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_1(ITERSTATE, ITERPOS, NODE, CTXT)			\
 	_XENUM4_TUPLETREE_STATE_GET_CALLBACK(ITERSTATE) (ITERPOS, NODE, CTXT)
@@ -514,7 +467,6 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 /**
  * Called by main loop to increment state.
  * @return New iterstate with new stack.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_GEN_INC(N, ITERSTATE)						\
 	_XENUM4_TUPLETREE_STATE_SET_STACK							\
@@ -531,7 +483,6 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 // FIXME: Move debug stuff somewhere else.
 /**
  * Debug helper.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)						\
 	[_XENUM4_CTXT_GET_IDENT(_XENUM4_TUPLETREE_STATE_GET_CTXT(ITERSTATE)			\
@@ -549,7 +500,6 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 
 /**
  * Debug helper.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DBG_NODE_NAME_INDEXPATH(INDEXPATH)					\
 	BOOST_PP_CAT(										\
@@ -559,13 +509,11 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 
 /**
  * Debug helper.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DBG_NODE_NAME_INDEXPATH_0(INDEXPATH)					\
 
 /**
  * Debug helper.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DBG_NODE_NAME_INDEXPATH_1(INDEXPATH)					\
 	, BOOST_PP_SEQ_ENUM(INDEXPATH)
@@ -573,7 +521,6 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 // ============================================================
 /**
  * Called by main loop in every iteration. Calls supplied callback.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES(R, ITERSTATE)				\
 	_XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_I1(					\
@@ -581,13 +528,12 @@ _TUPLETREE_DEPTH_GEN_EXEC: n=N stack=BOOST_PP_SEQ_SIZE(_XENUM4_TUPLETREE_STATE_G
 		_XENUM4_TUPLETREE_STATE_GET_STACKHEAD(ITERSTATE)				\
 	)
 /*
-_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) NWLN
+_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) _XENUM4_NWLN
 */
 
 
 /**
  * Worker for _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_I1(ITERSTATE, HEAD)			\
 	BOOST_PP_CAT(										\
@@ -617,14 +563,12 @@ _TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE
 /**
  * Helper for _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_I1().
  * Do nothing since this is not the root node.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_ROOT_0(ITERSTATE, HEAD)					\
 
 /**
  * Helper for _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_I1().
  * Execute callback for the root node.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_ROOT_1(ITERSTATE, HEAD)					\
 	_XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I1(ITERSTATE, HEAD)
@@ -632,18 +576,16 @@ _TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE
 /**
  * Worker for _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_I1().
  * Do nothing since this is not the beginning of a node.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_0(ITERSTATE, HEAD)			\
 
 /*
-_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_0: iterpos=ITERPOS node=NODE NWLN
+_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_0: iterpos=ITERPOS node=NODE _XENUM4_NWLN
 */
 
 /**
  * Worker for _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_I1().
  * Iterate child nodes.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_1(ITERSTATE, HEAD)			\
 	BOOST_PP_REPEAT(									\
@@ -652,13 +594,12 @@ _TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_0: iterpos=ITERPOS node=NODE NWLN
 		ITERSTATE									\
 	)
 /*
-_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_1 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) node=_XENUM4_TUPLETREE_STACKENTRY_GET_NODE(HEAD) NWLN \
+_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_1 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) node=_XENUM4_TUPLETREE_STACKENTRY_GET_NODE(HEAD) _XENUM4_NWLN \
 */
 
 /**
  * Callback worker for _XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_1(); loop for each childnode.
  * Handle the N'th childnode.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE(Z, N, ITERSTATE)				\
 	_XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I1(						\
@@ -669,7 +610,6 @@ _TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_1 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTA
 
 /**
  * Worker for _XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I1(ITERSTATE, HEAD, N)			\
 	_XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I2(						\
@@ -682,7 +622,6 @@ _TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_1 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTA
 
 /**
  * Worker for _XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I1().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I2(ITERSTATE, ITERPOS, CHILDNODE, CTXT, N)	\
 	_XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3(						\
@@ -697,12 +636,11 @@ _TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES_1 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTA
 		CTXT										\
 	)
 /*
-_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I2 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) iterpos=[ITERPOS] n=N childnode=CHILDNODE parens=BOOST_PP_IS_BEGIN_PARENS(CHILDNODE) NWLN \
+_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I2 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) iterpos=[ITERPOS] n=N childnode=CHILDNODE parens=BOOST_PP_IS_BEGIN_PARENS(CHILDNODE) _XENUM4_NWLN \
 */
 
 /**
  * Worker for _XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I2().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3(ITERSTATE, ITERPOS, CHILDNODE, CTXT)	\
 	BOOST_PP_CAT(										\
@@ -710,20 +648,18 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I2 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
 		_XENUM4_TUPLETREE_STATE_GET_FILTER(ITERSTATE) (ITERPOS, CHILDNODE, CTXT)	\
 	) (ITERSTATE, ITERPOS, CHILDNODE, CTXT)
 /*
-_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} childnode=CHILDNODE NWLN \
+_TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE) iterpos={_XENUM4_TUPLETREE_ITERPOS_DUMP(ITERPOS)} childnode=CHILDNODE _XENUM4_NWLN \
 */
 
 /**
  * Worker for _XENUM4_TUPLETREE_FLAT_GEN_EXEC_I3().
  * Do NOT execute callback since filter returned 0.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_0(ITERSTATE, ITERPOS, NODE, CTXT)			\
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I2().
  * Do execute callback since filter returned 1.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_FLAT_GEN_EXEC_1(ITERSTATE, ITERPOS, NODE, CTXT)			\
 	_XENUM4_TUPLETREE_STATE_GET_CALLBACK(ITERSTATE) (ITERPOS, NODE, CTXT)
@@ -734,7 +670,6 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
 /// =============================================================================================
 /**
  * Called by main calc loop to execute callback and increment state.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_CALC_EXEC_AND_INC(N, ITERSTATE)					\
 	_XENUM4_TUPLETREE_STATE_SET_CDATA_AND_STACK						\
@@ -749,7 +684,6 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_CALC_EXEC_AND_INC().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_CALC_EXEC(ITERSTATE, HEAD)					\
 	_XENUM4_TUPLETREE_DEPTH_CALC_EXEC_I2							\
@@ -763,7 +697,6 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
 
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_GEN_EXEC_I1().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_CALC_EXEC_I2(ITERSTATE, ITERPOS, NODE, CTXT, CDATA)		\
 	BOOST_PP_CAT(										\
@@ -774,7 +707,6 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_CALC_EXEC_I2().
  * Do NOT execute callback since filter returned 0.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_CALC_EXEC_0(ITERSTATE, ITERPOS, NODE, CTXT, CDATA)		\
 	CDATA
@@ -782,7 +714,6 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
 /**
  * Worker for _XENUM4_TUPLETREE_DEPTH_CALC_EXEC_I2().
  * Do execute callback since filter returned 1.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_DEPTH_CALC_EXEC_1(ITERSTATE, ITERPOS, NODE, CTXT, CDATA)		\
 	_XENUM4_TUPLETREE_STATE_GET_CALLBACK(ITERSTATE) (ITERPOS, NODE, CTXT, CDATA)
@@ -832,7 +763,6 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
  *           define less code than if it does the filtering in the callback.
  * @param CTXT Static data to be passed to the callback.
  * @return Nothing (just preprocessed output).
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERATE_DEPTH_GEN(DATA, DEPTH, FUNCS, CTXT)				\
 	BOOST_PP_FOR(										\
@@ -842,7 +772,7 @@ _TUPLETREE_FLAT_GEN_EXEC_CHILDNODE_I3 _XENUM4_TUPLETREE_DBG_NODE_NAME(ITERSTATE)
 		_XENUM4_TUPLETREE_DEPTH_GEN_EXEC						\
 	)
 /*
-_TUPLETREE_ITERATE_DEPTH_GEN: depth=DEPTH funcs=FUNCS ctxt=CTXT data=DATA NWLN \
+_TUPLETREE_ITERATE_DEPTH_GEN: depth=DEPTH funcs=FUNCS ctxt=CTXT data=DATA _XENUM4_NWLN \
 */
 
 
@@ -862,7 +792,6 @@ _TUPLETREE_ITERATE_DEPTH_GEN: depth=DEPTH funcs=FUNCS ctxt=CTXT data=DATA NWLN \
  *	Thus it is possible for the callback to do calculations across the data tree
  *	and store aggregated data here.
  * @return Final data store.
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERATE_DEPTH_CALC(DATA, DEPTH, FUNCS, CTXT, CDATA)			\
 	_XENUM4_TUPLETREE_STATE_GET_CDATA(							\
@@ -895,7 +824,6 @@ _TUPLETREE_ITERATE_DEPTH_GEN: depth=DEPTH funcs=FUNCS ctxt=CTXT data=DATA NWLN \
  * first, just for convenience.
  * 
  * All args are the same as for _XENUM4_TUPLETREE_ITERATE_DEPTH_GEN().
- * @hideinitializer
  */
 #define _XENUM4_TUPLETREE_ITERATE_FLAT_GEN(DATA, DEPTH, FUNCS, CTXT)				\
 	BOOST_PP_FOR(										\
@@ -905,7 +833,7 @@ _TUPLETREE_ITERATE_DEPTH_GEN: depth=DEPTH funcs=FUNCS ctxt=CTXT data=DATA NWLN \
 		_XENUM4_TUPLETREE_FLAT_GEN_ITERATE_CHILDNODES					\
 	)
 /*
-_TUPLETREE_ITERATE_FLAT_GEN: depth=DEPTH funcs=FUNCS ctxt=CTXT data=DATA NWLN \
+_TUPLETREE_ITERATE_FLAT_GEN: depth=DEPTH funcs=FUNCS ctxt=CTXT data=DATA _XENUM4_NWLN \
 */
 
 #endif // _XENUM4_IMPL_TUPLETREE_HPP
