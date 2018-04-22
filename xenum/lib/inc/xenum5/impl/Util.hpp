@@ -32,7 +32,7 @@ namespace xenum5 {
 
 // ===================================================================================================
 /// Can be used for unwanted _XENUM5_EXEC_COND branch.
-#define _XENUM5_NOOP()
+#define _XENUM5_NOOP(...)
 /// Can be used for unwanted _XENUM5_EXEC_COND branch.
 #define _XENUM5_ECHO(msg) msg
 
@@ -197,12 +197,22 @@ namespace xenum5 {
 
 
 /**
- * Common helper to call the XENUM_VALS_${suffix} macro.
- * @param CALLBACK Callback macro to make the XENUM_VALS_${suffix} macro call.
+ * Execute the D() callback of the XENUM5_${suffix} declaration macro.
+ * @param CALLBACK Callback macro to make the XENUM5_${suffix} macro call.
+ * @param SUFFIX Suffix of the XENUM5_ declaration macro.
+ */
+#define _XENUM5_CALL_DECL(CALLBACK, SUFFIX)							\
+	BOOST_PP_CAT(XENUM5_, SUFFIX) (CALLBACK, _XENUM5_NOOP, SUFFIX)
+
+
+/**
+ * Execute the V() callbacks of the XENUM5_${suffix} declaration macro.
+ * @param CALLBACK Callback macro to make the XENUM5_${suffix} macro call.
  * @param CTXT Context object to pass around. Must contain at least the SUFFIX field.
  */
 #define _XENUM5_CALL_VALS(CALLBACK, CTXT)							\
-	BOOST_PP_CAT(XENUM_VALS_, _XENUM5_CTXT_GET_SUFFIX(CTXT)) (CALLBACK, CTXT)
+	BOOST_PP_CAT(XENUM5_, _XENUM5_CTXT_GET_SUFFIX(CTXT)) (_XENUM5_NOOP, CALLBACK, CTXT)
+
 
 
 // ===================================================================================================

@@ -1959,18 +1959,20 @@ sub generateHeader()
 		push(@{$out}, "namespace ${nspart} {");
 	}
 
-	$line = "#define XENUM_DECL_".$gopts->{cntnrName}.
-			" (".$gopts->{namespace}.
-			", ".$gopts->{cntnrName}.
-			", ".$gopts->{valueName}.
-			", ". # inttype: auto
-			", ". # features: Not implemented yet
-			"";
+	$line = "#define XENUM5_".$gopts->{cntnrName}."(D,V,C)";
+	push(@{$out}, cont($line));
+	$line = "\tD(C".
+		", ".$gopts->{namespace}.
+		", ".$gopts->{cntnrName}.
+		", ".$gopts->{valueName}.
+		", ". # inttype: auto
+		", ". # features: Not implemented yet
+		"";
 	if ($gopts->{propCount}) {
 		push(@{$out}, cont($line . ", ("));
 		for ($pidx=0; $pidx<$gopts->{propCount}; $pidx++) {
 			$propDef = $propDefs->[$pidx];
-			$line = "\t(".$propDef->{propName}.
+			$line = "\t\t(".$propDef->{propName}.
 				", ".$propDef->{propType}.
 				", ".$propDef->{defaultValue}.
 				"";
@@ -1983,12 +1985,10 @@ sub generateHeader()
 			}
 			push(@{$out}, cont($line));
 		}
-		$line = "\t)";
+		$line = "\t\t)";
 	}
 	$line .= ")";
-	push(@{$out}, $line);
-
-	push(@{$out}, cont("#define XENUM_VALS_".$gopts->{cntnrName}."(V,C)"));
+	push(@{$out}, cont($line));
 	for ($eidx=0; $eidx<$gopts->{enumSize}; $eidx++) {
 		$line = "\tV(C";
 		# Enumvalue name

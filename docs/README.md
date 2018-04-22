@@ -475,7 +475,7 @@ Parameters:
   Values can only exist as leaf nodes in the data hierarchy, that is, they can only appear
   at level $depth, not somewhere in between.
 
-### XENUM_VALS XENUM_VALS_${suffix}()
+### XENUM_VALS_${suffix}()
 The XENUM_VALS macro defines the enum-values, as a series of calls to a V() macro that is
 passed as a parameter itself. Syntax:
 

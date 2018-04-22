@@ -18,17 +18,15 @@ namespace xenums {
 /**
  * Xenum with custom string properties defined in source file (depth=1).
  */
-#define XENUM_DECL_Sstrs1 (test::xenum::xenums::, Sstrs1, Sstr1, , , (			\
-		(P0, int, -1, 1),							\
-		(P1, cstring, "foo1", 1)						\
-	))
-/// Declaration of the xenum values.
-#define XENUM_VALS_Sstrs1(V,C)				\
+#define XENUM5_Sstrs1(D,V,C)				\
+	D(C, test::xenum::xenums::, Sstrs1, Sstr1, , , (\
+		(P0, int, -1, 1),			\
+		(P1, cstring, "foo1", 1)		\
+	))						\
 	V(C, V0, (1,2,3)	,("s1","s2","s3"))	\
 	V(C, V1, (4)		,("s4"))		\
 	V(C, V2)					\
 	V(C, V3, (5,6)		,("s5","s6"))		\
-
 
 XENUM5_DECLARE(Sstrs1)
 
