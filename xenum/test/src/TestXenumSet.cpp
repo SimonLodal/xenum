@@ -16,7 +16,7 @@
 #include <test/xenum/xenums/FruitsInNsNoCls.hpp>
 #include <test/xenum/xenums/FruitsInNsInCls.hpp>
 #include <test/xenum/xenums/Numbers.hpp>
-#include <xenum4/XenumSet.hpp>
+#include <xenum5/XenumSet.hpp>
 
 namespace test {
 namespace xenum {
@@ -34,8 +34,8 @@ public:
 /*
 TEST_F(TestXenumSet, CtorAdd)
 {
-//	::_XENUM4_NS::XenumSet<xenums::Fruits> fruitsSet({xenums::Fruits::tomato, xenums::Fruits::lemon});
-//	::_XENUM4_NS::XenumSet<xenums::Numbers> numbersSet({xenums::Numbers::n0001});
+//	::_XENUM5_NS::XenumSet<xenums::Fruits> fruitsSet({xenums::Fruits::tomato, xenums::Fruits::lemon});
+//	::_XENUM5_NS::XenumSet<xenums::Numbers> numbersSet({xenums::Numbers::n0001});
 }
 */
 
@@ -43,9 +43,9 @@ TEST_F(TestXenumSet, CtorAdd)
 /// Test the add*(), remove*() and contains() functions, with the Fruits xenum (small).
 TEST_F(TestXenumSet, AddRemoveContainsCompareFruits)
 {
-	::_XENUM4_NS::XenumSet<xenums::Fruits> fruitsSet;
-	::_XENUM4_NS::XenumSet<xenums::Fruits> allSet;
-	::_XENUM4_NS::XenumSet<xenums::Fruits> noneSet;
+	::_XENUM5_NS::XenumSet<xenums::Fruits> fruitsSet;
+	::_XENUM5_NS::XenumSet<xenums::Fruits> allSet;
+	::_XENUM5_NS::XenumSet<xenums::Fruits> noneSet;
 
 	allSet.addAll();
 	noneSet.removeAll();
@@ -131,9 +131,9 @@ TEST_F(TestXenumSet, AddRemoveContainsCompareFruits)
 TEST_F(TestXenumSet, AddRemoveContainsNumbers)
 {
 	size_t index;
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbersSet;
-	::_XENUM4_NS::XenumSet<xenums::Numbers> allSet;
-	::_XENUM4_NS::XenumSet<xenums::Numbers> noneSet;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbersSet;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> allSet;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> noneSet;
 
 	allSet.addAll();
 	noneSet.removeAll();
@@ -188,14 +188,14 @@ TEST_F(TestXenumSet, AddRemoveContainsNumbers)
 /// Test copy and assignment of XenumSet's.
 TEST_F(TestXenumSet, CopyAssign)
 {
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers1;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbers1;
 	size_t index;
 
 	numbers1.add({xenums::Numbers::n0001,
 		      xenums::Numbers::n1234,
 		      xenums::Numbers::n4100});
 
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers2(numbers1);
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbers2(numbers1);
 	for (index=0; index<xenums::Numbers::_size; index++) {
 		xenums::Number number = xenums::Numbers::_fromIndex(index);
 		if (number == xenums::Numbers::n0001 ||
@@ -209,7 +209,7 @@ TEST_F(TestXenumSet, CopyAssign)
 	numbers2.add(xenums::Numbers::n2345);
 	EXPECT_NE(numbers2, numbers1);
 
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers3;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbers3;
 	numbers3 = numbers2;
 	EXPECT_EQ(numbers3, numbers2);
 	EXPECT_NE(numbers3, numbers1);
@@ -219,7 +219,7 @@ TEST_F(TestXenumSet, CopyAssign)
 /// Test comparison between XenumSet's.
 TEST_F(TestXenumSet, Comparison)
 {
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers1, numbers2;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbers1, numbers2;
 	size_t index, lastIndex;
 
 	EXPECT_EQ(true, numbers1 == numbers2);
@@ -269,7 +269,7 @@ TEST_F(TestXenumSet, Comparison)
 /// Test the containsAny() and containsAll() functions.
 TEST_F(TestXenumSet, ContainsSet)
 {
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbers1, numbers2, all, none;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbers1, numbers2, all, none;
 	size_t index;
 
 	all.addAll();
@@ -356,12 +356,12 @@ TEST_F(TestXenumSet, ContainsSet)
 /// Test iteration over the values in an XenumSet.
 TEST_F(TestXenumSet, Iteration)
 {
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbersSet;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbersSet;
 	size_t index;
 
 	EXPECT_EQ(true, numbersSet.begin() == numbersSet.end());
 
-	::_XENUM4_NS::XenumSet<xenums::Numbers>::iterator iter = numbersSet.end();
+	::_XENUM5_NS::XenumSet<xenums::Numbers>::iterator iter = numbersSet.end();
 	xenums::Number number1;
 	success = false;
 	try {
@@ -408,7 +408,7 @@ TEST_F(TestXenumSet, Iteration)
 
 	// Old-style iteration
 	index = 0;
-	for (::_XENUM4_NS::XenumSet<xenums::Numbers>::iterator iter = numbersSet.begin();
+	for (::_XENUM5_NS::XenumSet<xenums::Numbers>::iterator iter = numbersSet.begin();
 	     iter != numbersSet.end(); iter++, index++) {
 		const xenums::Number number = *iter;
 		switch (index) {
@@ -438,7 +438,7 @@ TEST_F(TestXenumSet, Iteration)
 /// Test the ostream::operator<<().
 TEST_F(TestXenumSet, OutputNumbers)
 {
-	::_XENUM4_NS::XenumSet<xenums::Numbers> numbersSet;
+	::_XENUM5_NS::XenumSet<xenums::Numbers> numbersSet;
 	numbersSet.add({xenums::Numbers::n3050,
 		        xenums::Numbers::n0120,
 		        xenums::Numbers::n0010});

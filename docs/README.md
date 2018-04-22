@@ -1,4 +1,4 @@
-# xenum-4.1
+# xenum-5.0-pre1
 
 ## Description
 Xenum is a better C++ enum, a native C++11 enum extended with enum size, iteration,
@@ -43,10 +43,10 @@ a lot left to be desired...
   source file. No duplication of value list or other parameters.
 - Includes XenumSet; a container with a set of values from an xenum, implemented as a bitset.
 - Code generation is macro based.
-- Includes a tool (xenum4-inject) to reformat preprocessed output back into readable C++,
+- Includes a tool (xenum5-inject) to reformat preprocessed output back into readable C++,
   code, so you can inspect what gets generated. The post-processed code even includes
   documentation that doxygen can read.
-- xenum4-inject can be used as an external code generator, so you do not run the macro-based
+- xenum5-inject can be used as an external code generator, so you do not run the macro-based
   code generation every time you compile.
 
 ## Environment
@@ -77,8 +77,8 @@ will have to test on those.
 ### Compile and install
 No compiling is *required*, as xenum is all implemented in headers.
 
-You only need to copy ${xenum-root}/xenum/lib/inc/xenum4 directory to somewhere that is in
-your compiler's include path, fx. /usr/local/include, so you can \#include <xenum4/Xenum.hpp>.
+You only need to copy ${xenum-root}/xenum/lib/inc/xenum5 directory to somewhere that is in
+your compiler's include path, fx. /usr/local/include, so you can \#include <xenum5/Xenum.hpp>.
 
 However, it is very much recommended that you compile and run the unit tests, to make sure
 that xenum works with your compiler.
@@ -139,7 +139,7 @@ Here we declare a simple "Fruits" enum, with values "apple", "orange", "lemon".
 #### In your header file
 First some general declarations:
 
-	#include <xenum4/Xenum.hpp>
+	#include <xenum5/Xenum.hpp>
 	#define XENUM_DECL_Fruits (, Fruits, Fruit)
 Note the space between XENUM_DECL_Fruits and the opening parenthesis.
 
@@ -152,17 +152,17 @@ Then the values:
 
 Finally trigger code generation (header part):
 
-	XENUM4_DECLARE(Fruits)
+	XENUM5_DECLARE(Fruits)
 
 #### In your source file
 Trigger code generation (source part):
 
-	XENUM4_DEFINE(Fruits)
+	XENUM5_DEFINE(Fruits)
 
 #### Explanation
 In this example, "Fruits" is the suffix that ties it all together; The XENUM_DECL and
-XENUM_VALS macros use this suffix, and the same suffix is passed to XENUM4_DECLARE() and
-XENUM4_DEFINE() macros, which allows them to find and use the declaration macros. The suffix
+XENUM_VALS macros use this suffix, and the same suffix is passed to XENUM5_DECLARE() and
+XENUM5_DEFINE() macros, which allows them to find and use the declaration macros. The suffix
 can be anything, it just needs to be unique. Two xenums may not use same suffix, that
 would redefine the declaration macros.
 
@@ -170,7 +170,7 @@ Note that XENUM_DECL_${suffix} and XENUM_VALS_${suffix} are not macro calls, the
 definitions. XENUM_DECL_${suffix} is a data definition, while XENUM_VALS_${suffix} is a
 macro function that is evaluated by the xenum generator over and over.
 
-XENUM4_DECLARE() and XENUM4_DEFINE() macros are the actual generator functions, to be used
+XENUM5_DECLARE() and XENUM5_DEFINE() macros are the actual generator functions, to be used
 in your header and source files respectively.
 
 ### Use the Xenum
@@ -265,7 +265,7 @@ Here we extend the xenum with three custom properties:
 ### Create the xenum
 In your header file:
 
-	#include <xenum4/Xenum.hpp>
+	#include <xenum5/Xenum.hpp>
 	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int16_t, , (	\
 		(Ordinal, int),			\
 		(Sour, bool, false),		\
@@ -295,10 +295,10 @@ So:
 Code generation is like in the first example:
 Header part:
 
-	XENUM4_DECLARE(Fruits)
+	XENUM5_DECLARE(Fruits)
 Source part:
 
-	XENUM4_DEFINE(Fruits)
+	XENUM5_DEFINE(Fruits)
 
 ### Use the xenum
 A getter function is created for each property (in the xenum value class):
@@ -320,7 +320,7 @@ but a variable-length list.
 ### Create the xenum
 In your header file:
 
-	#include <xenum4/Xenum.hpp>
+	#include <xenum5/Xenum.hpp>
 
 The general declaration:
 
@@ -384,7 +384,7 @@ context you use it in.
 ### Create the xenum
 In your header file:
 
-	#include <xenum4/Xenum.hpp>
+	#include <xenum5/Xenum.hpp>
 	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int16_t, , (	\
 		(RandNum, int, , 2)	\
 		))
@@ -435,12 +435,12 @@ Again note the space between XENUM_DECL_${suffix} and the opening parenthesis.
 
 Parameters:
 - **scope** The containing namespace and/or class. Define this if the call to
-  XENUM4_DEFINE() is not inside the same namespace and class (if any) as the call to
-  XENUM4_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
+  XENUM5_DEFINE() is not inside the same namespace and class (if any) as the call to
+  XENUM5_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
   "my::ns::" (not quoted). You may also use a :: prefix to denote the toplevel namespace,
   to avoid any relative resolution of namespace.
 
-  Note that if the xenum is member in a class (XENUM4_DECLARE() is called from within
+  Note that if the xenum is member in a class (XENUM5_DECLARE() is called from within
   a class), the scope MUST contain at least the class name, if not also the namespace.
 - **enumClassName** Name of the generated enum-container class, fx. "Fruits" (not quoted).
 - **enumValueName** Name of the generated enum-value class, fx. "Fruit" (not quoted).
@@ -497,12 +497,12 @@ The V() macro:
 Everything in the generated code is named to minimize risk of name clashes with other code.
 But if you get errors about duplicate symbols you may want to check this list.
 
-#### XENUM4_DECLARE()
+#### XENUM5_DECLARE()
 - class \_XenumStore_${container-name} : The internal store class.
 - ${valueclass-name} : The enum-value class; an actual class, or a typedef of XenumValue.
 - class ${container-name} : The container class.
 
-#### XENUM4_DEFINE()
+#### XENUM5_DEFINE()
 - namespace \_XenumImpl_${suffix}_* : Zero or more namespaces,
   inside an anonymous namespace, for data/functions that is not declared in the classes.
 
@@ -539,10 +539,10 @@ A few members do not have an underscore prefix, these are needed by for(:) loops
 
 ## Reviving the generated code
 Xenum is macro-based. The disadvantage is that the generated code is only readable to
-a compiler, not to a human. The util/xenum4-inject script helps to overcome this.
+a compiler, not to a human. The util/xenum5-inject script helps to overcome this.
 
-xenum4-inject runs the preprocessor on a single header or source file. It replaces the main
-macros (XENUM4_DECLARE() and XENUM4_DEFINE()) with the content they produce, and leaves
+xenum5-inject runs the preprocessor on a single header or source file. It replaces the main
+macros (XENUM5_DECLARE() and XENUM5_DEFINE()) with the content they produce, and leaves
 everything else as is. The generated sections are reformatted with indentation, newlines
 and documentation comments. The result is both human readable, and valid C++, which can be
 compiled to produce exactly the same result as compiling the original file.
@@ -554,7 +554,7 @@ What you can use this for:
   but working.
 - Use as an external code generator that only runs when necessary. Basically the same setup
   as for doxygen, except the output files must be compiled as part of your project, not the
-  input files (and you need to run xenum4-inject both on header and source files).
+  input files (and you need to run xenum5-inject both on header and source files).
 
 ## Caveats
 - Xenum can not be declared inside a class if it has custom properties. The reason is C++'s
@@ -580,18 +580,18 @@ What you can use this for:
 - First of all, when something goes wrong, use trial and error to make your xenum declaration
   simpler, until it works.
 - If you are unsure about correct syntax, see the unit tests for working examples.
-- You can also use util/xenum4-test-gen to generate xenums of any size, just to inspect
+- You can also use util/xenum5-test-gen to generate xenums of any size, just to inspect
   how it declares them, and perhaps to test the limits of your own compiler.
-- Use util/xenum4-inject script to view the generated code. It is the only way you can
+- Use util/xenum5-inject script to view the generated code. It is the only way you can
   actually inspect what all the macro code produces, so it is a crucial tool both in
   troubleshooting and development.
-  - Troubleshooting: Run xenum4-inject only on the header or source file where the problematic
+  - Troubleshooting: Run xenum5-inject only on the header or source file where the problematic
     enum is defined. Search the output for "BOOST" and "_XENUM", this is usually the actual
     error location (a macro call that was pasted literally instead of being executed). If no
     such error is found, inspect the generated code/data, you should at least be able to find
     what the compiler complains about.
   - Developing/debugging: Normal development cycle is edit -> compile -> run. In Xenum, it is
-    edit -> xenum4-inject -> read output. At least until that produces correct output, then
+    edit -> xenum5-inject -> read output. At least until that produces correct output, then
     back to compiling and running.
 
 ## Future plans
@@ -607,7 +607,7 @@ What you can use this for:
   - Generate lookup function.
   - Custom getter prefix.
 - Make xenum with custom properties work when declared inside a class. Probably requires a
-  separate XENUM4_DECLARE_PRE() macro call outside the class, ugly.
+  separate XENUM5_DECLARE_PRE() macro call outside the class, ugly.
 - Efficient string-to-enum lookup. Requires a hashmap, which is difficult given these
   requirements: 1) Everything static-const(expr), 2) No external compile tools.
   Some template magic may be possible in C++14/17 but for now we stick with C++11.

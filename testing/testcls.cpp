@@ -2,7 +2,7 @@
  * Testing xenum before creating generator code for it.
  */
 
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 
 /* ============================== DECLARATION ============================== */
@@ -14,7 +14,7 @@ class _XenumStore_Fruits {
 friend class _XenumCntnr_Fruits; 
 public: 
 	 static constexpr const size_t size = 0 +1 +1 +1; 
-	 typedef ::xenum4::SelectInt<size>::type index_t; 
+	 typedef ::xenum5::SelectInt<size>::type index_t; 
 	 enum class Enum : index_t { 
 		 banana, 
 		 orange, 
@@ -26,36 +26,36 @@ public:
 		 char peanut[sizeof("peanut")]; 
 	 } IdentPool; 
 	 static const IdentPool identPool; 
-	 typedef ::xenum4::SelectInt<sizeof(IdentPool)>::type IdentOffset; 
+	 typedef ::xenum5::SelectInt<sizeof(IdentPool)>::type IdentOffset; 
 	 static const IdentOffset identOffsets[size]; 
 	 static constexpr const IdentOffset* getIdentOffset(Enum value) noexcept { return &identOffsets[static_cast<index_t>(value)]; } 
 	 static constexpr index_t getIndex(Enum value) noexcept { return static_cast<index_t>(value); } 
 	 static constexpr const char* getIdentifier(Enum value) noexcept { return &((const char*)&identPool)[*getIdentOffset(value)]; } 
 	 static Enum fromIndex(index_t index); 
-	 static bool fromIndex(index_t index, ::xenum4::XenumValue<_XenumStore_Fruits>& value) noexcept; 
+	 static bool fromIndex(index_t index, ::xenum5::XenumValue<_XenumStore_Fruits>& value) noexcept; 
 	 static Enum fromIdentifier(const char* identifier); 
-	 static bool fromIdentifier(const char* identifier, ::xenum4::XenumValue<_XenumStore_Fruits>& value) noexcept; 
+	 static bool fromIdentifier(const char* identifier, ::xenum5::XenumValue<_XenumStore_Fruits>& value) noexcept; 
 }; 
 #if 0
 // Simple typedef of XenumValue
-typedef ::xenum4::XenumValue<_XenumStore_Fruits> Fruit;
+typedef ::xenum5::XenumValue<_XenumStore_Fruits> Fruit;
 
 #elseif 0
 // Class inherited from XenumValue
-//class _XenumValue_Fruit : public xenum4::XenumValue<_XenumStore_Fruits> {
+//class _XenumValue_Fruit : public xenum5::XenumValue<_XenumStore_Fruits> {
 template<class XenumStore>
-class _XenumValue_Fruit : public ::xenum4::XenumValue<XenumStore> {
+class _XenumValue_Fruit : public ::xenum5::XenumValue<XenumStore> {
 public: 
 	constexpr _XenumValue_Fruit(void) noexcept
-	: ::xenum4::XenumValue<XenumStore>::XenumValue()
+	: ::xenum5::XenumValue<XenumStore>::XenumValue()
 	{ static_assert(true, "false"); }
 
-	constexpr _XenumValue_Fruit(typename ::xenum4::XenumValue<XenumStore>::Enum value) noexcept
-	: ::xenum4::XenumValue<XenumStore>::XenumValue(value)
+	constexpr _XenumValue_Fruit(typename ::xenum5::XenumValue<XenumStore>::Enum value) noexcept
+	: ::xenum5::XenumValue<XenumStore>::XenumValue(value)
 	{ static_assert(true, "false"); }
 
 // 	constexpr _XenumValue_Fruit(const _XenumValue_Fruit& other) noexcept
-// 	: ::xenum4::XenumValue<XenumStore>::XenumValue(other)
+// 	: ::xenum5::XenumValue<XenumStore>::XenumValue(other)
 // 	{ static_assert(true, "false"); }
 }; 
 typedef _XenumValue_Fruit<_XenumStore_Fruits> Fruit;
@@ -147,7 +147,7 @@ public:
 	 static Fruit _fromIdentifier(const char* identifier) { return _XenumStore_Fruits::fromIdent(identifier); } 
 	 static bool _fromIdentifier(const char* identifier, Fruit& value) noexcept { return _XenumStore_Fruits::fromIdent(identifier, value); } 
 public: 
-	 typedef ::xenum4::XenumCntnrIterator<_XenumCntnr_Fruits> iterator; 
+	 typedef ::xenum5::XenumCntnrIterator<_XenumCntnr_Fruits> iterator; 
 	 static iterator begin(void) noexcept { return iterator(0); } 
 	 static iterator end(void) noexcept { return iterator(_size); } 
 }; 

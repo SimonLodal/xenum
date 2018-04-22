@@ -4,10 +4,10 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  */
-#ifndef _XENUM4_IMPL_XENUMCNTNRITERATOR_HPP
-#define _XENUM4_IMPL_XENUMCNTNRITERATOR_HPP
+#ifndef _XENUM5_IMPL_XENUMCNTNRITERATOR_HPP
+#define _XENUM5_IMPL_XENUMCNTNRITERATOR_HPP
 
-namespace xenum4 {
+namespace xenum5 {
 
 
 /**
@@ -57,5 +57,5 @@ protected:
 };
 
 
-} // namespace xenum4
-#endif // _XENUM4_IMPL_XENUMVALUE_HPP
+} // namespace xenum5
+#endif // _XENUM5_IMPL_XENUMVALUE_HPP

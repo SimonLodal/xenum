@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_FRUITSNONSNOCLS_HPP
 
 #include <cstdint>
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 /*
 		((Foo, int, , 1))		\
@@ -20,7 +20,7 @@
 #define XENUM_VALS_Fruits_NoNsNoCls(V,C)	\
 	V(C, apple)		\
 	V(C, grape)
-XENUM4_DECLARE(Fruits_NoNsNoCls)
+XENUM5_DECLARE(Fruits_NoNsNoCls)
 /*
 	V(C, apple, (1), ((11)))		\
 	V(C, grape, (2,3,4), ((22,23),(24,25,26)))

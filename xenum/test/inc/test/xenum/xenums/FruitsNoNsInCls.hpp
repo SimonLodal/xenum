@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_FRUITSNONSINCLS_HPP
 
 #include <cstdint>
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 /// Empty wrapper class, for unit testing declaration of an xenum inside a class.
 class XenumWrapNoNs {
@@ -20,7 +20,7 @@ public:
 	V(C, banana)				\
 	V(C, orange)				\
 	V(C, peanut)
-XENUM4_DECLARE(Fruits_NoNsInCls)
+XENUM5_DECLARE(Fruits_NoNsInCls)
 };
 
 

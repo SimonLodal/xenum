@@ -8,45 +8,45 @@
  * invalid C++. The markers are supposed to be processed/replaced by another tool,
  * which may turn it back into valid C++ syntax.
  */
-#ifndef _XENUM4_IMPL_DEBUG_HPP
-#define _XENUM4_IMPL_DEBUG_HPP
+#ifndef _XENUM5_IMPL_DEBUG_HPP
+#define _XENUM5_IMPL_DEBUG_HPP
 
 
-#if XENUM4_DEBUG_PP
+#if XENUM5_DEBUG_PP
 /// In debug mode, inserts a newline. Else empty.
-#define _XENUM4_NWLN @XENUM4-NWLN@
+#define _XENUM5_NWLN @XENUM5-NWLN@
 /// Increase global indentation level.
-#define _XENUM4_INDENT_INC @XENUM4-INDENT-G:+1@
+#define _XENUM5_INDENT_INC @XENUM5-INDENT-G:+1@
 /// Decrease global indentation level.
-#define _XENUM4_INDENT_DEC @XENUM4-INDENT-G:-1@
+#define _XENUM5_INDENT_DEC @XENUM5-INDENT-G:-1@
 /// Increase local indentation level (for current line only).
-#define _XENUM4_INDENT_ADD @XENUM4-INDENT-L:+1@
+#define _XENUM5_INDENT_ADD @XENUM5-INDENT-L:+1@
 /// Decrease local indentation level (for current line only).
-#define _XENUM4_INDENT_SUB @XENUM4-INDENT-L:-1@
+#define _XENUM5_INDENT_SUB @XENUM5-INDENT-L:-1@
 /// In debug mode, prints the text as a comment. Else empty.
-#define _XENUM4_CMNT(...) @XENUM4-CMNT-BEG: __VA_ARGS__ XENUM4-CMNT-END@
+#define _XENUM5_CMNT(...) @XENUM5-CMNT-BEG: __VA_ARGS__ XENUM5-CMNT-END@
 /// In debug mode, prints the text as a documentation comment. Else empty.
-#define _XENUM4_DOC(...) @XENUM4-DOC-BEG: __VA_ARGS__ XENUM4-DOC-END@
+#define _XENUM5_DOC(...) @XENUM5-DOC-BEG: __VA_ARGS__ XENUM5-DOC-END@
 /// In debug mode, prints the text as a marker. Else empty.
-#define _XENUM4_MARK(TXT) @XENUM4-MARK:TXT@
+#define _XENUM5_MARK(TXT) @XENUM5-MARK:TXT@
 #else
 /// In debug mode, inserts a newline. Else empty.
-#define _XENUM4_NWLN
+#define _XENUM5_NWLN
 /// Increase global indentation level.
-#define _XENUM4_INDENT_INC
+#define _XENUM5_INDENT_INC
 /// Decrease global indentation level.
-#define _XENUM4_INDENT_DEC
+#define _XENUM5_INDENT_DEC
 /// Increase local indentation level (for current line only).
-#define _XENUM4_INDENT_ADD
+#define _XENUM5_INDENT_ADD
 /// Decrease local indentation level (for current line only).
-#define _XENUM4_INDENT_SUB
+#define _XENUM5_INDENT_SUB
 /// In debug mode, prints the text as a comment. Else empty.
-#define _XENUM4_CMNT(...)
+#define _XENUM5_CMNT(...)
 /// In debug mode, prints the text as a documentation comment. Else empty.
-#define _XENUM4_DOC(...)
+#define _XENUM5_DOC(...)
 /// In debug mode, prints the text as a marker. Else empty.
-#define _XENUM4_MARK(...)
+#define _XENUM5_MARK(...)
 #endif
 
 
-#endif // _XENUM4_IMPL_DEBUG_HPP
+#endif // _XENUM5_IMPL_DEBUG_HPP

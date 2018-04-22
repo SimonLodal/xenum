@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_FRUITSINNSNOCLS_HPP
 
 #include <cstdint>
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 namespace test {
 namespace xenum {
@@ -23,7 +23,7 @@ namespace xenums {
 	V(C, pear)				\
 	V(C, lime)				\
 	V(C, lemon)
-XENUM4_DECLARE(Fruits_InNsNoCls)
+XENUM5_DECLARE(Fruits_InNsNoCls)
 
 
 } // namespace xenums

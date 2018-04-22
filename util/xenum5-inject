@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# xenum-inject - a utility to replace the main XENUM4_DECLARE() and XENUM_DEFINE()
+# xenum-inject - a utility to replace the main XENUM5_DECLARE() and XENUM_DEFINE()
 # with they content that they generate, for inspecting the generated code, and
 # running documentation generation (doxygen) on it.
 #
@@ -20,8 +20,8 @@ my $includeDirs = [];
 
 
 ########################################## RUNTIME DATA ##########################################
-my $appname = "xenum4-inject";
-my $filename = "xenum4-inject";
+my $appname = "xenum5-inject";
+my $filename = "xenum5-inject";
 my $appversion = "0.1";
 
 # If no xenum main macros were found in the input, there is no reason to preprocess it.
@@ -51,7 +51,7 @@ sub showHelp($)
 	print <<HELP
 $appname-$appversion
 
-Replace the main XENUM4_DECLARE() and XENUM4_DEFINE() macros with the content they generate,
+Replace the main XENUM5_DECLARE() and XENUM5_DEFINE() macros with the content they generate,
 so you can inspect what is generated, and run automated code documentation generation on the
 result.
 
@@ -150,7 +150,7 @@ sub parseRawInput()
 	$preInput = "";
 	for ($rawIndex=0; $rawIndex<@{$rawLines}; $rawIndex++) {
 		$rawLine = $rawLines->[$rawIndex];
-		while ($rawLine =~ /^(.*?)(?:XENUM4_(DECLARE|DEFINE))(.*)/o) {
+		while ($rawLine =~ /^(.*?)(?:XENUM5_(DECLARE|DEFINE))(.*)/o) {
 			$preInput .= $1;
 			$macro = lc($2);
 			$remLine = $3;
@@ -183,7 +183,7 @@ sub parsePreProcessed()
 	my ($generated, $remLine, $macro, $mark, $suffix);
 	my ($curMacro, $curSuffix, $outputIndex, $outputPart);
 
-	$cmd = "${compiler} -E -x c++ -std=c++11 -P -DXENUM4_DEBUG_PP=1" .
+	$cmd = "${compiler} -E -x c++ -std=c++11 -P -DXENUM5_DEBUG_PP=1" .
 		" ".join(" ", map {"-I $_"} @{$includeDirs}).
 		" ".join(" ", map {"-I $_"} @{$defaultIncludeDirs}).
 		" ".$inputFileName;
@@ -201,7 +201,7 @@ sub parsePreProcessed()
 	$curSuffix = "";
 	for ($ppIndex=0; $ppIndex<@{$ppLines}; $ppIndex++) {
 		$ppLine = $ppLines->[$ppIndex];
-		while ($ppLine =~ /^(.*?)\@XENUM4-MARK:([^\s@]+) ([^\s@]+) ([^\s@]+)\@(.*)/o) {
+		while ($ppLine =~ /^(.*?)\@XENUM5-MARK:([^\s@]+) ([^\s@]+) ([^\s@]+)\@(.*)/o) {
 			$generated .= $1;
 			($macro, $mark, $suffix, $remLine) = ($2, $3, $4, $5);
 			if (!($macro && $mark && $suffix)) {
@@ -258,11 +258,11 @@ sub doFormatGenerated($)
 		$localIndent = 0;
 		while (1) {
 			$text =~ s/^\s*//;
-			if ($text =~ /^\@XENUM4-INDENT-G:([+-]?[0-9]+)\@(.*)$/o) {
+			if ($text =~ /^\@XENUM5-INDENT-G:([+-]?[0-9]+)\@(.*)$/o) {
 				$globalIndent += $1;
 				$text = $2;
 			}
-			elsif ($text =~ /^\@XENUM4-INDENT-L:([+-]?[0-9]+)\@(.*)$/o) {
+			elsif ($text =~ /^\@XENUM5-INDENT-L:([+-]?[0-9]+)\@(.*)$/o) {
 				$localIndent += $1;
 				$text = $2;
 			}
@@ -271,7 +271,7 @@ sub doFormatGenerated($)
 			}
 		}
 		$finalIndent = $globalIndent + $localIndent;
-		if ($text =~ /^\@XENUM4-(CMNT|DOC)-BEG:(.*?) XENUM4-(CMNT|DOC)-END\@(.*)$/o) {
+		if ($text =~ /^\@XENUM5-(CMNT|DOC)-BEG:(.*?) XENUM5-(CMNT|DOC)-END\@(.*)$/o) {
 			($cmntType1, $cmntText, $cmntType2, $text) = ($1, $2, $3, $4);
 			if ($cmntType1 ne $cmntType2) {
 				die("BUG: Mismatched CMNT/DOC begin/end markers.\n");
@@ -288,7 +288,7 @@ sub doFormatGenerated($)
 			}
 			next;
 		}
-		elsif ($text =~ /^(.*?)\@XENUM4-NWLN\@(.*)$/) {
+		elsif ($text =~ /^(.*?)\@XENUM5-NWLN\@(.*)$/) {
 			($line, $text) = ($1, $2);
 		}
 		else {
@@ -325,11 +325,11 @@ sub formatGenerated($)
 		return "";
 	}
 
-	$output = "/* #################### XENUM4-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
+	$output = "/* #################### XENUM5-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
 	$input = $outputPart->{generated};
 	$input =~ s/[\r\n]//g;
 	$output .= join("\n", @{doFormatGenerated($input)})."\n";
-	$output .= "/* #################### XENUM4-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
+	$output .= "/* #################### XENUM5-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
 	return $output;
 }
 

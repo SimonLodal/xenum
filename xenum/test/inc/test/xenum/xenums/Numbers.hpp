@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_NUMBERS_HPP
 
 #include <cstdint>
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 namespace test {
 namespace xenum {
@@ -533,7 +533,7 @@ namespace xenums {
 	V(C,n4081) V(C,n4082) V(C,n4083) V(C,n4084) V(C,n4085) V(C,n4086) V(C,n4087) V(C,n4088) \
 	V(C,n4089) V(C,n4090) V(C,n4091) V(C,n4092) V(C,n4093) V(C,n4094) V(C,n4095) V(C,n4096) \
 	V(C,n4097) V(C,n4098) V(C,n4099) V(C,n4100) 
-XENUM4_DECLARE(Numbers_InNsNoCls)
+XENUM5_DECLARE(Numbers_InNsNoCls)
 
 
 } // namespace xenums

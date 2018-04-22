@@ -1,6 +1,6 @@
 project(xenum)
 cmake_minimum_required(VERSION 2.8)
-set(APP_VERSION "4.1")
+set(APP_VERSION "5.0-pre1")
 
 ############################### COMPILER FLAGS ###############################
 # Do not use -ansi, it prevents boost.prepropcessor's variadic stuff from working.
@@ -85,7 +85,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/FruitsInNsInCls.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/FruitsInNsInCls.hpp -o ${XENUMS_PP_DIR}/FruitsInNsInCls.hpp
 		DEPENDS ${XENUMS_IN_DIR}/FruitsInNsInCls.hpp
 		COMMENT "Preprocessing FruitsInNsInCls.hpp ..."
@@ -94,7 +94,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/FruitsInNsNoCls.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/FruitsInNsNoCls.hpp -o ${XENUMS_PP_DIR}/FruitsInNsNoCls.hpp
 		DEPENDS ${XENUMS_IN_DIR}/FruitsInNsNoCls.hpp
 		COMMENT "Preprocessing FruitsInNsNoCls.hpp ..."
@@ -103,7 +103,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/FruitsNoNsInCls.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/FruitsNoNsInCls.hpp -o ${XENUMS_PP_DIR}/FruitsNoNsInCls.hpp
 		DEPENDS ${XENUMS_IN_DIR}/FruitsNoNsInCls.hpp
 		COMMENT "Preprocessing FruitsNoNsInCls.hpp ..."
@@ -112,7 +112,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/FruitsNoNsNoCls.hpp -o ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
 		DEPENDS ${XENUMS_IN_DIR}/FruitsNoNsNoCls.hpp
 		COMMENT "Preprocessing FruitsNoNsNoCls.hpp ..."
@@ -121,7 +121,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/Icmp.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/Icmp.hpp -o ${XENUMS_PP_DIR}/Icmp.hpp
 		DEPENDS ${XENUMS_IN_DIR}/Icmp.hpp
 		COMMENT "Preprocessing Icmp.hpp ..."
@@ -130,7 +130,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/Numbers.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/Numbers.hpp -o ${XENUMS_PP_DIR}/Numbers.hpp
 		DEPENDS ${XENUMS_IN_DIR}/Numbers.hpp
 		COMMENT "Preprocessing Numbers.hpp ..."
@@ -139,7 +139,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/Sstrs0.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/Sstrs0.hpp -o ${XENUMS_PP_DIR}/Sstrs0.hpp
 		DEPENDS ${XENUMS_IN_DIR}/Sstrs0.hpp
 		COMMENT "Preprocessing Sstrs0.hpp ..."
@@ -148,7 +148,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/Sstrs1.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/Sstrs1.hpp -o ${XENUMS_PP_DIR}/Sstrs1.hpp
 		DEPENDS ${XENUMS_IN_DIR}/Sstrs1.hpp
 		COMMENT "Preprocessing Sstrs1.hpp ..."
@@ -157,7 +157,7 @@ if(DOXYGEN_FOUND)
 	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/Sstrs2.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum4-inject
+		COMMAND util/xenum5-inject
 		ARGS -i ${XENUMS_IN_DIR}/Sstrs2.hpp -o ${XENUMS_PP_DIR}/Sstrs2.hpp
 		DEPENDS ${XENUMS_IN_DIR}/Sstrs2.hpp
 		COMMENT "Preprocessing Sstrs2.hpp ..."
@@ -191,7 +191,7 @@ if(DOXYGEN_FOUND)
 	add_custom_target(doc DEPENDS ${DOX_DST_DIR})
 	install(
 		DIRECTORY ${DOX_DST_DIR}/html/
-		DESTINATION share/doc/xenum4/api
+		DESTINATION share/doc/xenum5/api
 		OPTIONAL
 		)
 else()

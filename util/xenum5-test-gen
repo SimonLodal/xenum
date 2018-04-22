@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# xenum4-test-gen - a utility to generate an Xenum and unit tests for it.
+# xenum5-test-gen - a utility to generate an Xenum and unit tests for it.
 # Copyright 2018 Simon Lodal <simonl@parknet.dk>
 # 
 # TODO:
@@ -68,8 +68,8 @@ my $popts = {
 
 
 ########################################## RUNTIME DATA ##########################################
-my $appname = "xenum4-test-gen";
-my $filename = "xenum4-test-gen";
+my $appname = "xenum5-test-gen";
+my $filename = "xenum5-test-gen";
 my $appversion = "0.1";
 
 my $nsparts = [];
@@ -1954,7 +1954,7 @@ sub generateHeader()
 
 	push(@{$out}, "#ifndef ${encaps}");
 	push(@{$out}, "#define ${encaps}");
-	push(@{$out}, "#include <xenum4/Xenum.hpp>");
+	push(@{$out}, "#include <xenum5/Xenum.hpp>");
 	foreach $nspart (@{$nsparts}) {
 		push(@{$out}, "namespace ${nspart} {");
 	}
@@ -2006,7 +2006,7 @@ sub generateHeader()
 	}
 
 	push(@{$out}, "");
-	push(@{$out}, "XENUM4_DECLARE(".$gopts->{cntnrName}.")");
+	push(@{$out}, "XENUM5_DECLARE(".$gopts->{cntnrName}.")");
 	foreach $nspart (reverse(@{$nsparts})) {
 		push(@{$out}, "} // namespace ${nspart}");
 	}
@@ -2020,7 +2020,7 @@ sub generateSource()
 {
 	my $out = [];
 	push(@{$out}, "#include \"".$gopts->{cntnrName}.".hpp\"");
-	push(@{$out}, "XENUM4_DEFINE(".$gopts->{cntnrName}.")");
+	push(@{$out}, "XENUM5_DEFINE(".$gopts->{cntnrName}.")");
 	print(XENUMSOURCE join("\n", @{$out}) . "\n");
 }
 
@@ -2261,14 +2261,14 @@ sub generateMakefile()
 	push(@{$out}, "\t\$(CCMD) ${incPaths} -DGTEST_ROOT=${gtestroot} -c Test${cname}.cpp");
 
 	push(@{$out}, "pp.${cname}.hpp : ${cname}.hpp");
-	push(@{$out}, "\t\@../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o pp.${cname}.hpp");
+	push(@{$out}, "\t\@../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o pp.${cname}.hpp");
 	push(@{$out}, "pp.${cname}.cpp : ${cname}.hpp ${cname}.cpp");
-	push(@{$out}, "\t\@../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o pp.${cname}.cpp");
+	push(@{$out}, "\t\@../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o pp.${cname}.cpp");
 
 	push(@{$out}, "Time${cname}.hpp : ${cname}.hpp");
-	push(@{$out}, "\t\@time -p ../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o /dev/null");
+	push(@{$out}, "\t\@time -p ../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o /dev/null");
 	push(@{$out}, "Time${cname}.cpp : ${cname}.hpp ${cname}.cpp");
-	push(@{$out}, "\t\@time -p ../xenum4-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o /dev/null");
+	push(@{$out}, "\t\@time -p ../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o /dev/null");
 
 	print(MAKEFILE join("\n", @{$out}) . "\n");
 }
