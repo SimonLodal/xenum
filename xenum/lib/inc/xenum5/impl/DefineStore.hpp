@@ -17,7 +17,7 @@
  * @return Name of implementation namespace.
  */
 #define _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)							\
-	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_XenumImplNs_, _XENUM5_DECL_GET_SUFFIX(DECL)), _), PROPNAME)
+	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum_impl_ns_, _XENUM5_DECL_GET_SUFFIX(DECL)), _), PROPNAME)
 
 
 // ==============================================================================================
