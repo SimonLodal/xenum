@@ -193,8 +193,8 @@ TEST_F(TestXenums, SelectInt)
 /// Test basics of the FruitsNoNsNoCls xenum.
 TEST_F(TestXenums, FruitsNoNsNoCls)
 {
-	EXPECT_EQ(1, sizeof(XenumFruits::_Index));
-	EXPECT_EQ(false, std::is_signed<XenumFruits::_Index>::value);
+	EXPECT_EQ(1, sizeof(XenumFruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<XenumFruits::_index_t>::value);
 	EXPECT_EQ(2, XenumFruits::_size);
 	XenumFruit fruit0 = XenumFruits::apple;
 	XenumFruit fruit1 = XenumFruits::grape;
@@ -206,8 +206,8 @@ TEST_F(TestXenums, FruitsNoNsNoCls)
 /// Test basics of the FruitsNoNsInCls xenum.
 TEST_F(TestXenums, FruitsNoNsInCls)
 {
-	EXPECT_EQ(1, sizeof(XenumWrapNoNs::Fruits::_Index));
-	EXPECT_EQ(false, std::is_signed<XenumWrapNoNs::Fruits::_Index>::value);
+	EXPECT_EQ(1, sizeof(XenumWrapNoNs::Fruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<XenumWrapNoNs::Fruits::_index_t>::value);
 	EXPECT_EQ(3, XenumWrapNoNs::Fruits::_size);
 	XenumWrapNoNs::Fruit fruit0 = XenumWrapNoNs::Fruits::banana;
 	XenumWrapNoNs::Fruit fruit1 = XenumWrapNoNs::Fruits::orange;
@@ -221,8 +221,8 @@ TEST_F(TestXenums, FruitsNoNsInCls)
 /// Test basics of the FruitsInNsNoCls xenum.
 TEST_F(TestXenums, FruitsInNsNoCls)
 {
-	EXPECT_EQ(4, sizeof(xenums::Fruits::_Index));
-	EXPECT_EQ(false, std::is_signed<xenums::Fruits::_Index>::value);
+	EXPECT_EQ(4, sizeof(xenums::Fruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::Fruits::_index_t>::value);
 	EXPECT_EQ(4, xenums::Fruits::_size);
 	xenums::Fruit fruit0 = xenums::Fruits::tomato;
 	xenums::Fruit fruit1 = xenums::Fruits::pear;
@@ -238,8 +238,8 @@ TEST_F(TestXenums, FruitsInNsNoCls)
 /// Test basics of the FruitsInNsInCls xenum.
 TEST_F(TestXenums, FruitsInNsInCls)
 {
-	EXPECT_EQ(8, sizeof(xenums::WrapInNs::Fruits::_Index));
-	EXPECT_EQ(false, std::is_signed<xenums::WrapInNs::Fruits::_Index>::value);
+	EXPECT_EQ(8, sizeof(xenums::WrapInNs::Fruits::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::WrapInNs::Fruits::_index_t>::value);
 	EXPECT_EQ(5, xenums::WrapInNs::Fruits::_size);
 	xenums::WrapInNs::Fruit fruit0 = xenums::WrapInNs::Fruits::plum;
 	xenums::WrapInNs::Fruit fruit1 = xenums::WrapInNs::Fruits::mango;
@@ -258,8 +258,8 @@ TEST_F(TestXenums, FruitsInNsInCls)
 /// Test basics of the Numbers xenum.
 TEST_F(TestXenums, Numbers)
 {
-	EXPECT_EQ(2, sizeof(xenums::Numbers::_Index));
-	EXPECT_EQ(false, std::is_signed<xenums::Numbers::_Index>::value);
+	EXPECT_EQ(2, sizeof(xenums::Numbers::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::Numbers::_index_t>::value);
 	EXPECT_EQ(4100, xenums::Numbers::_size);
 	xenums::Number number0001 = xenums::Numbers::n0001;
 	xenums::Number number0200 = xenums::Numbers::n0200;
@@ -275,8 +275,8 @@ TEST_F(TestXenums, Numbers)
 /// Test basics of the IcmpTypes xenum.
 TEST_F(TestXenums, IcmpTypes)
 {
-	EXPECT_EQ(1, sizeof(xenums::IcmpTypes::_Index));
-	EXPECT_EQ(false, std::is_signed<xenums::IcmpTypes::_Index>::value);
+	EXPECT_EQ(1, sizeof(xenums::IcmpTypes::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::IcmpTypes::_index_t>::value);
 	EXPECT_EQ(35, xenums::IcmpTypes::_size);
 	xenums::IcmpType echoRequest = xenums::IcmpTypes::EchoRequest;
 	xenums::IcmpType timestampRequest = xenums::IcmpTypes::TimestampRequest;
@@ -299,8 +299,8 @@ TEST_F(TestXenums, IcmpTypes)
 /// Test basics of the IcmoCodes xenum.
 TEST_F(TestXenums, IcmpCodes)
 {
-	EXPECT_EQ(1, sizeof(xenums::IcmpCodes::_Index));
-	EXPECT_EQ(false, std::is_signed<xenums::IcmpCodes::_Index>::value);
+	EXPECT_EQ(1, sizeof(xenums::IcmpCodes::_index_t));
+	EXPECT_EQ(false, std::is_signed<xenums::IcmpCodes::_index_t>::value);
 	EXPECT_EQ(35, xenums::IcmpCodes::_size);
 	xenums::IcmpCode networkUnreachable = xenums::IcmpCodes::NetworkUnreachable;
 	xenums::IcmpCode networkRedirect = xenums::IcmpCodes::NetworkRedirect;

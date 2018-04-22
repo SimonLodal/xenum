@@ -116,7 +116,7 @@ The container class contains all the enum values as value objects, so you can re
 Fruits::apple and Fruits::lemon just like you would with a native C++11 enum class. The
 difference is that you get a enum-value objects, not just raw native enum values.
 
-The container class makes the native C++11 enum class available as Fruits::_Enum, should
+The container class makes the native C++11 enum class available as Fruits::_enum, should
 you want to use them directly. They are equivalent and interchangeable with the enum-value
 objects. There should be zero runtime (CPU) overhead in using the value object as the
 compiler should treat the value object just like a native enum value.
@@ -182,18 +182,18 @@ in your header and source files respectively.
 	Fruit fruit3(fruit1); // copy apple
 	Fruit fruit4 = Fruits::_fromIndex(1); // => orange
 	Fruit fruit5 = Fruits::_fromIdentifier("lemon"); // => lemon (warning: inefficient string lookup)
-	// Native enum values. Fruits::_Enum is the native C++ enum class.
-	Fruits::_Enum value1 = Fruits::_Enum::apple;
-	Fruits::_Enum value2 = Fruits::orange(); // assign from object
-	Fruits::_Enum value5 = fruit5(); // assign from object
+	// Native enum values. Fruits::_enum is the native C++ enum class.
+	Fruits::_enum value1 = Fruits::_enum::apple;
+	Fruits::_enum value2 = Fruits::orange(); // assign from object
+	Fruits::_enum value5 = fruit5(); // assign from object
 Note the last two: The () operator on an enum value object returns the native enum value.
-Fruits::apple() and Fruits::_Enum::apple both yield the same native enum value.
+Fruits::apple() and Fruits::_enum::apple both yield the same native enum value.
 
 #### Access the properties of enum values
 
 	const char* ident = fruit1.getIdentifier(); // identifier is the name
-	Fruits::_Index index = fruit2.getIndex();
-	Fruits::_Enum nativeEnumValue = fruit3();
+	Fruits::_index_t index = fruit2.getIndex();
+	Fruits::_enum nativeEnumValue = fruit3();
 These are the only properties that Xenum values have (plus any custom properties).
 
 #### Print
@@ -234,7 +234,7 @@ The iterator returns enum-value objects.
 
 #### Iterate with indexes
 
-	for (Fruits::_Index index = 0; index < Fruits::_size; index++) {
+	for (Fruits::_index_t index = 0; index < Fruits::_size; index++) {
 		std::cout << Fruits::_fromIndex(index).getIdentifier() << std::endl;
 	}
 
@@ -246,7 +246,7 @@ use the () operator to get the native enum value:
 	switch (fruit()) { // notice the parentheses, retrieves the native enum value
 	case Fruits::apple():		...; break;
 	case Fruits::orange():		...; break;
-	case Fruits::_Enum::lemon:	...; break;
+	case Fruits::_enum::lemon:	...; break;
 	default:			...; break;
 	}
 
@@ -512,10 +512,10 @@ in the class have an underscore prefix, to minimize risk of name clashes with yo
 names. This of course assumes that your enum values do not have an underscore prefix.
 
 Underscore-prefixed members are:
-- \_Value
-- \_Index
+- \_value_t
+- \_index_t
 - \_size
-- \_Enum
+- \_enum
 - \_fromIndex
 - \_fromIdentifier
 - \_XenumStore_${container-name}

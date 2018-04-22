@@ -128,11 +128,11 @@
  */
 #define _XENUM5_IDENT_DEFL_FUNCS(CTXT, DECL)							\
 	constexpr const IdentIndex getIdentOffset						\
-	(_XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_Enum value) noexcept		_XENUM5_NWLN \
+	(_XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return identOffsets[static_cast							\
-			<_XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_Index>		\
+			<_XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_index_t>	\
 			(value)];								_XENUM5_NWLN \
 	}											_XENUM5_NWLN
 

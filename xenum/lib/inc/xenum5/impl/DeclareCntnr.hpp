@@ -46,7 +46,7 @@
 _XENUM5_INDENT_SUB										\
 public:												_XENUM5_NWLN \
 	_XENUM5_DOC(The enum-value class.)							\
-	typedef _XENUM5_DECL_GET_VALUENAME(DECL) _Value;					_XENUM5_NWLN
+	typedef _XENUM5_DECL_GET_VALUENAME(DECL) _value_t;					_XENUM5_NWLN
 
 
 // ==============================================================================================
@@ -59,9 +59,9 @@ public:												_XENUM5_NWLN \
 	_XENUM5_DOC(Number of enum values in this enum class.)					\
 	static constexpr const size_t _size = _XENUM5_STORE_NAME(DECL)::size;			_XENUM5_NWLN \
 	_XENUM5_DOC(Integer type used for enum values.)						\
-	using _Index = typename _XENUM5_STORE_NAME(DECL)::Index;				_XENUM5_NWLN \
+	using _index_t = typename _XENUM5_STORE_NAME(DECL)::Index;				_XENUM5_NWLN \
 	_XENUM5_DOC(The native enum class.)							\
-	using _Enum = typename _XENUM5_STORE_NAME(DECL)::Enum;					_XENUM5_NWLN \
+	using _enum = typename _XENUM5_STORE_NAME(DECL)::Enum;					_XENUM5_NWLN \
 
 
 // ==============================================================================================
@@ -81,7 +81,7 @@ public:												_XENUM5_NWLN \
  */
 #define _XENUM5_DECLC_ENUM_OBJ(CTXT, IDENT, ...)						\
 	static constexpr const _XENUM5_DECL_GET_VALUENAME(_XENUM5_CTXT_GET_DECL(CTXT))		\
-		IDENT = _Enum::IDENT;								_XENUM5_NWLN
+		IDENT = _enum::IDENT;								_XENUM5_NWLN
 
 
 // ==============================================================================================
@@ -119,7 +119,7 @@ public:												_XENUM5_NWLN \
 		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if index >= number of enum values.)			\
-	static VALUENAME _fromIndex(_Index index)						\
+	static VALUENAME _fromIndex(_index_t index)						\
 		{ return STORENAME::fromIndex(index); }						_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given index, without throwing on error.			_XENUM5_NWLN \
 		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
@@ -127,7 +127,7 @@ public:												_XENUM5_NWLN \
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given index was found, else false.)		\
-	static bool _fromIndex(_Index index, VALUENAME& value) noexcept				\
+	static bool _fromIndex(_index_t index, VALUENAME& value) noexcept			\
 		{ return STORENAME::fromIndex(index, value); }					_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \

@@ -30,8 +30,8 @@ public:
 /// Test that we do not accidentally enlarge the enum-value objects.
 TEST_F(TestValue, Size)
 {
-	EXPECT_EQ(sizeof(XenumFruits::_Index), sizeof(XenumFruit));
-	EXPECT_EQ(sizeof(xenums::Fruits::_Index), sizeof(xenums::Fruit));
+	EXPECT_EQ(sizeof(XenumFruits::_index_t), sizeof(XenumFruit));
+	EXPECT_EQ(sizeof(xenums::Fruits::_index_t), sizeof(xenums::Fruit));
 }
 
 
@@ -41,34 +41,34 @@ TEST_F(TestValue, CtorAssign)
 	// Default ctor
 	xenums::Fruit fruit1;
 	EXPECT_EQ(xenums::Fruits::tomato, fruit1);
-	EXPECT_EQ(xenums::Fruits::_Enum::tomato, fruit1());
+	EXPECT_EQ(xenums::Fruits::_enum::tomato, fruit1());
 	EXPECT_EQ(0, fruit1.getIndex());
 
 	// Ctor with native enum-value
-	xenums::Fruit fruit2(xenums::Fruits::_Enum::pear);
+	xenums::Fruit fruit2(xenums::Fruits::_enum::pear);
 	EXPECT_EQ(xenums::Fruits::pear, fruit2);
-	EXPECT_EQ(xenums::Fruits::_Enum::pear, fruit2());
-	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::pear, fruit2.getIndex());
+	EXPECT_EQ(xenums::Fruits::_enum::pear, fruit2());
+	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_enum::pear, fruit2.getIndex());
 
 	// Assignment from native enum value
 	xenums::Fruit fruit3;
-	fruit3 = xenums::Fruits::_Enum::lemon;
+	fruit3 = xenums::Fruits::_enum::lemon;
 	EXPECT_EQ(xenums::Fruits::lemon, fruit3);
-	EXPECT_EQ(xenums::Fruits::_Enum::lemon, fruit3());
-	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::lemon, fruit3.getIndex());
+	EXPECT_EQ(xenums::Fruits::_enum::lemon, fruit3());
+	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_enum::lemon, fruit3.getIndex());
 
 	// Copy ctor
 	xenums::Fruit fruit4(fruit2);
 	EXPECT_EQ(xenums::Fruits::pear, fruit4);
-	EXPECT_EQ(xenums::Fruits::_Enum::pear, fruit4());
-	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::pear, fruit4.getIndex());
+	EXPECT_EQ(xenums::Fruits::_enum::pear, fruit4());
+	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_enum::pear, fruit4.getIndex());
 
 	// Assignment from other enum-value object
 	xenums::Fruit fruit5;
 	fruit5 = fruit3;
 	EXPECT_EQ(xenums::Fruits::lemon, fruit5);
-	EXPECT_EQ(xenums::Fruits::_Enum::lemon, fruit5());
-	EXPECT_EQ((xenums::Fruits::_Index)xenums::Fruits::_Enum::lemon, fruit5.getIndex());
+	EXPECT_EQ(xenums::Fruits::_enum::lemon, fruit5());
+	EXPECT_EQ((xenums::Fruits::_index_t)xenums::Fruits::_enum::lemon, fruit5.getIndex());
 }
 
 
@@ -101,7 +101,7 @@ TEST_F(TestValue, OstreamOutput)
 TEST_F(TestValue, Comparison)
 {
 	xenums::Fruit fruit1 = xenums::Fruits::tomato;
-	xenums::Fruit fruit2(xenums::Fruits::_Enum::pear);
+	xenums::Fruit fruit2(xenums::Fruits::_enum::pear);
 	xenums::Fruit fruit3(fruit2);
 	xenums::Fruit fruit4 = xenums::Fruits::lemon;
 
@@ -109,10 +109,10 @@ TEST_F(TestValue, Comparison)
 	EXPECT_EQ(true, fruit2 == fruit2);
 	EXPECT_EQ(true, fruit3 == fruit3);
 	EXPECT_EQ(true, fruit4 == fruit4);
-	EXPECT_EQ(true, fruit1 == xenums::Fruits::_Enum::tomato);
-	EXPECT_EQ(true, fruit2 == xenums::Fruits::_Enum::pear);
-	EXPECT_EQ(true, fruit3 == xenums::Fruits::_Enum::pear);
-	EXPECT_EQ(true, fruit4 == xenums::Fruits::_Enum::lemon);
+	EXPECT_EQ(true, fruit1 == xenums::Fruits::_enum::tomato);
+	EXPECT_EQ(true, fruit2 == xenums::Fruits::_enum::pear);
+	EXPECT_EQ(true, fruit3 == xenums::Fruits::_enum::pear);
+	EXPECT_EQ(true, fruit4 == xenums::Fruits::_enum::lemon);
 	EXPECT_EQ(false, fruit1 == fruit2);
 	EXPECT_EQ(false, fruit1 == fruit3);
 	EXPECT_EQ(false, fruit1 == fruit4);
@@ -124,10 +124,10 @@ TEST_F(TestValue, Comparison)
 	EXPECT_EQ(false, fruit2 != fruit2);
 	EXPECT_EQ(false, fruit3 != fruit3);
 	EXPECT_EQ(false, fruit4 != fruit4);
-	EXPECT_EQ(false, xenums::Fruits::_Enum::tomato != fruit1());
-	EXPECT_EQ(false, xenums::Fruits::_Enum::pear != fruit2());
-	EXPECT_EQ(false, xenums::Fruits::_Enum::pear != fruit3());
-	EXPECT_EQ(false, xenums::Fruits::_Enum::lemon != fruit4());
+	EXPECT_EQ(false, xenums::Fruits::_enum::tomato != fruit1());
+	EXPECT_EQ(false, xenums::Fruits::_enum::pear != fruit2());
+	EXPECT_EQ(false, xenums::Fruits::_enum::pear != fruit3());
+	EXPECT_EQ(false, xenums::Fruits::_enum::lemon != fruit4());
 	EXPECT_EQ(true, fruit2 != fruit1);
 	EXPECT_EQ(true, fruit3 != fruit1);
 	EXPECT_EQ(true, fruit4 != fruit1);
@@ -208,14 +208,14 @@ TEST_F(TestValue, Comparison)
 /// Test switch() statement.
 TEST_F(TestValue, Switch)
 {
-	xenums::Fruit fruit1(xenums::Fruits::_Enum::pear);
+	xenums::Fruit fruit1(xenums::Fruits::_enum::pear);
 
 	switch (fruit1()) {
 	// Must not compile; int-type not comparable to native enum type
 	//case 1:
 	// Must not compile; enumvalue object from other enum class
 	//case XenumFruits::apple(): break;
-	case xenums::Fruits::_Enum::tomato:
+	case xenums::Fruits::_enum::tomato:
 		success = false;
 		break;
 	case xenums::Fruits::pear():
