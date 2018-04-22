@@ -498,7 +498,7 @@ Everything in the generated code is named to minimize risk of name clashes with 
 But if you get errors about duplicate symbols you may want to check this list.
 
 #### XENUM5_DECLARE()
-- class \_XenumStore_${container-name} : The internal store class.
+- class \_xenum5_store_${container-name} : The internal store class.
 - ${valueclass-name} : The enum-value class; an actual class, or a typedef of XenumValue.
 - class ${container-name} : The container class.
 
@@ -518,7 +518,7 @@ Underscore-prefixed members are:
 - \_enum
 - \_fromIndex
 - \_fromIdentifier
-- \_XenumStore_${container-name}
+- \_xenum5_store_${container-name}
 
 A few members do not have an underscore prefix, these are needed by for(:) loops:
 - iterator
@@ -617,7 +617,7 @@ What you can use this for:
 - Custom code injection (maybe - if custom properties are not enough).
 
 ## Versioning
-Major version is increased when introducing incompatible API changes.
+Major version is increased when introducing incompatible changes to the public API.
 
 Minor versions may include features/changes that have sane, backwards-compatible
 (within same major version) defaults, and do not require changes to users' code.

@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+### Changed
+- Rename identifiers that were technically invalid (leading underscore followed by
+  uppercase is an invalid C++ identifier). In public API this means the container
+  class' \_Value, \_Index and \_Enum are now \_value_t, \_index_t and \_enum.
+
 
 ## [4.1] - 2018-04-21
 ### Added

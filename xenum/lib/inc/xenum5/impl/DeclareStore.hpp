@@ -15,7 +15,7 @@
  * @return Name of the store class.
  */
 #define _XENUM5_STORE_NAME(DECL)								\
-	BOOST_PP_CAT(_Xenum5Store_, _XENUM5_DECL_GET_CNTNRNAME(DECL))
+	BOOST_PP_CAT(_xenum5_store_, _XENUM5_DECL_GET_CNTNRNAME(DECL))
 
 
 // ==============================================================================================
