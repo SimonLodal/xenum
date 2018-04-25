@@ -2266,9 +2266,11 @@ sub generateMakefile()
 	push(@{$out}, "\t\@../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o pp.${cname}.cpp");
 
 	push(@{$out}, "Time${cname}.hpp : ${cname}.hpp");
-	push(@{$out}, "\t\@time -p ../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o /dev/null");
+	#push(@{$out}, "\t\@time -p ../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.hpp -o /dev/null");
+	push(@{$out}, "\t\@/usr/bin/time -f 'wall %e\\nusr  %U\\nsys  %S\\nrss  %M' \$(CCC) -E -x c++ -std=c++11 -P -DXENUM5_DEBUG_PP=1 ${incPaths} ${cname}.hpp -o /dev/null");
 	push(@{$out}, "Time${cname}.cpp : ${cname}.hpp ${cname}.cpp");
-	push(@{$out}, "\t\@time -p ../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o /dev/null");
+	#push(@{$out}, "\t\@time -p ../xenum5-inject -c \$(CCC) ${incPaths} -i ${cname}.cpp -o /dev/null");
+	push(@{$out}, "\t\@/usr/bin/time -f 'wall %e\\nusr  %U\\nsys  %S\\nrss  %M' \$(CCC) -E -x c++ -std=c++11 -P -DXENUM5_DEBUG_PP=1 ${incPaths} ${cname}.cpp -o /dev/null");
 
 	print(MAKEFILE join("\n", @{$out}) . "\n");
 }
