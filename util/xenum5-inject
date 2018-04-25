@@ -325,11 +325,12 @@ sub formatGenerated($)
 		return "";
 	}
 
-	$output = "/* #################### XENUM5-GENERATED BEGIN: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
+	$output = "";
+	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") - generated begin #################### */\n";
 	$input = $outputPart->{generated};
 	$input =~ s/[\r\n]//g;
 	$output .= join("\n", @{doFormatGenerated($input)})."\n";
-	$output .= "/* #################### XENUM5-GENERATED END: $outputPart->{macro} '$outputPart->{suffix}' #################### */\n";
+	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") generated end #################### */\n";
 	return $output;
 }
 
