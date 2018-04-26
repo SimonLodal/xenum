@@ -365,7 +365,7 @@
  * For properties implemented in source.
  */
 #define _XENUM5_PROP_SRC_DECLS_GET_SIZE(Z, LEVEL, PROPDEF)					\
-	static const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM5_PROPDEF_GET_NAME(PROPDEF)), Size) (	\
+	static size_t BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM5_PROPDEF_GET_NAME(PROPDEF)), Size) (\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
 	);											_XENUM5_NWLN
 
@@ -410,7 +410,7 @@
 												\
 		) custom property PROPNAME.							\
 	))											\
-	const size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
+	size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\

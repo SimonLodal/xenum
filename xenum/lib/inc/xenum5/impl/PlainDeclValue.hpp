@@ -107,7 +107,7 @@ public:												_XENUM5_NWLN \
 		) custom property PROPNAME.							\
 	))											\
 	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)						\
-	const BOOST_PP_CAT(PROPNAME, Index)							\
+	const BOOST_PP_CAT(PROPNAME, Index)&							\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), LEVEL, Z)		\
 	)											\
