@@ -5,14 +5,14 @@
  * @license GNU GPL version 3
  * @version 3.0
  */
-#ifndef _XENUM4_XENUMSET_HPP
-#define _XENUM4_XENUMSET_HPP
+#ifndef _XENUM5_XENUMSET_HPP
+#define _XENUM5_XENUMSET_HPP
 
 #include <cstring>
 #include <iostream>
 #include "Xenum.hpp"
 
-namespace xenum4 {
+namespace xenum5 {
 
 
 /**
@@ -27,9 +27,9 @@ class XenumSet {
 private:
 public:
 	/// The XenumValue class.
-	using Value = typename XenumCntnr::_Value;
+	using Value = typename XenumCntnr::_value_t;
 	/// Integer type used for enum values.
-	using Index = typename XenumCntnr::_Index;
+	using Index = typename XenumCntnr::_index_t;
 
 protected:
 #if 1 // 64bit chunks
@@ -325,16 +325,16 @@ public:
 #endif
 };
 
-} // namespace xenum4
+} // namespace xenum5
 
 
 /// Print an XenumSet.
 template<typename XenumCntnr>
-std::ostream& operator<<(std::ostream& out, const ::_XENUM4_NS::XenumSet<XenumCntnr>& xenumSet) {
+std::ostream& operator<<(std::ostream& out, const ::_XENUM5_NS::XenumSet<XenumCntnr>& xenumSet) {
 	out<<"[";
 	bool any = false;
-	for (typename ::_XENUM4_NS::XenumSet<XenumCntnr>::Index index=0; index<XenumCntnr::_size; index++) {
-		typename XenumCntnr::_Value value = XenumCntnr::_fromIndex(index);
+	for (typename ::_XENUM5_NS::XenumSet<XenumCntnr>::Index index=0; index<XenumCntnr::_size; index++) {
+		typename XenumCntnr::_value_t value = XenumCntnr::_fromIndex(index);
 		if (!xenumSet.contains(value))
 			continue;
 		if (any)
@@ -347,4 +347,4 @@ std::ostream& operator<<(std::ostream& out, const ::_XENUM4_NS::XenumSet<XenumCn
 }
 
 
-#endif // _XENUM4_XENUMSET_HPP
+#endif // _XENUM5_XENUMSET_HPP

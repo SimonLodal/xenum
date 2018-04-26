@@ -4,10 +4,10 @@
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  */
-#ifndef _XENUM4_IMPL_XENUMCNTNRITERATOR_HPP
-#define _XENUM4_IMPL_XENUMCNTNRITERATOR_HPP
+#ifndef _XENUM5_IMPL_XENUMCNTNRITERATOR_HPP
+#define _XENUM5_IMPL_XENUMCNTNRITERATOR_HPP
 
-namespace xenum4 {
+namespace xenum5 {
 
 
 /**
@@ -21,11 +21,11 @@ template<class XenumCntnr>
 class XenumCntnrIterator {
 public:
 	/// Enum-value class.
-	using Value = typename XenumCntnr::_Value;
+	using Value = typename XenumCntnr::_value_t;
 	/// Integer type used for enum values.
-	using Index = typename XenumCntnr::_Index;
+	using Index = typename XenumCntnr::_index_t;
 	/// The native C++ enum class.
-	using Enum = typename XenumCntnr::_Enum;
+	using Enum = typename XenumCntnr::_enum;
 public:
 	/// Default ctor, initializes to first value in the enum.
 	XenumCntnrIterator(void) noexcept : index(0) {}
@@ -57,5 +57,5 @@ protected:
 };
 
 
-} // namespace xenum4
-#endif // _XENUM4_IMPL_XENUMVALUE_HPP
+} // namespace xenum5
+#endif // _XENUM5_IMPL_XENUMVALUE_HPP

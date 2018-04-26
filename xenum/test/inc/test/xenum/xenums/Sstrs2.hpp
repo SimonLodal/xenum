@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_SSTRS2_HPP
 
 #include <cstdint>
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 namespace test {
 namespace xenum {
@@ -18,19 +18,17 @@ namespace xenums {
 /**
  * Xenum with custom string properties defined in source file (depth=2).
  */
-#define XENUM_DECL_Sstrs2 (test::xenum::xenums::, Sstrs2, Sstr2, , , (			\
-		(P0, int, -1, 2),							\
-		(P1, cstring, "foo2", 2)						\
-	))
-/// Declaration of the xenum values.
-#define XENUM_VALS_Sstrs2(V,C)					\
+#define XENUM5_Sstrs2(D,V,C)					\
+	D(C, test::xenum::xenums::, Sstrs2, Sstr2, , , (	\
+		(P0, int, -1, 2),				\
+		(P1, cstring, "foo2", 2)			\
+	))							\
 	V(C, V0, ((1),(2,3))		,(("s1"),("s2","s3")))	\
 	V(C, V1, ((4),(5),(6,7,8))	,(("s4"),("s5"),("s6","s7","s8")))	\
 	V(C, V2)						\
 	V(C, V3, ((),,())		,((),,()))		\
 
-
-XENUM4_DECLARE(Sstrs2)
+XENUM5_DECLARE(Sstrs2)
 
 
 } // namespace xenums

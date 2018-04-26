@@ -8,7 +8,7 @@
 #define TEST_XENUM_XENUMS_ICMP_HPP
 
 #include <cstdint>
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 namespace test {
 namespace xenum {
@@ -17,18 +17,16 @@ namespace xenums {
 
 /**
  * IP ICMP types enum, for testing custom properties.
+ * FIXME:
+ * - Is the IPv6 Redirect message semantically the same as in IPv4? Or is it only something NDP related?
+ * - Figure out missing iptables names.
  */
-#define XENUM_DECL_IcmpTypes (test::xenum::xenums::, IcmpTypes, IcmpType, uint8_t, , (		\
-	 (Ipv4, bool, false)									\
-	,(Ipv6, bool, false)									\
-	,(NfName, cstring, , 1)									\
-	))
-
-// FIXME:
-// - Is the IPv6 Redirect message semantically the same as in IPv4? Or is it only something NDP related?
-// - Figure out missing iptables names.
-/// Declaration of the xenum values.
-#define XENUM_VALS_IcmpTypes(V,C)	\
+#define XENUM5_IcmpTypes(D,V,C)									\
+	D(C, test::xenum::xenums::, IcmpTypes, IcmpType, uint8_t, , (				\
+		 (Ipv4, bool, false)								\
+		,(Ipv6, bool, false)								\
+		,(NfName, cstring, , 1)								\
+		))										\
 	V(C, EchoReply,				true,	true,	("echo-reply", "pong"))		\
 	V(C, PacketTooBig,			false,	true)					\
 	V(C, DestinationUnreachable,		true,	true,	("destination-unreachable"))	\
@@ -64,24 +62,23 @@ namespace xenums {
 	V(C, MulticastRouterSolicitation,	false,	true)					\
 	V(C, MulticastRouterTermination,	false,	true)					\
 	V(C, RplControl,			false,	true)
-XENUM4_DECLARE(IcmpTypes)
+XENUM5_DECLARE(IcmpTypes)
 
 
 /**
  * IP ICMP codes enum, for testing custom properties.
+ * FIXME: iptables seems to miss some codes:
+ * - DestinationUNreachable.SourceHostIsolated.
+ * - ParameterProblem.BadLength
+ * - Figure out missing iptables names.
  */
-#define XENUM_DECL_IcmpCodes (test::xenum::xenums::, IcmpCodes, IcmpCode, uint8_t, , (		\
-	 (Ipv4, bool, false)									\
-	,(Ipv6, bool, false)									\
-	,(IcmpType, test::xenum::xenums::IcmpType)						\
-	,(NfName, cstring)									\
-	))
-// FIXME: iptables seems to miss some codes:
-// - DestinationUNreachable.SourceHostIsolated.
-// - ParameterProblem.BadLength
-// - Figure out missing iptables names.
-/// Declaration of the xenum values.
-#define XENUM_VALS_IcmpCodes(V,C)	\
+#define XENUM5_IcmpCodes(D,V,C)						\
+	D(C, test::xenum::xenums::, IcmpCodes, IcmpCode, uint8_t, , (	\
+		 (Ipv4, bool, false)					\
+		,(Ipv6, bool, false)					\
+		,(IcmpType, test::xenum::xenums::IcmpType)		\
+		,(NfName, cstring)					\
+		))							\
 	V(C, NetworkUnreachable,		true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"network-unreachable") \
 	V(C, HostUnreachable,			true,	true,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"host-unreachable") \
 	V(C, ProtocolUnreachable,		true,	,	test::xenum::xenums::IcmpTypes::DestinationUnreachable,		"protocol-unreachable") \
@@ -116,9 +113,8 @@ XENUM4_DECLARE(IcmpTypes)
 	V(C, QueryIpv4Address,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationQuery,		"") \
 	V(C, QuerySuccess,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationResponse,	"") \
 	V(C, QueryRefused,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationResponse,	"") \
-	V(C, QueryUnknown,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationResponse,	"") \
-
-XENUM4_DECLARE(IcmpCodes)
+	V(C, QueryUnknown,			false,	true,	test::xenum::xenums::IcmpTypes::NodeInformationResponse,	"")
+XENUM5_DECLARE(IcmpCodes)
 
 /* IPv6 codes:
 - DestinationUnreachable

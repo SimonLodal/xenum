@@ -7,6 +7,6 @@
  * Documentation that is not easily placed elsewhere.
  */
 /**
-@namespace xenum4
+@namespace xenum5
 Top-level namespace for Xenum.
 */

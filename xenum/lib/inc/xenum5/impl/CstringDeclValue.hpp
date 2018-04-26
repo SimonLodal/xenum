@@ -6,32 +6,32 @@
  *
  * Implementation of declarations in value class context, for "cstring" data type category.
  */
-#ifndef _XENUM4_IMPL_CSTRING_DECL_VALUE_HPP
-#define _XENUM4_IMPL_CSTRING_DECL_VALUE_HPP
+#ifndef _XENUM5_IMPL_CSTRING_DECL_VALUE_HPP
+#define _XENUM5_IMPL_CSTRING_DECL_VALUE_HPP
 
 
 
 // ======================================= FUNCTIONS ============================================
 /**
- * Worker for _XENUM4_PROP_DECLV_CSTRING().
+ * Worker for _XENUM5_PROP_DECLV_CSTRING().
  * Declares the functions related to a single custom property, in value class.
  */
-#define _XENUM4_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
-_XENUM4_INDENT_SUB										\
-public:												_XENUM4_NWLN \
+#define _XENUM5_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+_XENUM5_INDENT_SUB										\
+public:												_XENUM5_NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
 		BOOST_PP_INC(DEPTH),								\
-		_XENUM4_PROP_SRC_DECLV_GET_SIZE,						\
+		_XENUM5_PROP_SRC_DECLV_GET_SIZE,						\
 		PROPDEF										\
 	)											\
-	_XENUM4_PROP_SRC_DECLV_GET_VALUE(							\
+	_XENUM5_PROP_SRC_DECLV_GET_VALUE(							\
 		PROPNAME,									\
-		_XENUM4_PROPDEF_GET_PARM_TYPE(PROPDEF),						\
+		_XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF),						\
 		DEPTH,										\
 		Z										\
 	)
 
 
-#endif // _XENUM4_IMPL_CSTRING_DECL_VALUE_HPP
+#endif // _XENUM5_IMPL_CSTRING_DECL_VALUE_HPP

@@ -8,18 +8,17 @@
 #define TEST_XENUM_XENUMS_NUMBERS_HPP
 
 #include <cstdint>
-#include <xenum4/Xenum.hpp>
+#include <xenum5/Xenum.hpp>
 
 namespace test {
 namespace xenum {
 namespace xenums {
 
+// MAX=4100; echo -n "        "; for n in $(seq 1 $MAX); do printf "V(C,n%04d) " $n; if [ $((n % 8)) == 0 ]; then echo "\\"; echo -n "        "; fi; done; echo ""
 
 /// Xenum for unit testing, with large number of enum values.
-#define XENUM_DECL_Numbers_InNsNoCls (test::xenum::xenums::, Numbers, Number)
-// MAX=4100; echo -n "        "; for n in $(seq 1 $MAX); do printf "V(C,n%04d) " $n; if [ $((n % 8)) == 0 ]; then echo "\\"; echo -n "        "; fi; done; echo ""
-/// Declaration of the xenum values.
-#define XENUM_VALS_Numbers_InNsNoCls(V,C) \
+#define XENUM5_Numbers_InNsNoCls(D,V,C)								\
+	D(C, test::xenum::xenums::, Numbers, Number)						\
 	V(C,n0001) V(C,n0002) V(C,n0003) V(C,n0004) V(C,n0005) V(C,n0006) V(C,n0007) V(C,n0008) \
 	V(C,n0009) V(C,n0010) V(C,n0011) V(C,n0012) V(C,n0013) V(C,n0014) V(C,n0015) V(C,n0016) \
 	V(C,n0017) V(C,n0018) V(C,n0019) V(C,n0020) V(C,n0021) V(C,n0022) V(C,n0023) V(C,n0024) \
@@ -533,7 +532,7 @@ namespace xenums {
 	V(C,n4081) V(C,n4082) V(C,n4083) V(C,n4084) V(C,n4085) V(C,n4086) V(C,n4087) V(C,n4088) \
 	V(C,n4089) V(C,n4090) V(C,n4091) V(C,n4092) V(C,n4093) V(C,n4094) V(C,n4095) V(C,n4096) \
 	V(C,n4097) V(C,n4098) V(C,n4099) V(C,n4100) 
-XENUM4_DECLARE(Numbers_InNsNoCls)
+XENUM5_DECLARE(Numbers_InNsNoCls)
 
 
 } // namespace xenums
