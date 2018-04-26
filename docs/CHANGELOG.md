@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [5.0] - 2018-04-26
 ### Changed
 - Merge the two declaration macros XENUM_DECL_$suffix and XENUM_VALS_$suffix into
   one: XENUM5_$suffix.

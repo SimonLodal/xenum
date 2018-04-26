@@ -1,6 +1,6 @@
 project(xenum)
 cmake_minimum_required(VERSION 2.8)
-set(APP_VERSION "5.0-pre1")
+set(APP_VERSION "5.0")
 
 ############################### COMPILER FLAGS ###############################
 # Do not use -ansi, it prevents boost.prepropcessor's variadic stuff from working.
