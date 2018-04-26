@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Changed
+- Merge the two declaration macros XENUM_DECL_$suffix and XENUM_VALS_$suffix into
+  one: XENUM5_$suffix.
 - Rename identifiers that were technically invalid (leading underscore followed by
   uppercase is an invalid C++ identifier). In public API this means the container
   class' \_Value, \_Index and \_Enum are now \_value_t, \_index_t and \_enum.

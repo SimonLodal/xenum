@@ -18,8 +18,7 @@ a lot left to be desired...
 - switch() on enum value in a typesafe manner.
 - Unlimited number of values in an enum. All other extended C++ enum I have found have a
   limit of around 64 or 256 values in an enum, due to recursion limits in preprocessor
-  and/or templates. Way too low for real life use. Xenum overcomes this by having the enum
-  values declared as a list of macro calls, which can have unlimited length.
+  and/or templates.
 - Can be placed inside a class, just like regular enums (except if it has custom properties,
   see Caveats).
 - Extensible: You can add custom properties to each enum value. Normal Xenum values
@@ -56,8 +55,8 @@ a lot left to be desired...
 - Others may or may not work.
 
 ### Supported platforms
-The Xenum headers should work everywhere but is it possible that some of the util scripts have
-some GNU or Unix ism's.
+The Xenum headers should work everywhere but some of the util scripts have some GNU or Unix
+-ism's.
 
 Xenum is being developed on Linux and not currently on Windows or Mac systems so others
 will have to test on those.
@@ -137,20 +136,16 @@ Here we declare a simple "Fruits" enum, with values "apple", "orange", "lemon".
 ### Create the xenum
 
 #### In your header file
-First some general declarations:
+First the declaration of the enum:
 
 	#include <xenum5/Xenum.hpp>
-	#define XENUM_DECL_Fruits (, Fruits, Fruit)
-Note the space between XENUM_DECL_Fruits and the opening parenthesis.
-
-Then the values:
-
-	#define XENUM_VALS_Fruits(V,C)		\
+	#define XENUM5_Fruits(D,V,C)		\
+		D(C, , Fruits, Fruit)		\
 		V(C, apple)			\
 		V(C, orange)			\
 		V(C, lemon)
 
-Finally trigger code generation (header part):
+Trigger code generation (header part):
 
 	XENUM5_DECLARE(Fruits)
 
@@ -160,15 +155,16 @@ Trigger code generation (source part):
 	XENUM5_DEFINE(Fruits)
 
 #### Explanation
-In this example, "Fruits" is the suffix that ties it all together; The XENUM_DECL and
-XENUM_VALS macros use this suffix, and the same suffix is passed to XENUM5_DECLARE() and
-XENUM5_DEFINE() macros, which allows them to find and use the declaration macros. The suffix
+In this example, "Fruits" is the suffix that ties it all together; The XENUM5_Fruits declaration
+macro uses this suffix, and the same suffix is passed to XENUM5_DECLARE() and
+XENUM5_DEFINE() macros, which allows them to find and use the declaration macro. The suffix
 can be anything, it just needs to be unique. Two xenums may not use same suffix, that
-would redefine the declaration macros.
+would redefine the declaration macro.
 
-Note that XENUM_DECL_${suffix} and XENUM_VALS_${suffix} are not macro calls, they are macro
-definitions. XENUM_DECL_${suffix} is a data definition, while XENUM_VALS_${suffix} is a
-macro function that is evaluated by the xenum generator over and over.
+Note that XENUM5_${suffix} is a macro function that you define, by itself it does not do anything,
+but it is evaluated by the xenum generator over and over. The D, V and C parameters are callback
+macro functions and data, defined by the generators. Just consider them boilerplate stuff that
+has to be there.
 
 XENUM5_DECLARE() and XENUM5_DEFINE() macros are the actual generator functions, to be used
 in your header and source files respectively.
@@ -266,27 +262,27 @@ Here we extend the xenum with three custom properties:
 In your header file:
 
 	#include <xenum5/Xenum.hpp>
-	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int16_t, , (	\
-		(Ordinal, int),			\
-		(Sour, bool, false),		\
-		(Color, cstring, "unknown")	\
-		))
-Note the "cstring" type of Color. It is really a plain const char*, but strings need
-special handling, so you must use this special cooked type name for them. All other
-types can just be used as is.
+	#define XENUM5_Fruits(D,V,C)				\
+		D(C, my::ns::, Fruits, Fruit, int16_t, , (	\
+			(Ordinal, int),				\
+			(Sour, bool, false),			\
+			(Color, cstring, "unknown")		\
+		))						\
+		V(C, apple, 22, , "red")			\
+		V(C, orange, 44)				\
+		V(C, lemon, 17, true, "yellow")
 
-Besides declaring the custom properties, we also added a few other arguments:
+Several things to note here:
 - Namespace path is now defined. This is required when the enum exists in a namespace
   and/or class.
 - int16_t is now enforced as the integer type to use for the enum values. The default is
   to use the smallest type that is big enough to hold the number of enum values.
+- The custom properties are defined as separate lists.
+- Color has the special type "cstring". It is really a plain const char*, but strings need
+  special handling, so you must use this special cooked type name for them. All other
+  types can just be used as is.
+- The values (the V() macros) now also define the values of the custom properties.
 
-The values macro now also define the values of the custom properties:
-
-	#define XENUM_VALS_Fruits(V,C)		\
-		V(C, apple, 22, , "red")	\
-		V(C, orange, 44)		\
-		V(C, lemon, 17, true, "yellow")
 So:
 - Apple has Ordinal=22, Sour=false (default value applied since it is empty), and Color="red".
 - Orange has Ordinal=44, Sour=false (default) and Color="varies".
@@ -301,7 +297,7 @@ Source part:
 	XENUM5_DEFINE(Fruits)
 
 ### Use the xenum
-A getter function is created for each property (in the xenum value class):
+In the xenum value class, a getter function is created for each property:
 
 	const int& getOrdinal() const;
 	const bool& getSour() const;
@@ -321,23 +317,19 @@ but a variable-length list.
 In your header file:
 
 	#include <xenum5/Xenum.hpp>
-
-The general declaration:
-
-	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int16_t, , (	\
-		(Color, cstring, "black", 1)	\
-		))
-- Now the default value is "black".
-- More importantly, the "1" means that the data has one dimension, which means a single
-  array of values (0 means data is an immediate value; this is the default we used in
-  the previous example).
-
-For each enum value, the custom property values are now defined as a list:
-
-	#define XENUM_VALS_Fruits(V,C)				\
+	#define XENUM5_Fruits(D,V,C)				\
+		D(C, my::ns::, Fruits, Fruit, int16_t, , (	\
+			(Color, cstring, "black", 1)		\
+		))						\
 		V(C, apple, ("red", "yellow", "green"))		\
 		V(C, orange, ("orange", "green"))		\
 		V(C, lemon, ("yellow"))
+
+- Now the default value is "black".
+- More importantly, the "1" after "black" means that the data has one dimension, which means
+  a single array of values (0 means data is an immediate value; this is the default we used in
+  the previous example).
+- For each enum value, the custom property values are now defined as a list.
 
 ### Use the xenum
 The getter function now includes an index, naturally, and you can get the size of the arrays
@@ -381,22 +373,22 @@ You are not limited to one-dimensional arrays; any number of dimensions can be a
 Arrays can only be indexed by an integer type, so whatever the indexes mean is up to the
 context you use it in.
 
+I can not come up with a meaningful example of it, so here is just a two-level array of
+random int's, without a default value.
+
 ### Create the xenum
 In your header file:
 
 	#include <xenum5/Xenum.hpp>
-	#define XENUM_DECL_Fruits (my::ns::, Fruits, Fruit, int16_t, , (	\
-		(RandNum, int, , 2)	\
-		))
-I can not come up with a meaningful example of it, so here is just a two-level array of
-random int's, without a default value.
-
-The data must of course now be defined with two levels - arrays in arrays:
-
-	#define XENUM_VALS_Fruits(V,C)					\
+	#define XENUM5_Fruits(D,V,C)					\
+		D(C, my::ns::, Fruits, Fruit, int16_t, , (		\
+			(RandNum, int, , 2)				\
+		))							\
 		V(C, apple, ((5,3,7), (11,8), (-22, 44, 1, -9)))	\
 		V(C, orange, ())					\
 		V(C, lemon)
+
+Note that the data is now defined with two levels - arrays in arrays.
 
 ### Use the xenum
 The getter functions are extended with one index level:
@@ -425,15 +417,23 @@ So:
 	randNum = Fruits::apple.getRandNum(2, 3); // => -9
 
 ## Reference
-### XENUM_DECL_$suffix
-The XENUM_DECL_$suffix macro contains general parameters, defined as a tuple (comma-separated
-values inside parentheses). Syntax:
+### XENUM5_$suffix
+The XENUM5_$suffix macro is defined by user, and contains the complete declaration of the xenum.
+It contains a series of calls to D() and V() macros that are provided by the xenum generator
+which calls the declaration repeatedly. Syntax:
 
-	#define XENUM_DECL_${suffix} (scope, enumClassName, enumValueName [, intType [, features [, custom_properties]]])
+	#define XENUM5_${suffix}(D,V,C)		\
+		D(C, scope, enumClassName, enumValueName [, intType [, features [, custom_properties]]]) \
+		V(C, value0 [, custom0 [, custom1 [, ...]]])	\
+		V(C, value1 [, custom0 [, custom1 [, ...]]])	\
+		...				\
+		V(C, valueN [, custom0 [, custom1 [, ...]]])
 
-Again note the space between XENUM_DECL_${suffix} and the opening parenthesis.
+#### D() macro
+This callback defines general parameters of the enum.
 
-Parameters:
+- **C** The same "C" that XENUM5_${suffix}() was called with; a "context" data structure
+  used to pass variables around between internal functions.
 - **scope** The containing namespace and/or class. Define this if the call to
   XENUM5_DEFINE() is not inside the same namespace and class (if any) as the call to
   XENUM5_DECLARE() (or "using" that namespace). If defined, it must end in "::", fx
@@ -456,7 +456,6 @@ Custom property tuple syntax:
 
 	(propertyName, propertyType [, defaultValue [, depth]])
 
-Parameters:
 - **propertyName** Name of the custom property.
 - **propertyType** Data-type of the custom property. You may use simple types, like int/bool
   types, or even other Xenum's, or other classes, as long as they have a fixed size and a
@@ -475,32 +474,23 @@ Parameters:
   Values can only exist as leaf nodes in the data hierarchy, that is, they can only appear
   at level $depth, not somewhere in between.
 
-### XENUM_VALS_${suffix}()
-The XENUM_VALS macro defines the enum-values, as a series of calls to a V() macro that is
-passed as a parameter itself. Syntax:
+#### V() macro
+This callback defines a single enum value.
 
-	#define XENUM_VALS_${suffix}(V,C)	\
-		V(C, value0 [, custom0 [, custom1 [, ...]]])	\
-		V(C, value1 [, custom0 [, custom1 [, ...]]])	\
-		...				\
-		V(C, valueN [, custom0 [, custom1 [, ...]]])
-
-The V() macro:
-- **C** The same "C" that your XENUM_VALS_${suffix}() macro was called with; a "context"
-  data structure used to pass variables around between internal functions.
+- **C** Same as in D() macro.
 - **value** The enum-value name (identifier), fx. "foo" (not quoted).
-- **custom** Zero or more custom property values; must match the ones defined in the
-  XENUM_DECL_$suffix macro. If a value field is empty, the default defined in
-  XENUM_DECL_$suffix is used, if there is one (if not all values must be specified).
+- **custom...** Zero or more custom property values; must match the ones defined in the
+  D() macro. If a value field is empty, the default defined in D() is used, if there is one
+  (if not all values must be specified).
 
 ### Generated symbols
 Everything in the generated code is named to minimize risk of name clashes with other code.
 But if you get errors about duplicate symbols you may want to check this list.
 
 #### XENUM5_DECLARE()
-- class \_xenum5_store_${container-name} : The internal store class.
-- ${valueclass-name} : The enum-value class; an actual class, or a typedef of XenumValue.
-- class ${container-name} : The container class.
+- class \_xenum5_store_${enumClassName} : The internal store class.
+- ${enumValueName} : The enum-value class; an actual class, or a typedef of XenumValue.
+- class ${enumClassName} : The container class.
 
 #### XENUM5_DEFINE()
 - namespace \_XenumImpl_${suffix}_* : Zero or more namespaces,
@@ -518,12 +508,14 @@ Underscore-prefixed members are:
 - \_enum
 - \_fromIndex
 - \_fromIdentifier
-- \_xenum5_store_${container-name}
 
-A few members do not have an underscore prefix, these are needed by for(:) loops:
+A few members do not have an underscore prefix.
+- The default constructor
 - iterator
 - begin
 - end
+
+iterator(), begin() and end() are needed by for(:) loops.
 
 ### Limits
 - Number of values in an enum: Unlimited
