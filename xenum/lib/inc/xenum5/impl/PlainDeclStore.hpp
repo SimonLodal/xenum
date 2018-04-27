@@ -271,19 +271,4 @@
 	)
 
 
-
-// ====================================== DEBUG STUFF ===========================================
-/**
- * Debugging helper functions. Only enable when needed.
- */
-#define _XENUM5_PLAIN_DECLS_DEBUG(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
-
-/*
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
-	static void dumpNodes(void) noexcept;							_XENUM5_NWLN \
-*/
-
-
-
 #endif // _XENUM5_IMPL_PLAIN_DECL_STORE_HPP

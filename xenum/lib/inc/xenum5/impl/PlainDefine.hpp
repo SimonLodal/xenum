@@ -778,42 +778,4 @@ _XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
 	);											_XENUM5_NWLN \
 
 
-// ====================================== DEBUG STUFF ===========================================
-/**
- * Define some members for debugging.
- */
-#define _XENUM5_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
-	_XENUM5_PLAIN_DEFINE_FUNC_DUMP_NODES(CTXT, PROPDEF, _XENUM5_PROPDEF_GET_NAME(PROPDEF))	\
-
-/**
- * Worker for _XENUM5_PLAIN_DEFINE_DEBUG().
- */
-#define _XENUM5_PLAIN_DEFINE_FUNC_DUMP_NODES(CTXT, PROPDEF, PROPNAME)				\
-
-/*
-	void _XENUM5_DECL_GET_SCOPE(DECL) _XENUM5_STORE_NAME(DECL)				\
-	:: dumpNodes(void) noexcept								_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		std::cout									_XENUM5_NWLN \
-			<<BOOST_PP_STRINGIZE(PROPNAME)<<"IndexNodes"				_XENUM5_NWLN \
-			<<" ("<<BOOST_PP_CAT(PROPNAME, IndexSize)<<"/"<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNodes))<<")"	_XENUM5_NWLN \
-			<<" sizeof(IndexNode)="<<sizeof(BOOST_PP_CAT(PROPNAME, IndexNode))	_XENUM5_NWLN \
-			<<":"									_XENUM5_NWLN \
-			<<std::endl;								_XENUM5_NWLN \
-		for (BOOST_PP_CAT(PROPNAME, Index) idx=0; idx<BOOST_PP_CAT(PROPNAME, IndexSize); idx++) { _XENUM5_NWLN \
-			std::cout								_XENUM5_NWLN \
-				<<"\t"								_XENUM5_NWLN \
-				<<" ["<<(int)idx<<"]"						_XENUM5_NWLN \
-				<<" {"								_XENUM5_NWLN \
-				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].size		_XENUM5_NWLN \
-				<<","								_XENUM5_NWLN \
-				<<(int)BOOST_PP_CAT(PROPNAME, IndexNodes)[idx].index		_XENUM5_NWLN \
-				<<"}"								_XENUM5_NWLN \
-				<<std::endl;							_XENUM5_NWLN \
-		}										_XENUM5_NWLN \
-	}											_XENUM5_NWLN \
-*/
-
-
 #endif // _XENUM5_IMPL_PLAIN_DEFINE_HPP

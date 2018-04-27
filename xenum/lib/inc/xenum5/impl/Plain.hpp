@@ -32,7 +32,6 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 #define _XENUM5_PROP_DECLS_PLAIN_HDR(CTXT, DECL, PROPDEF, Z)					\
 	_XENUM5_PLAIN_HDR_DECLS_DATA(CTXT, DECL, PROPDEF, _XENUM5_PROPDEF_GET_NAME(PROPDEF), Z)	\
 	_XENUM5_PLAIN_HDR_DECLS_FUNCS(CTXT, PROPDEF, _XENUM5_PROPDEF_GET_NAME(PROPDEF), Z)	\
-	_XENUM5_PLAIN_DECLS_DEBUG(CTXT, DECL, PROPDEF, _XENUM5_PROPDEF_GET_NAME(PROPDEF), Z)	\
 
 /**
  * Declaratation for a custom property of plain type, implemented in source, in store class
@@ -108,7 +107,6 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
 		Z										\
 	)											\
-	_XENUM5_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
 
 /**
  * Definitions for a custom property of plain type, implemented in source, in source file
@@ -124,7 +122,6 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 		CTXT,										\
 		Z										\
 	)											\
-	_XENUM5_PLAIN_DEFINE_DEBUG(CTXT, PROPDEF, Z)						\
 
 
 /**
