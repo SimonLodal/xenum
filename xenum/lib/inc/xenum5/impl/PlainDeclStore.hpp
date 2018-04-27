@@ -10,7 +10,7 @@
 #define _XENUM5_IMPL_PLAIN_DECL_STORE_HPP
 
 
-// ======================================= DATA =================================================
+// ======================================= DATA (HDR) ===========================================
 /**
  * Worker for _XENUM5_PROP_DECLS_PLAIN().
  * Declares the data related to a single custom property, implemented in header.
@@ -21,72 +21,25 @@
 	_XENUM5_DOC(Native type of custom property PROPNAME values.				_XENUM5_NWLN \
 		Should be private, but is used in struct BOOST_PP_CAT(PROPNAME, ValueNames)	\
 		which is declared outside this class.)						\
-	typedef _XENUM5_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM5_NWLN \
+	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
 	_XENUM5_INDENT_SUB									\
 	private:										_XENUM5_NWLN \
-	_XENUM5_DOC(Total number of PROPNAME values.)						\
-	static constexpr const size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 0			\
-		_XENUM5_CALL_VALS(_XENUM5_PLAIN_COUNT_VALUES, CTXT);				_XENUM5_NWLN \
-	_XENUM5_DOC(Array of all PROPNAME values.)						\
-	static const BOOST_PP_CAT(PROPNAME, Value)						\
-		BOOST_PP_CAT(PROPNAME, Values)							\
-		[BOOST_PP_CAT(PROPNAME, ValuesSize)];						_XENUM5_NWLN \
+	_XENUM5_PLAIN_HDR_DECLS_VALUES(PROPNAME, PROPDEF, DECL, CTXT, Z)			\
 	/* Index-nodes only if depth != 0 */							\
 	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLS_NODES_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))) \
 		(CTXT, DECL, PROPDEF, PROPNAME)
 
 
-// ============================== COUNT VALUES ==============================
 /**
- * Worker for _XENUM5_PLAIN_DECLS_DATA(). Called as XENUM_VALS_* callback.
- * Counts the values of a single custom property of plain type, for a single enum value.
- * VARARGS: All custom property data for the enum value.
+ * Declare and define the values.
  */
-#define _XENUM5_PLAIN_COUNT_VALUES(CTXT, IDENT, ...)						\
-	_XENUM5_PLAIN_COUNT_VALUES_I1								\
-	(											\
-		CTXT,										\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__)		\
-	)
-
-/**
- * Worker for _XENUM5_PLAIN_COUNT_VALUES().
- */
-#define _XENUM5_PLAIN_COUNT_VALUES_I1(CTXT, DEPTH, DATA)					\
-	BOOST_PP_CAT(_XENUM5_PLAIN_COUNT_VALUES_, BOOST_PP_BOOL(DEPTH))				\
-	(CTXT, DEPTH, DATA)
-
-/**
- * Worker for _XENUM5_PLAIN_COUNT_VALUES(), for DEPTH==0.
- */
-#define _XENUM5_PLAIN_COUNT_VALUES_0(CTXT, DEPTH, DATA)						\
-	_XENUM5_ADD_ONE()
-
-/**
- * Worker for _XENUM5_PLAIN_COUNT_VALUES(), for DEPTH!=0.
- * Calc state is just a single number; count of values in the entire data tree.
- */
-#define _XENUM5_PLAIN_COUNT_VALUES_1(CTXT, DEPTH, DATA)						\
-	+_XENUM5_TUPLETREE_ITERATE_DEPTH_CALC(							\
-		DATA,										\
-		/* Stop at the leafnodes; no reason to count individual values */		\
-		/* when we have the leafnode size. */						\
-		BOOST_PP_DEC(DEPTH),								\
-		(_XENUM5_PLAIN_COUNT_VALUES_ADD, _XENUM5_TUPLETREE_FILTER_LEAF),		\
-		CTXT,										\
-		0										\
-	)											\
-
-/**
- * Callback for _XENUM5_PLAIN_COUNT_VALUES_1() iteration. Called for each leaf node.
- * @return New state, with counter incremented with number of values in leaf node.
- */
-#define _XENUM5_PLAIN_COUNT_VALUES_ADD(ITERPOS, NODE, CTXT, STATE)				\
-	BOOST_PP_ADD(STATE, _XENUM5_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))			\
+#define _XENUM5_PLAIN_HDR_DECLS_VALUES(PROPNAME, PROPDEF, DECL, CTXT, Z)			\
+	_XENUM5_DOC(Array of all PROPNAME values.)						\
+	static constexpr const BOOST_PP_CAT(PROPNAME, Value)					\
+	BOOST_PP_CAT(PROPNAME, Values)[] = _XENUM5_PLAIN_DEFINE_VALUES(CTXT)			\
 
 
-// ============================== COUNT NODES ==============================
+// ============================= COUNT NODES =================================
 /**
  * Worker for _XENUM5_PLAIN_HDR_DECLS_DATA(). Does nothing since depth==0.
  */
@@ -101,7 +54,7 @@
 		_XENUM5_CALL_VALS(_XENUM5_PLAIN_COUNT_NODES, CTXT);				_XENUM5_NWLN \
 	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
 	typedef typename ::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(				\
-			BOOST_PP_CAT(PROPNAME, ValuesSize),					\
+			sizeof(BOOST_PP_CAT(PROPNAME, Values)) / sizeof(BOOST_PP_CAT(PROPNAME, Value)), \
 			BOOST_PP_CAT(PROPNAME, IndexSize)					\
 		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
 	_XENUM5_INDENT_SUB									\

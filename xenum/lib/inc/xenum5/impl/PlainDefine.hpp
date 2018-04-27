@@ -341,16 +341,11 @@
  * implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DEFINE(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
-	/* FIXME: Also define the ValuesSize and IndexSize integers - ? */			\
+	/* FIXME: Also define IndexSize - ? */							\
 	constexpr const										\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)					\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)				\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)				\
-		/* Explicit size not needed */							\
-		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, ValuesSize)] = */			\
-		[] =										\
-		{										_XENUM5_NWLN \
-			_XENUM5_PLAIN_HDR_VALUES_DATA(CTXT)					\
-		};										_XENUM5_NWLN \
+		[];										_XENUM5_NWLN \
 	BOOST_PP_CAT(										\
 		_XENUM5_PLAIN_HDR_DATA_MULTILEVEL_,						\
 		BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))				\
@@ -389,27 +384,6 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
 		_XENUM5_PLAIN_HDR_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)	\
 		_XENUM5_INDENT_DEC								\
 	}}											_XENUM5_NWLN \
-
-// ========================== VALUES DATA TABLE ==============================
-/**
- * Worker for _XENUM5_PLAIN_DEFINE_DATA().
- * Defines the ${propname}Values data table.
- */
-#define _XENUM5_PLAIN_HDR_VALUES_DATA(CTXT)							\
-	_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_HDR_VALUE_DATA, CTXT)
-
-/**
- * Callback worker for values iteration.
- * Defines a single data value of a custom property.
- */
-// FIXME: What kind of error does it produce when there is no value and no default?
-#define _XENUM5_PLAIN_HDR_VALUE_DATA(ITERPOS, NODE, CTXT)					\
-	_XENUM5_INDENT_ADD									\
-	BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(NODE),							\
-		_XENUM5_PROPDEF_GET_DEFAULTVALUE(_XENUM5_CTXT_GET_PROPDEF(CTXT)),		\
-		NODE										\
-	),											_XENUM5_NWLN \
 
 
 // ========================== VALUE NAMES (HDR) ==============================
