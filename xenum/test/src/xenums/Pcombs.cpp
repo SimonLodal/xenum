@@ -5,7 +5,7 @@
  * @license GNU GPL version 3
  */
 
-#include <test/xenum/xenums/Sstrs2.hpp>
+#include <test/xenum/xenums/Pcombs.hpp>
 
-XENUM5_DEFINE(Sstrs2)
+XENUM5_DEFINE(Pcombs)
 

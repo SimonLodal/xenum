@@ -137,30 +137,12 @@ if(DOXYGEN_FOUND)
 		VERBATIM
 	)
 	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Sstrs0.hpp
+		OUTPUT ${XENUMS_PP_DIR}/Pcombs.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
 		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Sstrs0.hpp -o ${XENUMS_PP_DIR}/Sstrs0.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Sstrs0.hpp
-		COMMENT "Preprocessing Sstrs0.hpp ..."
-		VERBATIM
-	)
-	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Sstrs1.hpp
-		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Sstrs1.hpp -o ${XENUMS_PP_DIR}/Sstrs1.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Sstrs1.hpp
-		COMMENT "Preprocessing Sstrs1.hpp ..."
-		VERBATIM
-	)
-	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Sstrs2.hpp
-		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Sstrs2.hpp -o ${XENUMS_PP_DIR}/Sstrs2.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Sstrs2.hpp
-		COMMENT "Preprocessing Sstrs2.hpp ..."
+		ARGS -i ${XENUMS_IN_DIR}/Pcombs.hpp -o ${XENUMS_PP_DIR}/Pcombs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Pcombs.hpp
+		COMMENT "Preprocessing Pcombs.hpp ..."
 		VERBATIM
 	)
 
@@ -182,9 +164,7 @@ if(DOXYGEN_FOUND)
 		DEPENDS ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Icmp.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Numbers.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Sstrs0.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Sstrs1.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Sstrs2.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Pcombs.hpp
 		COMMENT "Generating documentation (doxygen) ..."
 		VERBATIM
 	)
