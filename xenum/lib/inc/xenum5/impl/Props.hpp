@@ -151,6 +151,7 @@
  * Declare the data type for a custom property.
  */
 #define _XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
+	_XENUM5_DOC(Native type of custom property PROPNAME values.)				\
 	typedef _XENUM5_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM5_NWLN \
 
 

@@ -5,15 +5,45 @@
  * @license GNU GPL version 3
  *
  * Implementation of definitions for "plain" data type category.
- *
- * TODO:
- * - HDR and SRC implementations should use more common code.
  */
 #ifndef _XENUM5_IMPL_PLAIN_DEFINE_HPP
 #define _XENUM5_IMPL_PLAIN_DEFINE_HPP
 
 
-// ======================================== MAIN ================================================
+// ======================================= MAIN (HDR) ===========================================
+/**
+ * Worker for _XENUM5_PROP_DEFINE_PLAIN().
+ * Defines the data of a single custom property, for "plain" data types, implemented in header.
+ */
+#define _XENUM5_PLAIN_HDR_DEFINE(PROPNAME, PROPDEF, SCOPE, STORENAME, Z)			\
+	/* FIXME: Also define IndexSize - ? */							\
+	constexpr const										\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)				\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)				\
+		[];										_XENUM5_NWLN \
+	BOOST_PP_CAT(										\
+		_XENUM5_PLAIN_HDR_DEFINE_,							\
+		BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))				\
+	) (PROPNAME, SCOPE, STORENAME)
+
+/**
+ * Defines nothing since the custom property has depth==0.
+ */
+#define _XENUM5_PLAIN_HDR_DEFINE_0(PROPNAME, SCOPE, STORENAME)
+
+
+/**
+ * Worker for _XENUM5_PLAIN_HDR_DEFINE().
+ * Defines the data of a single multilevel custom property, when depth!=0.
+ */
+#define _XENUM5_PLAIN_HDR_DEFINE_1(PROPNAME, SCOPE, STORENAME)					\
+	constexpr const										\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Node)					\
+		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Nodes)				\
+		[];										_XENUM5_NWLN \
+
+
+// ======================================= MAIN (SRC) ===========================================
 /**
  * Worker for _XENUM5_PROP_DEFINE_PLAIN().
  * Defines all the data and functions of a single custom property, implemented in source.
@@ -100,15 +130,7 @@
  */
 #define _XENUM5_PLAIN_SRC_DEFL0_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
 	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
-	_XENUM5_PLAIN_SRC_DEFL0_VALUES_DATA(PROPNAME, CTXT)					\
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_DEFL0_VALUES().
- * Defines the ${propname}Values array.
- */
-#define _XENUM5_PLAIN_SRC_DEFL0_VALUES_DATA(PROPNAME, CTXT)					\
-	constexpr const BOOST_PP_CAT(PROPNAME, Value)						\
-	BOOST_PP_CAT(PROPNAME, Values)[] = _XENUM5_PLAIN_DEFINE_VALUES(CTXT)			\
+	_XENUM5_PLAIN_DEFINE_VALUES(, PROPNAME, CTXT)						\
 
 
 // ================================= VALUES (SRC, DEPTH!=0) =====================================
@@ -117,120 +139,7 @@
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
 	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
-	_XENUM5_PLAIN_SRC_DEFL1_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)				\
-	_XENUM5_PLAIN_SRC_DEFL1_VALUES_DATA(PROPNAME, CTXT)					\
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_DEFL1_VALUES().
- * Declares the ${propname}Values_t struct.
- */
-#define _XENUM5_PLAIN_SRC_DEFL1_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)				\
-	typedef struct {									_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_SRC_DEFL1_VALUE_NAME, CTXT)		\
-		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PROPNAME, Values_t);							_XENUM5_NWLN \
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_DEFL1_VALUES_STRUCT(); loop function for each data node.
- * Declares a single value field.
- */
-#define _XENUM5_PLAIN_SRC_DEFL1_VALUE_NAME(ITERPOS, NODE, CTXT)					\
-	BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), Value)		\
-	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS));	_XENUM5_NWLN \
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_DEFL1_VALUES().
- * Defines the ${propname}Values struct.
- */
-#define _XENUM5_PLAIN_SRC_DEFL1_VALUES_DATA(PROPNAME, CTXT)					\
-	constexpr const BOOST_PP_CAT(PROPNAME, Value)						\
-	BOOST_PP_CAT(PROPNAME, Values)[] = _XENUM5_PLAIN_DEFINE_VALUES(CTXT)			\
-
-
-// ====================================== NODES, COMMON =========================================
-// ==================== COMMON LOOP FOR NODE ITERATION =======================
-/**
- * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
- * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
- * identical layout; that the placement of node data in the IndexNodes table match the names
- * in the NodeNames struct.
- * Note: The root nodes (enum-values) must appear first in the tables so they can be directly
- * indexed by an enum-value.
- * Note: All node iteration sets depth-=1 because we are not iterating leaf values, only nodes.
- */
-#define _XENUM5_PLAIN_ITER_NODES(CALLBACK, CTXT)						\
-	/* First, execute callback only for the enum values (root nodes), so they are */	\
-	/* executed in one block. */								\
-	_XENUM5_CALL_VALS(									\
-		_XENUM5_PLAIN_ITER_NODES_ROOT,							\
-		_XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
-	)											\
-	/* Secondly, iterate all non-root nodes. */						\
-	_XENUM5_CALL_VALS(									\
-		_XENUM5_PLAIN_ITER_NODES_NONROOT,						\
-		_XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
-	)
-
-/**
- * Callback worker for _XENUM5_PLAIN_ITER_NODES(); loop function for each root node
- * (enum-value). Execute the callback only for the root node (no further iteration).
- */
-#define _XENUM5_PLAIN_ITER_NODES_ROOT(CTXT, IDENT, ...)						\
-	_XENUM5_PLAIN_ITER_NODES_ROOT_I1							\
-	(											\
-		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		BOOST_PP_DEC(_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT))),	\
-		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
-	)
-
-/**
- * Worker for _XENUM5_PLAIN_ITER_NODES_ROOT().
- */
-#define _XENUM5_PLAIN_ITER_NODES_ROOT_I1(DATA, DEPTH, CTXT)					\
-	_XENUM5_CTXT_GET_CALLBACK(CTXT) (							\
-		_XENUM5_TUPLETREE_ITERPOS_INIT(							\
-			DEPTH,									\
-			,									\
-			0,									\
-			_XENUM5_GET_TUPLE_SIZE_IF_TUPLE(DATA)					\
-		),										\
-		_XENUM5_TUPLE_TO_SEQ_COND(DATA, BOOST_PP_BOOL(DEPTH)),				\
-		CTXT										\
-	)
-
-/**
- * Callback worker for _XENUM5_PLAIN_ITER_NODES(); loop function for each node.
- */
-#define _XENUM5_PLAIN_ITER_NODES_NONROOT(CTXT, IDENT, ...)					\
-	_XENUM5_PLAIN_ITER_NODES_NONROOT_I1							\
-	(											\
-		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
-	)
-
-/**
- * Worker for _XENUM5_PLAIN_ITER_NODES_NONROOT().
- * Execute tupletree iteration.
- */
-#define _XENUM5_PLAIN_ITER_NODES_NONROOT_I1(DATA, DEPTH, CTXT)					\
-	_XENUM5_TUPLETREE_ITERATE_FLAT_GEN(							\
-		DATA,										\
-		/* We do not want to iterate leaf values */					\
-		BOOST_PP_DEC(DEPTH),								\
-		(_XENUM5_CTXT_GET_CALLBACK(CTXT), _XENUM5_PLAIN_ITER_NODES_NONROOT_FLT),	\
-		CTXT										\
-	)
-
-/**
- * Filter function for non-root nodes iteration.
- */
-#define _XENUM5_PLAIN_ITER_NODES_NONROOT_FLT(ITERPOS, NODE, CTXT)				\
-	BOOST_PP_AND(										\
-		BOOST_PP_NOT(_XENUM5_TUPLETREE_ITERPOS_GET_NEXTCHILD(ITERPOS)),			\
-		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)))	\
-	)
+	_XENUM5_PLAIN_DEFINE_VALUES(, PROPNAME, CTXT)						\
 
 
 // ================================== NODES (SRC, DEPTH!=0) =====================================
@@ -238,281 +147,12 @@
  * Define the index nodes, for depth!=0; declare a name struct and define nodes as this struct.
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
-	constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0				\
-		_XENUM5_CALL_VALS(_XENUM5_PLAIN_COUNT_NODES, CTXT);				_XENUM5_NWLN \
-	typedef typename ::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(				\
-			sizeof(BOOST_PP_CAT(PROPNAME, Values)),					\
-			BOOST_PP_CAT(PROPNAME, IndexSize)					\
-		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
-	typedef ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
-		BOOST_PP_CAT(PROPNAME, Node);							_XENUM5_NWLN \
-	_XENUM5_PLAIN_SRC_NODES_STRUCT(PROPNAME, CTXT)						\
-	_XENUM5_PLAIN_SRC_NODES_DATA(PROPNAME, CTXT)						\
-
-
-// =========================== NODE NAMES (SRC) ==============================
-/**
- * Declares the ${propname}Nodes_t struct.
- */
-#define _XENUM5_PLAIN_SRC_NODES_STRUCT(PROPNAME, CTXT)						\
-	typedef struct {									_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PLAIN_ITER_NODES(_XENUM5_PLAIN_SRC_NODES_FIELD, CTXT)			\
-		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PROPNAME, Nodes_t);							_XENUM5_NWLN \
-
-/**
- * Define a single field of the Nodes_t struct.
- */
-#define _XENUM5_PLAIN_SRC_NODES_FIELD(ITERPOS, NODE, CTXT)					\
-	BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), Node)		\
-	_XENUM5_PROP_GEN_NODE_NAME(								\
-		CTXT,										\
-		_XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
-	);											_XENUM5_NWLN \
-
-
-// ======================== NODES DATA TABLE (SRC) ===========================
-/**
- * Defines the ${propname}Nodes struct.
- */
-#define _XENUM5_PLAIN_SRC_NODES_DATA(PROPNAME, CTXT)						\
-	constexpr const BOOST_PP_CAT(PROPNAME, Node) BOOST_PP_CAT(PROPNAME, Nodes)[] =		\
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PLAIN_ITER_NODES(_XENUM5_PLAIN_SRC_NODE_DATA, CTXT)			\
-		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN \
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_NODES_DATA().
- */
-#define _XENUM5_PLAIN_SRC_NODE_DATA(ITERPOS, NODE, CTXT)					\
-	{											\
-		/* Size */									\
-		_XENUM5_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),				\
-		/* Index */									\
-		BOOST_PP_CAT(									\
-			_XENUM5_PLAIN_SRC_NODE_DATA_INDEX_,					\
-			BOOST_PP_BOOL(_XENUM5_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))	\
-		) (ITERPOS, CTXT)								\
-	},											_XENUM5_NWLN \
-
-/**
- * Define IndexNode.index to 0 since node has no children.
- */
-#define _XENUM5_PLAIN_SRC_NODE_DATA_INDEX_0(ITERPOS, CTXT)					\
-	0
-
-/**
- * Define IndexNode.index as an offset expression into a names struct.
- */
-#define _XENUM5_PLAIN_SRC_NODE_DATA_INDEX_1(ITERPOS, CTXT)					\
-	_XENUM5_PLAIN_SRC_NODE_DATA_INDEX_1_DO(							\
-		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS),				\
-		BOOST_PP_IF(									\
-			_XENUM5_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS),				\
-			Nodes_t,								\
-			Values_t								\
-		),										\
-		BOOST_PP_IF(									\
-			_XENUM5_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS),				\
-			Node,									\
-			Value									\
-		),										\
-		CTXT										\
-	)
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_NODE_DATA_INDEX_1().
- */
-#define _XENUM5_PLAIN_SRC_NODE_DATA_INDEX_1_DO(PROPNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE, CTXT)	\
-	(offsetof(										\
-		BOOST_PP_CAT(PROPNAME, NAMESTRUCT),						\
-		_XENUM5_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
-	) / sizeof(BOOST_PP_CAT(PROPNAME, MEMBERTYPE)))
-
-
-// ======================================= DATA (HDR) ===========================================
-/**
- * Worker for _XENUM5_PROP_DEFINE_PLAIN().
- * Defines all the data and functions of a single custom property, for "plain" data types,
- * implemented in header.
- */
-#define _XENUM5_PLAIN_HDR_DEFINE(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)			\
-	/* FIXME: Also define IndexSize - ? */							\
-	constexpr const										\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)				\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)				\
-		[];										_XENUM5_NWLN \
-	BOOST_PP_CAT(										\
-		_XENUM5_PLAIN_HDR_DATA_MULTILEVEL_,						\
-		BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))				\
-	) (CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
-
-/* DEBUG
-_PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAME inttype=INTTYPE propdef=PROPDEF _XENUM5_NWLN \
-*/
-
-
-/**
- * Defines nothing since the custom property has depth==0.
- */
-#define _XENUM5_PLAIN_HDR_DATA_MULTILEVEL_0(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
-
-
-/**
- * Worker for _XENUM5_PLAIN_DEFINE_DATA().
- * Defines the data of a single multilevel custom property (only when depth!=0).
- */
-#define _XENUM5_PLAIN_HDR_DATA_MULTILEVEL_1(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)	\
-	_XENUM5_PLAIN_HDR_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	_XENUM5_PLAIN_HDR_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-
-/**
- * Worker for _XENUM5_PLAIN_DEFINE_DATA_MULTILEVEL_1().
- * Declares the source-local name structs for the custom property.
- */
-#define _XENUM5_PLAIN_HDR_DEFINE_LOCAL(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	/* The symbols should never become visible outside this source unit. */			\
-	namespace {										\
-	/* Also wrap in named namespace to prevent name clashes. */				\
-	namespace _XENUM5_IMPL_LOCAL_NS(_XENUM5_CTXT_GET_DECL(CTXT), PROPNAME) {		_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PLAIN_HDR_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)	\
-		_XENUM5_PLAIN_HDR_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)	\
-		_XENUM5_INDENT_DEC								\
-	}}											_XENUM5_NWLN \
-
-
-// ========================== VALUE NAMES (HDR) ==============================
-/**
- * Worker for _XENUM5_PLAIN_DATA_MULTILEVEL_1().
- * Declares the ${propname}ValueNames struct that contains a name for each index in the
- * ${propname}Values table.
- */
-#define _XENUM5_PLAIN_HDR_VALUES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME)		\
-	typedef struct {									_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_HDR_VALUE_NAME, CTXT)			\
-		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PROPNAME, ValueNames);							_XENUM5_NWLN \
-
-/**
- * Worker for _XENUM5_PLAIN_HDR_VALUES_NAMES(); loop function for each data node.
- * Declares a single value name.
- */
-#define _XENUM5_PLAIN_HDR_VALUE_NAME(ITERPOS, NODE, CTXT)					\
-	_XENUM5_DECL_GET_SCOPE(_XENUM5_CTXT_GET_DECL(CTXT))					\
-	_XENUM5_STORE_NAME(_XENUM5_CTXT_GET_DECL(CTXT))						\
-	:: BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), Value)	\
-	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS))	\
-	;											_XENUM5_NWLN \
-
-
-// =========================== NODE NAMES (HDR) ==============================
-/**
- * Worker for _XENUM5_PLAIN_DATA_MULTILEVEL_1().
- * Declares the ${propname}NodeNames struct that contains a name for each index in the
- * ${propname}IndexNodes table.
- */
-#define _XENUM5_PLAIN_HDR_NODES_NAMES(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	typedef struct {									_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PLAIN_ITER_NODES(_XENUM5_PLAIN_HDR_NODE_NAME, CTXT)			\
-		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PROPNAME, NodeNames);							_XENUM5_NWLN \
-
-/**
- * Worker for _XENUM5_PLAIN_NODES_NAMES().
- */
-#define _XENUM5_PLAIN_HDR_NODE_NAME(ITERPOS, NODE, CTXT)					\
-	_XENUM5_DECL_GET_SCOPE(_XENUM5_CTXT_GET_DECL(CTXT))					\
-	_XENUM5_STORE_NAME(_XENUM5_CTXT_GET_DECL(CTXT))						\
-	:: BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), IndexNode)	\
-	_XENUM5_PROP_GEN_NODE_NAME(								\
-		CTXT,										\
-		_XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
-	)											\
-	;											_XENUM5_NWLN \
-/*
-_PLAIN_NODE_NAME: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE] ctxt=[CTXT] _XENUM5_NWLN \
-*/
-
-
-// ======================== NODES DATA TABLE (HDR) ===========================
-/**
- * Worker for _XENUM5_PLAIN_DATA_MULTILEVEL_1().
- * Defines the ${propname}IndexNodes node-data table.
- */
-#define _XENUM5_PLAIN_HDR_NODES_DATA(CTXT, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
-	constexpr const										\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNode)				\
-		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)				\
-		/* Explicit size not needed */							\
-		/*[SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexSize)] = */			\
-		[] =										\
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PLAIN_ITER_NODES(_XENUM5_PLAIN_HDR_NODE_DATA, CTXT)			\
-		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN \
-
-/**
- * Worker for _XENUM5_PLAIN_NODES_DATA().
- */
-#define _XENUM5_PLAIN_HDR_NODE_DATA(ITERPOS, NODE, CTXT)					\
-	{											\
-		/* Size */									\
-		_XENUM5_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS),				\
-		/* Index */									\
-		BOOST_PP_CAT(									\
-			_XENUM5_PLAIN_HDR_NODE_DATA_INDEX_,					\
-			BOOST_PP_BOOL(_XENUM5_TUPLETREE_ITERPOS_GET_CHILDCOUNT(ITERPOS))	\
-		) (ITERPOS, CTXT)								\
-	},											_XENUM5_NWLN \
-/*
-_XENUM5_PLAIN_NODE_DATA: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=[CTXT] node=[NODE] _XENUM5_NWLN \
-*/
-
-/**
- * Worker for _XENUM5_PLAIN_NODE_DATA().
- * Define IndexNode.index to 0 since node has no children.
- */
-#define _XENUM5_PLAIN_HDR_NODE_DATA_INDEX_0(ITERPOS, CTXT)					\
-	0
-
-/**
- * Worker for _XENUM5_PLAIN_NODE_DATA().
- * Define IndexNode.index as an offset expression into a names struct.
- */
-#define _XENUM5_PLAIN_HDR_NODE_DATA_INDEX_1(ITERPOS, CTXT)					\
-	_XENUM5_PLAIN_HDR_NODE_DATA_INDEX_1_DO(							\
-		CTXT,										\
-		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS),				\
-		BOOST_PP_IF(									\
-			_XENUM5_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS),				\
-			NodeNames,								\
-			ValueNames								\
-		),										\
-		BOOST_PP_IF(									\
-			_XENUM5_TUPLETREE_ITERPOS_GET_LEVEL(ITERPOS),				\
-			IndexNode,								\
-			Value									\
-		)										\
-	)
-
-/**
- * Worker for _XENUM5_PLAIN_NODE_VALUE_INDEX_1().
- */
-#define _XENUM5_PLAIN_HDR_NODE_DATA_INDEX_1_DO(CTXT, PROPNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE)	\
-	(offsetof(										\
-		_XENUM5_IMPL_LOCAL_NS(_XENUM5_CTXT_GET_DECL(CTXT), PROPNAME)::BOOST_PP_CAT(PROPNAME, NAMESTRUCT),	\
-		_XENUM5_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
-	) / sizeof(BOOST_PP_CAT(PROPNAME, MEMBERTYPE)))
-
+	_XENUM5_PLAIN_DEFINE_INDEXSIZE(, PROPNAME, CTXT)					\
+	_XENUM5_PLAIN_DECLARE_INDEX_TYPE(PROPNAME)						\
+	_XENUM5_PLAIN_DECLARE_NODE_TYPE(PROPNAME)						\
+	_XENUM5_PLAIN_DEFINE_NODENAMES(PROPNAME, CTXT)						\
+	_XENUM5_PLAIN_DEFINE_VALUENAMES(PROPNAME, CTXT)						\
+	_XENUM5_PLAIN_DEFINE_NODES(, PROPNAME, CTXT)						\
 
 
 // ==================================== LOCAL FUNCTIONS ========================================
@@ -702,14 +342,14 @@ _XENUM5_PLAIN_NODE_DATA: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} ctxt=
  */
 #define _XENUM5_PLAIN_HDR_CHECK_1(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
 	static_assert(										\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, ValueNames)) == 	\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)),			\
+		sizeof(SCOPE STORENAME::BOOST_PP_CAT(PROPNAME, ValueNames)) ==			\
+		sizeof(SCOPE STORENAME::BOOST_PP_CAT(PROPNAME, Values)),			\
 		"Struct/array size mismatch (ValueNames / Values)."				\
 	);											_XENUM5_NWLN \
 	static_assert(										\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
-		sizeof(SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, IndexNodes)),			\
-		"Struct/array size mismatch (NodeNames / IndexNodes)."				\
+		sizeof(SCOPE STORENAME::BOOST_PP_CAT(PROPNAME, NodeNames)) ==			\
+		sizeof(SCOPE STORENAME::BOOST_PP_CAT(PROPNAME, Nodes)),				\
+		"Struct/array size mismatch (NodeNames / Nodes)."				\
 	);											_XENUM5_NWLN \
 
 /*
@@ -740,15 +380,15 @@ _XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
  */
 #define _XENUM5_PLAIN_SRC_CHECK_1(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, DECL, CTXT, Z)	\
 	static_assert(										\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Nodes_t)) ==				\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodeNames)) ==				\
 		LOCALSCOPE::BOOST_PP_CAT(PROPNAME, IndexSize) *					\
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Node)),				\
-		"Struct size mismatch (Nodes_t / IndexSize)."					\
+		"Struct size mismatch (NodeNames / IndexSize)."					\
 	);											_XENUM5_NWLN \
 	static_assert(										\
 		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes)) ==	\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes_t)),	\
-		"Array/struct size mismatch (Nodes / Nodes_t)."					\
+		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)),	\
+		"Array/struct size mismatch (Nodes / NodeNames)."					\
 	);											_XENUM5_NWLN \
 
 

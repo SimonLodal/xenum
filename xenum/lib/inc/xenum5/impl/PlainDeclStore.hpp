@@ -10,65 +10,52 @@
 #define _XENUM5_IMPL_PLAIN_DECL_STORE_HPP
 
 
-// ======================================= DATA (HDR) ===========================================
+// ======================================= MAIN (HDR) ===========================================
 /**
  * Worker for _XENUM5_PROP_DECLS_PLAIN().
  * Declares the data related to a single custom property, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DECLS_DATA(CTXT, DECL, PROPDEF, PROPNAME, Z)				\
-	_XENUM5_INDENT_SUB									\
-	public:											_XENUM5_NWLN \
-	_XENUM5_DOC(Native type of custom property PROPNAME values.				_XENUM5_NWLN \
-		Should be private, but is used in struct BOOST_PP_CAT(PROPNAME, ValueNames)	\
-		which is declared outside this class.)						\
-	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
-	_XENUM5_INDENT_SUB									\
-	private:										_XENUM5_NWLN \
+#define _XENUM5_PLAIN_HDR_DECLS(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
 	_XENUM5_PLAIN_HDR_DECLS_VALUES(PROPNAME, PROPDEF, DECL, CTXT, Z)			\
-	/* Index-nodes only if depth != 0 */							\
-	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLS_NODES_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))) \
-		(CTXT, DECL, PROPDEF, PROPNAME)
-
+	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLS, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))) \
+		(PROPNAME, PROPDEF, DECL, CTXT)							\
+/* FIXME: Convert */\
+	_XENUM5_PLAIN_HDR_DECLS_FUNCS(PROPNAME, PROPDEF, CTXT, Z)
 
 /**
- * Declare and define the values.
+ * Worker for _XENUM5_PLAIN_HDR_DECLS(), for depth==0.
+ * Values are already defined as a single plain array of values, directly indexed
+ * by enum value; no need for name struct or nodes table.
+ */
+#define _XENUM5_PLAIN_HDR_DECLS0(PROPNAME, PROPDEF, DECL, CTXT)					\
+
+/**
+ * Worker for _XENUM5_PLAIN_HDR_DECLS(), for depth!=0.
+ */
+#define _XENUM5_PLAIN_HDR_DECLS1(PROPNAME, PROPDEF, DECL, CTXT)					\
+	_XENUM5_PLAIN_HDR_DECLS1_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
+
+
+// ====================================== VALUES (HDR) ==========================================
+/**
+ * Declare and define the value type and values.
  */
 #define _XENUM5_PLAIN_HDR_DECLS_VALUES(PROPNAME, PROPDEF, DECL, CTXT, Z)			\
-	_XENUM5_DOC(Array of all PROPNAME values.)						\
-	static constexpr const BOOST_PP_CAT(PROPNAME, Value)					\
-	BOOST_PP_CAT(PROPNAME, Values)[] = _XENUM5_PLAIN_DEFINE_VALUES(CTXT)			\
+	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
+	_XENUM5_PLAIN_DEFINE_VALUES(static, PROPNAME, CTXT)					\
 
 
-// ============================= COUNT NODES =================================
-/**
- * Worker for _XENUM5_PLAIN_HDR_DECLS_DATA(). Does nothing since depth==0.
- */
-#define _XENUM5_PLAIN_HDR_DECLS_NODES_0(CTXT, DECL, PROPDEF, PROPNAME)
-
+// ======================================= NODES (HDR) ==========================================
 /**
  * Worker for _XENUM5_PLAIN_HDR_DECLS_DATA(). Declares variables related to index nodes (depth>0).
  */
-#define _XENUM5_PLAIN_HDR_DECLS_NODES_1(CTXT, DECL, PROPDEF, PROPNAME)				\
-	_XENUM5_DOC(Total number of indexnodes for indexing PROPNAME values.)			\
-	static constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0			\
-		_XENUM5_CALL_VALS(_XENUM5_PLAIN_COUNT_NODES, CTXT);				_XENUM5_NWLN \
-	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
-	typedef typename ::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(				\
-			sizeof(BOOST_PP_CAT(PROPNAME, Values)) / sizeof(BOOST_PP_CAT(PROPNAME, Value)), \
-			BOOST_PP_CAT(PROPNAME, IndexSize)					\
-		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
-	_XENUM5_INDENT_SUB									\
-	public:											_XENUM5_NWLN \
-	_XENUM5_DOC(Indexnode type for PROPNAME, to map the PROPNAME value hierarchy.		_XENUM5_NWLN \
-		Should be private, but is used in struct BOOST_PP_CAT(PROPNAME, NodeNames)	\
-		which is declared outside this class.)						\
-	typedef ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
-		BOOST_PP_CAT(PROPNAME, IndexNode);						_XENUM5_NWLN \
-	_XENUM5_INDENT_SUB									\
-	private:										_XENUM5_NWLN \
-	_XENUM5_DOC(Mapping of all nodes and values in the PROPNAME data hierarchy.)		\
-	static const BOOST_PP_CAT(PROPNAME, IndexNode)						\
-		BOOST_PP_CAT(PROPNAME, IndexNodes) [BOOST_PP_CAT(PROPNAME, IndexSize)];		_XENUM5_NWLN \
+#define _XENUM5_PLAIN_HDR_DECLS1_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
+	_XENUM5_PLAIN_DEFINE_INDEXSIZE(static, PROPNAME, CTXT)					\
+	_XENUM5_PLAIN_DECLARE_INDEX_TYPE(PROPNAME)						\
+	_XENUM5_PLAIN_DECLARE_NODE_TYPE(PROPNAME)						\
+	_XENUM5_PLAIN_DEFINE_NODENAMES(PROPNAME, CTXT)						\
+	_XENUM5_PLAIN_DEFINE_VALUENAMES(PROPNAME, CTXT)						\
+	_XENUM5_PLAIN_DEFINE_NODES(static, PROPNAME, CTXT)					\
 
 
 // ===================================== FUNCTIONS (HDR) ========================================
@@ -76,7 +63,7 @@
  * Worker for _XENUM5_PROP_DECLS_PLAIN().
  * Declares the functions related to a single custom property, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DECLS_FUNCS(CTXT, PROPDEF, PROPNAME, Z)				\
+#define _XENUM5_PLAIN_HDR_DECLS_FUNCS(PROPNAME, PROPDEF, CTXT, Z)				\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
@@ -105,7 +92,7 @@
 	)											\
 
 
-// ================================== FUNC (HDR): getNode() =====================================
+// =========================== getNode() (HDR) ===============================
 /**
  * Worker for _XENUM5_PLAIN_DECLS_FUNCS().
  * Generates get${propname}Node() getters.
@@ -113,7 +100,7 @@
 #define _XENUM5_PLAIN_HDR_DECLS_FUNC_GET_NODE(PROPNAME, LEVEL, Z)				\
 	_XENUM5_DOC(Retrieve a level LEVEL node of the PROPNAME data hierarchy.)		\
 	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
-	BOOST_PP_CAT(PROPNAME, IndexNode&)							\
+	BOOST_PP_CAT(PROPNAME, Node&)								\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
@@ -122,7 +109,7 @@
 			Z									\
 		)										\
 	) {											\
-		return BOOST_PP_CAT(PROPNAME, IndexNodes)[					\
+		return BOOST_PP_CAT(PROPNAME, Nodes)[						\
 			_XENUM5_PROP_GEN_NODE_INDEXING(						\
 				PROPNAME,							\
 				BOOST_PP_CAT(PROPNAME, Index),					\
@@ -133,7 +120,7 @@
 	}											_XENUM5_NWLN \
 
 
-// ================================== FUNC (HDR): getSize() =====================================
+// =========================== getSize() (HDR) ===============================
 /**
  * Worker for _XENUM5_PLAIN_DECLS_FUNCS().
  * Generates get${propname}Size() getters.
@@ -162,7 +149,7 @@
 	}											_XENUM5_NWLN \
 
 
-// =============================== FUNC (HDR): get$PROPNAME() ===================================
+// ======================== get${PROPNAME}() (HDR) ===========================
 /**
  * Worker for _XENUM5_PLAIN_DECLS_FUNCS().
  * Generates get${propname}() value getter.
