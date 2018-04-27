@@ -9,9 +9,6 @@
 #ifndef _XENUM5_IMPL_PLAIN_HPP
 #define _XENUM5_IMPL_PLAIN_HPP
 
-/// Define where the data of the custom property is defined; HDR or SRC.
-//#define _XENUM5_PLAIN_IMPL	HDR
-#define _XENUM5_PLAIN_IMPL	SRC
 
 
 // =============================== DECLARATION IN STORE CLASS ==================================
@@ -19,7 +16,14 @@
  * Entry point for declaring a custom property of plain type, in store class context.
  */
 #define _XENUM5_PROP_DECLS_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLS_PLAIN_, _XENUM5_PLAIN_IMPL) (CTXT, DECL, PROPDEF, Z)
+	BOOST_PP_CAT(_XENUM5_PROP_DECLS_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
+		(CTXT, DECL, PROPDEF, Z)
+
+/*
+_XENUM5_CMNT(PROP_DECLS_PLAIN: propdef=PROPDEF) \
+_XENUM5_CMNT(PROP_DECLS_PLAIN: features=_XENUM5_PROPDEF_GET_FEATURES(PROPDEF)) \
+_XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)) \
+*/
 
 /**
  * Declaratation for a custom property of plain type, implemented in header, in store class
@@ -49,7 +53,8 @@
  * Entry point for declaring a custom property of plain type, in value class context.
  */
 #define _XENUM5_PROP_DECLV_PLAIN(CTXT, PROPDEF, Z)						\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLV_PLAIN_, _XENUM5_PLAIN_IMPL) (CTXT, PROPDEF, Z)
+	BOOST_PP_CAT(_XENUM5_PROP_DECLV_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
+		(CTXT, PROPDEF, Z)
 
 
 /**
@@ -87,7 +92,8 @@
  * Entry point for defining a custom property of plain type, in source file context.
  */
 #define _XENUM5_PROP_DEFINE_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_PLAIN_, _XENUM5_PLAIN_IMPL) (CTXT, DECL, PROPDEF, Z)
+	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
+		(CTXT, DECL, PROPDEF, Z)
 
 /**
  * Definitions for a custom property of plain type, implemented in header, in source file context.
@@ -126,7 +132,8 @@
  * context.
  */
 #define _XENUM5_PROP_CHECK_PLAIN(CTXT, DECL, PROPDEF, Z)					\
-	BOOST_PP_CAT(_XENUM5_PROP_CHECK_PLAIN_, _XENUM5_PLAIN_IMPL) (CTXT, DECL, PROPDEF, Z)
+	BOOST_PP_CAT(_XENUM5_PROP_CHECK_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
+		(CTXT, DECL, PROPDEF, Z)
 
 /**
  * Define final checks for a custom property of plain type, implemented in header, in source

@@ -45,6 +45,21 @@
  */
 #define _XENUM5_PROPDEF_GET_DEPTH(PROPDEF)		BOOST_PP_SEQ_ELEM(3, PROPDEF)
 
+/**
+ * Get the "PLACEMENT" feature; 0=place implementation in source file, 1=in header file.
+ */
+#define _XENUM5_PROPDEF_GET_PLACEMENT(PROPDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PROPDEF))
+
+/**
+ * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
+ */
+#define _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)	BOOST_PP_IF(				\
+							_XENUM5_PROPDEF_GET_PLACEMENT(PROPDEF),	\
+							HDR,					\
+							SRC)
+
+//#define _XENUM5_PROPDEF_GET_FEATURES(PROPDEF)		BOOST_PP_SEQ_ELEM(4, PROPDEF)
+
 
 /**
  * Initialize a custom property definition; generate error if required fields are missing/empty,
@@ -114,12 +129,38 @@ _PROPDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
 /**
  * Helper for _XENUM5_PROPDEF_INIT().
  */
-#define _XENUM5_PROPDEF_INIT_DEPTH(DBGLOC, DEPTH)						\
+#define _XENUM5_PROPDEF_INIT_DEPTH(DBGLOC, DEPTH, ...)						\
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(DEPTH),							\
 		0,										\
 		DEPTH										\
-	))
+	))											\
+	_XENUM5_PROPDEF_INIT_FEATURES(DBGLOC, __VA_ARGS__)
+
+/**
+ * Helper for _XENUM5_PROPDEF_INIT().
+ */
+#define _XENUM5_PROPDEF_INIT_FEATURES(DBGLOC, FEATURES)						\
+	(BOOST_PP_CAT(										\
+		_XENUM5_PROPDEF_INIT_FEATURES_,							\
+		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(FEATURES))					\
+	) (DBGLOC, BOOST_PP_TUPLE_ENUM(FEATURES)))
+
+/**
+ * Helper for _XENUM5_PROPDEF_INIT_FEATURES(), when features tuple is not defined.
+ */
+#define _XENUM5_PROPDEF_INIT_FEATURES_0(DBGLOC, PLACEMENT)					\
+	(0)
+
+/**
+ * Helper for _XENUM5_PROPDEF_INIT_FEATURES(), when features tuple is defined.
+ */
+#define _XENUM5_PROPDEF_INIT_FEATURES_1(DBGLOC, PLACEMENT, ...)					\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(PLACEMENT),							\
+		(0),										\
+		(BOOST_PP_BOOL(PLACEMENT))							\
+	)											\
 
 
 #endif // _XENUM5_IMPL_PROPDEF_HPP
