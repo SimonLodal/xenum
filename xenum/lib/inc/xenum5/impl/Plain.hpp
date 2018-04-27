@@ -170,6 +170,23 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ====================================== COMMON UTILS ==========================================
 
+/**
+ * Helper to define the values array.
+ */
+#define _XENUM5_PLAIN_DEFINE_VALUES(CTXT)							\
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_DEFINE_VALUE, CTXT)			\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN
+
+/**
+ * Loop worker for _XENUM5_PLAIN_DEFINE_VALUES().
+ */
+#define _XENUM5_PLAIN_DEFINE_VALUE(ITERPOS, NODE, CTXT)						\
+	_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PROPDEF(CTXT)),				_XENUM5_NWLN
+
+
 // ============================= COUNT NODES =================================
 /**
  * Call as XENUM_VALS_* callback.

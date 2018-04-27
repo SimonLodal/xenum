@@ -94,21 +94,12 @@
 	)
 
 
-// ===================================== VALUES, COMMON =========================================
-/**
- * Callback worker for values iteration.
- * Defines a single data value of a custom property.
- */
-#define _XENUM5_PLAIN_VALUE(ITERPOS, NODE, CTXT)						\
-	_XENUM5_PROP_GET_VALUE(NODE, CTXT),							_XENUM5_NWLN
-
-
 // ================================= VALUES (SRC, DEPTH==0) =====================================
 /**
  * Define the values, for depth==0.
  */
 #define _XENUM5_PLAIN_SRC_DEFL0_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
-	typedef _XENUM5_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM5_NWLN \
+	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
 	_XENUM5_PLAIN_SRC_DEFL0_VALUES_DATA(PROPNAME, CTXT)					\
 
 /**
@@ -117,11 +108,7 @@
  */
 #define _XENUM5_PLAIN_SRC_DEFL0_VALUES_DATA(PROPNAME, CTXT)					\
 	constexpr const BOOST_PP_CAT(PROPNAME, Value)						\
-	BOOST_PP_CAT(PROPNAME, Values)[] = {							_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_VALUE, CTXT)				\
-		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN
+	BOOST_PP_CAT(PROPNAME, Values)[] = _XENUM5_PLAIN_DEFINE_VALUES(CTXT)			\
 
 
 // ================================= VALUES (SRC, DEPTH!=0) =====================================
@@ -129,7 +116,7 @@
  * Define the values, for depth!=0; declare a struct and define values as this struct.
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
-	typedef _XENUM5_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM5_NWLN \
+	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
 	_XENUM5_PLAIN_SRC_DEFL1_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)				\
 	_XENUM5_PLAIN_SRC_DEFL1_VALUES_DATA(PROPNAME, CTXT)					\
 
@@ -158,11 +145,7 @@
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_VALUES_DATA(PROPNAME, CTXT)					\
 	constexpr const BOOST_PP_CAT(PROPNAME, Value)						\
-	BOOST_PP_CAT(PROPNAME, Values)[] = {							_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_VALUE, CTXT)				\
-		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN
+	BOOST_PP_CAT(PROPNAME, Values)[] = _XENUM5_PLAIN_DEFINE_VALUES(CTXT)			\
 
 
 // ====================================== NODES, COMMON =========================================
@@ -443,7 +426,7 @@ _PLAIN_DEFINE_DATA: ctxt=CTXT scope=SCOPE storename=STORENAME valuename=VALUENAM
 	} BOOST_PP_CAT(PROPNAME, ValueNames);							_XENUM5_NWLN \
 
 /**
- * Worker for _XENUM5_PLAIN_VALUES_NAMES(); loop function for each data node.
+ * Worker for _XENUM5_PLAIN_HDR_VALUES_NAMES(); loop function for each data node.
  * Declares a single value name.
  */
 #define _XENUM5_PLAIN_HDR_VALUE_NAME(ITERPOS, NODE, CTXT)					\

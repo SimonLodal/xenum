@@ -147,6 +147,12 @@
 
 
 // ====================================== COMMON UTILS ==========================================
+/**
+ * Declare the data type for a custom property.
+ */
+#define _XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
+	typedef _XENUM5_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM5_NWLN \
+
 
 // ============================ INDEXNODE NAME ===============================
 /**
@@ -223,14 +229,14 @@
 // ========================= APPLY DEFAULT VALUE =============================
 /**
  * @param NODE A leaf-node (value).
- * @param CTXT Context object. Must have PROPDEF set.
+ * @param PROPDEF Property definition object.
  * @return NODE if non-empty, else DEFAULT_VALUE from the PROPDEF.
  */
 // FIXME: Report error if value and defaultvalue are both empty.
-#define _XENUM5_PROP_GET_VALUE(NODE, CTXT)							\
+#define _XENUM5_PROP_GET_VALUE(NODE, PROPDEF)							\
 	BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(NODE),							\
-		_XENUM5_PROPDEF_GET_DEFAULTVALUE(_XENUM5_CTXT_GET_PROPDEF(CTXT)),		\
+		_XENUM5_PROPDEF_GET_DEFAULTVALUE(PROPDEF),					\
 		NODE										\
 	)
 
