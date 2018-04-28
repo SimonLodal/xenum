@@ -17,8 +17,6 @@
  * Declares the functions related to a single custom property, in value class.
  */
 #define _XENUM5_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\

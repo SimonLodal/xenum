@@ -17,8 +17,6 @@
  * Declares the types related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(Native type of custom property PROPNAME values.)				\
 	using BOOST_PP_CAT(PROPNAME, Value) =							\
 		typename Store::BOOST_PP_CAT(PROPNAME, Value);					_XENUM5_NWLN \
@@ -147,8 +145,6 @@ public:												_XENUM5_NWLN \
  * Declares the functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\

@@ -28,6 +28,7 @@
 	_XENUM5_DOC(Container class for xenum _XENUM5_DECL_GET_CNTNRNAME(DECL).			_XENUM5_NWLN \
 		Contains all the enum values as value objects, lookup functions, and iteration.)\
 	class _XENUM5_CNTNR_NAME(DECL) {							_XENUM5_NWLN \
+	public:											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_DECLC_VALUE_T(CTXT, DECL)						\
 		_XENUM5_DECLC_ENUM(CTXT, DECL)							\
@@ -43,8 +44,6 @@
  * Not used here, but useful for XenumSet and others.
  */
 #define _XENUM5_DECLC_VALUE_T(CTXT, DECL)							\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(The enum-value class.)							\
 	typedef _XENUM5_DECL_GET_VALUENAME(DECL) _value_t;					_XENUM5_NWLN
 
@@ -54,8 +53,6 @@ public:												_XENUM5_NWLN \
  * Copy native enum declaration from store class.
  */
 #define _XENUM5_DECLC_ENUM(CTXT, DECL)								\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(Number of enum values in this enum class.)					\
 	static constexpr const size_t _size = _XENUM5_STORE_NAME(DECL)::size;			_XENUM5_NWLN \
 	_XENUM5_DOC(Integer type used for enum values.)						\
@@ -69,8 +66,6 @@ public:												_XENUM5_NWLN \
  * Declare the static enum-value objects.
  */
 #define _XENUM5_DECLC_ENUM_OBJS(CTXT)								\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(@name Enum values)								\
 	_XENUM5_DOC(@{)										\
 	_XENUM5_CALL_VALS(_XENUM5_DECLC_ENUM_OBJ, CTXT)						\
@@ -100,8 +95,6 @@ public:												_XENUM5_NWLN \
  * Worker for _XENUM5_DECLC_FUNCS().
  */
 #define _XENUM5_DECLC_FUNCS_I1(CTXT, STORENAME, CREALNAME, VALUENAME)				\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(Ctor. Do not use, except when iterating the enum-values.			_XENUM5_NWLN \
 		All members of this class are static, so there is no				_XENUM5_NWLN \
 		need to instantiate an object; just address the members				_XENUM5_NWLN \
@@ -113,8 +106,6 @@ public:												_XENUM5_NWLN \
 		@endcode)									\
 	constexpr CREALNAME (void) noexcept {}							_XENUM5_NWLN \
 	/* Wrapper for store class lookup functions. */						\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given index.						_XENUM5_NWLN \
 		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
@@ -144,8 +135,6 @@ public:												_XENUM5_NWLN \
 	static bool _fromIdentifier(const char* identifier, VALUENAME& value) noexcept		\
 		{ return STORENAME::fromIdentifier(identifier, value); }			_XENUM5_NWLN \
 	/* Iteration support. */								\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(Iterator type for this container; for iterating the enum values.)		\
 	typedef ::_XENUM5_NS::XenumCntnrIterator<CREALNAME> iterator;				_XENUM5_NWLN \
 	_XENUM5_DOC(Get iterator to beginning (before the first enum-value).)			\
