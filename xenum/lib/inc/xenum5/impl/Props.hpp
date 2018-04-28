@@ -367,7 +367,104 @@
 	.getNextIndex(BOOST_PP_CAT(index, LEVELS))
 
 
-// ===================== FUNC (SRC): Store::getSize() ========================
+// ============================== Index type =================================
+/**
+ * Define the ${PROPNAME}Index type.
+ */
+#define _XENUM5_PROP_DECLARE_INDEX_TYPE(PROPNAME)						\
+	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
+	typedef typename ::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(				\
+			sizeof(BOOST_PP_CAT(PROPNAME, Values)) / sizeof(BOOST_PP_CAT(PROPNAME, Value)), \
+			BOOST_PP_CAT(PROPNAME, IndexSize)					\
+		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
+
+
+// ============================== Node type ==================================
+/**
+ * Define the ${PROPNAME}IndexNode type.
+ */
+#define _XENUM5_PROP_DECLARE_NODE_TYPE(PROPNAME)						\
+	_XENUM5_DOC(IndexNode type for PROPNAME, to map the PROPNAME value hierarchy.)		\
+	typedef ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
+		BOOST_PP_CAT(PROPNAME, Node);							_XENUM5_NWLN \
+
+
+// ============================ Node counting ================================
+/**
+ * Callback for iteration functions. Called for each node.
+ * Add +1 for each indexnode.
+ */
+#define _XENUM5_PROP_COUNT_NODES_ADD(ITERPOS, NODE, CTXT, STATE)				\
+	BOOST_PP_INC(STATE)
+
+
+// ============================== Node naming ================================
+/**
+ * Callback for iteration functions. Called for each node.
+ * Declare a single field of the NodeNames struct.
+ */
+#define _XENUM5_PROP_DECLARE_NODENAME(ITERPOS, NODE, CTXT)					\
+	BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), Node)		\
+	_XENUM5_PROP_GEN_NODE_NAME(								\
+		CTXT,										\
+		_XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)				\
+	);											_XENUM5_NWLN
+
+
+// ===================== DEF {Store,anon}::getNode() =========================
+/**
+ * Define get${propname}Node() getters for all levels.
+ */
+#define _XENUM5_PROP_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM5_PROP_DEFINE_GET_NODE_N,							\
+		CTXT										\
+	)											\
+
+/**
+ * Define get${propname}Node() getter for given level.
+ */
+#define _XENUM5_PROP_DEFINE_GET_NODE_N(Z, N, CTXT)						\
+	_XENUM5_PROP_DEFINE_GET_NODE_N_I1(							\
+		_XENUM5_CTXT_GET_DECLPFX(CTXT),							\
+		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		N,										\
+		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		Z										\
+	)											\
+
+/**
+ * Worker for _XENUM5_PROP_DEFINE_GET_NODE_N().
+ */
+#define _XENUM5_PROP_DEFINE_GET_NODE_N_I1(DECLPFX, PROPNAME, LEVEL, DECL, Z)			\
+	_XENUM5_DOC(Retrieve a level LEVEL node of the PROPNAME data hierarchy.)		\
+	DECLPFX BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
+	BOOST_PP_CAT(PROPNAME, Node&)								\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
+			Enum,									\
+			BOOST_PP_CAT(PROPNAME, Index),						\
+			LEVEL,									\
+			Z									\
+		)										\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		return BOOST_PP_CAT(PROPNAME, Nodes)[						\
+			_XENUM5_PROP_GEN_NODE_INDEXING(						\
+				PROPNAME,							\
+				BOOST_PP_CAT(PROPNAME, Index),					\
+				LEVEL,								\
+				Z								\
+			)									\
+		];										_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN
+
+
+// ======================== DECL Store::getSize() ============================
 /**
  * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
@@ -389,7 +486,51 @@
 	);											_XENUM5_NWLN
 
 
-// ================== FUNC (SRC): Store::get$PROPNAME() ======================
+// ========================= DEF Store::getSize() ============================
+/**
+ * Define Store::get${propname}Size() getters for all levels. For source implementation.
+ */
+#define _XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM5_PROP_SRC_DEFS_GET_SIZE_N,						\
+		CTXT										\
+	)											\
+
+/**
+ * Define get${propname}Size() getter for this level.
+ */
+#define _XENUM5_PROP_SRC_DEFS_GET_SIZE_N(Z, N, CTXT)						\
+	_XENUM5_PROP_SRC_DEFS_GET_SIZE_N_I1(							\
+		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		N,										\
+		_XENUM5_DECL_GET_SCOPE(_XENUM5_CTXT_GET_DECL(CTXT)),				\
+		_XENUM5_STORE_NAME(_XENUM5_CTXT_GET_DECL(CTXT)),				\
+		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		Z										\
+	)
+
+/**
+ * Worker for _XENUM5_PROP_DEFS_GET_SIZE().
+ */
+#define _XENUM5_PROP_SRC_DEFS_GET_SIZE_N_I1(PROPNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
+	size_t											\
+	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return										\
+		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) ::					\
+		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
+			_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
+		)										\
+		.size;										_XENUM5_NWLN \
+	}											_XENUM5_NWLN
+
+
+// ====================== DECL Store::get$PROPNAME() =========================
 /**
  * Declare Store::get${propname}() value getter.
  * For properties implemented in source.
@@ -400,7 +541,7 @@
 	);											_XENUM5_NWLN
 
 
-// ===================== FUNC (SRC): Value::getSize() ========================
+// ========================= DEF Value::getSize() ============================
 /**
  * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
@@ -452,7 +593,7 @@
 	}											_XENUM5_NWLN
 
 
-// ================== FUNC (SRC): Value::get$PROPNAME() ======================
+// ====================== DEF Value::get$PROPNAME() ==========================
 /**
  * Declare Value::get${propname}() value getter.
  * For properties implemented in source.

@@ -153,10 +153,10 @@
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
 	_XENUM5_PLAIN_DEFINE_INDEXSIZE(, PROPNAME, CTXT)					\
-	_XENUM5_PLAIN_DECLARE_INDEX_TYPE(PROPNAME)						\
-	_XENUM5_PLAIN_DECLARE_NODE_TYPE(PROPNAME)						\
-	_XENUM5_PLAIN_DEFINE_NODENAMES(PROPNAME, CTXT)						\
-	_XENUM5_PLAIN_DEFINE_VALUENAMES(PROPNAME, CTXT)						\
+	_XENUM5_PROP_DECLARE_INDEX_TYPE(PROPNAME)						\
+	_XENUM5_PROP_DECLARE_NODE_TYPE(PROPNAME)						\
+	_XENUM5_PLAIN_DECLARE_NODENAMES(PROPNAME, CTXT)						\
+	_XENUM5_PLAIN_DECLARE_VALUENAMES(PROPNAME, CTXT)					\
 	_XENUM5_PLAIN_DEFINE_NODES(, PROPNAME, CTXT)						\
 
 
@@ -166,7 +166,7 @@
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_FUNCS(DEPTH, DECL, CTXT, Z)					\
 	using Enum = _XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum;		_XENUM5_NWLN \
-	_XENUM5_PLAIN_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
+	_XENUM5_PROP_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
 
 
 // ==================================== STORE FUNCTIONS ========================================
@@ -189,12 +189,7 @@
  * For source implementation, depth!=0.
  */
 #define _XENUM5_PLAIN_SRC_DEFS1_FUNCS(PROPNAME, DEPTH, PROPDEF, SCOPE, STORENAME, CTXT, Z)	\
-	BOOST_PP_REPEAT_ ## Z									\
-	(											\
-		DEPTH,										\
-		_XENUM5_PLAIN_SRC_DEFS1_GET_SIZE,						\
-		CTXT										\
-	)											\
+	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
 	_XENUM5_PLAIN_SRC_DEFS1_GET_VALUE(							\
 		PROPNAME,									\
 		DEPTH,										\
@@ -204,49 +199,6 @@
 		PROPDEF,									\
 		Z										\
 	)
-
-
-// =========================== getSize() (SRC) ===============================
-/**
- * Define get${propname}Size() getter for given level. For source implementation.
- */
-#define _XENUM5_PLAIN_SRC_DEFS1_GET_SIZE(Z, N, CTXT)						\
-	_XENUM5_PLAIN_SRC_DEFS1_GET_SIZE_I1(							\
-		N,										\
-		_XENUM5_CTXT_GET_PROPDEF(CTXT),							\
-		_XENUM5_CTXT_GET_DECL(CTXT),							\
-		Z										\
-	)
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_DEFS1_GET_SIZE().
- */
-#define _XENUM5_PLAIN_SRC_DEFS1_GET_SIZE_I1(LEVEL, PROPDEF, DECL, Z)				\
-	_XENUM5_PLAIN_SRC_DEFS1_GET_SIZE_I2(							\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		LEVEL,										\
-		_XENUM5_DECL_GET_SCOPE(DECL),							\
-		_XENUM5_STORE_NAME(DECL),							\
-		DECL,										\
-		Z										\
-	)
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_DEFS1_GET_SIZE_I1().
- */
-#define _XENUM5_PLAIN_SRC_DEFS1_GET_SIZE_I2(PROPNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
-	size_t											\
-	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
-		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
-	)											_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) ::					\
-		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
-			_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
-		)										\
-		.size;										_XENUM5_NWLN \
-	}											_XENUM5_NWLN \
 
 
 // =================== get${PROPNAME}() (SRC, DEPTH==0) ======================
