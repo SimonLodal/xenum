@@ -325,22 +325,22 @@
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
  * Defines final checks on data structures, for implementation in header.
  */
-#define _XENUM5_PLAIN_HDR_CHECK(CXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+#define _XENUM5_PLAIN_HDR_CHECK(PROPNAME, PROPDEF, SCOPE, STORENAME, Z)				\
 	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_CHECK_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\
-		(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)
+		(PROPNAME, SCOPE, STORENAME)
 
 /**
  * Worker for _XENUM5_PLAIN_CHECK().
  * For depth==0, there is no final checks to be made.
  */
-#define _XENUM5_PLAIN_HDR_CHECK_0(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+#define _XENUM5_PLAIN_HDR_CHECK_0(PROPNAME, SCOPE, STORENAME)					\
 
 
 /**
  * Worker for _XENUM5_PLAIN_CHECK().
  * For depth!=0, do check sizes of generated data.
  */
-#define _XENUM5_PLAIN_HDR_CHECK_1(CTXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+#define _XENUM5_PLAIN_HDR_CHECK_1(PROPNAME, SCOPE, STORENAME)					\
 	static_assert(										\
 		sizeof(SCOPE STORENAME::BOOST_PP_CAT(PROPNAME, ValueNames)) ==			\
 		sizeof(SCOPE STORENAME::BOOST_PP_CAT(PROPNAME, Values)),			\
@@ -360,14 +360,14 @@ _XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
  * Defines final checks on data structures, for implementation in source.
  */
-#define _XENUM5_PLAIN_SRC_CHECK(PROPNAME, PROPDEF, SCOPE, STORENAME, DECL, CTXT, Z)		\
+#define _XENUM5_PLAIN_SRC_CHECK(PROPNAME, PROPDEF, SCOPE, STORENAME, DECL, Z)			\
 	BOOST_PP_CAT(_XENUM5_PLAIN_SRC_CHECK_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\
-		(PROPNAME, PROPDEF, _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME), SCOPE, STORENAME, DECL, CTXT, Z)	\
+		(PROPNAME, _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME), SCOPE, STORENAME)		\
 
 /**
  * Worker for _XENUM5_PLAIN_SRC_CHECK(), for depth==0.
  */
-#define _XENUM5_PLAIN_SRC_CHECK_0(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, DECL, CTXT, Z)	\
+#define _XENUM5_PLAIN_SRC_CHECK_0(PROPNAME, LOCALSCOPE, SCOPE, STORENAME)			\
 	static_assert(										\
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Values)) ==				\
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Value)) * SCOPE STORENAME::size,	\
@@ -378,17 +378,17 @@ _XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
 /**
  * Worker for _XENUM5_PLAIN_SRC_CHECK(), for depth!=0.
  */
-#define _XENUM5_PLAIN_SRC_CHECK_1(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, DECL, CTXT, Z)	\
+#define _XENUM5_PLAIN_SRC_CHECK_1(PROPNAME, LOCALSCOPE, SCOPE, STORENAME)			\
 	static_assert(										\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodeNames)) ==				\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodeNames)) ==			\
 		LOCALSCOPE::BOOST_PP_CAT(PROPNAME, IndexSize) *					\
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Node)),				\
 		"Struct size mismatch (NodeNames / IndexSize)."					\
 	);											_XENUM5_NWLN \
 	static_assert(										\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes)) ==	\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)),	\
-		"Array/struct size mismatch (Nodes / NodeNames)."					\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Nodes)) ==				\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodeNames)),				\
+		"Array/struct size mismatch (Nodes / NodeNames)."				\
 	);											_XENUM5_NWLN \
 
 

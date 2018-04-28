@@ -14,14 +14,14 @@
  * Worker for _XENUM5_PROP_DEFINE_CSTRING().
  * Defines all the data and functions of a single custom property, for "cstring" data types.
  */
-#define _XENUM5_CSTRING_DEFINE(CTXT, DECL, PROPDEF, SCOPE, PROPNAME, Z)				\
+#define _XENUM5_CSTRING_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)				\
 	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
 	/* Also wrap in named namespace to prevent name clashes. */				\
 	namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) {					_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		_XENUM5_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)			\
-		_XENUM5_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)			\
+		_XENUM5_CSTRING_DEFINE_VALUES(PROPNAME, PROPDEF, CTXT, Z)			\
+		_XENUM5_CSTRING_DEFINE_NODES(PROPNAME, PROPDEF, CTXT, Z)			\
 		_XENUM5_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)					\
 		_XENUM5_INDENT_DEC								\
 	}}											_XENUM5_NWLN \
@@ -30,8 +30,8 @@
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		SCOPE,										\
 		_XENUM5_STORE_NAME(_XENUM5_CTXT_GET_DECL(CTXT)),				\
-		CTXT,										\
 		PROPDEF,									\
+		CTXT,										\
 		Z										\
 	)
 
@@ -41,15 +41,15 @@
  * Worker for _XENUM5_CSTRING_DEFINE().
  * Defines the string values.
  */
-#define _XENUM5_CSTRING_DEFINE_VALUES(CTXT, PROPDEF, PROPNAME, Z)				\
-	_XENUM5_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME)					\
-	_XENUM5_CSTRING_VALUES_DATA(CTXT, PROPNAME)						\
+#define _XENUM5_CSTRING_DEFINE_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
+	_XENUM5_CSTRING_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)					\
+	_XENUM5_CSTRING_VALUES_DATA(PROPNAME, CTXT)						\
 
 /**
  * Worker for _XENUM5_CSTRING_DEFINE_VALUES().
  * Declares the ${propname}Values_t struct.
  */
-#define _XENUM5_CSTRING_VALUES_STRUCT(CTXT, PROPDEF, PROPNAME)					\
+#define _XENUM5_CSTRING_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)					\
 	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
 	typedef struct {									_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
@@ -70,7 +70,7 @@
  * Worker for _XENUM5_CSTRING_DEFINE_VALUES().
  * Defines the ${propname}Values struct.
  */
-#define _XENUM5_CSTRING_VALUES_DATA(CTXT, PROPNAME)						\
+#define _XENUM5_CSTRING_VALUES_DATA(PROPNAME, CTXT)						\
 	constexpr BOOST_PP_CAT(PROPNAME, Values_t) BOOST_PP_CAT(PROPNAME, Values) = {		_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_DEFINE_VALUE, CTXT)			\
@@ -91,7 +91,7 @@
  * Defines the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
  * we always need an indexnodes table since each string needs to be referenced by an indexnode.
  */
-#define _XENUM5_CSTRING_DEFINE_NODES(CTXT, PROPDEF, PROPNAME, Z)				\
+#define _XENUM5_CSTRING_DEFINE_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
 	constexpr size_t BOOST_PP_CAT(PROPNAME, ValuesSize) = 					\
 		sizeof(BOOST_PP_CAT(PROPNAME, Values_t));					_XENUM5_NWLN \
 	constexpr size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0					\
@@ -102,8 +102,8 @@
 		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
 	typedef ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
 		BOOST_PP_CAT(PROPNAME, IndexNode);						_XENUM5_NWLN \
-	_XENUM5_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, Z)					\
-	_XENUM5_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, Z)					\
+	_XENUM5_CSTRING_NODES_NAMES(PROPNAME, PROPDEF, CTXT, Z)					\
+	_XENUM5_CSTRING_NODES_DATA(PROPNAME, PROPDEF, CTXT, Z)					\
 
 
 // ============================= COUNT NODES =================================
@@ -220,7 +220,7 @@
  * Declares the ${propname}NodeNames struct that contains a name for each index in the
  * ${propname}IndexNodes table.
  */
-#define _XENUM5_CSTRING_NODES_NAMES(CTXT, PROPDEF, PROPNAME, Z)					\
+#define _XENUM5_CSTRING_NODES_NAMES(PROPNAME, PROPDEF, CTXT, Z)					\
 	typedef struct {									_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_CSTRING_ITER_NODES(_XENUM5_CSTRING_NODE_NAME, CTXT)			\
@@ -246,7 +246,7 @@ _CSTRING_NODE_NAME: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE
  * Worker for _XENUM5_CSTRING_DEFINE_NODES().
  * Defines the ${propname}IndexNodes node-data table.
  */
-#define _XENUM5_CSTRING_NODES_DATA(CTXT, PROPDEF, PROPNAME, Z)					\
+#define _XENUM5_CSTRING_NODES_DATA(PROPNAME, PROPDEF, CTXT, Z)					\
 	constexpr BOOST_PP_CAT(PROPNAME, IndexNode) BOOST_PP_CAT(PROPNAME, IndexNodes) [] = {	_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_CSTRING_ITER_NODES(_XENUM5_CSTRING_NODE_DATA, CTXT)			\
@@ -399,7 +399,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * Worker for _XENUM5_CSTRING_DEFINE().
  * Defines the store class functions related to a single custom property.
  */
-#define _XENUM5_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, CTXT, PROPDEF, Z)		\
+#define _XENUM5_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, PROPDEF, CTXT, Z)		\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
@@ -481,7 +481,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
  * Worker for _XENUM5_PROP_CHECK_CSTRING().
  * Defines final checks on data structures.
  */
-#define _XENUM5_CSTRING_CHECK(CXT, DECL, PROPDEF, SCOPE, STORENAME, PROPNAME, Z)		\
+#define _XENUM5_CSTRING_CHECK(PROPNAME, PROPDEF, DECL)						\
 	static_assert(										\
 		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
 		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexNode)) *	\
