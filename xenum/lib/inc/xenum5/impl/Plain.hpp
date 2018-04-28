@@ -160,9 +160,9 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 	)											\
 
 
-// ====================================== COMMON UTILS ==========================================
+// ====================================== COMMON PARTS ==========================================
 
-// ==================== COMMON LOOP FOR NODE ITERATION =======================
+// ========================= Node iteration loop =============================
 /**
  * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
  * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
@@ -424,6 +424,59 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 		BOOST_PP_CAT(PROPNAME, NAMESTRUCT),						\
 		_XENUM5_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
 	) / sizeof(BOOST_PP_CAT(PROPNAME, MEMBERTYPE)))
+
+
+// ============================== getNode() ==================================
+/**
+ * Define get${propname}Node() getters for all levels.
+ */
+#define _XENUM5_PLAIN_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM5_PLAIN_DEFINE_GET_NODE_N,						\
+		CTXT										\
+	)											\
+
+/**
+ * Define get${propname}Node() getter for given level.
+ */
+#define _XENUM5_PLAIN_DEFINE_GET_NODE_N(Z, N, CTXT)						\
+	_XENUM5_PLAIN_DEFINE_GET_NODE_N_I1(							\
+		_XENUM5_CTXT_GET_DECLPFX(CTXT),							\
+		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		N,										\
+		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		Z										\
+	)											\
+
+/**
+ * Worker for _XENUM5_PLAIN_DEFINE_GET_NODE_N().
+ */
+#define _XENUM5_PLAIN_DEFINE_GET_NODE_N_I1(DECLPFX, PROPNAME, LEVEL, DECL, Z)			\
+	_XENUM5_DOC(Retrieve a level LEVEL node of the PROPNAME data hierarchy.)		\
+	DECLPFX BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
+	BOOST_PP_CAT(PROPNAME, Node&)								\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
+			Enum,									\
+			BOOST_PP_CAT(PROPNAME, Index),						\
+			LEVEL,									\
+			Z									\
+		)										\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		return BOOST_PP_CAT(PROPNAME, Nodes)[						\
+			_XENUM5_PROP_GEN_NODE_INDEXING(						\
+				PROPNAME,							\
+				BOOST_PP_CAT(PROPNAME, Index),					\
+				LEVEL,								\
+				Z								\
+			)									\
+		];										_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN
 
 
 

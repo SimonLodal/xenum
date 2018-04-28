@@ -84,11 +84,23 @@
 #define _XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)	BOOST_PP_SEQ_REPLACE(CTXT, 7, CALLBACK)
 
 /**
+ * Get current declaration prefix, if any.
+ */
+#define _XENUM5_CTXT_GET_DECLPFX(CTXT)			BOOST_PP_SEQ_ELEM(8, CTXT)
+
+/**
+ * Set the current declaration prefix.
+ */
+#define _XENUM5_CTXT_SET_DECLPFX(CTXT, DECLPFX)		BOOST_PP_SEQ_REPLACE(CTXT, 8, DECLPFX)
+
+
+/**
  * Create a new context object.
  */
 #define _XENUM5_CTXT_INIT(SUFFIX)								\
 	(SUFFIX)										\
 	(_XENUM5_DECL_INIT(SUFFIX))								\
+	()											\
 	()											\
 	()											\
 	()											\

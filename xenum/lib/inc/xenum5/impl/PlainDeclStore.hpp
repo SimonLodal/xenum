@@ -19,7 +19,6 @@
 	_XENUM5_PLAIN_HDR_DECLS_VALUES(PROPNAME, PROPDEF, DECL, CTXT, Z)			\
 	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLS, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))) \
 		(PROPNAME, PROPDEF, DECL, CTXT)							\
-/* FIXME: Convert */\
 	_XENUM5_PLAIN_HDR_DECLS_FUNCS(PROPNAME, PROPDEF, CTXT, Z)
 
 /**
@@ -64,6 +63,11 @@
  * Declares the functions related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLS_FUNCS(PROPNAME, PROPDEF, CTXT, Z)				\
+	_XENUM5_PLAIN_DEFINE_GET_NODE(								\
+		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
+		_XENUM5_CTXT_SET_DECLPFX(CTXT, static),						\
+		Z										\
+	)											\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
@@ -79,45 +83,12 @@
  * Callback worker for _XENUM5_PLAIN_DECLS_FUNCS() iteration.
  */
 #define _XENUM5_PLAIN_HDR_DECLS_FUNCS_I1(Z, N, PROPDEF)						\
-	_XENUM5_PLAIN_HDR_DECLS_FUNC_GET_NODE(							\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		N,										\
-		Z										\
-	)											\
 	_XENUM5_PLAIN_HDR_DECLS_FUNC_GET_SIZE(							\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
 		N,										\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		Z										\
 	)											\
-
-
-// =========================== getNode() (HDR) ===============================
-/**
- * Worker for _XENUM5_PLAIN_DECLS_FUNCS().
- * Generates get${propname}Node() getters.
- */
-#define _XENUM5_PLAIN_HDR_DECLS_FUNC_GET_NODE(PROPNAME, LEVEL, Z)				\
-	_XENUM5_DOC(Retrieve a level LEVEL node of the PROPNAME data hierarchy.)		\
-	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
-	BOOST_PP_CAT(PROPNAME, Node&)								\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
-		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
-			Enum,									\
-			BOOST_PP_CAT(PROPNAME, Index),						\
-			LEVEL,									\
-			Z									\
-		)										\
-	) {											\
-		return BOOST_PP_CAT(PROPNAME, Nodes)[						\
-			_XENUM5_PROP_GEN_NODE_INDEXING(						\
-				PROPNAME,							\
-				BOOST_PP_CAT(PROPNAME, Index),					\
-				LEVEL,								\
-				Z								\
-			)									\
-		];										\
-	}											_XENUM5_NWLN \
 
 
 // =========================== getSize() (HDR) ===============================
@@ -197,18 +168,8 @@
  * Declares the functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DECLS_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
-	BOOST_PP_REPEAT_ ## Z									\
-	(											\
-		DEPTH,										\
-		_XENUM5_PROP_SRC_DECLS_GET_SIZE,						\
-		PROPDEF										\
-	)											\
-	_XENUM5_PROP_SRC_DECLS_GET_VALUE(							\
-		PROPNAME,									\
-		_XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF),						\
-		DEPTH,										\
-		Z										\
-	)
+	_XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PROPDEF, Z)					\
+	_XENUM5_PROP_SRC_DECLS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
 
 
 #endif // _XENUM5_IMPL_PLAIN_DECL_STORE_HPP

@@ -148,7 +148,7 @@
 	)
 
 
-// ====================================== COMMON UTILS ==========================================
+// ====================================== COMMON PARTS ==========================================
 /**
  * Declare the data type for a custom property.
  */
@@ -369,11 +369,21 @@
 
 // ===================== FUNC (SRC): Store::getSize() ========================
 /**
- * Callback worker for iteration over 0..DEPTH.
- * Declares Store::get${propname}Size() for this level.
+ * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLS_GET_SIZE(Z, LEVEL, PROPDEF)					\
+#define _XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PROPDEF, Z)					\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM5_PROP_SRC_DECLS_GET_SIZE_N,						\
+		PROPDEF										\
+	)											\
+
+/**
+ * Declare Store::get${propname}Size() for this level.
+ */
+#define _XENUM5_PROP_SRC_DECLS_GET_SIZE_N(Z, LEVEL, PROPDEF)					\
 	static size_t BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM5_PROPDEF_GET_NAME(PROPDEF)), Size) (\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
 	);											_XENUM5_NWLN
@@ -381,22 +391,33 @@
 
 // ================== FUNC (SRC): Store::get$PROPNAME() ======================
 /**
- * Declares Store::get${propname}() value getter.
+ * Declare Store::get${propname}() value getter.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
-	static const RETTYPE BOOST_PP_CAT(get, PROPNAME) (					\
+#define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
+	static const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF) BOOST_PP_CAT(get, PROPNAME) (	\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
 	);											_XENUM5_NWLN
 
 
 // ===================== FUNC (SRC): Value::getSize() ========================
 /**
- * Callback worker for iteration over 0..DEPTH.
- * Declares Value::get${propname}Size() for this level.
+ * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLV_GET_SIZE(Z, LEVEL, PROPDEF)					\
+#define _XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PROPDEF, Z)					\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM5_PROP_SRC_DECLV_GET_SIZE_N,						\
+		PROPDEF										\
+	)											\
+
+
+/**
+ * Declare Value::get${propname}Size() for this level.
+ */
+#define _XENUM5_PROP_SRC_DECLV_GET_SIZE_N(Z, LEVEL, PROPDEF)					\
 	_XENUM5_PROP_SRC_DECLV_GET_SIZE_I1(							\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
@@ -433,12 +454,12 @@
 
 // ================== FUNC (SRC): Value::get$PROPNAME() ======================
 /**
- * Declares Value::get${propname}() value getter.
+ * Declare Value::get${propname}() value getter.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, RETTYPE, DEPTH, Z)				\
+#define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
 	_XENUM5_DOC(Get custom property PROPNAME value.)					\
-	const RETTYPE BOOST_PP_CAT(get, PROPNAME) (						\
+	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF) BOOST_PP_CAT(get, PROPNAME) (		\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
