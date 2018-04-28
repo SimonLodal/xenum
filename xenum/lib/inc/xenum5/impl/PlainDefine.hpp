@@ -16,7 +16,7 @@
  * Define the data of a single custom property, for "plain" data types, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DEFINE(PROPNAME, PROPDEF, SCOPE, STORENAME, Z)			\
-	/* FIXME: Also define IndexSize - ? */							\
+	/* FIXME: Also define NodesSize - ? */							\
 	constexpr const										\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)				\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)				\
@@ -152,7 +152,7 @@
  * Define the index nodes, for depth!=0; declare a name struct and define nodes as this struct.
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
-	_XENUM5_PLAIN_DEFINE_INDEXSIZE(, PROPNAME, CTXT)					\
+	_XENUM5_PLAIN_DEFINE_NODESSIZE(, PROPNAME, CTXT)					\
 	_XENUM5_PROP_DECLARE_INDEX_TYPE(PROPNAME)						\
 	_XENUM5_PROP_DECLARE_NODE_TYPE(PROPNAME)						\
 	_XENUM5_PLAIN_DECLARE_NODENAMES(PROPNAME, CTXT)						\
@@ -295,9 +295,9 @@ _XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
 #define _XENUM5_PLAIN_SRC_CHECK_1(PROPNAME, LOCALSCOPE, SCOPE, STORENAME)			\
 	static_assert(										\
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodeNames)) ==			\
-		LOCALSCOPE::BOOST_PP_CAT(PROPNAME, IndexSize) *					\
+		LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodesSize) *					\
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Node)),				\
-		"Struct size mismatch (NodeNames / IndexSize)."					\
+		"Struct size mismatch (NodeNames / NodesSize)."					\
 	);											_XENUM5_NWLN \
 	static_assert(										\
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Nodes)) ==				\

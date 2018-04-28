@@ -78,7 +78,7 @@
  * we always need an indexnodes table since each string needs to be referenced by an indexnode.
  */
 #define _XENUM5_CSTRING_SRC_DEFL_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
-	_XENUM5_CSTRING_DEFINE_INDEXSIZE(, PROPNAME, CTXT)					\
+	_XENUM5_CSTRING_DEFINE_NODESSIZE(, PROPNAME, CTXT)					\
 	_XENUM5_PROP_DECLARE_INDEX_TYPE(PROPNAME)						\
 	_XENUM5_PROP_DECLARE_NODE_TYPE(PROPNAME)						\
 	_XENUM5_CSTRING_DECLARE_NODENAMES(PROPNAME, CTXT)					\
@@ -150,8 +150,8 @@
 	static_assert(										\
 		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
 		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Node)) *	\
-		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, IndexSize),	\
-		"BUG: Struct size mismatch (NodeNames / IndexSize)."				\
+		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodesSize),	\
+		"BUG: Struct size mismatch (NodeNames / NodesSize)."				\
 	);											_XENUM5_NWLN \
 	static_assert(										\
 		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\

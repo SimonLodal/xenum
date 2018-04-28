@@ -375,7 +375,7 @@
 	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
 	typedef typename ::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(				\
 			sizeof(BOOST_PP_CAT(PROPNAME, Values)) / sizeof(BOOST_PP_CAT(PROPNAME, Value)), \
-			BOOST_PP_CAT(PROPNAME, IndexSize)					\
+			BOOST_PP_CAT(PROPNAME, NodesSize)					\
 		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
 
 

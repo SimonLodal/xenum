@@ -260,17 +260,17 @@
 	_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PROPDEF(CTXT)),				_XENUM5_NWLN
 
 
-// ============================== IndexSize ==================================
+// ============================== NodesSize ==================================
 /**
- * Define the IndexSize count.
+ * Define the NodesSize count.
  */
-#define _XENUM5_PLAIN_DEFINE_INDEXSIZE(DECLPFX, PROPNAME, CTXT)					\
+#define _XENUM5_PLAIN_DEFINE_NODESSIZE(DECLPFX, PROPNAME, CTXT)					\
 	_XENUM5_DOC(Total number of indexnodes for indexing PROPNAME values.)			\
-	DECLPFX constexpr const size_t BOOST_PP_CAT(PROPNAME, IndexSize) = 0			\
+	DECLPFX constexpr const size_t BOOST_PP_CAT(PROPNAME, NodesSize) = 0			\
 		_XENUM5_CALL_VALS(_XENUM5_PLAIN_COUNT_NODES, CTXT);				_XENUM5_NWLN \
 
 /**
- * Callback worker for _XENUM5_PLAIN_DEFINE_INDEXSIZE().
+ * Callback worker for _XENUM5_PLAIN_DEFINE_NODESSIZE().
  */
 #define _XENUM5_PLAIN_COUNT_NODES(CTXT, IDENT, ...)						\
 	+_XENUM5_TUPLETREE_ITERATE_DEPTH_CALC(							\
