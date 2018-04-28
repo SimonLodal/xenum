@@ -278,7 +278,7 @@
 
 /**
  * Worker for _XENUM5_PROP_GEN_INDEX1_PARMS().
- * Declares no index parameters since level==0.
+ * Declare no index parameters since level==0.
  */
 #define _XENUM5_PROP_GEN_INDEX1_PARMS_0(INDEX_T, LEVELS, Z)					\
 	void
@@ -296,7 +296,7 @@
 
 /**
  * Callback worker for _XENUM5_PROP_GEN_INDEX1_PARMS_1() iteration over levels.
- * Generates a single index parameter.
+ * Generate a single index parameter.
  */
 #define _XENUM5_PROP_GEN_INDEX1_PARM_N(Z, N, INDEX_T)						\
 	BOOST_PP_COMMA_IF(BOOST_PP_BOOL(N)) INDEX_T BOOST_PP_CAT(index, BOOST_PP_INC(N))
@@ -351,14 +351,14 @@
 
 /**
  * Worker for _XENUM5_PROP_GEN_NODE_INDEXING() iteration, for level==0.
- * Adds node indexing for level 0; direct index.
+ * Add node indexing for level 0; direct index.
  */
 #define _XENUM5_PROP_GEN_NODE_INDEXING_0(PROPNAME, INDEX_T, LEVELS, Z)				\
 	static_cast<INDEX_T>(index0)								\
 
 /**
  * Worker for _XENUM5_PROP_GEN_NODE_INDEXING() iteration, for level!=0.
- * Adds chained node indexing using calls.
+ * Add chained node indexing using calls.
  */
 #define _XENUM5_PROP_GEN_NODE_INDEXING_1(PROPNAME, INDEX_T, LEVELS, Z)				\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\

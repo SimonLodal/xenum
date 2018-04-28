@@ -13,7 +13,7 @@
 // ======================================= MAIN (HDR) ===========================================
 /**
  * Worker for _XENUM5_PROP_DECLS_PLAIN().
- * Declares the data related to a single custom property, implemented in header.
+ * Declare the data related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLS(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
 	_XENUM5_PLAIN_HDR_DECLS_VALUES(PROPNAME, PROPDEF, DECL, CTXT, Z)			\
@@ -60,7 +60,7 @@
 // ===================================== FUNCTIONS (HDR) ========================================
 /**
  * Worker for _XENUM5_PROP_DECLS_PLAIN().
- * Declares the functions related to a single custom property, implemented in header.
+ * Declare the functions related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLS_FUNCS(PROPNAME, PROPDEF, CTXT, Z)				\
 	_XENUM5_PLAIN_DEFINE_GET_NODE(								\
@@ -94,7 +94,7 @@
 // =========================== getSize() (HDR) ===============================
 /**
  * Worker for _XENUM5_PLAIN_DECLS_FUNCS().
- * Generates get${propname}Size() getters.
+ * Generate get${propname}Size() getters.
  */
 #define _XENUM5_PLAIN_HDR_DECLS_FUNC_GET_SIZE(PROPNAME, LEVEL, DEPTH, Z)			\
 	_XENUM5_DOC(Get number of								\
@@ -123,7 +123,7 @@
 // ======================== get${PROPNAME}() (HDR) ===========================
 /**
  * Worker for _XENUM5_PLAIN_DECLS_FUNCS().
- * Generates get${propname}() value getter.
+ * Generate get${propname}() value getter.
  */
 #define _XENUM5_PLAIN_HDR_DECLS_FUNC_GET_VALUE(PROPNAME, DEPTH, Z)				\
 	_XENUM5_DOC(Get value of the custom property PROPNAME.)					\
@@ -165,7 +165,7 @@
 // ===================================== FUNCTIONS (SRC) ========================================
 /**
  * Worker for _XENUM5_PROP_DECLS_PLAIN().
- * Declares the functions related to a single custom property, implemented in source.
+ * Declare the functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DECLS_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
 	_XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PROPDEF, Z)					\

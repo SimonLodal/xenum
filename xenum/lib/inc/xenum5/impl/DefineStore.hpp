@@ -59,7 +59,7 @@
 
 /**
  * Worker for _XENUM5_DEFL_IDENT().
- * Defines the identifier string values.
+ * Define the identifier string values.
  */
 #define _XENUM5_IDENT_DEFL_VALUES(CTXT)								\
 	_XENUM5_IDENT_DEFL_VALUES_STRUCT(CTXT)							\
@@ -67,7 +67,7 @@
 
 /**
  * Worker for _XENUM5_IDENT_DEFL_VALUES().
- * Declares the IdentValues struct.
+ * Declare the IdentValues struct.
  */
 #define _XENUM5_IDENT_DEFL_VALUES_STRUCT(CTXT)							\
 	typedef struct {									_XENUM5_NWLN \
@@ -78,14 +78,14 @@
 
 /**
  * Worker for _XENUM5_IDENT_DEFL_VALUES_STRUCT(); loop function for each enum value.
- * Declares a single identifier field.
+ * Declare a single identifier field.
  */
 #define _XENUM5_IDENT_DEFL_VALUE_NAME(CTXT, IDENT, ...)						\
 	char IDENT[sizeof(#IDENT)];								_XENUM5_NWLN
 
 /**
  * Worker for _XENUM5_IDENT_DEFINE_VALUES().
- * Defines the IdentValues struct.
+ * Define the IdentValues struct.
  */
 #define _XENUM5_IDENT_DEFL_VALUES_DATA(CTXT)							\
 	constexpr const IdentValues identValues = {						_XENUM5_NWLN \
@@ -96,7 +96,7 @@
 
 /**
  * Callback worker for enum-values iteration.
- * Defines a single identifier value.
+ * Define a single identifier value.
  */
 #define _XENUM5_IDENT_DEFL_VALUE(CTXT, IDENT, ...)						\
 	#IDENT,											_XENUM5_NWLN
@@ -104,7 +104,7 @@
 
 /**
  * Worker for _XENUM5_DEFL_IDENT().
- * Defines the identifier string values.
+ * Define the identifier string values.
  */
 #define _XENUM5_IDENT_DEFL_OFFSETS(CTXT)							\
 	/* Integer type big enough to hold offsets into the string pool. */			\
@@ -124,7 +124,7 @@
 
 /**
  * Worker for _XENUM5_DEFL_IDENT().
- * Defines getter function.
+ * Define getter function.
  */
 #define _XENUM5_IDENT_DEFL_FUNCS(CTXT, DECL)							\
 	constexpr const IdentIndex getIdentOffset						\

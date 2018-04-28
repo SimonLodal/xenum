@@ -13,7 +13,7 @@
 // ======================================= MAIN (HDR) ===========================================
 /**
  * Worker for _XENUM5_PROP_DEFINE_PLAIN().
- * Defines the data of a single custom property, for "plain" data types, implemented in header.
+ * Define the data of a single custom property, for "plain" data types, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DEFINE(PROPNAME, PROPDEF, SCOPE, STORENAME, Z)			\
 	/* FIXME: Also define IndexSize - ? */							\
@@ -27,14 +27,14 @@
 	) (PROPNAME, SCOPE, STORENAME)
 
 /**
- * Defines nothing since the custom property has depth==0.
+ * Define nothing since the custom property has depth==0.
  */
 #define _XENUM5_PLAIN_HDR_DEFINE_0(PROPNAME, SCOPE, STORENAME)
 
 
 /**
  * Worker for _XENUM5_PLAIN_HDR_DEFINE().
- * Defines the data of a single multilevel custom property, when depth!=0.
+ * Define the data of a single multilevel custom property, when depth!=0.
  */
 #define _XENUM5_PLAIN_HDR_DEFINE_1(PROPNAME, SCOPE, STORENAME)					\
 	constexpr const										\
@@ -46,7 +46,7 @@
 // ======================================= MAIN (SRC) ===========================================
 /**
  * Worker for _XENUM5_PROP_DEFINE_PLAIN().
- * Defines all the data and functions of a single custom property, implemented in source.
+ * Define all the data and functions of a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
 	BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFINE_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\
@@ -115,7 +115,7 @@
 
 /**
  * Worker for _XENUM5_PLAIN_SRC_DEFINE().
- * Defines the store class functions related to a single custom property, implemented in source.
+ * Define the store class functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DEFS1(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
 	_XENUM5_PLAIN_SRC_DEFS1_FUNCS(								\
@@ -251,7 +251,7 @@
 
 // =================== get${PROPNAME}() (SRC, DEPTH==0) ======================
 /**
- * Defines get${propname}() value getter. For source implementation, depth==0.
+ * Define get${propname}() value getter. For source implementation, depth==0.
  */
 #define _XENUM5_PLAIN_SRC_DEFS0_GET_VALUE(PROPNAME, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
 	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
@@ -264,7 +264,7 @@
 
 // =================== get${PROPNAME}() (SRC, DEPTH!=0) ======================
 /**
- * Defines get${propname}() value getter. For source implementation, depth!=0.
+ * Define get${propname}() value getter. For source implementation, depth!=0.
  */
 #define _XENUM5_PLAIN_SRC_DEFS1_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
 	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
@@ -285,7 +285,7 @@
 // =========================== _check() ==============================
 /**
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
- * Defines final checks on data structures, for implementation in header.
+ * Define final checks on data structures, for implementation in header.
  */
 #define _XENUM5_PLAIN_HDR_CHECK(PROPNAME, PROPDEF, SCOPE, STORENAME, Z)				\
 	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_CHECK_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\
@@ -320,7 +320,7 @@ _XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
 
 /**
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
- * Defines final checks on data structures, for implementation in source.
+ * Define final checks on data structures, for implementation in source.
  */
 #define _XENUM5_PLAIN_SRC_CHECK(PROPNAME, PROPDEF, SCOPE, STORENAME, DECL, Z)			\
 	BOOST_PP_CAT(_XENUM5_PLAIN_SRC_CHECK_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\

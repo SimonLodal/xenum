@@ -12,7 +12,7 @@
 
 /**
  * Worker for _XENUM5_PROP_DEFINE_CSTRING().
- * Defines all the data and functions of a single custom property, for "cstring" data types.
+ * Define all the data and functions of a single custom property, implemented in source.
  */
 #define _XENUM5_CSTRING_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)				\
 	/* The symbols should never become visible outside this source unit. */			\
@@ -39,7 +39,7 @@
 // ========================================= VALUES ============================================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE().
- * Defines the string values.
+ * Define the string values.
  */
 #define _XENUM5_CSTRING_DEFINE_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
 	_XENUM5_CSTRING_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)					\
@@ -47,7 +47,7 @@
 
 /**
  * Worker for _XENUM5_CSTRING_DEFINE_VALUES().
- * Declares the ${propname}Values_t struct.
+ * Declare the ${propname}Values_t struct.
  */
 #define _XENUM5_CSTRING_VALUES_STRUCT(PROPNAME, PROPDEF, CTXT)					\
 	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
@@ -59,7 +59,7 @@
 
 /**
  * Worker for _XENUM5_CSTRING_VALUES_STRUCT(); loop function for each data node.
- * Declares a single value field.
+ * Declare a single value field.
  */
 #define _XENUM5_CSTRING_VALUE_NAME(ITERPOS, NODE, CTXT)						\
 	BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), Value) 		\
@@ -68,7 +68,7 @@
 
 /**
  * Worker for _XENUM5_CSTRING_DEFINE_VALUES().
- * Defines the ${propname}Values struct.
+ * Define the ${propname}Values struct.
  */
 #define _XENUM5_CSTRING_VALUES_DATA(PROPNAME, CTXT)						\
 	constexpr BOOST_PP_CAT(PROPNAME, Values_t) BOOST_PP_CAT(PROPNAME, Values) = {		_XENUM5_NWLN \
@@ -79,7 +79,7 @@
 
 /**
  * Callback worker for values iteration.
- * Defines a single data value of a custom property.
+ * Define a single data value of a custom property.
  */
 #define _XENUM5_CSTRING_DEFINE_VALUE(ITERPOS, NODE, CTXT)					\
 	_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PROPDEF(CTXT)),				_XENUM5_NWLN
@@ -88,7 +88,7 @@
 // ========================================= NODES =============================================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE().
- * Defines the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
+ * Define the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
  * we always need an indexnodes table since each string needs to be referenced by an indexnode.
  */
 #define _XENUM5_CSTRING_DEFINE_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
@@ -109,7 +109,7 @@
 // ============================= COUNT NODES =================================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE_NODES(). Called as XENUM_VALS_* callback.
- * Counts the indexnodes of a single custom property, for a single enum value.
+ * Count the indexnodes of a single custom property, for a single enum value.
  * Counts all nodes, including leaf values, since each string value needs to be referenced
  * by an indexnode.
  */
@@ -130,94 +130,10 @@
 	BOOST_PP_INC(STATE)
 
 
-// ==================== COMMON LOOP FOR NODE ITERATION =======================
-/**
- * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
- * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
- * identical layout; that the placement of node data in the IndexNodes table match the names
- * in the NodeNames struct.
- * Note: The root nodes (enum-values) must appear first in the tables so they can be directly
- * indexed by an enum-value.
- * Note: Contrary to _PLAIN_ITER_NODES, this loop iterates all nodes, including the leafs
- * (values), else we could share these functions.
- */
-#define _XENUM5_CSTRING_ITER_NODES(CALLBACK, CTXT)						\
-	/* First, execute callback only for the enum values (root nodes), so they are */	\
-	/* executed in one block. */								\
-	_XENUM5_CALL_VALS(									\
-		_XENUM5_CSTRING_ITER_NODES_ROOT,							\
-		_XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
-	)											\
-	/* Secondly, iterate all non-root nodes. */						\
-	_XENUM5_CALL_VALS(									\
-		_XENUM5_CSTRING_ITER_NODES_NONROOT,						\
-		_XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
-	)
-
-/**
- * Callback worker for _XENUM5_CSTRING_ITER_NODES(); loop function for each root node
- * (enum-value). Execute the callback only for the root node (no further iteration).
- */
-#define _XENUM5_CSTRING_ITER_NODES_ROOT(CTXT, IDENT, ...)						\
-	_XENUM5_CSTRING_ITER_NODES_ROOT_I1							\
-	(											\
-		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
-	)
-
-/**
- * Worker for _XENUM5_CSTRING_ITER_NODES_ROOT().
- */
-#define _XENUM5_CSTRING_ITER_NODES_ROOT_I1(DATA, DEPTH, CTXT)					\
-	_XENUM5_CTXT_GET_CALLBACK(CTXT) (							\
-		_XENUM5_TUPLETREE_ITERPOS_INIT(							\
-			DEPTH,									\
-			,									\
-			0,									\
-			_XENUM5_GET_TUPLE_SIZE_IF_TUPLE(DATA)					\
-		),										\
-		_XENUM5_TUPLE_TO_SEQ_COND(DATA, BOOST_PP_BOOL(DEPTH)),				\
-		CTXT										\
-	)
-
-/**
- * Callback worker for _XENUM5_CSTRING_ITER_NODES(); loop function for each node.
- */
-#define _XENUM5_CSTRING_ITER_NODES_NONROOT(CTXT, IDENT, ...)					\
-	_XENUM5_CSTRING_ITER_NODES_NONROOT_I1							\
-	(											\
-		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
-	)
-
-/**
- * Worker for _XENUM5_CSTRING_ITER_NODES_NONROOT().
- * Execute tupletree iteration.
- */
-#define _XENUM5_CSTRING_ITER_NODES_NONROOT_I1(DATA, DEPTH, CTXT)					\
-	_XENUM5_TUPLETREE_ITERATE_FLAT_GEN(							\
-		DATA,										\
-		DEPTH,										\
-		(_XENUM5_CTXT_GET_CALLBACK(CTXT), _XENUM5_CSTRING_ITER_NODES_NONROOT_FLT),	\
-		CTXT										\
-	)
-
-/**
- * Filter function for non-root nodes iteration.
- */
-#define _XENUM5_CSTRING_ITER_NODES_NONROOT_FLT(ITERPOS, NODE, CTXT)				\
-	BOOST_PP_AND(										\
-		BOOST_PP_NOT(_XENUM5_TUPLETREE_ITERPOS_GET_NEXTCHILD(ITERPOS)),			\
-		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_TUPLETREE_ITERPOS_GET_INDEXPATH(ITERPOS)))	\
-	)
-
-
 // ============================== NODE NAMES =================================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE_NODES().
- * Declares the ${propname}NodeNames struct that contains a name for each index in the
+ * Declare the ${propname}NodeNames struct that contains a name for each index in the
  * ${propname}IndexNodes table.
  */
 #define _XENUM5_CSTRING_NODES_NAMES(PROPNAME, PROPDEF, CTXT, Z)					\
@@ -244,7 +160,7 @@ _CSTRING_NODE_NAME: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NODE
 // =========================== NODES DATA TABLE ==============================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE_NODES().
- * Defines the ${propname}IndexNodes node-data table.
+ * Define the ${propname}IndexNodes node-data table.
  */
 #define _XENUM5_CSTRING_NODES_DATA(PROPNAME, PROPDEF, CTXT, Z)					\
 	constexpr BOOST_PP_CAT(PROPNAME, IndexNode) BOOST_PP_CAT(PROPNAME, IndexNodes) [] = {	_XENUM5_NWLN \
@@ -341,7 +257,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 // ==================================== LOCAL FUNCTIONS ========================================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE().
- * Defines the local functions (in local anon namespace, not part of any class) related to a
+ * Define the local functions (in local anon namespace, not part of any class) related to a
  * single custom property.
  */
 #define _XENUM5_CSTRING_DEFL_FUNCS(PROPDEF, CTXT, Z)						\
@@ -357,7 +273,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 // ============================== getNode() ==================================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE_FUNCS_LV().
- * Defines get${propname}Node() getters.
+ * Define get${propname}Node() getters.
  */
 #define _XENUM5_CSTRING_DEFL_GET_NODE(Z, N, CTXT)						\
 	_XENUM5_CSTRING_DEFL_GET_NODE_I1(							\
@@ -397,7 +313,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 // ==================================== STORE FUNCTIONS ========================================
 /**
  * Worker for _XENUM5_CSTRING_DEFINE().
- * Defines the store class functions related to a single custom property.
+ * Define the store class functions related to a single custom property.
  */
 #define _XENUM5_CSTRING_DEFS_FUNCS(PROPNAME, DEPTH, SCOPE, STORENAME, PROPDEF, CTXT, Z)		\
 	BOOST_PP_REPEAT_ ## Z									\
@@ -421,7 +337,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 // ============================== getSize() ==================================
 /**
  * Callback worker for _XENUM5_CSTRING_DEFS_FUNCS().
- * Defines get${propname}Size() getters.
+ * Define get${propname}Size() getters.
  */
 #define _XENUM5_CSTRING_DEFS_GET_SIZE(Z, N, CTXT)						\
 	_XENUM5_CSTRING_DEFS_GET_SIZE_I1(							\
@@ -455,7 +371,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 // =========================== get${PROPNAME}() ==============================
 /**
  * Worker for _XENUM5_CSTRING_DEFS_FUNCS().
- * Defines get${propname}() value getter.
+ * Define get${propname}() value getter.
  */
 #define _XENUM5_CSTRING_DEFS_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
 	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
@@ -479,7 +395,7 @@ _CSTRING_NODE_DATA_1: iterpos={_XENUM5_TUPLETREE_ITERPOS_DUMP(ITERPOS)} node=[NO
 // =========================== _check() ==============================
 /**
  * Worker for _XENUM5_PROP_CHECK_CSTRING().
- * Defines final checks on data structures.
+ * Define final checks on data structures.
  */
 #define _XENUM5_CSTRING_CHECK(PROPNAME, PROPDEF, DECL)						\
 	static_assert(										\

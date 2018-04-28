@@ -13,7 +13,7 @@
 // ===================================== FUNCTIONS (SRC) ========================================
 /**
  * Worker for _XENUM5_PROP_DECLS_CSTRING().
- * Declares the functions related to a single custom property, in store class.
+ * Declare the functions related to a single custom property, in store class.
  */
 #define _XENUM5_CSTRING_DECLS_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\

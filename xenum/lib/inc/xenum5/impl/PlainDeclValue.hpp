@@ -14,7 +14,7 @@
 // ========================================== TYPES =============================================
 /**
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
- * Declares the types related to a single custom property, implemented in header.
+ * Declare the types related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
 	_XENUM5_DOC(Native type of custom property PROPNAME values.)				\
@@ -24,13 +24,13 @@
 
 /**
  * Worker for _XENUM5_PLAIN_DECLV_TYPES().
- * Declares nothing since the property has depth=0.
+ * Declare nothing since the property has depth=0.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_0(PROPNAME)						\
 
 /**
  * Worker for _XENUM5_PLAIN_DECLV_TYPES().
- * Declares the ${propname}Index type since the property has depth!=0.
+ * Declare the ${propname}Index type since the property has depth!=0.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_1(PROPNAME)						\
 	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
@@ -41,7 +41,7 @@
 // ===================================== FUNCTIONS (HDR) ========================================
 /**
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
- * Declares the functions related to a single custom property, implemented in header.
+ * Declare the functions related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
 	_XENUM5_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
@@ -51,7 +51,7 @@
 // ================================== FUNC (HDR): getSize() =====================================
 /**
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
- * Declares the get${propname}Size() getter for each level.
+ * Declare the get${propname}Size() getter for each level.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
 	BOOST_PP_CAT(										\
@@ -61,13 +61,13 @@
 
 /**
  * Worker for _XENUM5_PLAIN_DECLV_GET_SIZE().
- * Declares nothing since depth==0.
+ * Declare nothing since depth==0.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_GET_SIZE_0(DEPTH, CTXT, Z)					\
 
 /**
  * Worker for _XENUM5_PLAIN_HDR_DECLV_GET_SIZE().
- * Declares getters since depth!=0.
+ * Declare getters since depth!=0.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_GET_SIZE_1(DEPTH, CTXT, Z)					\
 	BOOST_PP_REPEAT_ ## Z									\
@@ -121,7 +121,7 @@
 // =============================== FUNC (HDR): get$PROPNAME() ===================================
 /**
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
- * Declares the get${propname}() value getter.
+ * Declare the get${propname}() value getter.
  */
 #define _XENUM5_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
 	_XENUM5_DOC(Get custom property PROPNAME value.)					\
@@ -142,7 +142,7 @@
 // ===================================== FUNCTIONS (SRC) ========================================
 /**
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
- * Declares the functions related to a single custom property, implemented in source.
+ * Declare the functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
 	_XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PROPDEF, Z)					\

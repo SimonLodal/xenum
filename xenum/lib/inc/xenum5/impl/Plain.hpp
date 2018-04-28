@@ -248,7 +248,7 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ================================ Values ===================================
 /**
- * Helper to define the values array.
+ * Define the values array.
  */
 #define _XENUM5_PLAIN_DEFINE_VALUES(DECLPFX, PROPNAME, CTXT)					\
 	_XENUM5_DOC(Array of all PROPNAME values.)						\
@@ -268,7 +268,7 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ============================== IndexSize ==================================
 /**
- * Helper to define the IndexSize count.
+ * Define the IndexSize count.
  */
 #define _XENUM5_PLAIN_DEFINE_INDEXSIZE(DECLPFX, PROPNAME, CTXT)					\
 	_XENUM5_DOC(Total number of indexnodes for indexing PROPNAME values.)			\
@@ -298,7 +298,7 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ============================== Index type =================================
 /**
- * Helper to define the ${PROPNAME}Index type.
+ * Define the ${PROPNAME}Index type.
  */
 #define _XENUM5_PLAIN_DECLARE_INDEX_TYPE(PROPNAME)						\
 	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
@@ -310,7 +310,7 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ============================== Node type ==================================
 /**
- * Helper to define the ${PROPNAME}IndexNode type.
+ * Define the ${PROPNAME}IndexNode type.
  */
 #define _XENUM5_PLAIN_DECLARE_NODE_TYPE(PROPNAME)						\
 	_XENUM5_DOC(IndexNode type for PROPNAME, to map the PROPNAME value hierarchy.)		\
@@ -320,7 +320,7 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ============================== NodeNames ==================================
 /**
- * Defines the ${propname}NodeNames struct.
+ * Define the ${propname}NodeNames struct.
  */
 #define _XENUM5_PLAIN_DEFINE_NODENAMES(PROPNAME, CTXT)						\
 	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PROPNAME, Nodes) array,	\
@@ -344,7 +344,7 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ============================== ValueNames =================================
 /**
- * Defines the ${propname}ValueNames struct.
+ * Define the ${propname}ValueNames struct.
  */
 #define _XENUM5_PLAIN_DEFINE_VALUENAMES(PROPNAME, CTXT)						\
 	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PROPNAME, Values) array,	\
@@ -365,7 +365,7 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 
 // ================================ Nodes ====================================
 /**
- * Defines the ${propname}Nodes struct.
+ * Define the ${propname}Nodes struct.
  */
 #define _XENUM5_PLAIN_DEFINE_NODES(DECLPFX, PROPNAME, CTXT)					\
 	_XENUM5_DOC(Mapping of all nodes and values in the PROPNAME data hierarchy.)		\
@@ -477,10 +477,6 @@ _XENUM5_CMNT(PROP_DECLS_PLAIN: placement=_XENUM5_PROPDEF_FEAT_PLACEMENT(PROPDEF)
 		];										_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN
-
-
-
-
 
 
 #endif // _XENUM5_IMPL_PLAIN_HPP

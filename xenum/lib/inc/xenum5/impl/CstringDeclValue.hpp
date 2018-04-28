@@ -14,7 +14,7 @@
 // ======================================= FUNCTIONS ============================================
 /**
  * Worker for _XENUM5_PROP_DECLV_CSTRING().
- * Declares the functions related to a single custom property, in value class.
+ * Declare the functions related to a single custom property, in value class.
  */
 #define _XENUM5_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
