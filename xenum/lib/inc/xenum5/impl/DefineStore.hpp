@@ -16,8 +16,8 @@
  * a namespace with this name, to minimize risk of name clash with user code.
  * @return Name of implementation namespace.
  */
-#define _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)							\
-	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum5_local_, _XENUM5_DECL_GET_SUFFIX(DECL)), _), PROPNAME)
+#define _XENUM5_IMPL_LOCAL_NS(DECL, PNAME)							\
+	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum5_local_, _XENUM5_DECL_GET_SUFFIX(DECL)), _), PNAME)
 
 
 // ==============================================================================================

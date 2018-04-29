@@ -14,17 +14,17 @@
 /**
  * Declare the data and functions related to a single custom property, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DECLV(PROPNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
-	_XENUM5_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+#define _XENUM5_PLAIN_HDR_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	_XENUM5_PLAIN_HDR_DECLV_TYPES(PNAME, DEPTH)						\
+	_XENUM5_PLAIN_HDR_DECLV_FUNCS(PNAME, DEPTH, CTXT, Z)					\
 
 
 // ======================================= MAIN (SRC) ===========================================
 /**
  * Declare the functions related to a single custom property, implemented in source.
  */
-#define _XENUM5_PLAIN_SRC_DECLV(PROPNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	_XENUM5_PLAIN_SRC_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 
 
@@ -33,26 +33,26 @@
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
  * Declare the types related to a single custom property, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
-	_XENUM5_DOC(Native type of custom property PROPNAME values.)				\
-	using BOOST_PP_CAT(PROPNAME, Value) =							\
-		typename Store::BOOST_PP_CAT(PROPNAME, Value);					_XENUM5_NWLN \
-	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PROPNAME)		\
+#define _XENUM5_PLAIN_HDR_DECLV_TYPES(PNAME, DEPTH)						\
+	_XENUM5_DOC(Native type of custom property PNAME values.)				\
+	using BOOST_PP_CAT(PNAME, Value) =							\
+		typename Store::BOOST_PP_CAT(PNAME, Value);					_XENUM5_NWLN \
+	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PNAME)		\
 
 /**
  * Worker for _XENUM5_PLAIN_DECLV_TYPES().
  * Declare nothing since the property has depth=0.
  */
-#define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_0(PROPNAME)						\
+#define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_0(PNAME)						\
 
 /**
  * Worker for _XENUM5_PLAIN_DECLV_TYPES().
  * Declare the ${propname}Index type since the property has depth!=0.
  */
-#define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_1(PROPNAME)						\
-	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
-	using BOOST_PP_CAT(PROPNAME, Index) =							\
-		typename Store::BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
+#define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_1(PNAME)						\
+	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
+	using BOOST_PP_CAT(PNAME, Index) =							\
+		typename Store::BOOST_PP_CAT(PNAME, Index);					_XENUM5_NWLN \
 
 
 // ===================================== FUNCTIONS (HDR) ========================================
@@ -60,9 +60,9 @@
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
  * Declare the functions related to a single custom property, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+#define _XENUM5_PLAIN_HDR_DECLV_FUNCS(PNAME, DEPTH, CTXT, Z)					\
 	_XENUM5_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
-	_XENUM5_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
+	_XENUM5_PLAIN_HDR_DECLV_GET_VALUE(PNAME, DEPTH, CTXT, Z)				\
 
 
 // ================================== FUNC (HDR): getSize() =====================================
@@ -109,47 +109,47 @@
 /**
  * Worker for _XENUM5_PLAIN_HDR_DECLV_FUNC_GET_SIZE_N().
  */
-#define _XENUM5_PLAIN_HDR_DECLV_GET_SIZE_N_I1(PROPNAME, DEPTH, LEVEL, Z)			\
+#define _XENUM5_PLAIN_HDR_DECLV_GET_SIZE_N_I1(PNAME, DEPTH, LEVEL, Z)				\
 	_XENUM5_DOC(										\
 	BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, LEVEL),						\
-		Get size of custom property PROPNAME value (number of data elements).,		\
+		Get size of custom property PNAME value (number of data elements).,		\
 		Get number of BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),		\
 			values in,								\
 			childnodes of								\
 		) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL),						\
 			a level LEVEL node in the data hierarchy of,				\
 												\
-		) custom property PROPNAME.							\
+		) custom property PNAME.							\
 	))											\
 	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)						\
-	const BOOST_PP_CAT(PROPNAME, Index)&							\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (					\
-		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), LEVEL, Z)		\
+	const BOOST_PP_CAT(PNAME, Index)&							\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (						\
+		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), LEVEL, Z)		\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
 	{											\
-		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
 			value									\
 			_XENUM5_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
 		);										\
 	}											_XENUM5_NWLN \
 
 
-// =============================== FUNC (HDR): get$PROPNAME() ===================================
+// ================================ FUNC (HDR): get${PNAME}() ===================================
 /**
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
  * Declare the get${propname}() value getter.
  */
-#define _XENUM5_PLAIN_HDR_DECLV_GET_VALUE(PROPNAME, DEPTH, CTXT, Z)				\
-	_XENUM5_DOC(Get custom property PROPNAME value.)					\
+#define _XENUM5_PLAIN_HDR_DECLV_GET_VALUE(PNAME, DEPTH, CTXT, Z)				\
+	_XENUM5_DOC(Get custom property PNAME value.)						\
 	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr)						\
-	const BOOST_PP_CAT(PROPNAME, Value&)							\
-	BOOST_PP_CAT(get, PROPNAME) (								\
-		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PROPNAME, Index), DEPTH, Z)		\
+	const BOOST_PP_CAT(PNAME, Value&)							\
+	BOOST_PP_CAT(get, PNAME) (								\
+		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), DEPTH, Z)		\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
 	{											\
-		return Store::BOOST_PP_CAT(get, PROPNAME) (					\
+		return Store::BOOST_PP_CAT(get, PNAME) (					\
 			value									\
 			_XENUM5_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
 		);										\
@@ -161,9 +161,9 @@
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
  * Declare the functions related to a single custom property, implemented in source.
  */
-#define _XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PDEF, Z)						\
-	_XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PDEF, Z)				\
+	_XENUM5_PROP_SRC_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 
 
 #endif // _XENUM5_IMPL_PLAIN_DECL_VALUE_HPP

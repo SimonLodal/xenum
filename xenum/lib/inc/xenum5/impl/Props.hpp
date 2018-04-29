@@ -153,9 +153,9 @@
 /**
  * Declare the data type for a custom property.
  */
-#define _XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PDEF)						\
-	_XENUM5_DOC(Native type of custom property PROPNAME values.)				\
-	typedef _XENUM5_PDEF_GET_REAL_TYPE(PDEF) BOOST_PP_CAT(PROPNAME, Value);			_XENUM5_NWLN \
+#define _XENUM5_PROP_DECL_VALUE_TYPE(PNAME, PDEF)						\
+	_XENUM5_DOC(Native type of custom property PNAME values.)				\
+	typedef _XENUM5_PDEF_GET_REAL_TYPE(PDEF) BOOST_PP_CAT(PNAME, Value);			_XENUM5_NWLN \
 
 
 // ============================ INDEXNODE NAME ===============================
@@ -343,26 +343,26 @@
 /**
  * Helper for function generators: Generate an expression for resolving an index list.
  */
-#define _XENUM5_PROP_GEN_NODE_INDEXING(PROPNAME, INDEX_T, LEVELS, Z)				\
+#define _XENUM5_PROP_GEN_NODE_INDEXING(PNAME, INDEX_T, LEVELS, Z)				\
 	BOOST_PP_CAT(										\
 		_XENUM5_PROP_GEN_NODE_INDEXING_,						\
 		BOOST_PP_BOOL(LEVELS)								\
-	) (PROPNAME, INDEX_T, LEVELS, Z)							\
+	) (PNAME, INDEX_T, LEVELS, Z)								\
 
 
 /**
  * Worker for _XENUM5_PROP_GEN_NODE_INDEXING() iteration, for level==0.
  * Add node indexing for level 0; direct index.
  */
-#define _XENUM5_PROP_GEN_NODE_INDEXING_0(PROPNAME, INDEX_T, LEVELS, Z)				\
+#define _XENUM5_PROP_GEN_NODE_INDEXING_0(PNAME, INDEX_T, LEVELS, Z)				\
 	static_cast<INDEX_T>(index0)								\
 
 /**
  * Worker for _XENUM5_PROP_GEN_NODE_INDEXING() iteration, for level!=0.
  * Add chained node indexing using calls.
  */
-#define _XENUM5_PROP_GEN_NODE_INDEXING_1(PROPNAME, INDEX_T, LEVELS, Z)				\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
+#define _XENUM5_PROP_GEN_NODE_INDEXING_1(PNAME, INDEX_T, LEVELS, Z)				\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (						\
 		_XENUM5_PROP_GEN_INDEX0_ARGS(LEVELS, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, LEVELS))
@@ -370,24 +370,24 @@
 
 // ============================== Index type =================================
 /**
- * Define the ${PROPNAME}Index type.
+ * Define the ${PNAME}Index type.
  */
-#define _XENUM5_PROP_DECLARE_INDEX_TYPE(PROPNAME)						\
-	_XENUM5_DOC(Integer type big enough to count and index both PROPNAME values and indexnodes.)	\
+#define _XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
+	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
 	typedef typename ::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(				\
-			sizeof(BOOST_PP_CAT(PROPNAME, Values)) / sizeof(BOOST_PP_CAT(PROPNAME, Value)), \
-			BOOST_PP_CAT(PROPNAME, NodesSize)					\
-		) >::type BOOST_PP_CAT(PROPNAME, Index);					_XENUM5_NWLN \
+			sizeof(BOOST_PP_CAT(PNAME, Values)) / sizeof(BOOST_PP_CAT(PNAME, Value)), \
+			BOOST_PP_CAT(PNAME, NodesSize)						\
+		) >::type BOOST_PP_CAT(PNAME, Index);						_XENUM5_NWLN \
 
 
 // ============================== Node type ==================================
 /**
- * Define the ${PROPNAME}IndexNode type.
+ * Define the ${PNAME}IndexNode type.
  */
-#define _XENUM5_PROP_DECLARE_NODE_TYPE(PROPNAME)						\
-	_XENUM5_DOC(IndexNode type for PROPNAME, to map the PROPNAME value hierarchy.)		\
-	typedef ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PROPNAME, Index)>				\
-		BOOST_PP_CAT(PROPNAME, Node);							_XENUM5_NWLN \
+#define _XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
+	_XENUM5_DOC(IndexNode type for PNAME, to map the PNAME value hierarchy.)		\
+	typedef ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PNAME, Index)>				\
+		BOOST_PP_CAT(PNAME, Node);							_XENUM5_NWLN \
 
 
 // ============================ Node counting ================================
@@ -439,24 +439,24 @@
 /**
  * Worker for _XENUM5_PROP_DEFINE_GET_NODE_N().
  */
-#define _XENUM5_PROP_DEFINE_GET_NODE_N_I1(DECLPFX, PROPNAME, LEVEL, DECL, Z)			\
-	_XENUM5_DOC(Retrieve a level LEVEL node of the PROPNAME data hierarchy.)		\
+#define _XENUM5_PROP_DEFINE_GET_NODE_N_I1(DECLPFX, PNAME, LEVEL, DECL, Z)			\
+	_XENUM5_DOC(Retrieve a level LEVEL node of the PNAME data hierarchy.)			\
 	DECLPFX BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
-	BOOST_PP_CAT(PROPNAME, Node&)								\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (					\
+	BOOST_PP_CAT(PNAME, Node&)								\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
-			BOOST_PP_CAT(PROPNAME, Index),						\
+			BOOST_PP_CAT(PNAME, Index),						\
 			LEVEL,									\
 			Z									\
 		)										\
 	)											_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		return BOOST_PP_CAT(PROPNAME, Nodes)[						\
+		return BOOST_PP_CAT(PNAME, Nodes)[						\
 			_XENUM5_PROP_GEN_NODE_INDEXING(						\
-				PROPNAME,							\
-				BOOST_PP_CAT(PROPNAME, Index),					\
+				PNAME,								\
+				BOOST_PP_CAT(PNAME, Index),					\
 				LEVEL,								\
 				Z								\
 			)									\
@@ -515,29 +515,29 @@
 /**
  * Worker for _XENUM5_PROP_DEFS_GET_SIZE().
  */
-#define _XENUM5_PROP_SRC_DEFS_GET_SIZE_N_I1(PROPNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
+#define _XENUM5_PROP_SRC_DEFS_GET_SIZE_N_I1(PNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
 	size_t											\
-	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
 	)											_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return										\
-		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) ::					\
-		BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
+		_XENUM5_IMPL_LOCAL_NS(DECL, PNAME) ::						\
+		BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (					\
 			_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
 		.size;										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
 
 
-// ====================== DECL Store::get$PROPNAME() =========================
+// ====================== DECL Store::get${PNAME}() ==========================
 /**
  * Declare Store::get${propname}() value getter.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PROPNAME, DEPTH, PDEF, Z)				\
-	static const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PROPNAME) (		\
+#define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+	static const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (		\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
 	);											_XENUM5_NWLN
 
@@ -570,43 +570,43 @@
 /**
  * Worker for _XENUM5_PROP_SRC_DECLV_GET_SIZE().
  */
-#define _XENUM5_PROP_SRC_DECLV_GET_SIZE_I1(PROPNAME, DEPTH, LEVEL, Z)				\
+#define _XENUM5_PROP_SRC_DECLV_GET_SIZE_I1(PNAME, DEPTH, LEVEL, Z)				\
 	_XENUM5_DOC(										\
 	BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, LEVEL),						\
-		Get size of custom property PROPNAME value (number of data elements).,		\
+		Get size of custom property PNAME value (number of data elements).,		\
 		Get number of BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),		\
 			values in,								\
 			childnodes of								\
 		) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL),						\
 			a level LEVEL node in the data hierarchy of,				\
 												\
-		) custom property PROPNAME.							\
+		) custom property PNAME.							\
 	))											\
-	size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (				\
+	size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (					\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
 	{											\
-		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Size) (			\
+		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
 			value									\
 			_XENUM5_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
 		);										\
 	}											_XENUM5_NWLN
 
 
-// ====================== DEF Value::get$PROPNAME() ==========================
+// ======================= DEF Value::get${PNAME}() ==========================
 /**
  * Declare Value::get${propname}() value getter.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PDEF, Z)				\
-	_XENUM5_DOC(Get custom property PROPNAME value.)					\
-	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PROPNAME) (			\
+#define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+	_XENUM5_DOC(Get custom property PNAME value.)						\
+	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
 	{											\
-		return Store::BOOST_PP_CAT(get, PROPNAME) (					\
+		return Store::BOOST_PP_CAT(get, PNAME) (					\
 			value									\
 			_XENUM5_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
 		);										\

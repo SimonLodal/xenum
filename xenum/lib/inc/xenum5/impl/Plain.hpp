@@ -63,12 +63,12 @@
  * Entry point for defining final checks for a custom property of plain type, in source file
  * context.
  */
-#define _XENUM5_PROP_CHECK_PLAIN(PROPNAME, PDEF, DECL, CTXT, Z)					\
+#define _XENUM5_PROP_CHECK_PLAIN(PNAME, PDEF, DECL, CTXT, Z)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_GET_PLACEMENT_STR(PDEF)), _CHECK)	\
 	(											\
-		PROPNAME,									\
+		PNAME,										\
 		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME),						\
+		_XENUM5_IMPL_LOCAL_NS(DECL, PNAME),						\
 		_XENUM5_DECL_GET_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
 		Z										\
@@ -165,9 +165,9 @@
 /**
  * Define the values array.
  */
-#define _XENUM5_PLAIN_DEFINE_VALUES(DECLPFX, PROPNAME, CTXT)					\
-	_XENUM5_DOC(Array of all PROPNAME values.)						\
-	DECLPFX constexpr const BOOST_PP_CAT(PROPNAME, Value) BOOST_PP_CAT(PROPNAME, Values)[] =\
+#define _XENUM5_PLAIN_DEFINE_VALUES(DECLPFX, PNAME, CTXT)					\
+	_XENUM5_DOC(Array of all PNAME values.)							\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Value) BOOST_PP_CAT(PNAME, Values)[] =	\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_DEFINE_VALUE, CTXT)			\
@@ -185,9 +185,9 @@
 /**
  * Define the NodesSize count.
  */
-#define _XENUM5_PLAIN_DEFINE_NODESSIZE(DECLPFX, PROPNAME, CTXT)					\
-	_XENUM5_DOC(Total number of indexnodes for indexing PROPNAME values.)			\
-	DECLPFX constexpr const size_t BOOST_PP_CAT(PROPNAME, NodesSize) = 0			\
+#define _XENUM5_PLAIN_DEFINE_NODESSIZE(DECLPFX, PNAME, CTXT)					\
+	_XENUM5_DOC(Total number of indexnodes for indexing PNAME values.)			\
+	DECLPFX constexpr const size_t BOOST_PP_CAT(PNAME, NodesSize) = 0			\
 		_XENUM5_CALL_VALS(_XENUM5_PLAIN_COUNT_NODES, CTXT);				_XENUM5_NWLN \
 
 /**
@@ -208,28 +208,28 @@
 /**
  * Declare the ${propname}NodeNames struct.
  */
-#define _XENUM5_PLAIN_DECLARE_NODENAMES(PROPNAME, CTXT)						\
-	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PROPNAME, Nodes) array,	\
+#define _XENUM5_PLAIN_DECLARE_NODENAMES(PNAME, CTXT)						\
+	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PNAME, Nodes) array,		\
 		has same layout.)								\
 	typedef struct {									_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PLAIN_ITER_NODES(_XENUM5_PROP_DECLARE_NODENAME, CTXT)			\
 		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PROPNAME, NodeNames);							_XENUM5_NWLN \
+	} BOOST_PP_CAT(PNAME, NodeNames);							_XENUM5_NWLN \
 
 
 // ============================== ValueNames =================================
 /**
  * Declare the ${propname}ValueNames struct.
  */
-#define _XENUM5_PLAIN_DECLARE_VALUENAMES(PROPNAME, CTXT)						\
-	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PROPNAME, Values) array,	\
+#define _XENUM5_PLAIN_DECLARE_VALUENAMES(PNAME, CTXT)						\
+	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PNAME, Values) array,	\
 		has same layout.)								\
 	typedef struct {									_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_DECLARE_VALUENAME, CTXT)			\
 		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PROPNAME, ValueNames);							_XENUM5_NWLN \
+	} BOOST_PP_CAT(PNAME, ValueNames);							_XENUM5_NWLN \
 
 /**
  * Declare a single field of the ValueNames struct.
@@ -243,9 +243,9 @@
 /**
  * Define the ${propname}Nodes array.
  */
-#define _XENUM5_PLAIN_DEFINE_NODES(DECLPFX, PROPNAME, CTXT)					\
-	_XENUM5_DOC(Mapping of all nodes and values in the PROPNAME data hierarchy.)		\
-	DECLPFX constexpr const BOOST_PP_CAT(PROPNAME, Node) BOOST_PP_CAT(PROPNAME, Nodes)[] =	\
+#define _XENUM5_PLAIN_DEFINE_NODES(DECLPFX, PNAME, CTXT)					\
+	_XENUM5_DOC(Mapping of all nodes and values in the PNAME data hierarchy.)		\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Node) BOOST_PP_CAT(PNAME, Nodes)[] =	\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PLAIN_ITER_NODES(_XENUM5_PLAIN_DEFINE_NODE, CTXT)			\
@@ -295,11 +295,11 @@
 /**
  * Worker for _XENUM5_PLAIN_SRC_NODE_DATA_INDEX_1().
  */
-#define _XENUM5_PLAIN_DEFINE_NODE_INDEX_1_I1(PROPNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE, CTXT)	\
+#define _XENUM5_PLAIN_DEFINE_NODE_INDEX_1_I1(PNAME, INDEXPATH, NAMESTRUCT, MEMBERTYPE, CTXT)	\
 	(offsetof(										\
-		BOOST_PP_CAT(PROPNAME, NAMESTRUCT),						\
+		BOOST_PP_CAT(PNAME, NAMESTRUCT),						\
 		_XENUM5_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
-	) / sizeof(BOOST_PP_CAT(PROPNAME, MEMBERTYPE)))
+	) / sizeof(BOOST_PP_CAT(PNAME, MEMBERTYPE)))
 
 
 #endif // _XENUM5_IMPL_PLAIN_HPP

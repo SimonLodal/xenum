@@ -78,11 +78,11 @@ _PDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARG
 /**
  * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PDEF_INIT_NAME(DBGLOC, PROPNAME, ...)						\
+#define _XENUM5_PDEF_INIT_NAME(DBGLOC, PNAME, ...)						\
 	(BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(PROPNAME),							\
+		BOOST_PP_IS_EMPTY(PNAME),							\
 		_XENUM5_ERROR(LOC, Missing custom property name.),				\
-		PROPNAME									\
+		PNAME										\
 	))											\
 	_XENUM5_PDEF_INIT_TYPE(DBGLOC, __VA_ARGS__)
 
