@@ -103,17 +103,16 @@
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
 	_XENUM5_CSTRING_SRC_DEFS_GET_VALUE(							\
-		PROPNAME, DEPTH,								\
+		PROPNAME, DEPTH, PROPDEF,							\
 		_XENUM5_IMPL_LOCAL_NS(_XENUM5_CTXT_GET_DECL(CTXT), PROPNAME) ::,		\
-		SCOPE, STORENAME, PROPDEF, Z)							\
+		SCOPE, STORENAME, Z)								\
 
 
 // =========================== get${PROPNAME}() ==============================
 /**
- * Worker for _XENUM5_CSTRING_DEFS_FUNCS().
  * Define get${propname}() value getter.
  */
-#define _XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
+#define _XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, Z)	\
 	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
 	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (					\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, DEPTH, Z)		\
@@ -138,25 +137,25 @@
  * Define final checks on data structures, for implementation in header.
  */
 // FIXME: Implement hdr. Using src impl for now.
-#define _XENUM5_CSTRING_HDR_CHECK(PROPNAME, PROPDEF, DECL)					\
-	_XENUM5_CSTRING_SRC_CHECK(PROPNAME, PROPDEF, DECL)					\
+#define _XENUM5_CSTRING_HDR_CHECK(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, Z)		\
+	_XENUM5_CSTRING_SRC_CHECK(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, Z)		\
 
 
 /**
  * Worker for _XENUM5_PROP_CHECK_CSTRING().
  * Define final checks on data structures, for implementation in source.
  */
-#define _XENUM5_CSTRING_SRC_CHECK(PROPNAME, PROPDEF, DECL)					\
+#define _XENUM5_CSTRING_SRC_CHECK(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, Z)		\
 	static_assert(										\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Node)) *	\
-		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodesSize),	\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodeNames)) ==			\
+		LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodesSize) *					\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Node)),				\
 		"BUG: Struct size mismatch (NodeNames / NodesSize)."				\
 	);											_XENUM5_NWLN \
 	static_assert(										\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, NodeNames)) ==	\
-		sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME)::BOOST_PP_CAT(PROPNAME, Nodes)),	\
-		"BUG: Struct/array size mismatch (NodeNames / Nodes)."				\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Nodes)) ==				\
+		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, NodeNames)),				\
+		"BUG: Struct/array size mismatch (Nodes / NodeNames)."				\
 	);											_XENUM5_NWLN \
 
 /*

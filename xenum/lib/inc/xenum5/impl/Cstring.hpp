@@ -60,12 +60,15 @@
  * Entry point for defining final checks for a custom property of cstring type, in source file
  * context.
  */
-#define _XENUM5_PROP_CHECK_CSTRING(PROPDEF, DECL, CTXT, Z)					\
+#define _XENUM5_PROP_CHECK_CSTRING(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _CHECK)	\
 	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
+		PROPNAME,									\
 		PROPDEF,									\
-		DECL										\
+		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME),						\
+		_XENUM5_DECL_GET_SCOPE(DECL),							\
+		_XENUM5_STORE_NAME(DECL),							\
+		Z										\
 	)											\
 
 

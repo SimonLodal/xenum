@@ -49,35 +49,50 @@
  * Define all the data and functions of a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFINE_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\
-		(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)					\
+	_XENUM5_PLAIN_SRC_DEFL(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+	_XENUM5_PLAIN_SRC_DEFS(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)				\
 
 /**
- * Worker for _XENUM5_PLAIN_SRC_DEFINE(), for depth==0.
- * For this case, only generate a single plain array of values, directly indexed by enum
- * value; no need for name struct or nodes table.
+ * Define the local data and functions.
  */
-#define _XENUM5_PLAIN_SRC_DEFINE_0(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_PLAIN_SRC_DEFL0(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_PLAIN_SRC_DEFS0(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-
-/**
- * Generate declarations and definitions that go into local namespace (parts that are
- * not declared in header). For depth==0.
- */
-#define _XENUM5_PLAIN_SRC_DEFL0(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	namespace { namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) {				_XENUM5_NWLN \
+#define _XENUM5_PLAIN_SRC_DEFL(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
+	namespace {										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		_XENUM5_PLAIN_SRC_DEFL0_VALUES(PROPNAME, PROPDEF, CTXT, Z)			\
+		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
+		namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) {				_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+			_XENUM5_PLAIN_SRC_DEFL_VALUES(PROPNAME, PROPDEF, CTXT, Z)		\
+			BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFL, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))) \
+				(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+			_XENUM5_INDENT_DEC							\
+		} _XENUM5_CMNT(namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME))			\
 		_XENUM5_INDENT_DEC								\
-	}}											_XENUM5_NWLN \
+	} _XENUM5_CMNT(Anon namespace)								\
+
 
 /**
- * Generate definitions of store class members. For depth==0.
+ * Worker for _XENUM5_PLAIN_SRC_DEFL(), for depth==0.
+ * Values are already defined as a single plain array of values, directly indexed
+ * by enum value; no need for name struct or nodes table.
  */
-#define _XENUM5_PLAIN_SRC_DEFS0(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_PLAIN_SRC_DEFS0_FUNCS(								\
+#define _XENUM5_PLAIN_SRC_DEFL0(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+
+/**
+ * Worker for _XENUM5_PLAIN_SRC_DEFL(), for depth==1.
+ */
+#define _XENUM5_PLAIN_SRC_DEFL1(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+	_XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, CTXT, Z)					\
+	_XENUM5_PLAIN_SRC_DEFL1_FUNCS(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF), DECL, CTXT, Z)	\
+
+
+/**
+ * Define the functions declared in the store class.
+ */
+#define _XENUM5_PLAIN_SRC_DEFS(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)				\
+	_XENUM5_PLAIN_SRC_DEFS_FUNCS(								\
 		PROPNAME,									\
+		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		PROPDEF,									\
 		SCOPE,										\
 		_XENUM5_STORE_NAME(DECL),							\
@@ -87,71 +102,21 @@
 	)
 
 
+// ====================================== VALUES (SRC) ==========================================
 /**
- * Worker for _XENUM5_PLAIN_SRC_DEFINE(), for depth!=0.
+ * Define the values.
  */
-#define _XENUM5_PLAIN_SRC_DEFINE_1(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_PLAIN_SRC_DEFL1(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_PLAIN_SRC_DEFS1(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-
-/**
- * Generate declarations and definitions that go into local namespace (parts that are
- * not declared in header). For depth!=0.
- */
-#define _XENUM5_PLAIN_SRC_DEFL1(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	namespace { namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) {				_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PLAIN_SRC_DEFL1_VALUES(PROPNAME, PROPDEF, CTXT, Z)			\
-		_XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, PROPDEF, CTXT, Z)			\
-		_XENUM5_PLAIN_SRC_DEFL1_FUNCS(							\
-			_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),					\
-			_XENUM5_CTXT_GET_DECL(CTXT),						\
-			CTXT,									\
-			Z									\
-		)										\
-		_XENUM5_INDENT_DEC								\
-	}}											_XENUM5_NWLN \
-
-
-/**
- * Worker for _XENUM5_PLAIN_SRC_DEFINE().
- * Define the store class functions related to a single custom property, implemented in source.
- */
-#define _XENUM5_PLAIN_SRC_DEFS1(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_PLAIN_SRC_DEFS1_FUNCS(								\
-		PROPNAME,									\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
-		SCOPE,										\
-		_XENUM5_STORE_NAME(DECL),							\
-		CTXT,										\
-		Z										\
-	)
-
-
-// ================================= VALUES (SRC, DEPTH==0) =====================================
-/**
- * Define the values, for depth==0.
- */
-#define _XENUM5_PLAIN_SRC_DEFL0_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DEFL_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
 	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
 	_XENUM5_PLAIN_DEFINE_VALUES(, PROPNAME, CTXT)						\
 
 
-// ================================= VALUES (SRC, DEPTH!=0) =====================================
+// ======================================= NODES (SRC) ==========================================
 /**
- * Define the values, for depth!=0; declare a struct and define values as this struct.
+ * Define the index nodes, for depth!=0; declare a name struct and define an array of nodes
+ * with same layout.
  */
-#define _XENUM5_PLAIN_SRC_DEFL1_VALUES(PROPNAME, PROPDEF, CTXT, Z)				\
-	_XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
-	_XENUM5_PLAIN_DEFINE_VALUES(, PROPNAME, CTXT)						\
-
-
-// ================================== NODES (SRC, DEPTH!=0) =====================================
-/**
- * Define the index nodes, for depth!=0; declare a name struct and define nodes as this struct.
- */
-#define _XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, CTXT, Z)					\
 	_XENUM5_PLAIN_DEFINE_NODESSIZE(, PROPNAME, CTXT)					\
 	_XENUM5_PROP_DECLARE_INDEX_TYPE(PROPNAME)						\
 	_XENUM5_PROP_DECLARE_NODE_TYPE(PROPNAME)						\
@@ -172,53 +137,19 @@
 // ==================================== STORE FUNCTIONS ========================================
 /**
  * Define the store class functions related to a single custom property.
- * For source implementation, depth==0.
  */
-#define _XENUM5_PLAIN_SRC_DEFS0_FUNCS(PROPNAME, PROPDEF, SCOPE, STORENAME, CTXT, DECL, Z)	\
-	_XENUM5_PLAIN_SRC_DEFS0_GET_VALUE(							\
-		PROPNAME,									\
-		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) ::,					\
-		SCOPE,										\
-		STORENAME,									\
-		PROPDEF,									\
-		Z										\
-	)
-
-/**
- * Define the store class functions related to a single custom property.
- * For source implementation, depth!=0.
- */
-#define _XENUM5_PLAIN_SRC_DEFS1_FUNCS(PROPNAME, DEPTH, PROPDEF, SCOPE, STORENAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_SRC_DEFS_FUNCS(PROPNAME, DEPTH, PROPDEF, SCOPE, STORENAME, DECL, CTXT, Z)	\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DEFS1_GET_VALUE(							\
-		PROPNAME,									\
-		DEPTH,										\
-		_XENUM5_IMPL_LOCAL_NS(_XENUM5_CTXT_GET_DECL(CTXT), PROPNAME) ::,		\
-		SCOPE,										\
-		STORENAME,									\
-		PROPDEF,									\
-		Z										\
-	)
+	_XENUM5_PLAIN_SRC_DEFS_GET_VALUE(							\
+		PROPNAME, DEPTH, PROPDEF, _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) ::,		\
+		SCOPE, STORENAME, Z)								\
 
 
-// =================== get${PROPNAME}() (SRC, DEPTH==0) ======================
+// =========================== get${PROPNAME}() ==============================
 /**
- * Define get${propname}() value getter. For source implementation, depth==0.
+ * Define get${propname}() value getter. For source implementation.
  */
-#define _XENUM5_PLAIN_SRC_DEFS0_GET_VALUE(PROPNAME, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
-	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
-	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (SCOPE STORENAME::Enum index0)		_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[SCOPE STORENAME::getIndex(index0)];	_XENUM5_NWLN \
-	}											_XENUM5_NWLN
-
-
-// =================== get${PROPNAME}() (SRC, DEPTH!=0) ======================
-/**
- * Define get${propname}() value getter. For source implementation, depth!=0.
- */
-#define _XENUM5_PLAIN_SRC_DEFS1_GET_VALUE(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, PROPDEF, Z)	\
+#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, Z)	\
 	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF)						\
 	SCOPE STORENAME :: BOOST_PP_CAT(get, PROPNAME) (					\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, DEPTH, Z)		\
@@ -226,12 +157,25 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return LOCALSCOPE BOOST_PP_CAT(PROPNAME, Values)[				\
-			LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (		\
-				_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)				\
-			)									\
-			.getNextIndex(BOOST_PP_CAT(index, DEPTH))				\
+			BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFS_GET_VALUE_, BOOST_PP_BOOL(DEPTH))	\
+				(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, Z)	\
 		];										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
+
+/**
+ * Define get${propname}() indexing for depth==0.
+ */
+#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_0(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, Z)	\
+	SCOPE STORENAME::getIndex(index0)							\
+
+/**
+ * Define get${propname}() indexing for depth!=0.
+ */
+#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_1(PROPNAME, DEPTH, LOCALSCOPE, SCOPE, STORENAME, Z)	\
+	LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PROPNAME), Node) (				\
+		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
+	)											\
+	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
 
 
 // =========================== _check() ==============================
@@ -239,7 +183,7 @@
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
  * Define final checks on data structures, for implementation in header.
  */
-#define _XENUM5_PLAIN_HDR_CHECK(PROPNAME, PROPDEF, SCOPE, STORENAME, Z)				\
+#define _XENUM5_PLAIN_HDR_CHECK(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, Z)		\
 	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_CHECK_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\
 		(PROPNAME, SCOPE, STORENAME)
 
@@ -248,7 +192,6 @@
  * For depth==0, there is no final checks to be made.
  */
 #define _XENUM5_PLAIN_HDR_CHECK_0(PROPNAME, SCOPE, STORENAME)					\
-
 
 /**
  * Worker for _XENUM5_PLAIN_CHECK().
@@ -266,17 +209,14 @@
 		"Struct/array size mismatch (NodeNames / Nodes)."				\
 	);											_XENUM5_NWLN \
 
-/*
-_XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
-*/
 
 /**
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
  * Define final checks on data structures, for implementation in source.
  */
-#define _XENUM5_PLAIN_SRC_CHECK(PROPNAME, PROPDEF, SCOPE, STORENAME, DECL, Z)			\
+#define _XENUM5_PLAIN_SRC_CHECK(PROPNAME, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, Z)		\
 	BOOST_PP_CAT(_XENUM5_PLAIN_SRC_CHECK_, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)))	\
-		(PROPNAME, _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME), SCOPE, STORENAME)		\
+		(PROPNAME, LOCALSCOPE, SCOPE, STORENAME)					\
 
 /**
  * Worker for _XENUM5_PLAIN_SRC_CHECK(), for depth==0.
@@ -287,7 +227,6 @@ _XENUM5_PLAIN_CHECK: PROPNAME _XENUM5_NWLN \
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PROPNAME, Value)) * SCOPE STORENAME::size,	\
 		"Data size mismatch (Values / enum-size)."					\
 	);											_XENUM5_NWLN \
-
 
 /**
  * Worker for _XENUM5_PLAIN_SRC_CHECK(), for depth!=0.

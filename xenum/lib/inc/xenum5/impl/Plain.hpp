@@ -120,36 +120,14 @@
  * Entry point for defining final checks for a custom property of plain type, in source file
  * context.
  */
-#define _XENUM5_PROP_CHECK_PLAIN(PROPDEF, DECL, CTXT, Z)					\
-	BOOST_PP_CAT(_XENUM5_PROP_CHECK_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
-		(PROPDEF, DECL, CTXT, Z)
-
-/**
- * Define final checks for a custom property of plain type, implemented in header, in source
- * file context.
- */
-#define _XENUM5_PROP_CHECK_PLAIN_HDR(PROPDEF, DECL, CTXT, Z)					\
-	_XENUM5_PLAIN_HDR_CHECK									\
+#define _XENUM5_PROP_CHECK_PLAIN(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _CHECK)	\
 	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
+		PROPNAME,									\
 		PROPDEF,									\
+		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME),						\
 		_XENUM5_DECL_GET_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
-		Z										\
-	)											\
-
-/**
- * Define final checks for a custom property of plain type, implemented in source, in source
- * file context.
- */
-#define _XENUM5_PROP_CHECK_PLAIN_SRC(PROPDEF, DECL, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_CHECK									\
-	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		PROPDEF,									\
-		_XENUM5_DECL_GET_SCOPE(DECL),							\
-		_XENUM5_STORE_NAME(DECL),							\
-		DECL,										\
 		Z										\
 	)											\
 
