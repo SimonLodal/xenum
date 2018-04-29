@@ -16,22 +16,8 @@
  * Entry point for declaring a custom property of plain type, in store class context.
  */
 #define _XENUM5_PROP_DECLS_PLAIN(PROPDEF, DECL, CTXT, Z)					\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLS_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
-		(PROPDEF, DECL, CTXT, Z)
-
-/**
- * Declaratation for a custom property of plain type, implemented in header, in store class
- * context.
- */
-#define _XENUM5_PROP_DECLS_PLAIN_HDR(PROPDEF, DECL, CTXT, Z)					\
-	_XENUM5_PLAIN_HDR_DECLS(_XENUM5_PROPDEF_GET_NAME(PROPDEF), PROPDEF, DECL, CTXT, Z)	\
-
-/**
- * Declaratation for a custom property of plain type, implemented in source, in store class
- * context.
- */
-#define _XENUM5_PROP_DECLS_PLAIN_SRC(PROPDEF, DECL, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DECLS_FUNCS(								\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DECLS)	\
+	(											\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		PROPDEF,									\
@@ -45,32 +31,8 @@
  * Entry point for declaring a custom property of plain type, in value class context.
  */
 #define _XENUM5_PROP_DECLV_PLAIN(PROPDEF, CTXT, Z)						\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLV_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
-		(PROPDEF, CTXT, Z)
-
-
-/**
- * Declaratation for a custom property of plain type, implemented in header, in value class
- * context.
- */
-#define _XENUM5_PROP_DECLV_PLAIN_HDR(PROPDEF, CTXT, Z)						\
-	_XENUM5_PLAIN_HDR_DECLV_TYPES(								\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF)						\
-	)											\
-	_XENUM5_PLAIN_HDR_DECLV_FUNCS(								\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		CTXT,										\
-		Z										\
-	)
-
-/**
- * Declaratation for a custom property of plain type, implemented in source, in value class
- * context.
- */
-#define _XENUM5_PROP_DECLV_PLAIN_SRC(PROPDEF, CTXT, Z)						\
-	_XENUM5_PLAIN_SRC_DECLV_FUNCS(								\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DECLV)	\
+	(											\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		PROPDEF,									\
@@ -84,36 +46,17 @@
  * Entry point for defining a custom property of plain type, in source file context.
  */
 #define _XENUM5_PROP_DEFINE_PLAIN(PROPDEF, DECL, CTXT, Z)					\
-	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF))	\
-		(PROPDEF, DECL, CTXT, Z)
-
-/**
- * Definitions for a custom property of plain type, implemented in header, in source file context.
- */
-#define _XENUM5_PROP_DEFINE_PLAIN_HDR(PROPDEF, DECL, CTXT, Z)					\
-	_XENUM5_PLAIN_HDR_DEFINE								\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DEFINE)	\
 	(											\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
+		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		PROPDEF,									\
+		_XENUM5_IMPL_LOCAL_NS(DECL, _XENUM5_PROPDEF_GET_NAME(PROPDEF)),			\
 		_XENUM5_DECL_GET_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
-		Z										\
-	)											\
-
-/**
- * Definitions for a custom property of plain type, implemented in source, in source file
- * context.
- */
-#define _XENUM5_PROP_DEFINE_PLAIN_SRC(PROPDEF, DECL, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DEFINE								\
-	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		PROPDEF,									\
-		_XENUM5_DECL_GET_SCOPE(DECL),							\
-		DECL,										\
 		CTXT,										\
 		Z										\
-	)											\
+	)
 
 
 /**

@@ -14,9 +14,9 @@
 /**
  * Entry point for declaring a custom property of cstring type, in store class context.
  */
-// FIXME: hdr/src impl
 #define _XENUM5_PROP_DECLS_CSTRING(PROPDEF, DECL, CTXT, Z)					\
-	_XENUM5_CSTRING_DECLS_FUNCS(								\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DECLS)	\
+	(											\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		PROPDEF,									\
@@ -29,9 +29,9 @@
 /**
  * Entry point for declaring a custom property of cstring type, in value class context.
  */
-// FIXME: hdr/src impl
 #define _XENUM5_PROP_DECLV_CSTRING(PROPDEF, CTXT, Z)						\
-	_XENUM5_CSTRING_DECLV_FUNCS(								\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DECLV)	\
+	(											\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
 		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		PROPDEF,									\
@@ -49,9 +49,11 @@
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DEFINE)	\
 	(											\
 		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
+		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
 		PROPDEF,									\
+		_XENUM5_IMPL_LOCAL_NS(DECL, _XENUM5_PROPDEF_GET_NAME(PROPDEF)),			\
 		_XENUM5_DECL_GET_SCOPE(DECL),							\
-		DECL,										\
+		_XENUM5_STORE_NAME(DECL),							\
 		CTXT,										\
 		Z										\
 	)											\

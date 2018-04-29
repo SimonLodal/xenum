@@ -15,16 +15,14 @@
  * Worker for _XENUM5_PROP_DEFINE_PLAIN().
  * Define the data of a single custom property, for "plain" data types, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DEFINE(PROPNAME, PROPDEF, SCOPE, STORENAME, Z)			\
+#define _XENUM5_PLAIN_HDR_DEFINE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 	/* FIXME: Also define NodesSize - ? */							\
 	constexpr const										\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Value)				\
 		SCOPE STORENAME :: BOOST_PP_CAT(PROPNAME, Values)				\
 		[];										_XENUM5_NWLN \
-	BOOST_PP_CAT(										\
-		_XENUM5_PLAIN_HDR_DEFINE_,							\
-		BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))				\
-	) (PROPNAME, SCOPE, STORENAME)
+	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DEFINE_, BOOST_PP_BOOL(DEPTH))				\
+		(PROPNAME, SCOPE, STORENAME)							\
 
 /**
  * Define nothing since the custom property has depth==0.
@@ -45,28 +43,27 @@
 
 // ======================================= MAIN (SRC) ===========================================
 /**
- * Worker for _XENUM5_PROP_DEFINE_PLAIN().
  * Define all the data and functions of a single custom property, implemented in source.
  */
-#define _XENUM5_PLAIN_SRC_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_PLAIN_SRC_DEFL(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
-	_XENUM5_PLAIN_SRC_DEFS(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DEFINE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
+	_XENUM5_PLAIN_SRC_DEFL(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, CTXT, Z)			\
+	_XENUM5_PLAIN_SRC_DEFS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 
 /**
  * Define the local data and functions.
  */
-#define _XENUM5_PLAIN_SRC_DEFL(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DEFL(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, CTXT, Z)			\
 	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
 	namespace {										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
-		namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) {				_XENUM5_NWLN \
+		namespace LOCALSCOPE {								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
 			_XENUM5_PLAIN_SRC_DEFL_VALUES(PROPNAME, PROPDEF, CTXT, Z)		\
-			BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFL, BOOST_PP_BOOL(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF))) \
-				(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+			BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFL, BOOST_PP_BOOL(DEPTH))		\
+				(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 			_XENUM5_INDENT_DEC							\
-		} _XENUM5_CMNT(namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME))			\
+		} _XENUM5_CMNT(namespace LOCALSCOPE)						\
 		_XENUM5_INDENT_DEC								\
 	} _XENUM5_CMNT(Anon namespace)								\
 
@@ -76,30 +73,21 @@
  * Values are already defined as a single plain array of values, directly indexed
  * by enum value; no need for name struct or nodes table.
  */
-#define _XENUM5_PLAIN_SRC_DEFL0(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DEFL0(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 
 /**
  * Worker for _XENUM5_PLAIN_SRC_DEFL(), for depth==1.
  */
-#define _XENUM5_PLAIN_SRC_DEFL1(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DEFL1(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
 	_XENUM5_PLAIN_SRC_DEFL1_NODES(PROPNAME, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DEFL1_FUNCS(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF), DECL, CTXT, Z)	\
+	_XENUM5_PLAIN_SRC_DEFL1_FUNCS(DEPTH, _XENUM5_CTXT_GET_DECL(CTXT), CTXT, Z)		\
 
 
 /**
  * Define the functions declared in the store class.
  */
-#define _XENUM5_PLAIN_SRC_DEFS(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)				\
-	_XENUM5_PLAIN_SRC_DEFS_FUNCS(								\
-		PROPNAME,									\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
-		SCOPE,										\
-		_XENUM5_STORE_NAME(DECL),							\
-		DECL,										\
-		CTXT,										\
-		Z										\
-	)
+#define _XENUM5_PLAIN_SRC_DEFS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
+	_XENUM5_PLAIN_SRC_DEFS_FUNCS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 
 
 // ====================================== VALUES (SRC) ==========================================
@@ -138,11 +126,9 @@
 /**
  * Define the store class functions related to a single custom property.
  */
-#define _XENUM5_PLAIN_SRC_DEFS_FUNCS(PROPNAME, DEPTH, PROPDEF, SCOPE, STORENAME, DECL, CTXT, Z)	\
+#define _XENUM5_PLAIN_SRC_DEFS_FUNCS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DEFS_GET_VALUE(							\
-		PROPNAME, DEPTH, PROPDEF, _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) ::,		\
-		SCOPE, STORENAME, Z)								\
+	_XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE ::, SCOPE, STORENAME, Z)	\
 
 
 // =========================== get${PROPNAME}() ==============================

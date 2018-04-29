@@ -15,34 +15,33 @@
  * Define all the data and functions of a single custom property, implemented in header.
  */
 // FIXME: Implement hdr. Using src impl for now.
-#define _XENUM5_CSTRING_HDR_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_CSTRING_SRC_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-
+#define _XENUM5_CSTRING_HDR_DEFINE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
+	_XENUM5_CSTRING_SRC_DEFINE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 
 
 // ======================================= MAIN (SRC) ===========================================
 /**
  * Define all the data and functions of a single custom property, implemented in source.
  */
-#define _XENUM5_CSTRING_SRC_DEFINE(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_CSTRING_SRC_DEFL(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_CSTRING_SRC_DEFS(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
+#define _XENUM5_CSTRING_SRC_DEFINE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
+	_XENUM5_CSTRING_SRC_DEFL(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, CTXT, Z)			\
+	_XENUM5_CSTRING_SRC_DEFS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 
 /**
  * Define the local data and functions.
  */
-#define _XENUM5_CSTRING_SRC_DEFL(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
+#define _XENUM5_CSTRING_SRC_DEFL(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, CTXT, Z)			\
 	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
 	namespace {										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
-		namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME) {				_XENUM5_NWLN \
+		namespace LOCALSCOPE {								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
 			_XENUM5_CSTRING_SRC_DEFL_VALUES(PROPNAME, PROPDEF, CTXT, Z)		\
-			_XENUM5_CSTRING_SRC_DEFL_NODES(PROPNAME, PROPDEF, CTXT, Z)		\
-			_XENUM5_CSTRING_SRC_DEFL_FUNCS(_XENUM5_PROPDEF_GET_DEPTH(PROPDEF), DECL, CTXT, Z)	\
+			_XENUM5_CSTRING_SRC_DEFL_NODES(PROPNAME, CTXT, Z)			\
+			_XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, _XENUM5_CTXT_GET_DECL(CTXT), CTXT, Z)	\
 			_XENUM5_INDENT_DEC							\
-		} _XENUM5_CMNT(namespace _XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME))			\
+		} _XENUM5_CMNT(namespace LOCALSCOPE)						\
 		_XENUM5_INDENT_DEC								\
 	} _XENUM5_CMNT(Anon namespace)								\
 
@@ -50,16 +49,8 @@
 /**
  * Define the functions declared in the store class.
  */
-#define _XENUM5_CSTRING_SRC_DEFS(PROPNAME, PROPDEF, SCOPE, DECL, CTXT, Z)			\
-	_XENUM5_CSTRING_SRC_DEFS_FUNCS(								\
-		PROPNAME,									\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
-		SCOPE,										\
-		_XENUM5_STORE_NAME(_XENUM5_CTXT_GET_DECL(CTXT)),				\
-		CTXT,										\
-		Z										\
-	)
+#define _XENUM5_CSTRING_SRC_DEFS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
+	_XENUM5_CSTRING_SRC_DEFS_FUNCS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 
 
 // ====================================== VALUES (SRC) ==========================================
@@ -77,7 +68,7 @@
  * Define the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
  * we always need an indexnodes table since each string needs to be referenced by an indexnode.
  */
-#define _XENUM5_CSTRING_SRC_DEFL_NODES(PROPNAME, PROPDEF, CTXT, Z)				\
+#define _XENUM5_CSTRING_SRC_DEFL_NODES(PROPNAME, CTXT, Z)					\
 	_XENUM5_CSTRING_DEFINE_NODESSIZE(, PROPNAME, CTXT)					\
 	_XENUM5_PROP_DECLARE_INDEX_TYPE(PROPNAME)						\
 	_XENUM5_PROP_DECLARE_NODE_TYPE(PROPNAME)						\
@@ -99,13 +90,10 @@
 /**
  * Define the store class functions related to a single custom property.
  */
-#define _XENUM5_CSTRING_SRC_DEFS_FUNCS(PROPNAME, DEPTH, PROPDEF, SCOPE, STORENAME, CTXT, Z)	\
+#define _XENUM5_CSTRING_SRC_DEFS_FUNCS(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
-	_XENUM5_CSTRING_SRC_DEFS_GET_VALUE(							\
-		PROPNAME, DEPTH, PROPDEF,							\
-		_XENUM5_IMPL_LOCAL_NS(_XENUM5_CTXT_GET_DECL(CTXT), PROPNAME) ::,		\
-		SCOPE, STORENAME, Z)								\
+	_XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, LOCALSCOPE ::, SCOPE, STORENAME, Z)	\
 
 
 // =========================== get${PROPNAME}() ==============================

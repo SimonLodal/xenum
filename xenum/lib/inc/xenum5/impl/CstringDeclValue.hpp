@@ -11,12 +11,28 @@
 
 
 
+// ======================================= MAIN (HDR) ===========================================
+/**
+ * Declare the functions related to a single custom property, implemented in header.
+ */
+// FIXME: Implement hdr. Using src impl for now.
+#define _XENUM5_CSTRING_HDR_DECLV(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+	_XENUM5_CSTRING_SRC_DECLV(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+
+
+// ======================================= MAIN (SRC) ===========================================
+/**
+ * Declare the data related to a single custom property, implemented in source.
+ */
+#define _XENUM5_CSTRING_SRC_DECLV(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+	_XENUM5_CSTRING_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
+
+
 // ======================================= FUNCTIONS ============================================
 /**
- * Worker for _XENUM5_PROP_DECLV_CSTRING().
  * Declare the functions related to a single custom property, in value class.
  */
-#define _XENUM5_CSTRING_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+#define _XENUM5_CSTRING_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
 	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_SRC_DECLV_GET_SIZE(BOOST_PP_INC(DEPTH), PROPDEF, Z)			\
 	_XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\

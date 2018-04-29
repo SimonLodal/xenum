@@ -10,6 +10,23 @@
 #define _XENUM5_IMPL_PLAIN_DECL_VALUE_HPP
 
 
+// ======================================= MAIN (HDR) ===========================================
+/**
+ * Declare the data and functions related to a single custom property, implemented in header.
+ */
+#define _XENUM5_PLAIN_HDR_DECLV(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+	_XENUM5_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
+	_XENUM5_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
+
+
+// ======================================= MAIN (SRC) ===========================================
+/**
+ * Declare the functions related to a single custom property, implemented in source.
+ */
+#define _XENUM5_PLAIN_SRC_DECLV(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+	_XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
+
+
 
 // ========================================== TYPES =============================================
 /**
