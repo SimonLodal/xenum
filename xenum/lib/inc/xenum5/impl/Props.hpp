@@ -31,7 +31,7 @@
 	_XENUM5_PROP_DECLS_I1									\
 	(											\
 		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
-		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
+		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
 
@@ -69,7 +69,7 @@
 	_XENUM5_PROP_DECLV_I1									\
 	(											\
 		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
-		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
+		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
 
@@ -106,7 +106,7 @@
 	_XENUM5_PROP_DEFINE_I1									\
 	(											\
 		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
-		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
+		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
 
@@ -131,7 +131,7 @@
 	_XENUM5_PROP_CHECK_I1									\
 	(											\
 		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
-		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
+		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
 
@@ -198,7 +198,7 @@
 /**
  * Iterate data structure, execute callback for each leaf value.
  * @param CALLBACK Callback to execute for each value.
- * @param CTXT Context object. Assumes the following fields are set: PROPINDEX, PDEF, IDENT.
+ * @param CTXT Context object. Assumes the following fields are set: PINDEX, PDEF, IDENT.
  */
 #define _XENUM5_PROP_ITER_VALUES(CALLBACK, CTXT)						\
 	_XENUM5_CALL_VALS(									\
@@ -212,7 +212,7 @@
 #define _XENUM5_PROP_ITER_VALUES_NODE(CTXT, IDENT, ...)						\
 	_XENUM5_PROP_ITER_VALUES_NODE_I1							\
 	(											\
-		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
+		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PINDEX(CTXT), __VA_ARGS__),			\
 		_XENUM5_PDEF_GET_DEPTH(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
 	)

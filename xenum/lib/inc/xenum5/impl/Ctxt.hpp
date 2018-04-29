@@ -26,12 +26,12 @@
 /**
  * Get the current property index, if any.
  */
-#define _XENUM5_CTXT_GET_PROPINDEX(CTXT)		BOOST_PP_SEQ_ELEM(2, CTXT)
+#define _XENUM5_CTXT_GET_PINDEX(CTXT)			BOOST_PP_SEQ_ELEM(2, CTXT)
 
 /**
  * Set the current property index.
  */
-#define _XENUM5_CTXT_SET_PROPINDEX(CTXT, PROPINDEX)	BOOST_PP_SEQ_REPLACE(CTXT, 2, PROPINDEX)
+#define _XENUM5_CTXT_SET_PINDEX(CTXT, PINDEX)		BOOST_PP_SEQ_REPLACE(CTXT, 2, PINDEX)
 
 /**
  * Get the current property definition field, if any.
