@@ -13,52 +13,52 @@
 /**
  * Get the name of a custom property.
  */
-#define _XENUM5_PROPDEF_GET_NAME(PROPDEF)		BOOST_PP_SEQ_ELEM(0, PROPDEF)
+#define _XENUM5_PDEF_GET_NAME(PDEF)			BOOST_PP_SEQ_ELEM(0, PDEF)
 
 /**
  * Get the data type of a custom property.
  */
-#define _XENUM5_PROPDEF_GET_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(1, PROPDEF))
+#define _XENUM5_PDEF_GET_TYPE(PDEF)			BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the actual data type used for storing data for this custom property.
  */
-#define _XENUM5_PROPDEF_GET_REAL_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(1, BOOST_PP_SEQ_ELEM(1, PROPDEF))
+#define _XENUM5_PDEF_GET_REAL_TYPE(PDEF)		BOOST_PP_SEQ_ELEM(1, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the data type used as parameter type in functions handling data for this property.
  */
-#define _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(1, PROPDEF))
+#define _XENUM5_PDEF_GET_PARM_TYPE(PDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the type category; for branching handling of different types.
  */
-#define _XENUM5_PROPDEF_GET_TYPCAT(PROPDEF)		BOOST_PP_SEQ_ELEM(3, BOOST_PP_SEQ_ELEM(1, PROPDEF))
+#define _XENUM5_PDEF_GET_TYPCAT(PDEF)			BOOST_PP_SEQ_ELEM(3, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the default value of a custom property.
  */
-#define _XENUM5_PROPDEF_GET_DEFAULTVALUE(PROPDEF)	BOOST_PP_SEQ_ELEM(2, PROPDEF)
+#define _XENUM5_PDEF_GET_DEFAULTVALUE(PDEF)		BOOST_PP_SEQ_ELEM(2, PDEF)
 
 /**
  * Get the depth of a custom property.
  */
-#define _XENUM5_PROPDEF_GET_DEPTH(PROPDEF)		BOOST_PP_SEQ_ELEM(3, PROPDEF)
+#define _XENUM5_PDEF_GET_DEPTH(PDEF)			BOOST_PP_SEQ_ELEM(3, PDEF)
 
 /**
  * Get the "PLACEMENT" feature; 0=place implementation in source file, 1=in header file.
  */
-#define _XENUM5_PROPDEF_GET_PLACEMENT(PROPDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PROPDEF))
+#define _XENUM5_PDEF_GET_PLACEMENT(PDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PDEF))
 
 /**
  * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
  */
-#define _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)	BOOST_PP_IF(				\
-							_XENUM5_PROPDEF_GET_PLACEMENT(PROPDEF),	\
+#define _XENUM5_PDEF_GET_PLACEMENT_STR(PDEF)		BOOST_PP_IF(				\
+							_XENUM5_PDEF_GET_PLACEMENT(PDEF),	\
 							HDR,					\
 							SRC)
 
-//#define _XENUM5_PROPDEF_GET_FEATURES(PROPDEF)		BOOST_PP_SEQ_ELEM(4, PROPDEF)
+//#define _XENUM5_PDEF_GET_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
 
 
 /**
@@ -68,51 +68,51 @@
  * @param ... The custom property definition, expanded as individual parameters.
  * @return Initialized custom property declaration, as a sequence, where all fields are present.
  */
-#define _XENUM5_PROPDEF_INIT(DBGLOC, ...)							\
-	_XENUM5_PROPDEF_INIT_NAME(DBGLOC, __VA_ARGS__)						\
+#define _XENUM5_PDEF_INIT(DBGLOC, ...)							\
+	_XENUM5_PDEF_INIT_NAME(DBGLOC, __VA_ARGS__)						\
 
 /*
-_PROPDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARGS__ _XENUM5_NWLN \
+_PDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARGS__ _XENUM5_NWLN \
 */
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT().
+ * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PROPDEF_INIT_NAME(DBGLOC, PROPNAME, ...)					\
+#define _XENUM5_PDEF_INIT_NAME(DBGLOC, PROPNAME, ...)						\
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PROPNAME),							\
 		_XENUM5_ERROR(LOC, Missing custom property name.),				\
 		PROPNAME									\
 	))											\
-	_XENUM5_PROPDEF_INIT_TYPE(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_TYPE(DBGLOC, __VA_ARGS__)
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT().
+ * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PROPDEF_INIT_TYPE(DBGLOC, PROPTYPE, ...)					\
+#define _XENUM5_PDEF_INIT_TYPE(DBGLOC, PROPTYPE, ...)						\
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PROPTYPE),							\
 		_XENUM5_ERROR(LOC, Missing custom property type.),				\
-		(PROPTYPE) _XENUM5_PROPDEF_ADD_TYPES(DBGLOC, PROPTYPE)				\
+		(PROPTYPE) _XENUM5_PDEF_ADD_TYPES(DBGLOC, PROPTYPE)				\
 	))											\
-	_XENUM5_PROPDEF_INIT_DEFAULTVALUE(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_DEFAULTVALUE(DBGLOC, __VA_ARGS__)
 
 
-/// Helper definition for _XENUM5_PROPDEF_GET_TYPE_CATEGORY().
-#define _XENUM5_PROPDEF_CATEGORY_cstring	
-/// Helper definition for _XENUM5_PROPDEF_GET_TYPE_CATEGORY().
-#define _XENUM5_PROPDEF_CATEGORY_IS_cstring	1
+/// Helper definition for _XENUM5_PDEF_GET_TYPE_CATEGORY().
+#define _XENUM5_PDEF_CATEGORY_cstring	
+/// Helper definition for _XENUM5_PDEF_GET_TYPE_CATEGORY().
+#define _XENUM5_PDEF_CATEGORY_IS_cstring	1
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT_TYPE().
+ * Helper for _XENUM5_PDEF_INIT_TYPE().
  */
-#define _XENUM5_PROPDEF_ADD_TYPES(DBGLOC, PROPTYPE)						\
+#define _XENUM5_PDEF_ADD_TYPES(DBGLOC, PROPTYPE)						\
 	BOOST_PP_IF(										\
 		/* For plain types this symbol is not defined, and is therefore just itself, */	\
 		/* which is true; special types otoh will be defined and resolve to 0. */	\
-		BOOST_PP_IS_EMPTY(BOOST_PP_CAT(_XENUM5_PROPDEF_CATEGORY_, PROPTYPE)),		\
+		BOOST_PP_IS_EMPTY(BOOST_PP_CAT(_XENUM5_PDEF_CATEGORY_, PROPTYPE)),		\
 		BOOST_PP_IF(									\
-			BOOST_PP_EQUAL(1, BOOST_PP_CAT(_XENUM5_PROPDEF_CATEGORY_IS_, PROPTYPE)),\
+			BOOST_PP_EQUAL(1, BOOST_PP_CAT(_XENUM5_PDEF_CATEGORY_IS_, PROPTYPE)),	\
 			(char)(char*)(CSTRING),							\
 			_XENUM5_ERROR(DBGLOC, Unhandled special type [PROPTYPE].)		\
 		),										\
@@ -120,42 +120,42 @@ _PROPDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
 	)											\
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT().
+ * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PROPDEF_INIT_DEFAULTVALUE(DBGLOC, DEFAULTVALUE, ...)				\
+#define _XENUM5_PDEF_INIT_DEFAULTVALUE(DBGLOC, DEFAULTVALUE, ...)				\
 	(DEFAULTVALUE)										\
-	_XENUM5_PROPDEF_INIT_DEPTH(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_DEPTH(DBGLOC, __VA_ARGS__)
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT().
+ * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PROPDEF_INIT_DEPTH(DBGLOC, DEPTH, ...)						\
+#define _XENUM5_PDEF_INIT_DEPTH(DBGLOC, DEPTH, ...)						\
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(DEPTH),							\
 		0,										\
 		DEPTH										\
 	))											\
-	_XENUM5_PROPDEF_INIT_FEATURES(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_FEATURES(DBGLOC, __VA_ARGS__)
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT().
+ * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PROPDEF_INIT_FEATURES(DBGLOC, FEATURES)						\
+#define _XENUM5_PDEF_INIT_FEATURES(DBGLOC, FEATURES)						\
 	(BOOST_PP_CAT(										\
-		_XENUM5_PROPDEF_INIT_FEATURES_,							\
+		_XENUM5_PDEF_INIT_FEATURES_,							\
 		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(FEATURES))					\
 	) (DBGLOC, BOOST_PP_TUPLE_ENUM(FEATURES)))
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT_FEATURES(), when features tuple is not defined.
+ * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is not defined.
  */
-#define _XENUM5_PROPDEF_INIT_FEATURES_0(DBGLOC, PLACEMENT)					\
+#define _XENUM5_PDEF_INIT_FEATURES_0(DBGLOC, PLACEMENT)						\
 	(0)
 
 /**
- * Helper for _XENUM5_PROPDEF_INIT_FEATURES(), when features tuple is defined.
+ * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is defined.
  */
-#define _XENUM5_PROPDEF_INIT_FEATURES_1(DBGLOC, PLACEMENT, ...)					\
+#define _XENUM5_PDEF_INIT_FEATURES_1(DBGLOC, PLACEMENT, ...)					\
 	BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PLACEMENT),							\
 		(0),										\

@@ -245,7 +245,7 @@
 		);										_XENUM5_NWLN \
 		BOOST_PP_REPEAT									\
 		(										\
-			BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PROPDEFS(DECL)),			\
+			BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(DECL)),			\
 			_XENUM5_PROP_CHECK,							\
 			CTXT									\
 		)										\

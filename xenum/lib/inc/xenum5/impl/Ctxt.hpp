@@ -36,12 +36,12 @@
 /**
  * Get the current property definition field, if any.
  */
-#define _XENUM5_CTXT_GET_PROPDEF(CTXT)			BOOST_PP_SEQ_ELEM(3, CTXT)
+#define _XENUM5_CTXT_GET_PDEF(CTXT)			BOOST_PP_SEQ_ELEM(3, CTXT)
 
 /**
  * Set the current property definition field.
  */
-#define _XENUM5_CTXT_SET_PROPDEF(CTXT, PROPDEF)		BOOST_PP_SEQ_REPLACE(CTXT, 3, PROPDEF)
+#define _XENUM5_CTXT_SET_PDEF(CTXT, PDEF)		BOOST_PP_SEQ_REPLACE(CTXT, 3, PDEF)
 
 /**
  * Get current enum-value identifier, if any.

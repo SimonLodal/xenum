@@ -18,7 +18,7 @@
 		_XENUM5_DECL_HAS_PROPS(DECL)							\
 	) (CTXT, DECL)
 /*
-_DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_DECL_GET_PROPDEFS(DECL))) _XENUM5_NWLN \
+_DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_DECL_GET_PDEFS(DECL))) _XENUM5_NWLN \
 */
 
 // ==============================================================================================

@@ -19,7 +19,7 @@
  */
 #define _XENUM5_PROPS_DECLS(CTXT)								\
 	BOOST_PP_REPEAT(									\
-		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PROPDEFS(_XENUM5_CTXT_GET_DECL(CTXT))),	\
+		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(_XENUM5_CTXT_GET_DECL(CTXT))),		\
 		_XENUM5_PROP_DECLS,								\
 		CTXT										\
 		)
@@ -30,7 +30,7 @@
 #define _XENUM5_PROP_DECLS(Z, N, CTXT)								\
 	_XENUM5_PROP_DECLS_I1									\
 	(											\
-		_XENUM5_DECL_GET_PROPDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),			\
+		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
 		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -38,13 +38,13 @@
 /**
  * Worker for _XENUM5_PROP_DECLS().
  */
-#define _XENUM5_PROP_DECLS_I1(PROPDEF, CTXT, Z)							\
-	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PROPDEF_GET_NAME(PROPDEF))			\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLS_, _XENUM5_PROPDEF_GET_TYPCAT(PROPDEF))			\
+#define _XENUM5_PROP_DECLS_I1(PDEF, CTXT, Z)							\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_GET_NAME(PDEF))				\
+	BOOST_PP_CAT(_XENUM5_PROP_DECLS_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
 	(											\
-		PROPDEF,									\
+		PDEF,										\
 		_XENUM5_CTXT_GET_DECL(CTXT),							\
-		_XENUM5_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
+		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
 
@@ -57,7 +57,7 @@
 #define _XENUM5_PROPS_DECLV(CTXT)								\
 	BOOST_PP_REPEAT										\
 	(											\
-		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PROPDEFS(_XENUM5_CTXT_GET_DECL(CTXT))),	\
+		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(_XENUM5_CTXT_GET_DECL(CTXT))),		\
 		_XENUM5_PROP_DECLV,								\
 		CTXT										\
 	)											\
@@ -68,7 +68,7 @@
 #define _XENUM5_PROP_DECLV(Z, N, CTXT)								\
 	_XENUM5_PROP_DECLV_I1									\
 	(											\
-		_XENUM5_DECL_GET_PROPDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),			\
+		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
 		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -76,12 +76,12 @@
 /**
  * Worker for _XENUM5_PROP_DECLV().
  */
-#define _XENUM5_PROP_DECLV_I1(PROPDEF, CTXT, Z)							\
-	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PROPDEF_GET_NAME(PROPDEF))			\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLV_, _XENUM5_PROPDEF_GET_TYPCAT(PROPDEF))			\
+#define _XENUM5_PROP_DECLV_I1(PDEF, CTXT, Z)							\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_GET_NAME(PDEF))				\
+	BOOST_PP_CAT(_XENUM5_PROP_DECLV_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
 	(											\
-		PROPDEF,									\
-		_XENUM5_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
+		PDEF,										\
+		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
 
@@ -94,7 +94,7 @@
 #define _XENUM5_PROPS_DEFINE(CTXT, DECL)							\
 	BOOST_PP_REPEAT										\
 	(											\
-		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PROPDEFS(DECL)),				\
+		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(DECL)),				\
 		_XENUM5_PROP_DEFINE,								\
 		CTXT										\
 	)											\
@@ -105,7 +105,7 @@
 #define _XENUM5_PROP_DEFINE(Z, N, CTXT)								\
 	_XENUM5_PROP_DEFINE_I1									\
 	(											\
-		_XENUM5_DECL_GET_PROPDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),			\
+		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
 		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -113,12 +113,12 @@
 /**
  * Worker for _XENUM5_PROP_DEFINE().
  */
-#define _XENUM5_PROP_DEFINE_I1(PROPDEF, CTXT, Z)						\
-	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_, _XENUM5_PROPDEF_GET_TYPCAT(PROPDEF))			\
+#define _XENUM5_PROP_DEFINE_I1(PDEF, CTXT, Z)							\
+	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
 	(											\
-		PROPDEF,									\
+		PDEF,										\
 		_XENUM5_CTXT_GET_DECL(CTXT),							\
-		_XENUM5_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
+		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
 
@@ -130,7 +130,7 @@
 #define _XENUM5_PROP_CHECK(Z, N, CTXT)								\
 	_XENUM5_PROP_CHECK_I1									\
 	(											\
-		_XENUM5_DECL_GET_PROPDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),			\
+		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
 		_XENUM5_CTXT_SET_PROPINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -138,13 +138,13 @@
 /**
  * Worker for _XENUM5_PROP_CHECK().
  */
-#define _XENUM5_PROP_CHECK_I1(PROPDEF, CTXT, Z)							\
-	BOOST_PP_CAT(_XENUM5_PROP_CHECK_, _XENUM5_PROPDEF_GET_TYPCAT(PROPDEF))			\
+#define _XENUM5_PROP_CHECK_I1(PDEF, CTXT, Z)							\
+	BOOST_PP_CAT(_XENUM5_PROP_CHECK_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
 	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		PROPDEF,									\
+		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		PDEF,										\
 		_XENUM5_CTXT_GET_DECL(CTXT),							\
-		_XENUM5_CTXT_SET_PROPDEF(CTXT, PROPDEF),					\
+		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
 
@@ -153,9 +153,9 @@
 /**
  * Declare the data type for a custom property.
  */
-#define _XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PROPDEF)						\
+#define _XENUM5_PROP_DECL_VALUE_TYPE(PROPNAME, PDEF)						\
 	_XENUM5_DOC(Native type of custom property PROPNAME values.)				\
-	typedef _XENUM5_PROPDEF_GET_REAL_TYPE(PROPDEF) BOOST_PP_CAT(PROPNAME, Value);		_XENUM5_NWLN \
+	typedef _XENUM5_PDEF_GET_REAL_TYPE(PDEF) BOOST_PP_CAT(PROPNAME, Value);			_XENUM5_NWLN \
 
 
 // ============================ INDEXNODE NAME ===============================
@@ -198,7 +198,7 @@
 /**
  * Iterate data structure, execute callback for each leaf value.
  * @param CALLBACK Callback to execute for each value.
- * @param CTXT Context object. Assumes the following fields are set: PROPINDEX, PROPDEF, IDENT.
+ * @param CTXT Context object. Assumes the following fields are set: PROPINDEX, PDEF, IDENT.
  */
 #define _XENUM5_PROP_ITER_VALUES(CALLBACK, CTXT)						\
 	_XENUM5_CALL_VALS(									\
@@ -213,7 +213,7 @@
 	_XENUM5_PROP_ITER_VALUES_NODE_I1							\
 	(											\
 		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_DEPTH(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
 	)
 
@@ -233,14 +233,14 @@
 // ========================= APPLY DEFAULT VALUE =============================
 /**
  * @param NODE A leaf-node (value).
- * @param PROPDEF Property definition object.
- * @return NODE if non-empty, else DEFAULT_VALUE from the PROPDEF.
+ * @param PDEF Property definition object.
+ * @return NODE if non-empty, else DEFAULT_VALUE from the PDEF.
  */
 // FIXME: Report error if value and defaultvalue are both empty.
-#define _XENUM5_PROP_GET_VALUE(NODE, PROPDEF)							\
+#define _XENUM5_PROP_GET_VALUE(NODE, PDEF)							\
 	BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(NODE),							\
-		_XENUM5_PROPDEF_GET_DEFAULTVALUE(PROPDEF),					\
+		_XENUM5_PDEF_GET_DEFAULTVALUE(PDEF),						\
 		NODE										\
 	)
 
@@ -405,7 +405,7 @@
  * Declare a single field of the NodeNames struct.
  */
 #define _XENUM5_PROP_DECLARE_NODENAME(ITERPOS, NODE, CTXT)					\
-	BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), Node)		\
+	BOOST_PP_CAT(_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)), Node)			\
 	_XENUM5_PROP_GEN_NODE_NAME(								\
 		CTXT,										\
 		_XENUM5_TT_ITERPOS_GET_INDEXPATH(ITERPOS)					\
@@ -430,7 +430,7 @@
 #define _XENUM5_PROP_DEFINE_GET_NODE_N(Z, N, CTXT)						\
 	_XENUM5_PROP_DEFINE_GET_NODE_N_I1(							\
 		_XENUM5_CTXT_GET_DECLPFX(CTXT),							\
-		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		N,										\
 		_XENUM5_CTXT_GET_DECL(CTXT),							\
 		Z										\
@@ -470,19 +470,19 @@
  * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PROPDEF, Z)					\
+#define _XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\
 		_XENUM5_PROP_SRC_DECLS_GET_SIZE_N,						\
-		PROPDEF										\
+		PDEF										\
 	)											\
 
 /**
  * Declare Store::get${propname}Size() for this level.
  */
-#define _XENUM5_PROP_SRC_DECLS_GET_SIZE_N(Z, LEVEL, PROPDEF)					\
-	static size_t BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM5_PROPDEF_GET_NAME(PROPDEF)), Size) (\
+#define _XENUM5_PROP_SRC_DECLS_GET_SIZE_N(Z, LEVEL, PDEF)					\
+	static size_t BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM5_PDEF_GET_NAME(PDEF)), Size) (	\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
 	);											_XENUM5_NWLN
 
@@ -504,7 +504,7 @@
  */
 #define _XENUM5_PROP_SRC_DEFS_GET_SIZE_N(Z, N, CTXT)						\
 	_XENUM5_PROP_SRC_DEFS_GET_SIZE_N_I1(							\
-		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		N,										\
 		_XENUM5_DECL_GET_SCOPE(_XENUM5_CTXT_GET_DECL(CTXT)),				\
 		_XENUM5_STORE_NAME(_XENUM5_CTXT_GET_DECL(CTXT)),				\
@@ -536,8 +536,8 @@
  * Declare Store::get${propname}() value getter.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
-	static const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF) BOOST_PP_CAT(get, PROPNAME) (	\
+#define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PROPNAME, DEPTH, PDEF, Z)				\
+	static const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PROPNAME) (		\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
 	);											_XENUM5_NWLN
 
@@ -547,22 +547,22 @@
  * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PROPDEF, Z)					\
+#define _XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PDEF, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\
 		_XENUM5_PROP_SRC_DECLV_GET_SIZE_N,						\
-		PROPDEF										\
+		PDEF										\
 	)											\
 
 
 /**
  * Declare Value::get${propname}Size() for this level.
  */
-#define _XENUM5_PROP_SRC_DECLV_GET_SIZE_N(Z, LEVEL, PROPDEF)					\
+#define _XENUM5_PROP_SRC_DECLV_GET_SIZE_N(Z, LEVEL, PDEF)					\
 	_XENUM5_PROP_SRC_DECLV_GET_SIZE_I1(							\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
+		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
 		LEVEL,										\
 		Z										\
 	)											\
@@ -599,9 +599,9 @@
  * Declare Value::get${propname}() value getter.
  * For properties implemented in source.
  */
-#define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
+#define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PDEF, Z)				\
 	_XENUM5_DOC(Get custom property PROPNAME value.)					\
-	const _XENUM5_PROPDEF_GET_PARM_TYPE(PROPDEF) BOOST_PP_CAT(get, PROPNAME) (		\
+	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PROPNAME) (			\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
 	)											\
 	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\

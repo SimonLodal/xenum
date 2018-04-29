@@ -14,12 +14,12 @@
 /**
  * Entry point for declaring a custom property of cstring type, in store class context.
  */
-#define _XENUM5_PROP_DECLS_CSTRING(PROPDEF, DECL, CTXT, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DECLS)	\
+#define _XENUM5_PROP_DECLS_CSTRING(PDEF, DECL, CTXT, Z)						\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_GET_PLACEMENT_STR(PDEF)), _DECLS)	\
 	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
+		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		PDEF,										\
 		CTXT,										\
 		Z										\
 	)
@@ -29,12 +29,12 @@
 /**
  * Entry point for declaring a custom property of cstring type, in value class context.
  */
-#define _XENUM5_PROP_DECLV_CSTRING(PROPDEF, CTXT, Z)						\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DECLV)	\
+#define _XENUM5_PROP_DECLV_CSTRING(PDEF, CTXT, Z)						\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_GET_PLACEMENT_STR(PDEF)), _DECLV)	\
 	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
+		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		PDEF,										\
 		CTXT,										\
 		Z										\
 	)
@@ -45,13 +45,13 @@
  * Entry point for defining the data of a custom properties of cstring type, in source file
  * context.
  */
-#define _XENUM5_PROP_DEFINE_CSTRING(PROPDEF, DECL, CTXT, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _DEFINE)	\
+#define _XENUM5_PROP_DEFINE_CSTRING(PDEF, DECL, CTXT, Z)					\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_GET_PLACEMENT_STR(PDEF)), _DEFINE)	\
 	(											\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
-		_XENUM5_IMPL_LOCAL_NS(DECL, _XENUM5_PROPDEF_GET_NAME(PROPDEF)),			\
+		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		PDEF,										\
+		_XENUM5_IMPL_LOCAL_NS(DECL, _XENUM5_PDEF_GET_NAME(PDEF)),			\
 		_XENUM5_DECL_GET_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
 		CTXT,										\
@@ -62,11 +62,11 @@
  * Entry point for defining final checks for a custom property of cstring type, in source file
  * context.
  */
-#define _XENUM5_PROP_CHECK_CSTRING(PROPNAME, PROPDEF, DECL, CTXT, Z)				\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PROPDEF_GET_PLACEMENT_STR(PROPDEF)), _CHECK)	\
+#define _XENUM5_PROP_CHECK_CSTRING(PROPNAME, PDEF, DECL, CTXT, Z)				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_GET_PLACEMENT_STR(PDEF)), _CHECK)	\
 	(											\
 		PROPNAME,									\
-		PROPDEF,									\
+		PDEF,										\
 		_XENUM5_IMPL_LOCAL_NS(DECL, PROPNAME),						\
 		_XENUM5_DECL_GET_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
@@ -108,7 +108,7 @@
 	_XENUM5_CSTRING_ITER_NODES_ROOT_I1							\
 	(											\
 		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_DEPTH(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
 	)
 
@@ -134,7 +134,7 @@
 	_XENUM5_CSTRING_ITER_NODES_NONROOT_I1							\
 	(											\
 		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_DEPTH(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
 	)
 
@@ -176,9 +176,9 @@
  * Declare a single field of the ValueNames struct.
  */
 #define _XENUM5_CSTRING_DECLARE_VALUENAME(ITERPOS, NODE, CTXT)					\
-	BOOST_PP_CAT(_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)), Value) 		\
+	BOOST_PP_CAT(_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)), Value) 		\
 	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TT_ITERPOS_GET_INDEXPATH(ITERPOS))		\
-	[sizeof(_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PROPDEF(CTXT)))];			_XENUM5_NWLN \
+	[sizeof(_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PDEF(CTXT)))];			_XENUM5_NWLN \
 
 
 // ================================ Values ===================================
@@ -198,7 +198,7 @@
  * Loop worker for _XENUM5_CSTRING_DEFINE_VALUES().
  */
 #define _XENUM5_CSTRING_DEFINE_VALUE(ITERPOS, NODE, CTXT)						\
-	_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PROPDEF(CTXT)),				_XENUM5_NWLN
+	_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PDEF(CTXT)),				_XENUM5_NWLN
 
 
 // ============================== NodesSize ==================================
@@ -218,7 +218,7 @@
 		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PROPINDEX(CTXT), __VA_ARGS__),		\
 		/* Count all nodes, including leaf values, since each string value needs */	\
 		/* to be referenced by an indexnode. */						\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_DEPTH(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		(_XENUM5_PROP_COUNT_NODES_ADD),							\
 		CTXT,										\
 		0										\
@@ -269,11 +269,11 @@
 #define _XENUM5_CSTRING_DEFINE_NODE_0(ITERPOS, NODE, CTXT)					\
 	{											\
 		/* Size */									\
-		sizeof(_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PROPDEF(CTXT))),		\
+		sizeof(_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PDEF(CTXT))),		\
 		/* Index */									\
 		_XENUM5_CSTRING_DEFINE_NODE_0_INDEX(						\
 			_XENUM5_TT_ITERPOS_GET_INDEXPATH(ITERPOS),				\
-			_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),		\
+			_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)),			\
 			CTXT									\
 		)										\
 	},											_XENUM5_NWLN \
@@ -318,7 +318,7 @@
 #define _XENUM5_CSTRING_DEFINE_NODE_1_INDEX_1(ITERPOS, CTXT)					\
 	_XENUM5_CSTRING_DEFINE_NODE_1_INDEX_1_DO(						\
 		_XENUM5_TT_ITERPOS_GET_INDEXPATH(ITERPOS),					\
-		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		CTXT										\
 	)
 

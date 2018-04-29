@@ -14,7 +14,7 @@
 /**
  * Declare the data and functions related to a single custom property, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DECLV(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_HDR_DECLV(PROPNAME, DEPTH, PDEF, CTXT, Z)					\
 	_XENUM5_PLAIN_HDR_DECLV_TYPES(PROPNAME, DEPTH)						\
 	_XENUM5_PLAIN_HDR_DECLV_FUNCS(PROPNAME, DEPTH, CTXT, Z)					\
 
@@ -23,8 +23,8 @@
 /**
  * Declare the functions related to a single custom property, implemented in source.
  */
-#define _XENUM5_PLAIN_SRC_DECLV(PROPNAME, DEPTH, PROPDEF, CTXT, Z)				\
-	_XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
+#define _XENUM5_PLAIN_SRC_DECLV(PROPNAME, DEPTH, PDEF, CTXT, Z)					\
+	_XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PDEF, CTXT, Z)				\
 
 
 
@@ -100,8 +100,8 @@
 #define _XENUM5_PLAIN_HDR_DECLV_GET_SIZE_N(Z, N, CTXT)						\
 	_XENUM5_PLAIN_HDR_DECLV_GET_SIZE_N_I1							\
 	(											\
-		_XENUM5_PROPDEF_GET_NAME(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
-		_XENUM5_PROPDEF_GET_DEPTH(_XENUM5_CTXT_GET_PROPDEF(CTXT)),			\
+		_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
+		_XENUM5_PDEF_GET_DEPTH(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
 		N,										\
 		Z										\
 	)
@@ -161,9 +161,9 @@
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
  * Declare the functions related to a single custom property, implemented in source.
  */
-#define _XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PROPDEF, CTXT, Z)			\
-	_XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PROPDEF, Z)					\
-	_XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PROPDEF, Z)				\
+#define _XENUM5_PLAIN_SRC_DECLV_FUNCS(PROPNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PDEF, Z)						\
+	_XENUM5_PROP_SRC_DECLV_GET_VALUE(PROPNAME, DEPTH, PDEF, Z)				\
 
 
 #endif // _XENUM5_IMPL_PLAIN_DECL_VALUE_HPP
