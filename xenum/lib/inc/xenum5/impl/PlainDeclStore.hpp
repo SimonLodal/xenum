@@ -93,13 +93,15 @@
 			DEPTH,									\
 			Z									\
 		)										\
-	) {											\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
 		return BOOST_PP_CAT(PNAME, Values)[						\
 			BOOST_PP_CAT(								\
 				_XENUM5_PLAIN_GEN_VALUE_INDEXING_,				\
 				BOOST_PP_BOOL(DEPTH)						\
 			) (PNAME, DEPTH, Z)							\
-		];										\
+		];										_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
 
 /**

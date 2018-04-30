@@ -339,11 +339,11 @@ sub formatGenerated($)
 	}
 
 	$output = "";
-	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") - generated begin #################### */\n";
+	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") - begin generated #################### */\n";
 	$input = $outputPart->{generated};
 	$input =~ s/[\r\n]//g;
 	$output .= join("\n", @{doFormatGenerated($input)})."\n";
-	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") generated end #################### */\n";
+	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") end generated #################### */\n";
 	return $output;
 }
 
