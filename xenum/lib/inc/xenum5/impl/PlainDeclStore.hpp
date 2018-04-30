@@ -87,12 +87,7 @@
 	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 	BOOST_PP_CAT(PNAME, Value&)								\
 	BOOST_PP_CAT(get, PNAME) (								\
-		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
-			Enum,									\
-			BOOST_PP_CAT(PNAME, Index),						\
-			DEPTH,									\
-			Z									\
-		)										\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PNAME, Index), DEPTH, Z)	\
 	)											_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\

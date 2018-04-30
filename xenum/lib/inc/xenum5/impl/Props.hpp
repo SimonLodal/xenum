@@ -717,12 +717,13 @@
 	size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (					\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
 	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					\
-	{											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
 		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
 			value									\
 			_XENUM5_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
-		);										\
+		);										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
 
 
@@ -734,9 +735,7 @@
 // FIXME: Merge with _XENUM5_PROP_SRC_DECLV_GET_VALUE().
 #define _XENUM5_PROP_HDR_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get custom property PNAME value.)						\
-/* FIXME: constexpr does not work for cstring, why? \
 	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr)						\
-*/\
 	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), DEPTH, Z)		\
 	)											\
@@ -761,12 +760,13 @@
 	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
 	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					\
-	{											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
 		return Store::BOOST_PP_CAT(get, PNAME) (					\
 			value									\
 			_XENUM5_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
-		);										\
+		);										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
 
 

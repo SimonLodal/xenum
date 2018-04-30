@@ -34,7 +34,6 @@
  */
 #define _XENUM5_CSTRING_HDR_DECLS_VALUES(PNAME, PDEF, CTXT, Z)					\
 	_XENUM5_PROP_DECL_VALUE_TYPE(PNAME, PDEF)						\
-	_XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
 	_XENUM5_CSTRING_DEFINE_VALUES(static, PNAME, CTXT)					\
 
 
@@ -48,6 +47,7 @@
 	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
 	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
 	_XENUM5_CSTRING_DECLARE_NODENAMES(PNAME, CTXT)						\
+	_XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
 	_XENUM5_CSTRING_DEFINE_NODES(static, PNAME, CTXT)					\
 
 
@@ -72,20 +72,14 @@
  */
 #define _XENUM5_CSTRING_HDR_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)				\
 	_XENUM5_DOC(Get value of the custom property PNAME.)					\
-	static \
-/* FIXME: Why does constexpr not work here? \
-	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) \
-*/\
-	const				\
+	static BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr) const				\
 	_XENUM5_PDEF_GET_PARM_TYPE(PDEF)							\
 	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PNAME, Index), DEPTH, Z)	\
 	)											_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
-		return &(									\
-			(const _XENUM5_PDEF_GET_PARM_TYPE(PDEF))& BOOST_PP_CAT(PNAME, Values)	\
-		)[										\
+		return & BOOST_PP_CAT(PNAME, Values)[						\
 			BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (				\
 				_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\
 			)									\

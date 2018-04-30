@@ -187,7 +187,7 @@
  */
 #define _XENUM5_CSTRING_DEFINE_VALUES(DECLPFX, PNAME, CTXT)					\
 	_XENUM5_DOC(All PNAME values.)								\
-	DECLPFX constexpr const BOOST_PP_CAT(PNAME, ValueNames) BOOST_PP_CAT(PNAME, Values) =\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Value) BOOST_PP_CAT(PNAME, Values)[] =	\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_DEFINE_VALUE, CTXT)			\
@@ -198,7 +198,7 @@
  * Loop worker for _XENUM5_CSTRING_DEFINE_VALUES().
  */
 #define _XENUM5_CSTRING_DEFINE_VALUE(ITERPOS, NODE, CTXT)						\
-	_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PDEF(CTXT)),				_XENUM5_NWLN
+	_XENUM5_PROP_GET_VALUE(NODE, _XENUM5_CTXT_GET_PDEF(CTXT)) "\0"				_XENUM5_NWLN
 
 
 // ============================== NodesSize ==================================

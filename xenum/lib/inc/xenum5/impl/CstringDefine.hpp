@@ -17,9 +17,9 @@
 #define _XENUM5_CSTRING_HDR_DEFINE(PNAME, DEPTH, PDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
 	/* FIXME: Also define NodesSize - ? */							\
 	constexpr const										\
-		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, ValueNames)				\
+		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, Value)					\
 		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, Values)					\
-		;										_XENUM5_NWLN \
+		[];										_XENUM5_NWLN \
 	constexpr const										\
 		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, Node)					\
 		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, Nodes)					\
@@ -114,10 +114,7 @@
 	)											_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
-		return &(									\
-			(const _XENUM5_PDEF_GET_PARM_TYPE(PDEF))				\
-			& LOCALSCOPE BOOST_PP_CAT(PNAME, Values)				\
-		)[										\
+		return & LOCALSCOPE BOOST_PP_CAT(PNAME, Values)[				\
 			LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (		\
 				_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\
 			)									\
@@ -158,10 +155,6 @@
 		sizeof(LOCALSCOPE::BOOST_PP_CAT(PNAME, NodeNames)),				\
 		"BUG: Struct/array size mismatch (Nodes / NodeNames)."				\
 	);											_XENUM5_NWLN \
-
-/*
-_XENUM5_CSTRING_CHECK: PNAME _XENUM5_NWLN \
-*/
 
 
 #endif // _XENUM5_IMPL_CSTRING_DEFINE_HPP

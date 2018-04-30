@@ -15,7 +15,6 @@
 /**
  * Declare the functions related to a single custom property, implemented in header.
  */
-// FIXME: Implement hdr. Using src impl for now.
 #define _XENUM5_CSTRING_HDR_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
 	/* INC() to ensure that the index type always gets defined */				\
 	_XENUM5_PROP_HDR_DECLV_TYPES(PNAME, BOOST_PP_INC(DEPTH))				\
