@@ -15,7 +15,7 @@
  * Declare the data and functions related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PLAIN_HDR_DECLV_TYPES(PNAME, DEPTH)						\
+	_XENUM5_PROP_HDR_DECLV_TYPES(PNAME, DEPTH)						\
 	_XENUM5_PLAIN_HDR_DECLV_FUNCS(PNAME, DEPTH, CTXT, Z)					\
 
 
@@ -27,39 +27,12 @@
 	_XENUM5_PLAIN_SRC_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 
-
-// ========================================== TYPES =============================================
-/**
- * Worker for _XENUM5_PROP_DECLV_PLAIN().
- * Declare the types related to a single custom property, implemented in header.
- */
-#define _XENUM5_PLAIN_HDR_DECLV_TYPES(PNAME, DEPTH)						\
-	_XENUM5_DOC(Native type of custom property PNAME values.)				\
-	using BOOST_PP_CAT(PNAME, Value) =							\
-		typename Store::BOOST_PP_CAT(PNAME, Value);					_XENUM5_NWLN \
-	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PNAME)		\
-
-/**
- * Worker for _XENUM5_PLAIN_DECLV_TYPES().
- * Declare nothing since the property has depth=0.
- */
-#define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_0(PNAME)						\
-
-/**
- * Worker for _XENUM5_PLAIN_DECLV_TYPES().
- * Declare the ${propname}Index type since the property has depth!=0.
- */
-#define _XENUM5_PLAIN_HDR_DECLV_INDEX_T_1(PNAME)						\
-	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
-	using BOOST_PP_CAT(PNAME, Index) =							\
-		typename Store::BOOST_PP_CAT(PNAME, Index);					_XENUM5_NWLN \
-
-
 // ===================================== FUNCTIONS (HDR) ========================================
 /**
  * Worker for _XENUM5_PROP_DECLV_PLAIN().
  * Declare the functions related to a single custom property, implemented in header.
  */
+// FIXME: Use common _XENUM5_PROP_HDR_DECLV_GET_SIZE() and _XENUM5_PROP_HDR_DECLV_GET_VALUE().
 #define _XENUM5_PLAIN_HDR_DECLV_FUNCS(PNAME, DEPTH, CTXT, Z)					\
 	_XENUM5_PLAIN_HDR_DECLV_GET_SIZE(DEPTH, CTXT, Z)					\
 	_XENUM5_PLAIN_HDR_DECLV_GET_VALUE(PNAME, DEPTH, CTXT, Z)				\
@@ -107,7 +80,7 @@
 	)
 
 /**
- * Worker for _XENUM5_PLAIN_HDR_DECLV_FUNC_GET_SIZE_N().
+ * Worker for _XENUM5_PLAIN_HDR_DECLV_GET_SIZE_N().
  */
 #define _XENUM5_PLAIN_HDR_DECLV_GET_SIZE_N_I1(PNAME, DEPTH, LEVEL, Z)				\
 	_XENUM5_DOC(										\

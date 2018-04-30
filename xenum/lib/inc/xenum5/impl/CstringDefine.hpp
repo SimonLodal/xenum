@@ -12,11 +12,18 @@
 
 // ======================================= MAIN (HDR) ===========================================
 /**
- * Define all the data and functions of a single custom property, implemented in header.
+ * Define the data of a single custom property, for "cstring" data types, implemented in header.
  */
-// FIXME: Implement hdr. Using src impl for now.
 #define _XENUM5_CSTRING_HDR_DEFINE(PNAME, DEPTH, PDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
-	_XENUM5_CSTRING_SRC_DEFINE(PNAME, DEPTH, PDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
+	/* FIXME: Also define NodesSize - ? */							\
+	constexpr const										\
+		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, ValueNames)				\
+		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, Values)					\
+		;										_XENUM5_NWLN \
+	constexpr const										\
+		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, Node)					\
+		SCOPE STORENAME :: BOOST_PP_CAT(PNAME, Nodes)					\
+		[];										_XENUM5_NWLN \
 
 
 // ======================================= MAIN (SRC) ===========================================
@@ -121,16 +128,22 @@
 
 // =========================== _check() ==============================
 /**
- * Worker for _XENUM5_PROP_CHECK_CSTRING().
  * Define final checks on data structures, for implementation in header.
  */
-// FIXME: Implement hdr. Using src impl for now.
 #define _XENUM5_CSTRING_HDR_CHECK(PNAME, PDEF, LOCALSCOPE, SCOPE, STORENAME, Z)			\
-	_XENUM5_CSTRING_SRC_CHECK(PNAME, PDEF, LOCALSCOPE, SCOPE, STORENAME, Z)			\
+	static_assert(										\
+		sizeof(BOOST_PP_CAT(PNAME, NodeNames)) ==					\
+		BOOST_PP_CAT(PNAME, NodesSize) * sizeof(BOOST_PP_CAT(PNAME, Node)),		\
+		"BUG: Struct size mismatch (NodeNames / NodesSize)."				\
+	);											_XENUM5_NWLN \
+	static_assert(										\
+		sizeof(BOOST_PP_CAT(PNAME, Nodes)) ==						\
+		sizeof(BOOST_PP_CAT(PNAME, NodeNames)),						\
+		"BUG: Struct/array size mismatch (Nodes / NodeNames)."				\
+	);											_XENUM5_NWLN \
 
 
 /**
- * Worker for _XENUM5_PROP_CHECK_CSTRING().
  * Define final checks on data structures, for implementation in source.
  */
 #define _XENUM5_CSTRING_SRC_CHECK(PNAME, PDEF, LOCALSCOPE, SCOPE, STORENAME, Z)			\

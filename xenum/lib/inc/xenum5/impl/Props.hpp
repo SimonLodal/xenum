@@ -412,6 +412,28 @@
 	);											_XENUM5_NWLN
 
 
+// =================================== Value::TYPES (HDR) =======================================
+/**
+ * Declare the Value class types related to a single custom property, implemented in header.
+ */
+#define _XENUM5_PROP_HDR_DECLV_TYPES(PNAME, DEPTH)						\
+	_XENUM5_DOC(Native type of custom property PNAME values.)				\
+	using BOOST_PP_CAT(PNAME, Value) = typename Store::BOOST_PP_CAT(PNAME, Value);		_XENUM5_NWLN \
+	BOOST_PP_CAT(_XENUM5_PROP_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PNAME)		\
+
+/**
+ * Do not declare an Index type since the property has depth=0.
+ */
+#define _XENUM5_PROP_HDR_DECLV_INDEX_T_0(PNAME)							\
+
+/**
+ * Declare the ${propname}Index type since the property has depth!=0.
+ */
+#define _XENUM5_PROP_HDR_DECLV_INDEX_T_1(PNAME)							\
+	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
+	using BOOST_PP_CAT(PNAME, Index) = typename Store::BOOST_PP_CAT(PNAME, Index);		_XENUM5_NWLN \
+
+
 // ===================== DEF {Store,anon}::getNode() =========================
 /**
  * Define get${propname}Node() getters for all levels.
@@ -465,7 +487,60 @@
 	}											_XENUM5_NWLN
 
 
-// ======================== DECL Store::getSize() ============================
+// ====================== INL Store::getSize() (HDR) =========================
+/**
+ * Declare and inline-define Store::get${propname}Size() for all levels.
+ * For properties implemented in header.
+ */
+#define _XENUM5_PROP_HDR_DECLS_GET_SIZE(DEPTH, PDEF, Z)					\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM5_PROP_HDR_DECLS_GET_SIZE_N,						\
+		PDEF										\
+	)											\
+
+/**
+ * Define get${PNAME}Size() getter for this level.
+ */
+#define _XENUM5_PROP_HDR_DECLS_GET_SIZE_N(Z, N, PDEF)						\
+	_XENUM5_PROP_HDR_DECLS_GET_SIZE_N_I1(							\
+		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		N,										\
+		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		Z										\
+	)											\
+
+/**
+ * Worker for _XENUM5_PROP_HDR_DECLS_GET_SIZE_N().
+ */
+#define _XENUM5_PROP_HDR_DECLS_GET_SIZE_N_I1(PNAME, LEVEL, DEPTH, Z)				\
+	_XENUM5_DOC(Get number of								\
+		BOOST_PP_IF(									\
+			BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),				\
+			values in,								\
+			childnodes of								\
+		) a level LEVEL node in the PNAME data hierarchy.)				\
+	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)					\
+	const BOOST_PP_CAT(PNAME, Index)&							\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (						\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
+			Enum,									\
+			BOOST_PP_CAT(PNAME, Index),						\
+			LEVEL,									\
+			Z									\
+		)										\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (				\
+			_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
+		)										\
+		.size;										_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+// ===================== DECL Store::getSize() (SRC) =========================
 /**
  * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
@@ -487,7 +562,7 @@
 	);											_XENUM5_NWLN
 
 
-// ========================= DEF Store::getSize() ============================
+// ====================== DEF Store::getSize() (SRC) =========================
 /**
  * Define Store::get${propname}Size() getters for all levels. For source implementation.
  */
@@ -513,7 +588,7 @@
 	)
 
 /**
- * Worker for _XENUM5_PROP_DEFS_GET_SIZE().
+ * Worker for _XENUM5_PROP_DEFS_GET_SIZE_N().
  */
 #define _XENUM5_PROP_SRC_DEFS_GET_SIZE_N_I1(PNAME, LEVEL, SCOPE, STORENAME, DECL, Z)		\
 	size_t											\
@@ -531,7 +606,7 @@
 	}											_XENUM5_NWLN
 
 
-// ====================== DECL Store::get${PNAME}() ==========================
+// =================== DECL Store::get${PNAME}() (SRC) =======================
 /**
  * Declare Store::get${propname}() value getter.
  * For properties implemented in source.
@@ -542,11 +617,68 @@
 	);											_XENUM5_NWLN
 
 
-// ========================= DEF Value::getSize() ============================
+// ====================== DEF Value::getSize() (HDR) =========================
 /**
- * Declare Store::get${propname}Size() for all levels.
+ * Declare and inline-define Value::get${propname}Size() for all levels.
+ * For properties implemented in header.
+ */
+// FIXME: Merge with _XENUM5_PROP_SRC_DECLV_GET_SIZE().
+#define _XENUM5_PROP_HDR_DECLV_GET_SIZE(DEPTH, PDEF, Z)						\
+	BOOST_PP_REPEAT_ ## Z									\
+	(											\
+		DEPTH,										\
+		_XENUM5_PROP_HDR_DECLV_GET_SIZE_N,						\
+		PDEF										\
+	)											\
+
+
+/**
+ * Declare Value::get${propname}Size() for this level.
+ */
+#define _XENUM5_PROP_HDR_DECLV_GET_SIZE_N(Z, LEVEL, PDEF)					\
+	_XENUM5_PROP_HDR_DECLV_GET_SIZE_I1(							\
+		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		LEVEL,										\
+		Z										\
+	)											\
+
+/**
+ * Worker for _XENUM5_PROP_HDR_DECLV_GET_SIZE_N().
+ */
+#define _XENUM5_PROP_HDR_DECLV_GET_SIZE_I1(PNAME, DEPTH, LEVEL, Z)				\
+	_XENUM5_DOC(										\
+	BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, LEVEL),						\
+		Get size of custom property PNAME value (number of data elements).,		\
+		Get number of BOOST_PP_IF(BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),		\
+			values in,								\
+			childnodes of								\
+		) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL),						\
+			a level LEVEL node in the data hierarchy of,				\
+												\
+		) custom property PNAME.							\
+	))											\
+	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)						\
+	const BOOST_PP_CAT(PNAME, Index)&							\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (						\
+		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), LEVEL, Z)		\
+	)											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
+			value									\
+			_XENUM5_PROP_GEN_INDEX1_ARGS(LEVEL, Z)					\
+		);										_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+// ====================== DEF Value::getSize() (SRC) =========================
+/**
+ * Declare and inline-define Value::get${propname}Size() for all levels.
  * For properties implemented in source.
  */
+// FIXME: Merge with _XENUM5_PROP_HDR_DECLV_GET_SIZE().
 #define _XENUM5_PROP_SRC_DECLV_GET_SIZE(DEPTH, PDEF, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
@@ -568,7 +700,7 @@
 	)											\
 
 /**
- * Worker for _XENUM5_PROP_SRC_DECLV_GET_SIZE().
+ * Worker for _XENUM5_PROP_SRC_DECLV_GET_SIZE_N().
  */
 #define _XENUM5_PROP_SRC_DECLV_GET_SIZE_I1(PNAME, DEPTH, LEVEL, Z)				\
 	_XENUM5_DOC(										\
@@ -594,11 +726,36 @@
 	}											_XENUM5_NWLN
 
 
-// ======================= DEF Value::get${PNAME}() ==========================
+// ==================== DEF Value::get${PNAME}() (HDR) =======================
+/**
+ * Declare Value::get${propname}() value getter.
+ * For properties implemented in header.
+ */
+// FIXME: Merge with _XENUM5_PROP_SRC_DECLV_GET_VALUE().
+#define _XENUM5_PROP_HDR_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+	_XENUM5_DOC(Get custom property PNAME value.)						\
+/* FIXME: constexpr does not work for cstring, why? \
+	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr)						\
+*/\
+	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\
+		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), DEPTH, Z)		\
+	)											\
+	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return Store::BOOST_PP_CAT(get, PNAME) (					\
+			value									\
+			_XENUM5_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
+		);										_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+// ==================== DEF Value::get${PNAME}() (SRC) =======================
 /**
  * Declare Value::get${propname}() value getter.
  * For properties implemented in source.
  */
+// FIXME: Merge with _XENUM5_PROP_HDR_DECLV_GET_VALUE().
 #define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get custom property PNAME value.)						\
 	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\

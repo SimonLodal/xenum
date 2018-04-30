@@ -12,7 +12,6 @@
 
 // ======================================= MAIN (HDR) ===========================================
 /**
- * Worker for _XENUM5_PROP_DEFINE_PLAIN().
  * Define the data of a single custom property, for "plain" data types, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DEFINE(PNAME, DEPTH, PDEF, LOCALSCOPE, SCOPE, STORENAME, CTXT, Z)	\
@@ -31,7 +30,6 @@
 
 
 /**
- * Worker for _XENUM5_PLAIN_HDR_DEFINE().
  * Define the data of a single multilevel custom property, when depth!=0.
  */
 #define _XENUM5_PLAIN_HDR_DEFINE_1(PNAME, SCOPE, STORENAME)					\

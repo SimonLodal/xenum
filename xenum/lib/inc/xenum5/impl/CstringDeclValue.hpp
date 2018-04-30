@@ -17,7 +17,9 @@
  */
 // FIXME: Implement hdr. Using src impl for now.
 #define _XENUM5_CSTRING_HDR_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_CSTRING_SRC_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	/* INC() to ensure that the index type always gets defined */				\
+	_XENUM5_PROP_HDR_DECLV_TYPES(PNAME, BOOST_PP_INC(DEPTH))				\
+	_XENUM5_CSTRING_HDR_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 
 // ======================================= MAIN (SRC) ===========================================
@@ -28,7 +30,17 @@
 	_XENUM5_CSTRING_SRC_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 
-// ======================================= FUNCTIONS ============================================
+// ===================================== FUNCTIONS (HDR) ========================================
+/**
+ * Worker for _XENUM5_PROP_DECLV_PLAIN().
+ * Declare the functions related to a single custom property, implemented in header.
+ */
+#define _XENUM5_CSTRING_HDR_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_HDR_DECLV_GET_SIZE(BOOST_PP_INC(DEPTH), PDEF, Z)				\
+	_XENUM5_PROP_HDR_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+
+
+// ===================================== FUNCTIONS (SRC) ========================================
 /**
  * Declare the functions related to a single custom property, in value class.
  */
