@@ -114,6 +114,7 @@
  * Worker for _XENUM5_PROP_DEFINE().
  */
 #define _XENUM5_PROP_DEFINE_I1(PDEF, CTXT, Z)							\
+	_XENUM5_NWLN _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:_XENUM5_PDEF_GET_NAME(PDEF))		\
 	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
 	(											\
 		PDEF,										\
@@ -139,6 +140,7 @@
  * Worker for _XENUM5_PROP_CHECK().
  */
 #define _XENUM5_PROP_CHECK_I1(PDEF, CTXT, Z)							\
+	_XENUM5_CMNT(_XENUM5_PDEF_GET_NAME(PDEF))						\
 	BOOST_PP_CAT(_XENUM5_PROP_CHECK_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
 	(											\
 		_XENUM5_PDEF_GET_NAME(PDEF),							\
@@ -463,8 +465,7 @@
  */
 #define _XENUM5_PROP_DEFINE_GET_NODE_N_I1(DECLPFX, PNAME, LEVEL, DECL, Z)			\
 	_XENUM5_DOC(Retrieve a level LEVEL node of the PNAME data hierarchy.)			\
-	DECLPFX BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr) const				\
-	BOOST_PP_CAT(PNAME, Node&)								\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Node&)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
@@ -472,7 +473,7 @@
 			LEVEL,									\
 			Z									\
 		)										\
-	)											_XENUM5_NWLN \
+	) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		return BOOST_PP_CAT(PNAME, Nodes)[						\
@@ -521,8 +522,7 @@
 			values in,								\
 			childnodes of								\
 		) a level LEVEL node in the PNAME data hierarchy.)				\
-	static BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)					\
-	const BOOST_PP_CAT(PNAME, Index)&							\
+	static constexpr const BOOST_PP_CAT(PNAME, Index)&					\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
 			Enum,									\
@@ -530,7 +530,7 @@
 			LEVEL,									\
 			Z									\
 		)										\
-	)											_XENUM5_NWLN \
+	) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (				\
@@ -557,9 +557,10 @@
  * Declare Store::get${propname}Size() for this level.
  */
 #define _XENUM5_PROP_SRC_DECLS_GET_SIZE_N(Z, LEVEL, PDEF)					\
-	static size_t BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM5_PDEF_GET_NAME(PDEF)), Size) (	\
+	static size_t										\
+	BOOST_PP_CAT(BOOST_PP_CAT(get, _XENUM5_PDEF_GET_NAME(PDEF)), Size) (			\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, LEVEL, Z)				\
-	);											_XENUM5_NWLN
+	) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept);					_XENUM5_NWLN \
 
 
 // ====================== DEF Store::getSize() (SRC) =========================
@@ -594,7 +595,7 @@
 	size_t											\
 	SCOPE STORENAME :: BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, LEVEL, Z)		\
-	)											_XENUM5_NWLN \
+	) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return										\
@@ -614,7 +615,7 @@
 #define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	static const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (		\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
-	);											_XENUM5_NWLN
+	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept);					_XENUM5_NWLN \
 
 
 // ====================== DEF Value::getSize() (HDR) =========================
@@ -658,12 +659,10 @@
 												\
 		) custom property PNAME.							\
 	))											\
-	BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , constexpr)						\
-	const BOOST_PP_CAT(PNAME, Index)&							\
+	constexpr const BOOST_PP_CAT(PNAME, Index)&						\
 	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (						\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), LEVEL, Z)		\
-	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					_XENUM5_NWLN \
+	) const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
@@ -735,11 +734,10 @@
 // FIXME: Merge with _XENUM5_PROP_SRC_DECLV_GET_VALUE().
 #define _XENUM5_PROP_HDR_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get custom property PNAME value.)						\
-	BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , constexpr)						\
-	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\
+	constexpr const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)					\
+	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), DEPTH, Z)		\
-	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
+	) const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return Store::BOOST_PP_CAT(get, PNAME) (					\
@@ -759,8 +757,7 @@
 	_XENUM5_DOC(Get custom property PNAME value.)						\
 	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
-	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
+	) const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return Store::BOOST_PP_CAT(get, PNAME) (					\

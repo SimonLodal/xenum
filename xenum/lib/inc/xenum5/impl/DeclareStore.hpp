@@ -34,6 +34,7 @@
 	class _XENUM5_STORE_NAME(DECL) {							_XENUM5_NWLN \
 	private:										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
+		_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)						\
 		friend class ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>;		_XENUM5_NWLN \
 		BOOST_PP_EXPR_IF(								\
 			_XENUM5_DECL_HAS_PROPS(DECL),						\
@@ -116,6 +117,7 @@
  * Declare function for static_assert() checks on generated data structures.
  */
 #define _XENUM5_DECLS_CHECK()									\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(Check)							\
 	_XENUM5_DOC(										\
 		This function is never supposed to be called. It only contains			_XENUM5_NWLN \
 		static_assert()s (for validating the generated data structures), which		_XENUM5_NWLN \

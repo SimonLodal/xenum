@@ -25,6 +25,7 @@
  * Main entry function.
  */
 #define _XENUM5_DEFINE_STORE(CTXT, DECL)							\
+	_XENUM5_CMNT(Store:Main)							\
 	_XENUM5_DEFS_SIZE(CTXT, DECL)								\
 	_XENUM5_DEFL_IDENT(CTXT, DECL)								\
 	_XENUM5_DEFS_FUNCS(CTXT, DECL)								\
@@ -234,9 +235,11 @@
  * Worker for _XENUM5_DEFS_CHECK().
  */
 #define _XENUM5_DEFS_CHECK_I1(CTXT, DECL, SCOPE, STORENAME, VALUENAME)				\
+	_XENUM5_NWLN _XENUM5_CMNT(Store:Check)							\
 	void SCOPE STORENAME::_check(void)							\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
+		_XENUM5_CMNT(Main)								\
 		static_assert(									\
 			sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, )::identOffsets) ==			\
 			SCOPE STORENAME ::size *						\

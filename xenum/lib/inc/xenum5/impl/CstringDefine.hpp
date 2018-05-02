@@ -83,7 +83,7 @@
 	_XENUM5_CSTRING_DEFINE_NODES(, PNAME, CTXT)						\
 
 
-// ==================================== LOCAL FUNCTIONS ========================================
+// ================================== LOCAL FUNCTIONS (SRC) =====================================
 /**
  * Define the local-ns functions related to a single custom property, implemented in source.
  */
@@ -93,7 +93,7 @@
 	_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
 
 
-// ==================================== STORE FUNCTIONS ========================================
+// ================================== STORE FUNCTIONS (SRC) =====================================
 /**
  * Define the store class functions related to a single custom property.
  */
@@ -103,7 +103,7 @@
 	_XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LOCALSCOPE ::, SCOPE, STORENAME, Z)	\
 
 
-// ============================ get${PNAME}() ================================
+// ========================= get${PNAME}() (SRC) =============================
 /**
  * Define get${propname}() value getter.
  */
@@ -111,7 +111,7 @@
 	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)							\
 	SCOPE STORENAME :: BOOST_PP_CAT(get, PNAME) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum, size_t, DEPTH, Z)		\
-	)											_XENUM5_NWLN \
+	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return & LOCALSCOPE BOOST_PP_CAT(PNAME, Values)[				\
@@ -123,7 +123,7 @@
 	}											_XENUM5_NWLN
 
 
-// =========================== _check() ==============================
+// =============================== _check() ==================================
 /**
  * Define final checks on data structures, for implementation in header.
  */

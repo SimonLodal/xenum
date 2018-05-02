@@ -46,7 +46,9 @@ _XENUM5_DOC(Enum-value class for xenum _XENUM5_DECL_GET_CNTNRNAME(DECL).			_XENU
 	Can never have an invalid value.)							\
 class _XENUM5_DECL_GET_VALUENAME(DECL)								\
 	: public ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)> {				_XENUM5_NWLN \
+public:												_XENUM5_NWLN \
 	_XENUM5_INDENT_INC									\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)							\
 	_XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM5_DECL_GET_VALUENAME(DECL))			\
 	_XENUM5_PROPS_DECLV(CTXT)								\
 	_XENUM5_INDENT_DEC									\
@@ -57,8 +59,6 @@ class _XENUM5_DECL_GET_VALUENAME(DECL)								\
  * Creates ctors; we need to copy all the ctors of the base class.
  */
 #define _XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
-_XENUM5_INDENT_SUB										\
-public:												_XENUM5_NWLN \
 	_XENUM5_DOC(@copydoc _XENUM5_NS::XenumValue::XenumValue(void))				\
 	constexpr VALUENAME(void) noexcept {}							_XENUM5_NWLN \
 	_XENUM5_DOC(@copydoc _XENUM5_NS::XenumValue::XenumValue(Enum value))			\

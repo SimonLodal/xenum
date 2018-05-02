@@ -30,6 +30,7 @@
 	class _XENUM5_CNTNR_NAME(DECL) {							_XENUM5_NWLN \
 	public:											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
+		_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)						\
 		_XENUM5_DECLC_VALUE_T(CTXT, DECL)						\
 		_XENUM5_DECLC_ENUM(CTXT, DECL)							\
 		_XENUM5_DECLC_ENUM_OBJS(CTXT)							\

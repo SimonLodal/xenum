@@ -13,6 +13,7 @@
  * Main entry function.
  */
 #define _XENUM5_DEFINE_CNTNR(CTXT, DECL)							\
+	_XENUM5_NWLN _XENUM5_CMNT(Cntnr:Main)							\
 	_XENUM5_DEFC_SIZE(CTXT, DECL)								\
 	_XENUM5_DEFC_ENUM_COPY(CTXT)								\
 
