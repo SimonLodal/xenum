@@ -13,48 +13,48 @@
 /**
  * @return SUFFIX that the xenum is declared with.
  */
-#define _XENUM5_DECL_GET_SUFFIX(DECL)		BOOST_PP_SEQ_ELEM(0, DECL)
+#define _XENUM5_DECL_SUFFIX(DECL)		BOOST_PP_SEQ_ELEM(0, DECL)
 
 /**
  * @return SCOPE field of the xenum declaration.
  */
-#define _XENUM5_DECL_GET_SCOPE(DECL)		BOOST_PP_SEQ_ELEM(1, DECL)
+#define _XENUM5_DECL_SCOPE(DECL)		BOOST_PP_SEQ_ELEM(1, DECL)
 
 /**
  * @return CNTNRNAME field of the xenum declaration.
  */
-#define _XENUM5_DECL_GET_CNTNRNAME(DECL)	BOOST_PP_SEQ_ELEM(2, DECL)
+#define _XENUM5_DECL_CNTNRNAME(DECL)		BOOST_PP_SEQ_ELEM(2, DECL)
 
 /**
  * @return VALUENAME field of the xenum declaration.
  */
-#define _XENUM5_DECL_GET_VALUENAME(DECL)	BOOST_PP_SEQ_ELEM(3, DECL)
+#define _XENUM5_DECL_VALUENAME(DECL)		BOOST_PP_SEQ_ELEM(3, DECL)
 
 /**
  * @return INTTYPE field of the xenum declaration.
  */
-#define _XENUM5_DECL_GET_INTTYPE(DECL)		BOOST_PP_SEQ_ELEM(4, DECL)
+#define _XENUM5_DECL_INTTYPE(DECL)		BOOST_PP_SEQ_ELEM(4, DECL)
 
 /**
  * @return FEATURES "object" of the xenum declaration.
  */
-#define _XENUM5_DECL_GET_FEATURES(DECL)		BOOST_PP_SEQ_ELEM(5, DECL)
+#define _XENUM5_DECL_FEATURES(DECL)		BOOST_PP_SEQ_ELEM(5, DECL)
 
 /**
  * @return 0|1 if the xenum declaration contains any custom properties.
  */
-#define _XENUM5_DECL_HAS_PROPS(DECL)		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_DECL_GET_PDEFS(DECL)))
+#define _XENUM5_DECL_HAS_PROPS(DECL)		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_DECL_PDEFS(DECL)))
 
 /**
  * @return PROPDEFS field of the xenum declaration.
  */
-#define _XENUM5_DECL_GET_PDEFS(DECL)		BOOST_PP_SEQ_ELEM(6, DECL)
+#define _XENUM5_DECL_PDEFS(DECL)		BOOST_PP_SEQ_ELEM(6, DECL)
 
 /**
  * Convenience getter.
  * @return A single PROPDEF.
  */
-#define _XENUM5_DECL_GET_PDEFN(DECL, PINDEX)	BOOST_PP_SEQ_ELEM(PINDEX, _XENUM5_DECL_GET_PDEFS(DECL))
+#define _XENUM5_DECL_PDEFN(DECL, PINDEX)	BOOST_PP_SEQ_ELEM(PINDEX, _XENUM5_DECL_PDEFS(DECL))
 
 
 /**

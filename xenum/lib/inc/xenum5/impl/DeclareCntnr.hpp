@@ -15,9 +15,9 @@
  * @return Name of the container class.
  */
 #define _XENUM5_CNTNR_NAME(DECL)								\
-	_XENUM5_DECL_GET_CNTNRNAME(DECL)
+	_XENUM5_DECL_CNTNRNAME(DECL)
 
-//	BOOST_PP_CAT(_Xenum5Cntnr_, _XENUM5_DECL_GET_CNTNRNAME(DECL))
+//	BOOST_PP_CAT(_Xenum5Cntnr_, _XENUM5_DECL_CNTNRNAME(DECL))
 
 
 // ==============================================================================================
@@ -25,7 +25,7 @@
  * Main entry function.
  */
 #define _XENUM5_DECLARE_CNTNR(CTXT, DECL)							\
-	_XENUM5_DOC(Container class for xenum _XENUM5_DECL_GET_CNTNRNAME(DECL).			_XENUM5_NWLN \
+	_XENUM5_DOC(Container class for xenum _XENUM5_DECL_CNTNRNAME(DECL).			_XENUM5_NWLN \
 		Contains all the enum values as value objects, lookup functions, and iteration.)\
 	class _XENUM5_CNTNR_NAME(DECL) {							_XENUM5_NWLN \
 	public:											_XENUM5_NWLN \
@@ -46,7 +46,7 @@
  */
 #define _XENUM5_DECLC_VALUE_T(CTXT, DECL)							\
 	_XENUM5_DOC(The enum-value class.)							\
-	using _value_t = _XENUM5_DECL_GET_VALUENAME(DECL);					_XENUM5_NWLN
+	using _value_t = _XENUM5_DECL_VALUENAME(DECL);						_XENUM5_NWLN
 
 
 // ==============================================================================================
@@ -76,7 +76,7 @@
  * Callback worker for _XENUM5_DECLC_ENUM_OBJS().
  */
 #define _XENUM5_DECLC_ENUM_OBJ(CTXT, IDENT, ...)						\
-	static constexpr const _XENUM5_DECL_GET_VALUENAME(_XENUM5_CTXT_GET_DECL(CTXT))		\
+	static constexpr const _XENUM5_DECL_VALUENAME(_XENUM5_CTXT_DECL(CTXT))			\
 		IDENT = _enum::IDENT;								_XENUM5_NWLN
 
 
@@ -89,7 +89,7 @@
 		CTXT,										\
 		_XENUM5_STORE_NAME(DECL),							\
 		_XENUM5_CNTNR_NAME(DECL),							\
-		_XENUM5_DECL_GET_VALUENAME(DECL)						\
+		_XENUM5_DECL_VALUENAME(DECL)							\
 	)
 
 /**

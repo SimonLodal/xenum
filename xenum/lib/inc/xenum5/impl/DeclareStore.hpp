@@ -15,7 +15,7 @@
  * @return Name of the store class.
  */
 #define _XENUM5_STORE_NAME(DECL)								\
-	BOOST_PP_CAT(_xenum5_store_, _XENUM5_DECL_GET_CNTNRNAME(DECL))
+	BOOST_PP_CAT(_xenum5_store_, _XENUM5_DECL_CNTNRNAME(DECL))
 
 
 // ==============================================================================================
@@ -25,10 +25,10 @@
 #define _XENUM5_DECLARE_STORE(CTXT, DECL)							\
 	BOOST_PP_EXPR_IF(									\
 		_XENUM5_DECL_HAS_PROPS(DECL),							\
-		class _XENUM5_DECL_GET_VALUENAME(DECL);						_XENUM5_NWLN \
+		class _XENUM5_DECL_VALUENAME(DECL);						_XENUM5_NWLN \
 	)											\
 	class _XENUM5_CNTNR_NAME(DECL);								_XENUM5_NWLN \
-	_XENUM5_DOC(Internal/private class for xenum _XENUM5_DECL_GET_CNTNRNAME(DECL).		_XENUM5_NWLN \
+	_XENUM5_DOC(Internal/private class for xenum _XENUM5_DECL_CNTNRNAME(DECL).		_XENUM5_NWLN \
 		Contains data and accessors for the enum.					_XENUM5_NWLN \
 		Only accessed by friends (value and container classes).)			\
 	class _XENUM5_STORE_NAME(DECL) {							_XENUM5_NWLN \
@@ -38,7 +38,7 @@
 		friend class ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>;		_XENUM5_NWLN \
 		BOOST_PP_EXPR_IF(								\
 			_XENUM5_DECL_HAS_PROPS(DECL),						\
-			friend class _XENUM5_DECL_GET_VALUENAME(DECL);				_XENUM5_NWLN \
+			friend class _XENUM5_DECL_VALUENAME(DECL);				_XENUM5_NWLN \
 		)										\
 		friend class _XENUM5_CNTNR_NAME(DECL);						_XENUM5_NWLN \
 		_XENUM5_DECLS_ENUM(CTXT, DECL)							\
@@ -58,9 +58,9 @@
 	static constexpr const size_t size = 0 _XENUM5_CALL_VALS(_XENUM5_ADD_ONE, CTXT);	_XENUM5_NWLN \
 	_XENUM5_DOC(Integer type used for enum values.)						\
 	using Index = BOOST_PP_IF(									\
-		BOOST_PP_IS_EMPTY(_XENUM5_DECL_GET_INTTYPE(DECL)),				\
+		BOOST_PP_IS_EMPTY(_XENUM5_DECL_INTTYPE(DECL)),					\
 		::_XENUM5_NS::SelectInt<size>::type,						\
-		_XENUM5_DECL_GET_INTTYPE(DECL)							\
+		_XENUM5_DECL_INTTYPE(DECL)							\
 	);											_XENUM5_NWLN \
 	_XENUM5_DOC(The native enum class.)							\
 	enum class Enum : Index {								_XENUM5_NWLN \

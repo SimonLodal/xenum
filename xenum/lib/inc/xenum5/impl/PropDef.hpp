@@ -13,52 +13,52 @@
 /**
  * Get the name of a custom property.
  */
-#define _XENUM5_PDEF_GET_NAME(PDEF)			BOOST_PP_SEQ_ELEM(0, PDEF)
+#define _XENUM5_PDEF_NAME(PDEF)			BOOST_PP_SEQ_ELEM(0, PDEF)
 
 /**
  * Get the data type of a custom property.
  */
-#define _XENUM5_PDEF_GET_TYPE(PDEF)			BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(1, PDEF))
+#define _XENUM5_PDEF_TYPE(PDEF)			BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the actual data type used for storing data for this custom property.
  */
-#define _XENUM5_PDEF_GET_REAL_TYPE(PDEF)		BOOST_PP_SEQ_ELEM(1, BOOST_PP_SEQ_ELEM(1, PDEF))
+#define _XENUM5_PDEF_REAL_TYPE(PDEF)		BOOST_PP_SEQ_ELEM(1, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the data type used as parameter type in functions handling data for this property.
  */
-#define _XENUM5_PDEF_GET_PARM_TYPE(PDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(1, PDEF))
+#define _XENUM5_PDEF_PARM_TYPE(PDEF)		BOOST_PP_SEQ_ELEM(2, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the type category; for branching handling of different types.
  */
-#define _XENUM5_PDEF_GET_TYPCAT(PDEF)			BOOST_PP_SEQ_ELEM(3, BOOST_PP_SEQ_ELEM(1, PDEF))
+#define _XENUM5_PDEF_TYPCAT(PDEF)		BOOST_PP_SEQ_ELEM(3, BOOST_PP_SEQ_ELEM(1, PDEF))
 
 /**
  * Get the default value of a custom property.
  */
-#define _XENUM5_PDEF_GET_DEFAULTVALUE(PDEF)		BOOST_PP_SEQ_ELEM(2, PDEF)
+#define _XENUM5_PDEF_DEFAULTVALUE(PDEF)		BOOST_PP_SEQ_ELEM(2, PDEF)
 
 /**
  * Get the depth of a custom property.
  */
-#define _XENUM5_PDEF_GET_DEPTH(PDEF)			BOOST_PP_SEQ_ELEM(3, PDEF)
+#define _XENUM5_PDEF_DEPTH(PDEF)		BOOST_PP_SEQ_ELEM(3, PDEF)
 
 /**
  * Get the "PLACEMENT" feature; 0=place implementation in source file, 1=in header file.
  */
-#define _XENUM5_PDEF_GET_PLACEMENT(PDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PDEF))
+#define _XENUM5_PDEF_PLACEMENT(PDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PDEF))
 
 /**
  * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
  */
-#define _XENUM5_PDEF_GET_PLACEMENT_STR(PDEF)		BOOST_PP_IF(				\
-							_XENUM5_PDEF_GET_PLACEMENT(PDEF),	\
+#define _XENUM5_PDEF_PLACEMENT_STR(PDEF)	BOOST_PP_IF(					\
+							_XENUM5_PDEF_PLACEMENT(PDEF),		\
 							HDR,					\
 							SRC)
 
-//#define _XENUM5_PDEF_GET_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
+//#define _XENUM5_PDEF_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
 
 
 /**
@@ -68,7 +68,7 @@
  * @param ... The custom property definition, expanded as individual parameters.
  * @return Initialized custom property declaration, as a sequence, where all fields are present.
  */
-#define _XENUM5_PDEF_INIT(DBGLOC, ...)							\
+#define _XENUM5_PDEF_INIT(DBGLOC, ...)								\
 	_XENUM5_PDEF_INIT_NAME(DBGLOC, __VA_ARGS__)						\
 
 /*
@@ -98,9 +98,9 @@ _PDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARG
 	_XENUM5_PDEF_INIT_DEFAULTVALUE(DBGLOC, __VA_ARGS__)
 
 
-/// Helper definition for _XENUM5_PDEF_GET_TYPE_CATEGORY().
+/// Helper definition for _XENUM5_PDEF_TYPCAT().
 #define _XENUM5_PDEF_CATEGORY_cstring	
-/// Helper definition for _XENUM5_PDEF_GET_TYPE_CATEGORY().
+/// Helper definition for _XENUM5_PDEF_TYPCAT().
 #define _XENUM5_PDEF_CATEGORY_IS_cstring	1
 
 /**

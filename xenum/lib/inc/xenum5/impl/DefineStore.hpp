@@ -17,7 +17,7 @@
  * @return Name of implementation namespace.
  */
 #define _XENUM5_IMPL_LOCAL_NS(DECL, PNAME)							\
-	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum5_local_, _XENUM5_DECL_GET_SUFFIX(DECL)), _), PNAME)
+	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum5_local_, _XENUM5_DECL_SUFFIX(DECL)), _), PNAME)
 
 
 // ==============================================================================================
@@ -39,7 +39,7 @@
  */
 // FIXME: Is it really necessary to define this at all?
 #define _XENUM5_DEFS_SIZE(CTXT, DECL)								\
-	constexpr const size_t _XENUM5_DECL_GET_SCOPE(DECL) _XENUM5_STORE_NAME(DECL) ::size;	_XENUM5_NWLN
+	constexpr const size_t _XENUM5_DECL_SCOPE(DECL) _XENUM5_STORE_NAME(DECL) ::size;	_XENUM5_NWLN
 
 
 // ==============================================================================================
@@ -129,11 +129,11 @@
  */
 #define _XENUM5_IDENT_DEFL_FUNCS(CTXT, DECL)							\
 	constexpr const IdentIndex getIdentOffset						\
-	(_XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum value) noexcept		_XENUM5_NWLN \
+	(_XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return identOffsets[static_cast							\
-			<_XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_index_t>	\
+			<_XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_index_t>		\
 			(value)];								_XENUM5_NWLN \
 	}											_XENUM5_NWLN
 
@@ -146,9 +146,9 @@
 	_XENUM5_DEFS_FUNCS_I1(									\
 		CTXT,										\
 		DECL,										\
-		_XENUM5_DECL_GET_SCOPE(DECL),							\
+		_XENUM5_DECL_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_DECL_GET_VALUENAME(DECL)						\
+		_XENUM5_DECL_VALUENAME(DECL)							\
 	)
 
 /**
@@ -226,9 +226,9 @@
 	_XENUM5_DEFS_CHECK_I1(									\
 		CTXT,										\
 		DECL,										\
-		_XENUM5_DECL_GET_SCOPE(DECL),							\
+		_XENUM5_DECL_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_DECL_GET_VALUENAME(DECL)						\
+		_XENUM5_DECL_VALUENAME(DECL)							\
 	)
 
 /**
@@ -248,7 +248,7 @@
 		);										_XENUM5_NWLN \
 		BOOST_PP_REPEAT									\
 		(										\
-			BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(DECL)),			\
+			BOOST_PP_SEQ_SIZE(_XENUM5_DECL_PDEFS(DECL)),				\
 			_XENUM5_PROP_CHECK,							\
 			CTXT									\
 		)										\

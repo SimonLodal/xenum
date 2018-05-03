@@ -19,7 +19,7 @@
  */
 #define _XENUM5_PROPS_DECLS(CTXT)								\
 	BOOST_PP_REPEAT(									\
-		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(_XENUM5_CTXT_GET_DECL(CTXT))),		\
+		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_PDEFS(_XENUM5_CTXT_DECL(CTXT))),			\
 		_XENUM5_PROP_DECLS,								\
 		CTXT										\
 		)
@@ -30,7 +30,7 @@
 #define _XENUM5_PROP_DECLS(Z, N, CTXT)								\
 	_XENUM5_PROP_DECLS_I1									\
 	(											\
-		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
+		_XENUM5_DECL_PDEFN(_XENUM5_CTXT_DECL(CTXT), N),					\
 		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -39,11 +39,11 @@
  * Worker for _XENUM5_PROP_DECLS().
  */
 #define _XENUM5_PROP_DECLS_I1(PDEF, CTXT, Z)							\
-	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_GET_NAME(PDEF))				\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLS_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))				\
+	BOOST_PP_CAT(_XENUM5_PROP_DECLS_, _XENUM5_PDEF_TYPCAT(PDEF))				\
 	(											\
 		PDEF,										\
-		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		_XENUM5_CTXT_DECL(CTXT),							\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
@@ -57,7 +57,7 @@
 #define _XENUM5_PROPS_DECLV(CTXT)								\
 	BOOST_PP_REPEAT										\
 	(											\
-		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(_XENUM5_CTXT_GET_DECL(CTXT))),		\
+		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_PDEFS(_XENUM5_CTXT_DECL(CTXT))),			\
 		_XENUM5_PROP_DECLV,								\
 		CTXT										\
 	)											\
@@ -68,7 +68,7 @@
 #define _XENUM5_PROP_DECLV(Z, N, CTXT)								\
 	_XENUM5_PROP_DECLV_I1									\
 	(											\
-		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
+		_XENUM5_DECL_PDEFN(_XENUM5_CTXT_DECL(CTXT), N),					\
 		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -77,8 +77,8 @@
  * Worker for _XENUM5_PROP_DECLV().
  */
 #define _XENUM5_PROP_DECLV_I1(PDEF, CTXT, Z)							\
-	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_GET_NAME(PDEF))				\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLV_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))				\
+	BOOST_PP_CAT(_XENUM5_PROP_DECLV_, _XENUM5_PDEF_TYPCAT(PDEF))				\
 	(											\
 		PDEF,										\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
@@ -94,7 +94,7 @@
 #define _XENUM5_PROPS_DEFINE(CTXT, DECL)							\
 	BOOST_PP_REPEAT										\
 	(											\
-		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_GET_PDEFS(DECL)),				\
+		BOOST_PP_SEQ_SIZE(_XENUM5_DECL_PDEFS(DECL)),					\
 		_XENUM5_PROP_DEFINE,								\
 		CTXT										\
 	)											\
@@ -105,7 +105,7 @@
 #define _XENUM5_PROP_DEFINE(Z, N, CTXT)								\
 	_XENUM5_PROP_DEFINE_I1									\
 	(											\
-		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
+		_XENUM5_DECL_PDEFN(_XENUM5_CTXT_DECL(CTXT), N),					\
 		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -114,11 +114,11 @@
  * Worker for _XENUM5_PROP_DEFINE().
  */
 #define _XENUM5_PROP_DEFINE_I1(PDEF, CTXT, Z)							\
-	_XENUM5_NWLN _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:_XENUM5_PDEF_GET_NAME(PDEF))		\
-	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
+	_XENUM5_NWLN _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:_XENUM5_PDEF_NAME(PDEF))		\
+	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_, _XENUM5_PDEF_TYPCAT(PDEF))				\
 	(											\
 		PDEF,										\
-		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		_XENUM5_CTXT_DECL(CTXT),							\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
@@ -131,7 +131,7 @@
 #define _XENUM5_PROP_CHECK(Z, N, CTXT)								\
 	_XENUM5_PROP_CHECK_I1									\
 	(											\
-		_XENUM5_DECL_GET_PDEFN(_XENUM5_CTXT_GET_DECL(CTXT), N),				\
+		_XENUM5_DECL_PDEFN(_XENUM5_CTXT_DECL(CTXT), N),					\
 		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -140,12 +140,12 @@
  * Worker for _XENUM5_PROP_CHECK().
  */
 #define _XENUM5_PROP_CHECK_I1(PDEF, CTXT, Z)							\
-	_XENUM5_CMNT(_XENUM5_PDEF_GET_NAME(PDEF))						\
-	BOOST_PP_CAT(_XENUM5_PROP_CHECK_, _XENUM5_PDEF_GET_TYPCAT(PDEF))			\
+	_XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))							\
+	BOOST_PP_CAT(_XENUM5_PROP_CHECK_, _XENUM5_PDEF_TYPCAT(PDEF))				\
 	(											\
-		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_NAME(PDEF),							\
 		PDEF,										\
-		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		_XENUM5_CTXT_DECL(CTXT),							\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
@@ -170,7 +170,7 @@
  * Avoid using FOLD_LEFT() since it fails on empty seq.
  */
 #define _XENUM5_PROP_GEN_NODE_NAME_0(CTXT, INDEXPATH)						\
-	_XENUM5_CTXT_GET_IDENT(CTXT)
+	_XENUM5_CTXT_IDENT(CTXT)
 
 /**
  * Worker for _XENUM5_PROP_GEN_NODE_NAME(), when indexpath is non-empty.
@@ -178,7 +178,7 @@
 #define _XENUM5_PROP_GEN_NODE_NAME_1(CTXT, INDEXPATH)						\
 	BOOST_PP_SEQ_FOLD_LEFT(									\
 		_XENUM5_PROP_GEN_NODE_NAME_APPEND_INDEX,					\
-		_XENUM5_CTXT_GET_IDENT(CTXT),							\
+		_XENUM5_CTXT_IDENT(CTXT),							\
 		INDEXPATH									\
 	)
 
@@ -207,8 +207,8 @@
 #define _XENUM5_PROP_ITER_VALUES_NODE(CTXT, IDENT, ...)						\
 	_XENUM5_PROP_ITER_VALUES_NODE_I1							\
 	(											\
-		_XENUM5_GET_VARARG(_XENUM5_CTXT_GET_PINDEX(CTXT), __VA_ARGS__),			\
-		_XENUM5_PDEF_GET_DEPTH(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
+		_XENUM5_GET_VARARG(_XENUM5_CTXT_PINDEX(CTXT), __VA_ARGS__),			\
+		_XENUM5_PDEF_DEPTH(_XENUM5_CTXT_PDEF(CTXT)),					\
 		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
 	)
 
@@ -220,7 +220,7 @@
 	_XENUM5_TT_ITERATE_DEPTH_GEN(								\
 		DATA,										\
 		DEPTH,										\
-		(_XENUM5_CTXT_GET_CALLBACK(CTXT), _XENUM5_TT_FILTER_LEAF),			\
+		(_XENUM5_CTXT_CALLBACK(CTXT), _XENUM5_TT_FILTER_LEAF),				\
 		CTXT										\
 	)
 
@@ -232,10 +232,10 @@
  * @return NODE if non-empty, else DEFAULT_VALUE from the PDEF.
  */
 // FIXME: Report error if value and defaultvalue are both empty.
-#define _XENUM5_PROP_GET_VALUE(NODE, PDEF)							\
+#define _XENUM5_PROP_VALUE(NODE, PDEF)								\
 	BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(NODE),							\
-		_XENUM5_PDEF_GET_DEFAULTVALUE(PDEF),						\
+		_XENUM5_PDEF_DEFAULTVALUE(PDEF),						\
 		NODE										\
 	)
 
@@ -369,7 +369,7 @@
  */
 #define _XENUM5_PROP_DECL_VALUE_TYPE(PNAME, PDEF)						\
 	_XENUM5_DOC(Native type of custom property PNAME values.)				\
-	using BOOST_PP_CAT(PNAME, Value) = _XENUM5_PDEF_GET_REAL_TYPE(PDEF);			_XENUM5_NWLN \
+	using BOOST_PP_CAT(PNAME, Value) = _XENUM5_PDEF_REAL_TYPE(PDEF);			_XENUM5_NWLN \
 
 
 // ========================== Index type (real) ==============================
@@ -431,10 +431,10 @@
  * Declare a single field of the NodeNames struct.
  */
 #define _XENUM5_PROP_DECLARE_NODENAME(ITERPOS, NODE, CTXT)					\
-	BOOST_PP_CAT(_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)), Node)			\
+	BOOST_PP_CAT(_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)), Node)				\
 	_XENUM5_PROP_GEN_NODE_NAME(								\
 		CTXT,										\
-		_XENUM5_TT_ITERPOS_GET_INDEXPATH(ITERPOS)					\
+		_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS)						\
 	);											_XENUM5_NWLN
 
 
@@ -476,10 +476,10 @@
  */
 #define _XENUM5_PROP_DEFINE_GET_NODE_N(Z, N, CTXT)						\
 	_XENUM5_PROP_DEFINE_GET_NODE_N_I1(							\
-		_XENUM5_CTXT_GET_DECLPFX(CTXT),							\
-		_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
+		_XENUM5_CTXT_DECLPFX(CTXT),							\
+		_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),					\
 		N,										\
-		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		_XENUM5_CTXT_DECL(CTXT),							\
 		Z										\
 	)											\
 
@@ -516,7 +516,7 @@
  * Declare and inline-define Store::get${propname}Size() for all levels.
  * For properties implemented in header.
  */
-#define _XENUM5_PROP_HDR_DECLS_GET_SIZE(DEPTH, PDEF, Z)					\
+#define _XENUM5_PROP_HDR_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
 		DEPTH,										\
@@ -529,9 +529,9 @@
  */
 #define _XENUM5_PROP_HDR_DECLS_GET_SIZE_N(Z, N, PDEF)						\
 	_XENUM5_PROP_HDR_DECLS_GET_SIZE_N_I1(							\
-		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_NAME(PDEF),							\
 		N,										\
-		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
 		Z										\
 	)											\
 
@@ -581,9 +581,9 @@
  */
 #define _XENUM5_PROP_SRC_DECLS_GET_SIZE_N(Z, LEVEL, PDEF)					\
 	_XENUM5_PROP_SRC_DECLS_GET_SIZE_N_I1(							\
-		_XENUM5_PDEF_GET_NAME(PDEF),							\
+		_XENUM5_PDEF_NAME(PDEF),							\
 		LEVEL,										\
-		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
 		Z										\
 	)											\
 
@@ -620,11 +620,11 @@
  */
 #define _XENUM5_PROP_SRC_DEFS_GET_SIZE_N(Z, N, CTXT)						\
 	_XENUM5_PROP_SRC_DEFS_GET_SIZE_N_I1(							\
-		_XENUM5_PDEF_GET_NAME(_XENUM5_CTXT_GET_PDEF(CTXT)),				\
+		_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),					\
 		N,										\
-		_XENUM5_DECL_GET_SCOPE(_XENUM5_CTXT_GET_DECL(CTXT)),				\
-		_XENUM5_STORE_NAME(_XENUM5_CTXT_GET_DECL(CTXT)),				\
-		_XENUM5_CTXT_GET_DECL(CTXT),							\
+		_XENUM5_DECL_SCOPE(_XENUM5_CTXT_DECL(CTXT)),					\
+		_XENUM5_STORE_NAME(_XENUM5_CTXT_DECL(CTXT)),					\
+		_XENUM5_CTXT_DECL(CTXT),							\
 		Z										\
 	)
 
@@ -655,7 +655,7 @@
  */
 #define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get value of the custom property PNAME.)					\
-	static const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)						\
+	static const _XENUM5_PDEF_PARM_TYPE(PDEF)						\
 	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PNAME, Index), DEPTH, Z)	\
 	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept);					_XENUM5_NWLN \
@@ -681,8 +681,8 @@
  */
 #define _XENUM5_PROP_HDR_DECLV_GET_SIZE_N(Z, LEVEL, PDEF)					\
 	_XENUM5_PROP_HDR_DECLV_GET_SIZE_I1(							\
-		_XENUM5_PDEF_GET_NAME(PDEF),							\
-		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
 		Z										\
 	)											\
@@ -735,8 +735,8 @@
  */
 #define _XENUM5_PROP_SRC_DECLV_GET_SIZE_N(Z, LEVEL, PDEF)					\
 	_XENUM5_PROP_SRC_DECLV_GET_SIZE_I1(							\
-		_XENUM5_PDEF_GET_NAME(PDEF),							\
-		_XENUM5_PDEF_GET_DEPTH(PDEF),							\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
 		Z										\
 	)											\
@@ -777,7 +777,7 @@
 // FIXME: Merge with _XENUM5_PROP_SRC_DECLV_GET_VALUE().
 #define _XENUM5_PROP_HDR_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get custom property PNAME value.)						\
-	constexpr const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)					\
+	constexpr const _XENUM5_PDEF_PARM_TYPE(PDEF)						\
 	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), DEPTH, Z)		\
 	) const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
@@ -798,7 +798,7 @@
 // FIXME: Merge with _XENUM5_PROP_HDR_DECLV_GET_VALUE().
 #define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get custom property PNAME value.)						\
-	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)							\
+	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
 	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(BOOST_PP_CAT(PNAME, Index), DEPTH, Z)		\
 	) const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \

@@ -211,7 +211,7 @@ namespace xenum5 {
  * @param CTXT Context object to pass around. Must contain at least the SUFFIX field.
  */
 #define _XENUM5_CALL_VALS(CALLBACK, CTXT)							\
-	BOOST_PP_CAT(XENUM5_, _XENUM5_CTXT_GET_SUFFIX(CTXT)) (_XENUM5_NOOP, CALLBACK, CTXT)
+	BOOST_PP_CAT(XENUM5_, _XENUM5_CTXT_SUFFIX(CTXT)) (_XENUM5_NOOP, CALLBACK, CTXT)
 
 
 

@@ -46,7 +46,7 @@
 			_XENUM5_INDENT_INC							\
 			_XENUM5_CSTRING_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)			\
 			_XENUM5_CSTRING_SRC_DEFL_NODES(PNAME, CTXT, Z)				\
-			_XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, _XENUM5_CTXT_GET_DECL(CTXT), CTXT, Z)	\
+			_XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, _XENUM5_CTXT_DECL(CTXT), CTXT, Z)	\
 			_XENUM5_INDENT_DEC							\
 		} _XENUM5_CMNT(namespace LOCALSCOPE)						\
 		_XENUM5_INDENT_DEC								\
@@ -88,7 +88,7 @@
  * Define the local-ns functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, DECL, CTXT, Z)					\
-	using Enum = _XENUM5_DECL_GET_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum;		_XENUM5_NWLN \
+	using Enum = _XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum;			_XENUM5_NWLN \
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
 
@@ -108,7 +108,7 @@
  * Define get${propname}() value getter.
  */
 #define _XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LOCALSCOPE, SCOPE, STORENAME, Z)	\
-	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)							\
+	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
 	SCOPE STORENAME :: BOOST_PP_CAT(get, PNAME) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(SCOPE STORENAME::Enum,				\
 			SCOPE STORENAME::BOOST_PP_CAT(PNAME, Index), DEPTH, Z)			\
