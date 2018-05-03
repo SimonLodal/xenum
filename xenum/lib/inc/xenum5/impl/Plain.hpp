@@ -52,7 +52,7 @@
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		PDEF,										\
 		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
-		_XENUM5_XDCL_SCOPE(XDCL),							\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
 		_XENUM5_STORE_NAME(XDCL),							\
 		CTXT,										\
 		Z										\
@@ -69,7 +69,7 @@
 		PNAME,										\
 		PDEF,										\
 		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
-		_XENUM5_XDCL_SCOPE(XDCL),							\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
 		_XENUM5_STORE_NAME(XDCL),							\
 		Z										\
 	)											\

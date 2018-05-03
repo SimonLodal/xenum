@@ -24,7 +24,7 @@
  */
 // FIXME: Is it really necessary to define this at all?
 #define _XENUM5_DEFC_SIZE(CTXT, XDCL)								\
-	constexpr const size_t _XENUM5_XDCL_SCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_size;		_XENUM5_NWLN
+	constexpr const size_t _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_size;		_XENUM5_NWLN
 
 
 // ==============================================================================================
@@ -45,8 +45,8 @@
  */
 #define _XENUM5_DEFC_ENUM_COPY_MEMBER_PREFIX(CTXT, XDCL)					\
 	constexpr const										\
-	_XENUM5_XDCL_SCOPE(XDCL)_XENUM5_XDCL_VNAME(XDCL)					\
-	_XENUM5_XDCL_SCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::
+	_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_XDCL_VNAME(XDCL)					\
+	_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::
 
 
 #endif // _XENUM5_IMPL_DEFINE_CNTNR_HPP

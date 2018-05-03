@@ -18,7 +18,7 @@
 /**
  * @return SCOPE field of the xenum declaration.
  */
-#define _XENUM5_XDCL_SCOPE(XDCL)		BOOST_PP_SEQ_ELEM(1, XDCL)
+#define _XENUM5_XDCL_DSCOPE(XDCL)		BOOST_PP_SEQ_ELEM(1, XDCL)
 
 /**
  * @return Container class name field (CNAME) of the xenum declaration.
@@ -71,7 +71,7 @@
  * Helper for _XENUM5_XDCL_INIT().
  */
 #define _XENUM5_XDCL_INIT_DO(DBGLOC, ...)							\
-	_XENUM5_XDCL_INIT_SCOPE(DBGLOC, __VA_ARGS__)
+	_XENUM5_XDCL_INIT_DSCOPE(DBGLOC, __VA_ARGS__)
 /*
 _XDCL_INIT_DO: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARGS__ _XENUM5_NWLN \
 */
@@ -79,8 +79,8 @@ _XDCL_INIT_DO: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
 /**
  * Helper for _XENUM5_XDCL_INIT().
  */
-#define _XENUM5_XDCL_INIT_SCOPE(DBGLOC, SCOPE, ...)						\
-	(SCOPE)											\
+#define _XENUM5_XDCL_INIT_DSCOPE(DBGLOC, DSCOPE, ...)						\
+	(DSCOPE)											\
 	_XENUM5_XDCL_INIT_CNAME(DBGLOC, __VA_ARGS__)
 
 /**
