@@ -21,14 +21,14 @@
 #define _XENUM5_DECL_SCOPE(DECL)		BOOST_PP_SEQ_ELEM(1, DECL)
 
 /**
- * @return CNTNRNAME field of the xenum declaration.
+ * @return Container class name field (CNAME) of the xenum declaration.
  */
-#define _XENUM5_DECL_CNTNRNAME(DECL)		BOOST_PP_SEQ_ELEM(2, DECL)
+#define _XENUM5_DECL_CNAME(DECL)		BOOST_PP_SEQ_ELEM(2, DECL)
 
 /**
- * @return VALUENAME field of the xenum declaration.
+ * @return Value class name field (VNAME) of the xenum declaration.
  */
-#define _XENUM5_DECL_VALUENAME(DECL)		BOOST_PP_SEQ_ELEM(3, DECL)
+#define _XENUM5_DECL_VNAME(DECL)		BOOST_PP_SEQ_ELEM(3, DECL)
 
 /**
  * @return INTTYPE field of the xenum declaration.
@@ -81,27 +81,27 @@ _DECL_INIT_DO: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
  */
 #define _XENUM5_DECL_INIT_SCOPE(DBGLOC, SCOPE, ...)						\
 	(SCOPE)											\
-	_XENUM5_DECL_INIT_CNTNRNAME(DBGLOC, __VA_ARGS__)
+	_XENUM5_DECL_INIT_CNAME(DBGLOC, __VA_ARGS__)
 
 /**
  * Helper for _XENUM5_DECL_INIT().
  */
-#define _XENUM5_DECL_INIT_CNTNRNAME(DBGLOC, CNTNRNAME, ...)					\
+#define _XENUM5_DECL_INIT_CNAME(DBGLOC, CNAME, ...)						\
 	(BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(CNTNRNAME),							\
+		BOOST_PP_IS_EMPTY(CNAME),							\
 		_XENUM5_ERROR(DBGLOC, Missing enum-container class name.),			\
-		CNTNRNAME									\
+		CNAME										\
 	))											\
-	_XENUM5_DECL_INIT_VALUENAME(DBGLOC, __VA_ARGS__)
+	_XENUM5_DECL_INIT_VNAME(DBGLOC, __VA_ARGS__)
 
 /**
  * Helper for _XENUM5_DECL_INIT().
  */
-#define _XENUM5_DECL_INIT_VALUENAME(DBGLOC, VALUENAME, ...)					\
+#define _XENUM5_DECL_INIT_VNAME(DBGLOC, VNAME, ...)						\
 	(BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(VALUENAME),							\
+		BOOST_PP_IS_EMPTY(VNAME),							\
 		_XENUM5_ERROR(DBGLOC, Missing enum-value class name.),				\
-		VALUENAME									\
+		VNAME										\
 	))											\
 	_XENUM5_DECL_INIT_INTTYPE(DBGLOC, __VA_ARGS__)
 

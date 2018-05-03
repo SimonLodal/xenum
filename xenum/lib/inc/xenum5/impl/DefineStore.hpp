@@ -148,48 +148,48 @@
 		DECL,										\
 		_XENUM5_DECL_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_DECL_VALUENAME(DECL)							\
+		_XENUM5_DECL_VNAME(DECL)							\
 	)
 
 /**
  * Worker for _XENUM5_DEFS_FUNCS().
  */
-#define _XENUM5_DEFS_FUNCS_I1(CTXT, DECL, SCOPE, STORENAME, VALUENAME)				\
-	const char* SCOPE STORENAME::getIdentifier(SCOPE STORENAME::Enum value) noexcept	_XENUM5_NWLN \
+#define _XENUM5_DEFS_FUNCS_I1(CTXT, DECL, SCOPE, SNAME, VNAME)					\
+	const char* SCOPE SNAME::getIdentifier(SCOPE SNAME::Enum value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return &((const char*)&_XENUM5_IMPL_LOCAL_NS(DECL, )::identValues)		\
 			[_XENUM5_IMPL_LOCAL_NS(DECL, )::getIdentOffset(value)];			_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
-	SCOPE STORENAME::Enum SCOPE STORENAME::fromIndex(SCOPE STORENAME::Index index)		_XENUM5_NWLN \
+	SCOPE SNAME::Enum SCOPE SNAME::fromIndex(SCOPE SNAME::Index index)			_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		if (index < size)								_XENUM5_NWLN \
 			_XENUM5_INDENT_ADD							\
-			return static_cast<SCOPE STORENAME::Enum>(index);			_XENUM5_NWLN \
+			return static_cast<SCOPE SNAME::Enum>(index);				_XENUM5_NWLN \
 		throw std::out_of_range("Index >= size.");					_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
-	bool SCOPE STORENAME::fromIndex(SCOPE STORENAME::Index index,				\
-				::_XENUM5_NS::XenumValue<STORENAME>& value) noexcept		_XENUM5_NWLN \
+	bool SCOPE SNAME::fromIndex(SCOPE SNAME::Index index,					\
+				::_XENUM5_NS::XenumValue<SNAME>& value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		if (index < size) {								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			value = static_cast<SCOPE STORENAME::Enum>(index);			_XENUM5_NWLN \
+			value = static_cast<SCOPE SNAME::Enum>(index);				_XENUM5_NWLN \
 			return true;								_XENUM5_NWLN \
 			_XENUM5_INDENT_DEC							\
 		}										_XENUM5_NWLN \
 		return false;									_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
-	SCOPE STORENAME::Enum SCOPE STORENAME::fromIdentifier(const char* identifier)		_XENUM5_NWLN \
+	SCOPE SNAME::Enum SCOPE SNAME::fromIdentifier(const char* identifier)			_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		/* FIXME: Linear search, terrible performance. */				\
-		for (Index index=0; index<size; index++) {				_XENUM5_NWLN \
+		for (Index index=0; index<size; index++) {					_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			SCOPE VALUENAME value(static_cast<SCOPE STORENAME::Enum>(index));	_XENUM5_NWLN \
+			SCOPE VNAME value(static_cast<SCOPE SNAME::Enum>(index));		_XENUM5_NWLN \
 			if (strcmp(value.getIdentifier(), identifier) == 0)			_XENUM5_NWLN \
 				_XENUM5_INDENT_ADD						\
 				return value();							_XENUM5_NWLN \
@@ -198,18 +198,18 @@
 		throw std::out_of_range("No such identifier.");					_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
-	bool SCOPE STORENAME::fromIdentifier(const char* identifier,				\
-				::_XENUM5_NS::XenumValue<STORENAME>& value) noexcept		_XENUM5_NWLN \
+	bool SCOPE SNAME::fromIdentifier(const char* identifier,				\
+				::_XENUM5_NS::XenumValue<SNAME>& value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		/* FIXME: Linear search, terrible performance. */				\
 		for (Index index=0; index<size; index++) {					_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			if (strcmp(SCOPE VALUENAME(static_cast<SCOPE STORENAME::Enum>(index))	\
+			if (strcmp(SCOPE VNAME(static_cast<SCOPE SNAME::Enum>(index))		\
 					.getIdentifier(), identifier) != 0)			_XENUM5_NWLN \
 				_XENUM5_INDENT_ADD						\
 				continue;							_XENUM5_NWLN \
-			value = static_cast<SCOPE STORENAME::Enum>(index);			_XENUM5_NWLN \
+			value = static_cast<SCOPE SNAME::Enum>(index);				_XENUM5_NWLN \
 			return true;								_XENUM5_NWLN \
 			_XENUM5_INDENT_DEC							\
 		}										_XENUM5_NWLN \
@@ -228,21 +228,21 @@
 		DECL,										\
 		_XENUM5_DECL_SCOPE(DECL),							\
 		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_DECL_VALUENAME(DECL)							\
+		_XENUM5_DECL_VNAME(DECL)							\
 	)
 
 /**
  * Worker for _XENUM5_DEFS_CHECK().
  */
-#define _XENUM5_DEFS_CHECK_I1(CTXT, DECL, SCOPE, STORENAME, VALUENAME)				\
+#define _XENUM5_DEFS_CHECK_I1(CTXT, DECL, SCOPE, SNAME, VNAME)					\
 	_XENUM5_NWLN _XENUM5_CMNT(Store:Check)							\
-	void SCOPE STORENAME::_check(void)							\
+	void SCOPE SNAME::_check(void)								\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_CMNT(Main)								\
 		static_assert(									\
 			sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, )::identOffsets) ==			\
-			SCOPE STORENAME ::size *						\
+			SCOPE SNAME ::size *							\
 			sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, )::IdentIndex),			\
 			"BUG: Struct size mismatch (identOffsets / size)."			\
 		);										_XENUM5_NWLN \

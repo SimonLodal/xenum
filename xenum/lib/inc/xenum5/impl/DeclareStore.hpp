@@ -15,7 +15,7 @@
  * @return Name of the store class.
  */
 #define _XENUM5_STORE_NAME(DECL)								\
-	BOOST_PP_CAT(_xenum5_store_, _XENUM5_DECL_CNTNRNAME(DECL))
+	BOOST_PP_CAT(_xenum5_store_, _XENUM5_DECL_CNAME(DECL))
 
 
 // ==============================================================================================
@@ -25,10 +25,10 @@
 #define _XENUM5_DECLARE_STORE(CTXT, DECL)							\
 	BOOST_PP_EXPR_IF(									\
 		_XENUM5_DECL_HAS_PROPS(DECL),							\
-		class _XENUM5_DECL_VALUENAME(DECL);						_XENUM5_NWLN \
+		class _XENUM5_DECL_VNAME(DECL);							_XENUM5_NWLN \
 	)											\
 	class _XENUM5_CNTNR_NAME(DECL);								_XENUM5_NWLN \
-	_XENUM5_DOC(Internal/private class for xenum _XENUM5_DECL_CNTNRNAME(DECL).		_XENUM5_NWLN \
+	_XENUM5_DOC(Internal/private class for xenum _XENUM5_DECL_CNAME(DECL).			_XENUM5_NWLN \
 		Contains data and accessors for the enum.					_XENUM5_NWLN \
 		Only accessed by friends (value and container classes).)			\
 	class _XENUM5_STORE_NAME(DECL) {							_XENUM5_NWLN \
@@ -38,7 +38,7 @@
 		friend class ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>;		_XENUM5_NWLN \
 		BOOST_PP_EXPR_IF(								\
 			_XENUM5_DECL_HAS_PROPS(DECL),						\
-			friend class _XENUM5_DECL_VALUENAME(DECL);				_XENUM5_NWLN \
+			friend class _XENUM5_DECL_VNAME(DECL);					_XENUM5_NWLN \
 		)										\
 		friend class _XENUM5_CNTNR_NAME(DECL);						_XENUM5_NWLN \
 		_XENUM5_DECLS_ENUM(CTXT, DECL)							\

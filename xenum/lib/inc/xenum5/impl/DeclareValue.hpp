@@ -30,7 +30,7 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
 	_XENUM5_DOC(Enum-value class type.							_XENUM5_NWLN \
 		Thin wrapper around a native enum value.					_XENUM5_NWLN \
 		Can never have an invalid value.)						\
-	using _XENUM5_DECL_VALUENAME(DECL) =							\
+	using _XENUM5_DECL_VNAME(DECL) =							\
 		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>;				_XENUM5_NWLN \
 
 
@@ -41,15 +41,15 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * Adds getters for the custom properties.
  */
 #define _XENUM5_DECLARE_VALUE_1(CTXT, DECL)							\
-_XENUM5_DOC(Enum-value class for xenum _XENUM5_DECL_CNTNRNAME(DECL).				_XENUM5_NWLN \
+_XENUM5_DOC(Enum-value class for xenum _XENUM5_DECL_CNAME(DECL).				_XENUM5_NWLN \
 	Thin wrapper around a native enum value.						_XENUM5_NWLN \
 	Can never have an invalid value.)							\
-class _XENUM5_DECL_VALUENAME(DECL)								\
+class _XENUM5_DECL_VNAME(DECL)									\
 	: public ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)> {				_XENUM5_NWLN \
 public:												_XENUM5_NWLN \
 	_XENUM5_INDENT_INC									\
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)							\
-	_XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM5_DECL_VALUENAME(DECL))			\
+	_XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM5_DECL_VNAME(DECL))				\
 	_XENUM5_PROPS_DECLV(CTXT)								\
 	_XENUM5_INDENT_DEC									\
 };												_XENUM5_NWLN \
@@ -58,13 +58,13 @@ public:												_XENUM5_NWLN \
  * Worker for _XENUM5_DECLARE_VALUE_1().
  * Creates ctors; we need to copy all the ctors of the base class.
  */
-#define _XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(VALUENAME)						\
+#define _XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(VNAME)						\
 	_XENUM5_DOC(@copydoc _XENUM5_NS::XenumValue::XenumValue(void))				\
-	constexpr VALUENAME(void) noexcept {}							_XENUM5_NWLN \
+	constexpr VNAME(void) noexcept {}							_XENUM5_NWLN \
 	_XENUM5_DOC(@copydoc _XENUM5_NS::XenumValue::XenumValue(Enum value))			\
-	constexpr VALUENAME(Enum value) noexcept : XenumValue(value) {}				_XENUM5_NWLN \
+	constexpr VNAME(Enum value) noexcept : XenumValue(value) {}				_XENUM5_NWLN \
 	_XENUM5_DOC(@copydoc _XENUM5_NS::XenumValue::XenumValue(const XenumValue& other))	\
-	constexpr VALUENAME(const VALUENAME& other) noexcept : XenumValue(other) {}		_XENUM5_NWLN \
+	constexpr VNAME(const VNAME& other) noexcept : XenumValue(other) {}			_XENUM5_NWLN \
 
 
 #endif // _XENUM5_IMPL_DECLARE_VALUE_HPP
