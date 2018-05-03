@@ -14,7 +14,7 @@
 /**
  * Define the data of a single custom property, for "plain" data types, implemented in header.
  */
-#define _XENUM5_PLAIN_HDR_DEFINE(PNAME, DEPTH, PDEF, LOCALSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_HDR_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
 	/* FIXME: Also define NodesSize - ? */							\
 	constexpr const										\
 		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Value)					\
@@ -43,25 +43,25 @@
 /**
  * Define all the data and functions of a single custom property, implemented in source.
  */
-#define _XENUM5_PLAIN_SRC_DEFINE(PNAME, DEPTH, PDEF, LOCALSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-	_XENUM5_PLAIN_SRC_DEFL(PNAME, DEPTH, PDEF, LOCALSCOPE, CTXT, Z)				\
-	_XENUM5_PLAIN_SRC_DEFS(PNAME, DEPTH, PDEF, LOCALSCOPE, DSCOPE, SNAME, CTXT, Z)		\
+#define _XENUM5_PLAIN_SRC_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
+	_XENUM5_PLAIN_SRC_DEFL(PNAME, DEPTH, PDEF, LSCOPE, CTXT, Z)				\
+	_XENUM5_PLAIN_SRC_DEFS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
 
 /**
  * Define the local data and functions.
  */
-#define _XENUM5_PLAIN_SRC_DEFL(PNAME, DEPTH, PDEF, LOCALSCOPE, CTXT, Z)				\
+#define _XENUM5_PLAIN_SRC_DEFL(PNAME, DEPTH, PDEF, LSCOPE, CTXT, Z)				\
 	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
 	namespace {										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
-		namespace LOCALSCOPE {								_XENUM5_NWLN \
+		namespace LSCOPE {								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
 			_XENUM5_PLAIN_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)			\
 			BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFL, BOOST_PP_BOOL(DEPTH))		\
 				(PNAME, DEPTH, PDEF, CTXT, Z)					\
 			_XENUM5_INDENT_DEC							\
-		} _XENUM5_CMNT(namespace LOCALSCOPE)						\
+		} _XENUM5_CMNT(namespace LSCOPE)						\
 		_XENUM5_INDENT_DEC								\
 	} _XENUM5_CMNT(Anon namespace)								\
 
@@ -84,8 +84,8 @@
 /**
  * Define the functions declared in the store class.
  */
-#define _XENUM5_PLAIN_SRC_DEFS(PNAME, DEPTH, PDEF, LOCALSCOPE, DSCOPE, SNAME, CTXT, Z)		\
-	_XENUM5_PLAIN_SRC_DEFS_FUNCS(PNAME, DEPTH, PDEF, LOCALSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_SRC_DEFS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
+	_XENUM5_PLAIN_SRC_DEFS_FUNCS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
 
 // ====================================== VALUES (SRC) ==========================================
@@ -124,16 +124,16 @@
 /**
  * Define the store class functions related to a single custom property.
  */
-#define _XENUM5_PLAIN_SRC_DEFS_FUNCS(PNAME, DEPTH, PDEF, LOCALSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_SRC_DEFS_FUNCS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LOCALSCOPE ::, DSCOPE, SNAME, Z)	\
+	_XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
 
 
 // ========================= get${PNAME}() (SRC) =============================
 /**
  * Define get${propname}() value getter. For source implementation.
  */
-#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LOCALSCOPE, DSCOPE, SNAME, Z)	\
+#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)		\
 	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
 	DSCOPE SNAME::BOOST_PP_CAT(get, PNAME) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(DSCOPE SNAME::Enum,				\
@@ -141,23 +141,23 @@
 	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
-		return LOCALSCOPE BOOST_PP_CAT(PNAME, Values)[					\
+		return LSCOPE BOOST_PP_CAT(PNAME, Values)[					\
 			BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFS_GET_VALUE_, BOOST_PP_BOOL(DEPTH))	\
-				(PNAME, DEPTH, LOCALSCOPE, DSCOPE, SNAME, Z)			\
+				(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)			\
 		];										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
 
 /**
  * Define get${propname}() indexing for depth==0.
  */
-#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_0(PNAME, DEPTH, LOCALSCOPE, DSCOPE, SNAME, Z)		\
+#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_0(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
 	DSCOPE SNAME::getIndex(index0)								\
 
 /**
  * Define get${propname}() indexing for depth!=0.
  */
-#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_1(PNAME, DEPTH, LOCALSCOPE, DSCOPE, SNAME, Z)		\
-	LOCALSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (				\
+#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_1(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
+	LSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (					\
 		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
@@ -168,7 +168,7 @@
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
  * Define final checks on data structures, for implementation in header.
  */
-#define _XENUM5_PLAIN_HDR_CHECK(PNAME, PDEF, LOCALSCOPE, DSCOPE, SNAME, Z)			\
+#define _XENUM5_PLAIN_HDR_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
 	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_CHECK_, BOOST_PP_BOOL(_XENUM5_PDEF_DEPTH(PDEF)))		\
 		(PNAME, DSCOPE, SNAME)
 
@@ -199,33 +199,33 @@
  * Worker for _XENUM5_PROP_CHECK_PLAIN().
  * Define final checks on data structures, for implementation in source.
  */
-#define _XENUM5_PLAIN_SRC_CHECK(PNAME, PDEF, LOCALSCOPE, DSCOPE, SNAME, Z)			\
+#define _XENUM5_PLAIN_SRC_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
 	BOOST_PP_CAT(_XENUM5_PLAIN_SRC_CHECK_, BOOST_PP_BOOL(_XENUM5_PDEF_DEPTH(PDEF)))		\
-		(PNAME, LOCALSCOPE, DSCOPE, SNAME)						\
+		(PNAME, LSCOPE, DSCOPE, SNAME)							\
 
 /**
  * Worker for _XENUM5_PLAIN_SRC_CHECK(), for depth==0.
  */
-#define _XENUM5_PLAIN_SRC_CHECK_0(PNAME, LOCALSCOPE, DSCOPE, SNAME)				\
+#define _XENUM5_PLAIN_SRC_CHECK_0(PNAME, LSCOPE, DSCOPE, SNAME)					\
 	static_assert(										\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PNAME, Values)) ==				\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PNAME, Value)) * DSCOPE SNAME::size,		\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values)) ==					\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Value)) * DSCOPE SNAME::size,		\
 		"Data size mismatch (Values / enum-size)."					\
 	);											_XENUM5_NWLN \
 
 /**
  * Worker for _XENUM5_PLAIN_SRC_CHECK(), for depth!=0.
  */
-#define _XENUM5_PLAIN_SRC_CHECK_1(PNAME, LOCALSCOPE, DSCOPE, SNAME)				\
+#define _XENUM5_PLAIN_SRC_CHECK_1(PNAME, LSCOPE, DSCOPE, SNAME)					\
 	static_assert(										\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PNAME, NodeNames)) ==				\
-		LOCALSCOPE::BOOST_PP_CAT(PNAME, NodesSize) *					\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PNAME, Node)),					\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, NodeNames)) ==				\
+		LSCOPE::BOOST_PP_CAT(PNAME, NodesSize) *					\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Node)),					\
 		"Struct size mismatch (NodeNames / NodesSize)."					\
 	);											_XENUM5_NWLN \
 	static_assert(										\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PNAME, Nodes)) ==				\
-		sizeof(LOCALSCOPE::BOOST_PP_CAT(PNAME, NodeNames)),				\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Nodes)) ==					\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, NodeNames)),					\
 		"Array/struct size mismatch (Nodes / NodeNames)."				\
 	);											_XENUM5_NWLN \
 
