@@ -32,7 +32,7 @@
 #include <xenum5/impl/XenumCntnrIterator.hpp>
 #include <xenum5/impl/XenumValue.hpp>
 #include <xenum5/impl/TupleTree.hpp>
-#include <xenum5/impl/Decl.hpp>
+#include <xenum5/impl/Xdcl.hpp>
 #include <xenum5/impl/PropDef.hpp>
 #include <xenum5/impl/Ctxt.hpp>
 #include <xenum5/impl/IndexNode.hpp>

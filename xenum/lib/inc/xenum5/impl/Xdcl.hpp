@@ -6,8 +6,8 @@
  *
  * Macros to handle the xenum declaration "object".
  */
-#ifndef _XENUM5_IMPL_DECL_HPP
-#define _XENUM5_IMPL_DECL_HPP
+#ifndef _XENUM5_IMPL_XDCL_HPP
+#define _XENUM5_IMPL_XDCL_HPP
 
 
 /**
@@ -158,4 +158,4 @@ _DECL_INIT_DO: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_
 	))
 
 
-#endif // _XENUM5_IMPL_DECL_HPP
+#endif // _XENUM5_IMPL_XDCL_HPP
