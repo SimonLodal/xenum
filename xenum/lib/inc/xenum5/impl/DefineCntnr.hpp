@@ -12,9 +12,9 @@
 /**
  * Main entry function.
  */
-#define _XENUM5_DEFINE_CNTNR(CTXT, DECL)							\
+#define _XENUM5_DEFINE_CNTNR(CTXT, XDCL)							\
 	_XENUM5_NWLN _XENUM5_CMNT(Cntnr:Main)							\
-	_XENUM5_DEFC_SIZE(CTXT, DECL)								\
+	_XENUM5_DEFC_SIZE(CTXT, XDCL)								\
 	_XENUM5_DEFC_ENUM_COPY(CTXT)								\
 
 
@@ -23,8 +23,8 @@
  * Define the $cntnr::size static var.
  */
 // FIXME: Is it really necessary to define this at all?
-#define _XENUM5_DEFC_SIZE(CTXT, DECL)								\
-	constexpr const size_t _XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_size;		_XENUM5_NWLN
+#define _XENUM5_DEFC_SIZE(CTXT, XDCL)								\
+	constexpr const size_t _XENUM5_XDCL_SCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_size;		_XENUM5_NWLN
 
 
 // ==============================================================================================
@@ -38,15 +38,15 @@
  * Callback worker for _XENUM5_DEFC_ENUM_COPY().
  */
 #define _XENUM5_DEFC_ENUM_COPY_MEMBER(CTXT, IDENT, ...)						\
-	_XENUM5_DEFC_ENUM_COPY_MEMBER_PREFIX(CTXT, _XENUM5_CTXT_DECL(CTXT))IDENT;		_XENUM5_NWLN
+	_XENUM5_DEFC_ENUM_COPY_MEMBER_PREFIX(CTXT, _XENUM5_CTXT_XDCL(CTXT))IDENT;		_XENUM5_NWLN
 
 /**
  * Worker for _XENUM5_DEFC_ENUM_COPY_MEMBER().
  */
-#define _XENUM5_DEFC_ENUM_COPY_MEMBER_PREFIX(CTXT, DECL)					\
+#define _XENUM5_DEFC_ENUM_COPY_MEMBER_PREFIX(CTXT, XDCL)					\
 	constexpr const										\
-	_XENUM5_DECL_SCOPE(DECL)_XENUM5_DECL_VNAME(DECL)					\
-	_XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::
+	_XENUM5_XDCL_SCOPE(XDCL)_XENUM5_XDCL_VNAME(XDCL)					\
+	_XENUM5_XDCL_SCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::
 
 
 #endif // _XENUM5_IMPL_DEFINE_CNTNR_HPP

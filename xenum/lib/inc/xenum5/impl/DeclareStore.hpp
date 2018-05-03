@@ -14,35 +14,35 @@
 /**
  * @return Name of the store class.
  */
-#define _XENUM5_STORE_NAME(DECL)								\
-	BOOST_PP_CAT(_xenum5_store_, _XENUM5_DECL_CNAME(DECL))
+#define _XENUM5_STORE_NAME(XDCL)								\
+	BOOST_PP_CAT(_xenum5_store_, _XENUM5_XDCL_CNAME(XDCL))
 
 
 // ==============================================================================================
 /**
  * Main entry function.
  */
-#define _XENUM5_DECLARE_STORE(CTXT, DECL)							\
+#define _XENUM5_DECLARE_STORE(CTXT, XDCL)							\
 	BOOST_PP_EXPR_IF(									\
-		_XENUM5_DECL_HAS_PROPS(DECL),							\
-		class _XENUM5_DECL_VNAME(DECL);							_XENUM5_NWLN \
+		_XENUM5_XDCL_HAS_PROPS(XDCL),							\
+		class _XENUM5_XDCL_VNAME(XDCL);							_XENUM5_NWLN \
 	)											\
-	class _XENUM5_CNTNR_NAME(DECL);								_XENUM5_NWLN \
-	_XENUM5_DOC(Internal/private class for xenum _XENUM5_DECL_CNAME(DECL).			_XENUM5_NWLN \
+	class _XENUM5_CNTNR_NAME(XDCL);								_XENUM5_NWLN \
+	_XENUM5_DOC(Internal/private class for xenum _XENUM5_XDCL_CNAME(XDCL).			_XENUM5_NWLN \
 		Contains data and accessors for the enum.					_XENUM5_NWLN \
 		Only accessed by friends (value and container classes).)			\
-	class _XENUM5_STORE_NAME(DECL) {							_XENUM5_NWLN \
+	class _XENUM5_STORE_NAME(XDCL) {							_XENUM5_NWLN \
 	private:										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)						\
-		friend class ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>;		_XENUM5_NWLN \
+		friend class ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>;		_XENUM5_NWLN \
 		BOOST_PP_EXPR_IF(								\
-			_XENUM5_DECL_HAS_PROPS(DECL),						\
-			friend class _XENUM5_DECL_VNAME(DECL);					_XENUM5_NWLN \
+			_XENUM5_XDCL_HAS_PROPS(XDCL),						\
+			friend class _XENUM5_XDCL_VNAME(XDCL);					_XENUM5_NWLN \
 		)										\
-		friend class _XENUM5_CNTNR_NAME(DECL);						_XENUM5_NWLN \
-		_XENUM5_DECLS_ENUM(CTXT, DECL)							\
-		_XENUM5_DECLS_FUNCS(CTXT, DECL)							\
+		friend class _XENUM5_CNTNR_NAME(XDCL);						_XENUM5_NWLN \
+		_XENUM5_DECLS_ENUM(CTXT, XDCL)							\
+		_XENUM5_DECLS_FUNCS(CTXT, XDCL)							\
 		_XENUM5_PROPS_DECLS(CTXT)							\
 		_XENUM5_DECLS_CHECK()								\
 		_XENUM5_INDENT_DEC								\
@@ -53,14 +53,14 @@
 /**
  * Declare the native C++ enum and associated stuff.
  */
-#define _XENUM5_DECLS_ENUM(CTXT, DECL)								\
+#define _XENUM5_DECLS_ENUM(CTXT, XDCL)								\
 	_XENUM5_DOC(Number of enum values in this enum class.)					\
 	static constexpr const size_t size = 0 _XENUM5_CALL_VALS(_XENUM5_ADD_ONE, CTXT);	_XENUM5_NWLN \
 	_XENUM5_DOC(Integer type used for enum values.)						\
 	using Index = BOOST_PP_IF(									\
-		BOOST_PP_IS_EMPTY(_XENUM5_DECL_INTTYPE(DECL)),					\
+		BOOST_PP_IS_EMPTY(_XENUM5_XDCL_INTTYPE(XDCL)),					\
 		::_XENUM5_NS::SelectInt<size>::type,						\
-		_XENUM5_DECL_INTTYPE(DECL)							\
+		_XENUM5_XDCL_INTTYPE(XDCL)							\
 	);											_XENUM5_NWLN \
 	_XENUM5_DOC(The native enum class.)							\
 	enum class Enum : Index {								_XENUM5_NWLN \
@@ -81,7 +81,7 @@
 /**
  * Declare accessor and lookup functions.
  */
-#define _XENUM5_DECLS_FUNCS(CTXT, DECL)								\
+#define _XENUM5_DECLS_FUNCS(CTXT, XDCL)								\
 	_XENUM5_DOC(@return Identifier (name) of an enum value.)				\
 	static const char* getIdentifier(Enum value) noexcept;					_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given index.						_XENUM5_NWLN \
@@ -96,7 +96,7 @@
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given index was found, else false.)		\
 	static bool fromIndex(Index index,							\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>& value) noexcept;		_XENUM5_NWLN \
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept;		_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
@@ -109,7 +109,7 @@
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
 	static bool fromIdentifier(const char* identifier,					\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>& value) noexcept;		_XENUM5_NWLN \
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept;		_XENUM5_NWLN \
 
 			
 // ==============================================================================================

@@ -46,7 +46,7 @@
 			_XENUM5_INDENT_INC							\
 			_XENUM5_CSTRING_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)			\
 			_XENUM5_CSTRING_SRC_DEFL_NODES(PNAME, CTXT, Z)				\
-			_XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, _XENUM5_CTXT_DECL(CTXT), CTXT, Z)	\
+			_XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, _XENUM5_CTXT_XDCL(CTXT), CTXT, Z)	\
 			_XENUM5_INDENT_DEC							\
 		} _XENUM5_CMNT(namespace LOCALSCOPE)						\
 		_XENUM5_INDENT_DEC								\
@@ -65,7 +65,7 @@
  * Define the string values.
  */
 #define _XENUM5_CSTRING_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_DECL_VALUE_TYPE(PNAME, PDEF)						\
+	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
 	_XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
 	_XENUM5_CSTRING_DEFINE_VALUES(, PNAME, CTXT)						\
 
@@ -87,8 +87,8 @@
 /**
  * Define the local-ns functions related to a single custom property, implemented in source.
  */
-#define _XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, DECL, CTXT, Z)					\
-	using Enum = _XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum;			_XENUM5_NWLN \
+#define _XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, XDCL, CTXT, Z)					\
+	using Enum = _XENUM5_XDCL_SCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
 

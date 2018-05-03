@@ -33,7 +33,7 @@
  * Declare and define the value type and values.
  */
 #define _XENUM5_CSTRING_HDR_DECLS_VALUES(PNAME, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_DECL_VALUE_TYPE(PNAME, PDEF)						\
+	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
 	_XENUM5_CSTRING_DEFINE_VALUES(static, PNAME, CTXT)					\
 
 

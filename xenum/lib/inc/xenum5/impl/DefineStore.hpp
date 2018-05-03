@@ -16,21 +16,21 @@
  * a namespace with this name, to minimize risk of name clash with user code.
  * @return Name of implementation namespace.
  */
-#define _XENUM5_IMPL_LOCAL_NS(DECL, PNAME)							\
-	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum5_local_, _XENUM5_DECL_SUFFIX(DECL)), _), PNAME)
+#define _XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)							\
+	BOOST_PP_CAT(BOOST_PP_CAT(BOOST_PP_CAT(_xenum5_local_, _XENUM5_XDCL_SUFFIX(XDCL)), _), PNAME)
 
 
 // ==============================================================================================
 /**
  * Main entry function.
  */
-#define _XENUM5_DEFINE_STORE(CTXT, DECL)							\
+#define _XENUM5_DEFINE_STORE(CTXT, XDCL)							\
 	_XENUM5_CMNT(Store:Main)							\
-	_XENUM5_DEFS_SIZE(CTXT, DECL)								\
-	_XENUM5_DEFL_IDENT(CTXT, DECL)								\
-	_XENUM5_DEFS_FUNCS(CTXT, DECL)								\
-	_XENUM5_PROPS_DEFINE(CTXT, DECL)							\
-	_XENUM5_DEFS_CHECK(CTXT, DECL)								\
+	_XENUM5_DEFS_SIZE(CTXT, XDCL)								\
+	_XENUM5_DEFL_IDENT(CTXT, XDCL)								\
+	_XENUM5_DEFS_FUNCS(CTXT, XDCL)								\
+	_XENUM5_PROPS_DEFINE(CTXT, XDCL)							\
+	_XENUM5_DEFS_CHECK(CTXT, XDCL)								\
 
 
 // ==============================================================================================
@@ -38,23 +38,23 @@
  * Define the .size var.
  */
 // FIXME: Is it really necessary to define this at all?
-#define _XENUM5_DEFS_SIZE(CTXT, DECL)								\
-	constexpr const size_t _XENUM5_DECL_SCOPE(DECL) _XENUM5_STORE_NAME(DECL) ::size;	_XENUM5_NWLN
+#define _XENUM5_DEFS_SIZE(CTXT, XDCL)								\
+	constexpr const size_t _XENUM5_XDCL_SCOPE(XDCL) _XENUM5_STORE_NAME(XDCL) ::size;	_XENUM5_NWLN
 
 
 // ==============================================================================================
 /**
  * Define data and funcs for identifiers.
  */
-#define _XENUM5_DEFL_IDENT(CTXT, DECL)								\
+#define _XENUM5_DEFL_IDENT(CTXT, XDCL)								\
 	/* The symbols should never become visible outside this source unit. */			\
 	namespace {										\
 	/* Also wrap in named namespace to prevent name clashes. */				\
-	namespace _XENUM5_IMPL_LOCAL_NS(DECL, ) {						_XENUM5_NWLN \
+	namespace _XENUM5_IMPL_LOCAL_NS(XDCL, ) {						_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_IDENT_DEFL_VALUES(CTXT)							\
 		_XENUM5_IDENT_DEFL_OFFSETS(CTXT)						\
-		_XENUM5_IDENT_DEFL_FUNCS(CTXT, DECL)						\
+		_XENUM5_IDENT_DEFL_FUNCS(CTXT, XDCL)						\
 		_XENUM5_INDENT_DEC								\
 	}}											_XENUM5_NWLN \
 
@@ -127,13 +127,13 @@
  * Worker for _XENUM5_DEFL_IDENT().
  * Define getter function.
  */
-#define _XENUM5_IDENT_DEFL_FUNCS(CTXT, DECL)							\
+#define _XENUM5_IDENT_DEFL_FUNCS(CTXT, XDCL)							\
 	constexpr const IdentIndex getIdentOffset						\
-	(_XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_enum value) noexcept		_XENUM5_NWLN \
+	(_XENUM5_XDCL_SCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return identOffsets[static_cast							\
-			<_XENUM5_DECL_SCOPE(DECL)_XENUM5_CNTNR_NAME(DECL)::_index_t>		\
+			<_XENUM5_XDCL_SCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_index_t>		\
 			(value)];								_XENUM5_NWLN \
 	}											_XENUM5_NWLN
 
@@ -142,24 +142,24 @@
 /**
  * Define accessor and lookup functions.
  */
-#define _XENUM5_DEFS_FUNCS(CTXT, DECL)								\
+#define _XENUM5_DEFS_FUNCS(CTXT, XDCL)								\
 	_XENUM5_DEFS_FUNCS_I1(									\
 		CTXT,										\
-		DECL,										\
-		_XENUM5_DECL_SCOPE(DECL),							\
-		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_DECL_VNAME(DECL)							\
+		XDCL,										\
+		_XENUM5_XDCL_SCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		_XENUM5_XDCL_VNAME(XDCL)							\
 	)
 
 /**
  * Worker for _XENUM5_DEFS_FUNCS().
  */
-#define _XENUM5_DEFS_FUNCS_I1(CTXT, DECL, SCOPE, SNAME, VNAME)					\
+#define _XENUM5_DEFS_FUNCS_I1(CTXT, XDCL, SCOPE, SNAME, VNAME)					\
 	const char* SCOPE SNAME::getIdentifier(SCOPE SNAME::Enum value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
-		return &((const char*)&_XENUM5_IMPL_LOCAL_NS(DECL, )::identValues)		\
-			[_XENUM5_IMPL_LOCAL_NS(DECL, )::getIdentOffset(value)];			_XENUM5_NWLN \
+		return &((const char*)&_XENUM5_IMPL_LOCAL_NS(XDCL, )::identValues)		\
+			[_XENUM5_IMPL_LOCAL_NS(XDCL, )::getIdentOffset(value)];			_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
 	SCOPE SNAME::Enum SCOPE SNAME::fromIndex(SCOPE SNAME::Index index)			_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
@@ -222,33 +222,33 @@
 /**
  * Define static_assert() checks on generated data structures.
  */
-#define _XENUM5_DEFS_CHECK(CTXT, DECL)								\
+#define _XENUM5_DEFS_CHECK(CTXT, XDCL)								\
 	_XENUM5_DEFS_CHECK_I1(									\
 		CTXT,										\
-		DECL,										\
-		_XENUM5_DECL_SCOPE(DECL),							\
-		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_DECL_VNAME(DECL)							\
+		XDCL,										\
+		_XENUM5_XDCL_SCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		_XENUM5_XDCL_VNAME(XDCL)							\
 	)
 
 /**
  * Worker for _XENUM5_DEFS_CHECK().
  */
-#define _XENUM5_DEFS_CHECK_I1(CTXT, DECL, SCOPE, SNAME, VNAME)					\
+#define _XENUM5_DEFS_CHECK_I1(CTXT, XDCL, SCOPE, SNAME, VNAME)					\
 	_XENUM5_NWLN _XENUM5_CMNT(Store:Check)							\
 	void SCOPE SNAME::_check(void)								\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_CMNT(Main)								\
 		static_assert(									\
-			sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, )::identOffsets) ==			\
+			sizeof(_XENUM5_IMPL_LOCAL_NS(XDCL, )::identOffsets) ==			\
 			SCOPE SNAME ::size *							\
-			sizeof(_XENUM5_IMPL_LOCAL_NS(DECL, )::IdentIndex),			\
+			sizeof(_XENUM5_IMPL_LOCAL_NS(XDCL, )::IdentIndex),			\
 			"BUG: Struct size mismatch (identOffsets / size)."			\
 		);										_XENUM5_NWLN \
 		BOOST_PP_REPEAT									\
 		(										\
-			BOOST_PP_SEQ_SIZE(_XENUM5_DECL_PDEFS(DECL)),				\
+			BOOST_PP_SEQ_SIZE(_XENUM5_XDCL_PDEFS(XDCL)),				\
 			_XENUM5_PROP_CHECK,							\
 			CTXT									\
 		)										\

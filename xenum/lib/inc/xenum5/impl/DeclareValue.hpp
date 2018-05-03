@@ -12,13 +12,13 @@
 /**
  * Declare the enum-value class.
  */
-#define _XENUM5_DECLARE_VALUE(CTXT, DECL)							\
+#define _XENUM5_DECLARE_VALUE(CTXT, XDCL)							\
 	BOOST_PP_CAT(										\
 		_XENUM5_DECLARE_VALUE_,								\
-		_XENUM5_DECL_HAS_PROPS(DECL)							\
-	) (CTXT, DECL)
+		_XENUM5_XDCL_HAS_PROPS(XDCL)							\
+	) (CTXT, XDCL)
 /*
-_DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_DECL_PDEFS(DECL))) _XENUM5_NWLN \
+_DECLARE_VALUE_DO: ctxt=CTXT xdcl=XDCL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_XDCL_PDEFS(XDCL))) _XENUM5_NWLN \
 */
 
 // ==============================================================================================
@@ -26,12 +26,12 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * Declare the enum-value class as a simple alias of the template class.
  * For enums that do not have custom properties.
  */
-#define _XENUM5_DECLARE_VALUE_0(CTXT, DECL)							\
+#define _XENUM5_DECLARE_VALUE_0(CTXT, XDCL)							\
 	_XENUM5_DOC(Enum-value class type.							_XENUM5_NWLN \
 		Thin wrapper around a native enum value.					_XENUM5_NWLN \
 		Can never have an invalid value.)						\
-	using _XENUM5_DECL_VNAME(DECL) =							\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>;				_XENUM5_NWLN \
+	using _XENUM5_XDCL_VNAME(XDCL) =							\
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>;				_XENUM5_NWLN \
 
 
 // ==============================================================================================
@@ -40,16 +40,16 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
  * For enums that have custom properties.
  * Adds getters for the custom properties.
  */
-#define _XENUM5_DECLARE_VALUE_1(CTXT, DECL)							\
-_XENUM5_DOC(Enum-value class for xenum _XENUM5_DECL_CNAME(DECL).				_XENUM5_NWLN \
+#define _XENUM5_DECLARE_VALUE_1(CTXT, XDCL)							\
+_XENUM5_DOC(Enum-value class for xenum _XENUM5_XDCL_CNAME(XDCL).				_XENUM5_NWLN \
 	Thin wrapper around a native enum value.						_XENUM5_NWLN \
 	Can never have an invalid value.)							\
-class _XENUM5_DECL_VNAME(DECL)									\
-	: public ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)> {				_XENUM5_NWLN \
+class _XENUM5_XDCL_VNAME(XDCL)									\
+	: public ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)> {				_XENUM5_NWLN \
 public:												_XENUM5_NWLN \
 	_XENUM5_INDENT_INC									\
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)							\
-	_XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM5_DECL_VNAME(DECL))				\
+	_XENUM5_DECLARE_VALUE_SUBCLASS_CTORS(_XENUM5_XDCL_VNAME(XDCL))				\
 	_XENUM5_PROPS_DECLV(CTXT)								\
 	_XENUM5_INDENT_DEC									\
 };												_XENUM5_NWLN \

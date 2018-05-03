@@ -14,27 +14,27 @@
 /**
  * @return Name of the container class.
  */
-#define _XENUM5_CNTNR_NAME(DECL)								\
-	_XENUM5_DECL_CNAME(DECL)
+#define _XENUM5_CNTNR_NAME(XDCL)								\
+	_XENUM5_XDCL_CNAME(XDCL)
 
-//	BOOST_PP_CAT(_Xenum5Cntnr_, _XENUM5_DECL_CNAME(DECL))
+//	BOOST_PP_CAT(_Xenum5Cntnr_, _XENUM5_XDCL_CNAME(XDCL))
 
 
 // ==============================================================================================
 /**
  * Main entry function.
  */
-#define _XENUM5_DECLARE_CNTNR(CTXT, DECL)							\
-	_XENUM5_DOC(Container class for xenum _XENUM5_DECL_CNAME(DECL).				_XENUM5_NWLN \
+#define _XENUM5_DECLARE_CNTNR(CTXT, XDCL)							\
+	_XENUM5_DOC(Container class for xenum _XENUM5_XDCL_CNAME(XDCL).				_XENUM5_NWLN \
 		Contains all the enum values as value objects, lookup functions, and iteration.)\
-	class _XENUM5_CNTNR_NAME(DECL) {							_XENUM5_NWLN \
+	class _XENUM5_CNTNR_NAME(XDCL) {							_XENUM5_NWLN \
 	public:											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)						\
-		_XENUM5_DECLC_VALUE_T(CTXT, DECL)						\
-		_XENUM5_DECLC_ENUM(CTXT, DECL)							\
+		_XENUM5_DECLC_VALUE_T(CTXT, XDCL)						\
+		_XENUM5_DECLC_ENUM(CTXT, XDCL)							\
 		_XENUM5_DECLC_ENUM_OBJS(CTXT)							\
-		_XENUM5_DECLC_FUNCS(CTXT, DECL)							\
+		_XENUM5_DECLC_FUNCS(CTXT, XDCL)							\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN
 
@@ -44,22 +44,22 @@
  * Declare the value class type.
  * Not used here, but useful for XenumSet and others.
  */
-#define _XENUM5_DECLC_VALUE_T(CTXT, DECL)							\
+#define _XENUM5_DECLC_VALUE_T(CTXT, XDCL)							\
 	_XENUM5_DOC(The enum-value class.)							\
-	using _value_t = _XENUM5_DECL_VNAME(DECL);						_XENUM5_NWLN
+	using _value_t = _XENUM5_XDCL_VNAME(XDCL);						_XENUM5_NWLN
 
 
 // ==============================================================================================
 /**
  * Copy native enum declaration from store class.
  */
-#define _XENUM5_DECLC_ENUM(CTXT, DECL)								\
+#define _XENUM5_DECLC_ENUM(CTXT, XDCL)								\
 	_XENUM5_DOC(Number of enum values in this enum class.)					\
-	static constexpr const size_t _size = _XENUM5_STORE_NAME(DECL)::size;			_XENUM5_NWLN \
+	static constexpr const size_t _size = _XENUM5_STORE_NAME(XDCL)::size;			_XENUM5_NWLN \
 	_XENUM5_DOC(Integer type used for enum values.)						\
-	using _index_t = typename _XENUM5_STORE_NAME(DECL)::Index;				_XENUM5_NWLN \
+	using _index_t = typename _XENUM5_STORE_NAME(XDCL)::Index;				_XENUM5_NWLN \
 	_XENUM5_DOC(The native enum class.)							\
-	using _enum = typename _XENUM5_STORE_NAME(DECL)::Enum;					_XENUM5_NWLN \
+	using _enum = typename _XENUM5_STORE_NAME(XDCL)::Enum;					_XENUM5_NWLN \
 
 
 // ==============================================================================================
@@ -76,7 +76,7 @@
  * Callback worker for _XENUM5_DECLC_ENUM_OBJS().
  */
 #define _XENUM5_DECLC_ENUM_OBJ(CTXT, IDENT, ...)						\
-	static constexpr const _XENUM5_DECL_VNAME(_XENUM5_CTXT_DECL(CTXT))			\
+	static constexpr const _XENUM5_XDCL_VNAME(_XENUM5_CTXT_XDCL(CTXT))			\
 		IDENT = _enum::IDENT;								_XENUM5_NWLN
 
 
@@ -84,12 +84,12 @@
 /**
  * Declare ctors, comparison operators, other stuff.
  */
-#define _XENUM5_DECLC_FUNCS(CTXT, DECL)								\
+#define _XENUM5_DECLC_FUNCS(CTXT, XDCL)								\
 	_XENUM5_DECLC_FUNCS_I1(									\
 		CTXT,										\
-		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_CNTNR_NAME(DECL),							\
-		_XENUM5_DECL_VNAME(DECL)							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		_XENUM5_CNTNR_NAME(XDCL),							\
+		_XENUM5_XDCL_VNAME(XDCL)							\
 	)
 
 /**

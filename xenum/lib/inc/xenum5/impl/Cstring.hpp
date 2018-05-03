@@ -14,7 +14,7 @@
 /**
  * Entry point for declaring a custom property of cstring type, in store class context.
  */
-#define _XENUM5_PROP_DECLS_CSTRING(PDEF, DECL, CTXT, Z)						\
+#define _XENUM5_PROP_DECLS_CSTRING(PDEF, XDCL, CTXT, Z)						\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLS)	\
 	(											\
 		_XENUM5_PDEF_NAME(PDEF),							\
@@ -45,15 +45,15 @@
  * Entry point for defining the data of a custom properties of cstring type, in source file
  * context.
  */
-#define _XENUM5_PROP_DEFINE_CSTRING(PDEF, DECL, CTXT, Z)					\
+#define _XENUM5_PROP_DEFINE_CSTRING(PDEF, XDCL, CTXT, Z)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DEFINE)	\
 	(											\
 		_XENUM5_PDEF_NAME(PDEF),							\
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(DECL, _XENUM5_PDEF_NAME(PDEF)),				\
-		_XENUM5_DECL_SCOPE(DECL),							\
-		_XENUM5_STORE_NAME(DECL),							\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
+		_XENUM5_XDCL_SCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
 		CTXT,										\
 		Z										\
 	)											\
@@ -62,14 +62,14 @@
  * Entry point for defining final checks for a custom property of cstring type, in source file
  * context.
  */
-#define _XENUM5_PROP_CHECK_CSTRING(PNAME, PDEF, DECL, CTXT, Z)					\
+#define _XENUM5_PROP_CHECK_CSTRING(PNAME, PDEF, XDCL, CTXT, Z)					\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _CHECK)	\
 	(											\
 		PNAME,										\
 		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(DECL, PNAME),						\
-		_XENUM5_DECL_SCOPE(DECL),							\
-		_XENUM5_STORE_NAME(DECL),							\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
+		_XENUM5_XDCL_SCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
 		Z										\
 	)											\
 

@@ -19,9 +19,9 @@
 #define _XENUM5_CTXT_SUFFIX(CTXT)			BOOST_PP_SEQ_ELEM(0, CTXT)
 
 /**
- * Get enum declaration; a seq containing all the parameters of the XENUM_DECL_$suffix macro.
+ * Get enum declaration; a seq containing all the parameters of the XENUM5_$suffix macro.
  */
-#define _XENUM5_CTXT_DECL(CTXT)				BOOST_PP_SEQ_ELEM(1, CTXT)
+#define _XENUM5_CTXT_XDCL(CTXT)				BOOST_PP_SEQ_ELEM(1, CTXT)
 
 /**
  * Get the current property index, if any.
@@ -99,7 +99,7 @@
  */
 #define _XENUM5_CTXT_INIT(SUFFIX)								\
 	(SUFFIX)										\
-	(_XENUM5_DECL_INIT(SUFFIX))								\
+	(_XENUM5_XDCL_INIT(SUFFIX))								\
 	()											\
 	()											\
 	()											\
