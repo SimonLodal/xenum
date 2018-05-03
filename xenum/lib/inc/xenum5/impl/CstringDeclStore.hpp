@@ -93,6 +93,7 @@
  */
 #define _XENUM5_CSTRING_SRC_DECLS_FUNCS(PNAME, DEPTH, PDEF, Z)					\
 	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
+	_XENUM5_PROP_SRC_DECLS_INDEX_TYPE(PNAME, BOOST_PP_INC(DEPTH))				\
 	_XENUM5_PROP_SRC_DECLS_GET_SIZE(BOOST_PP_INC(DEPTH), PDEF, Z)				\
 	_XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 

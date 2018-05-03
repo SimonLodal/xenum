@@ -15,7 +15,7 @@
  * Declare the data and functions related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_HDR_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_HDR_DECLV_TYPES(PNAME, DEPTH)						\
+	_XENUM5_PROP_DECLV_TYPES(PNAME, DEPTH)							\
 	_XENUM5_PLAIN_HDR_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 
@@ -24,6 +24,7 @@
  * Declare the functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	_XENUM5_PROP_DECLV_TYPES(PNAME, DEPTH)							\
 	_XENUM5_PLAIN_SRC_DECLV_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 

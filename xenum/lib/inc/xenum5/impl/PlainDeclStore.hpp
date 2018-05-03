@@ -120,6 +120,7 @@
  * Declare the functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DECLS_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_SRC_DECLS_INDEX_TYPE(PNAME, DEPTH)						\
 	_XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
 	_XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 
