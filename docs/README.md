@@ -1,4 +1,4 @@
-# xenum-5.0
+# xenum-5.1-pre1
 
 ## Description
 Xenum is a better C++ enum, a native C++11 enum extended with enum size, iteration,
@@ -299,9 +299,9 @@ Source part:
 ### Use the xenum
 In the xenum value class, a getter function is created for each property:
 
-	const int& getOrdinal() const;
-	const bool& getSour() const;
-	const char* getColor() const;
+	const int& getOrdinal() const noexcept;
+	const bool& getSour() const noexcept;
+	const char* getColor() const noexcept;
 So you can do:
 
 	Fruit fruit = Fruits::lemon;
@@ -335,12 +335,13 @@ In your header file:
 The getter function now includes an index, naturally, and you can get the size of the arrays
 too:
 
-	size_t getColorSize() const;
-	const char* getColor(size_t index) const;
+	using ColorIndex = size_t;
+	ColorIndex getColorSize() const noexcept;
+	const char* getColor(ColorIndex index) const;
 So you can do:
 
 	Fruit fruit = Fruits::orange;
-	size_t colors = fruit.getColorSize(); // => 2
+	auto colors = fruit.getColorSize(); // => 2
 	const char* color0 = fruit.getColor(0); // => "orange"
 	const char* color1 = fruit.getColor(1); // => "green"
 	const char* color2 = fruit.getColor(2); // => throws std::out_of_range
@@ -393,19 +394,20 @@ Note that the data is now defined with two levels - arrays in arrays.
 ### Use the xenum
 The getter functions are extended with one index level:
 
+	using RandNumIndex = size_t;
 	// size of level0 array
-	size_t getRandNumSize() const;		
+	RandNumIndex getRandNumSize() const noexcept;
 	// size of level1 array
-	size_t getRandNumSize(size_t index1) const;
-	const char* getRandNum(size_t index1, size_t index2) const;
+	RandNumIndex getRandNumSize(RandNumIndex index1) const;
+	const char* getRandNum(RandNumIndex index1, RandNumIndex index2) const;
 So:
 
-	size_t size0;
+	RandNumIndex size0;
 	size0 = Fruits::apple.getRandNumSize(); // => 3
 	size0 = Fruits::orange.getRandNumSize(); // => 1 (empty array is not empty, it contains one undefined child array)
 	size0 = Fruits::lemon.getRandNumSize(); // => 0
 
-	size_t size1;
+	RandNumIndex size1;
 	size1 = Fruits::apple.getRandNumSize(0); // => 3
 	size1 = Fruits::apple.getRandNumSize(1); // => 2
 	size1 = Fruits::apple.getRandNumSize(2); // => 4
@@ -454,7 +456,7 @@ This callback defines general parameters of the enum.
 
 Custom property tuple syntax:
 
-	(propertyName, propertyType [, defaultValue [, depth]])
+	(propertyName, propertyType [, defaultValue [, depth [, features]]])
 
 - **propertyName** Name of the custom property.
 - **propertyType** Data-type of the custom property. You may use simple types, like int/bool
@@ -473,6 +475,15 @@ Custom property tuple syntax:
   to/from size_t).
   Values can only exist as leaf nodes in the data hierarchy, that is, they can only appear
   at level $depth, not somewhere in between.
+- **features** Optional. A list (comma-separated, in parentheses) of not so common
+  features/options (more may be added):
+  - [0] (placement): Defines where to place the implementation (data and function bodies) of
+    this custom property; 0=in source file (the default), 1=in header file. The only point in
+    header implementation is that the getters become constexpr. So use this option if you
+    actually need to access the custom property values in constexpr context. Else do not; it
+    increases total compile time, since all source units that include the header will
+    run the whole code generation (several iterations over all the custom property values). When
+    using source placement, this only happens for the source file where the xenum is declared.
 
 #### V() macro
 This callback defines a single enum value.
