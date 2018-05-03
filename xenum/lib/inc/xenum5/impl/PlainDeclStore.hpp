@@ -75,16 +75,16 @@
 		Z										\
 	)											\
 	_XENUM5_PROP_HDR_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
-	_XENUM5_PLAIN_HDR_DECLS_GET_VALUE(PNAME, DEPTH, Z)					\
+	_XENUM5_PLAIN_HDR_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)				\
 
 
 // ========================= get${PNAME}() (HDR) =============================
 /**
  * Generate get${propname}() value getter.
  */
-#define _XENUM5_PLAIN_HDR_DECLS_GET_VALUE(PNAME, DEPTH, Z)					\
+#define _XENUM5_PLAIN_HDR_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)				\
 	_XENUM5_DOC(Get value of the custom property PNAME.)					\
-	static constexpr const BOOST_PP_CAT(PNAME, Value&)					\
+	static constexpr const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)					\
 	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PNAME, Index), DEPTH, Z)	\
 	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \

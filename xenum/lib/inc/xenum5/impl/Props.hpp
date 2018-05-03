@@ -419,8 +419,6 @@
  * Declare the Value class types related to a single custom property, implemented in header.
  */
 #define _XENUM5_PROP_HDR_DECLV_TYPES(PNAME, DEPTH)						\
-	_XENUM5_DOC(Native type of custom property PNAME values.)				\
-	using BOOST_PP_CAT(PNAME, Value) = typename Store::BOOST_PP_CAT(PNAME, Value);		_XENUM5_NWLN \
 	BOOST_PP_CAT(_XENUM5_PROP_HDR_DECLV_INDEX_T_, BOOST_PP_BOOL(DEPTH)) (PNAME)		\
 
 /**
@@ -613,7 +611,8 @@
  * For properties implemented in source.
  */
 #define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
-	static const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (		\
+	static const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)						\
+	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, size_t, DEPTH, Z)				\
 	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept);					_XENUM5_NWLN \
 
@@ -715,8 +714,7 @@
 	))											\
 	size_t BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (					\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, LEVEL, Z)					\
-	)											\
-	const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					_XENUM5_NWLN \
+	) const BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)					_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return Store::BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Size) (			\
@@ -755,7 +753,8 @@
 // FIXME: Merge with _XENUM5_PROP_HDR_DECLV_GET_VALUE().
 #define _XENUM5_PROP_SRC_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get custom property PNAME value.)						\
-	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF) BOOST_PP_CAT(get, PNAME) (			\
+	const _XENUM5_PDEF_GET_PARM_TYPE(PDEF)							\
+	BOOST_PP_CAT(get, PNAME) (								\
 		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
 	) const BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)					_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
