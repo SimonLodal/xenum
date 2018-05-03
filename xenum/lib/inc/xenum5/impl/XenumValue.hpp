@@ -20,7 +20,7 @@ template<class XenumStore>
 class XenumValue {
 protected:
 	/// The internal store class.
-	typedef XenumStore Store;
+	using Store = XenumStore;
 public:
 	/// Integer type used for enum values.
 	using Index = typename XenumStore::Index;

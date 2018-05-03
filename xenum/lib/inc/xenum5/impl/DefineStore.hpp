@@ -71,11 +71,11 @@
  * Declare the IdentValues struct.
  */
 #define _XENUM5_IDENT_DEFL_VALUES_STRUCT(CTXT)							\
-	typedef struct {									_XENUM5_NWLN \
+	using IdentValues = struct {								_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_CALL_VALS(_XENUM5_IDENT_DEFL_VALUE_NAME, CTXT)				\
 		_XENUM5_INDENT_DEC								\
-	} IdentValues;										_XENUM5_NWLN
+	};											_XENUM5_NWLN
 
 /**
  * Worker for _XENUM5_IDENT_DEFL_VALUES_STRUCT(); loop function for each enum value.
@@ -109,7 +109,7 @@
  */
 #define _XENUM5_IDENT_DEFL_OFFSETS(CTXT)							\
 	/* Integer type big enough to hold offsets into the string pool. */			\
-	typedef ::_XENUM5_NS::SelectInt<sizeof(IdentValues)>::type IdentIndex;			_XENUM5_NWLN \
+	using IdentIndex = ::_XENUM5_NS::SelectInt<sizeof(IdentValues)>::type;			_XENUM5_NWLN \
 	/* Table of offsets into the identifier stringpool. */					\
 	constexpr const IdentIndex identOffsets[] = {						_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\

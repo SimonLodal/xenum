@@ -23,15 +23,15 @@ _DECLARE_VALUE_DO: ctxt=CTXT decl=DECL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
 
 // ==============================================================================================
 /**
- * Declare the enum-value class as a simple typedef of the template class.
+ * Declare the enum-value class as a simple alias of the template class.
  * For enums that do not have custom properties.
  */
 #define _XENUM5_DECLARE_VALUE_0(CTXT, DECL)							\
 	_XENUM5_DOC(Enum-value class type.							_XENUM5_NWLN \
 		Thin wrapper around a native enum value.					_XENUM5_NWLN \
 		Can never have an invalid value.)						\
-	typedef ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>				\
-		_XENUM5_DECL_GET_VALUENAME(DECL);						_XENUM5_NWLN
+	using _XENUM5_DECL_GET_VALUENAME(DECL) =						\
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(DECL)>;				_XENUM5_NWLN \
 
 
 // ==============================================================================================

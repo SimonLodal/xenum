@@ -152,13 +152,6 @@
 
 
 // ====================================== COMMON PARTS ==========================================
-/**
- * Declare the data type for a custom property.
- */
-#define _XENUM5_PROP_DECL_VALUE_TYPE(PNAME, PDEF)						\
-	_XENUM5_DOC(Native type of custom property PNAME values.)				\
-	typedef _XENUM5_PDEF_GET_REAL_TYPE(PDEF) BOOST_PP_CAT(PNAME, Value);			_XENUM5_NWLN \
-
 
 // ============================ INDEXNODE NAME ===============================
 /**
@@ -370,6 +363,15 @@
 	.getNextIndex(BOOST_PP_CAT(index, LEVELS))
 
 
+// ============================== Value type =================================
+/**
+ * Declare the data type for a custom property.
+ */
+#define _XENUM5_PROP_DECL_VALUE_TYPE(PNAME, PDEF)						\
+	_XENUM5_DOC(Native type of custom property PNAME values.)				\
+	using BOOST_PP_CAT(PNAME, Value) = _XENUM5_PDEF_GET_REAL_TYPE(PDEF);			_XENUM5_NWLN \
+
+
 // ========================== Index type (real) ==============================
 /**
  * Define the real ${PNAME}Index type.
@@ -377,10 +379,11 @@
  */
 #define _XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
 	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
-	typedef typename ::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(				\
-			sizeof(BOOST_PP_CAT(PNAME, Values)) / sizeof(BOOST_PP_CAT(PNAME, Value)), \
-			BOOST_PP_CAT(PNAME, NodesSize)						\
-		) >::type BOOST_PP_CAT(PNAME, Index);						_XENUM5_NWLN \
+	using  BOOST_PP_CAT(PNAME, Index) =							\
+	::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cmax(						\
+		sizeof(BOOST_PP_CAT(PNAME, Values)) / sizeof(BOOST_PP_CAT(PNAME, Value)),	\
+		BOOST_PP_CAT(PNAME, NodesSize)							\
+	) >::type;										_XENUM5_NWLN \
 
 
 // =========================== Index type (std) ==============================
@@ -410,8 +413,7 @@
  */
 #define _XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
 	_XENUM5_DOC(IndexNode type for PNAME, to map the PNAME value hierarchy.)		\
-	typedef ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PNAME, Index)>				\
-		BOOST_PP_CAT(PNAME, Node);							_XENUM5_NWLN \
+	using BOOST_PP_CAT(PNAME, Node) = ::_XENUM5_NS::IndexNode<BOOST_PP_CAT(PNAME, Index)>;	_XENUM5_NWLN \
 
 
 // ============================ Node counting ================================

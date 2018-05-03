@@ -37,7 +37,7 @@
 		_XENUM5_DECLC_FUNCS(CTXT, DECL)							\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN
-//	typedef _XENUM5_CNTNR_NAME(DECL) _XENUM5_DECL_GET_CNTNRNAME(DECL);
+
 
 // ==============================================================================================
 /**
@@ -46,7 +46,7 @@
  */
 #define _XENUM5_DECLC_VALUE_T(CTXT, DECL)							\
 	_XENUM5_DOC(The enum-value class.)							\
-	typedef _XENUM5_DECL_GET_VALUENAME(DECL) _value_t;					_XENUM5_NWLN
+	using _value_t = _XENUM5_DECL_GET_VALUENAME(DECL);					_XENUM5_NWLN
 
 
 // ==============================================================================================
@@ -137,7 +137,7 @@
 		{ return STORENAME::fromIdentifier(identifier, value); }			_XENUM5_NWLN \
 	/* Iteration support. */								\
 	_XENUM5_DOC(Iterator type for this container; for iterating the enum values.)		\
-	typedef ::_XENUM5_NS::XenumCntnrIterator<CREALNAME> iterator;				_XENUM5_NWLN \
+	using iterator = ::_XENUM5_NS::XenumCntnrIterator<CREALNAME>;				_XENUM5_NWLN \
 	_XENUM5_DOC(Get iterator to beginning (before the first enum-value).)			\
 	static iterator begin(void) noexcept { return iterator(0); }				_XENUM5_NWLN \
 	_XENUM5_DOC(Get iterator to end (past the last enum-value).)				\

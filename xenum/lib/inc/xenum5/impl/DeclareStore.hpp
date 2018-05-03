@@ -57,11 +57,11 @@
 	_XENUM5_DOC(Number of enum values in this enum class.)					\
 	static constexpr const size_t size = 0 _XENUM5_CALL_VALS(_XENUM5_ADD_ONE, CTXT);	_XENUM5_NWLN \
 	_XENUM5_DOC(Integer type used for enum values.)						\
-	typedef BOOST_PP_IF(									\
+	using Index = BOOST_PP_IF(									\
 		BOOST_PP_IS_EMPTY(_XENUM5_DECL_GET_INTTYPE(DECL)),				\
 		::_XENUM5_NS::SelectInt<size>::type,						\
 		_XENUM5_DECL_GET_INTTYPE(DECL)							\
-	) Index;										_XENUM5_NWLN \
+	);											_XENUM5_NWLN \
 	_XENUM5_DOC(The native enum class.)							\
 	enum class Enum : Index {								_XENUM5_NWLN \
 		_XENUM5_CALL_VALS(_XENUM5_DECLS_ENUM_MEMBER, CTXT)				\

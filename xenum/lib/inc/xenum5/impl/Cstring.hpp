@@ -166,11 +166,11 @@
  */
 #define _XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
 	_XENUM5_DOC(Layout of all PNAME values.)						\
-	typedef struct {									_XENUM5_NWLN \
+	using BOOST_PP_CAT(PNAME, ValueNames) = struct {					_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_DECLARE_VALUENAME, CTXT)		\
 		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PNAME, ValueNames);							_XENUM5_NWLN \
+	};											_XENUM5_NWLN \
 
 /**
  * Declare a single field of the ValueNames struct.
@@ -232,11 +232,11 @@
 #define _XENUM5_CSTRING_DECLARE_NODENAMES(PNAME, CTXT)						\
 	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PNAME, Nodes) array,		\
 		has same layout.)								\
-	typedef struct {									_XENUM5_NWLN \
+	using BOOST_PP_CAT(PNAME, NodeNames) = struct {						_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_CSTRING_ITER_NODES(_XENUM5_PROP_DECLARE_NODENAME, CTXT)			\
 		_XENUM5_INDENT_DEC								\
-	} BOOST_PP_CAT(PNAME, NodeNames);							_XENUM5_NWLN \
+	};											_XENUM5_NWLN \
 
 
 // ================================ Nodes ====================================
