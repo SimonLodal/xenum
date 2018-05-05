@@ -110,6 +110,7 @@
 		Z										\
 	)
 
+
 /**
  * Worker for _XENUM5_PROP_DEFINE().
  */

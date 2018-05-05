@@ -123,12 +123,10 @@ compiler should treat the value object just like a native enum value.
 Implementation is based on preprocessor macros, not templates, at least the core task
 of defining the enum values and associated data. Template metaprogramming would have been
 nice for it's elegance and power, but it has some shortcomings:
-- It can not generate identifiers (the enum values), only types or values.
+- It can not generate identifiers (the enum values, and associated getter functions), only
+  types or values.
 - Big lists do not work (fx >256 entries), since all iteration over lists is recursive,
   and all preprocessors have a rather small recursion limit.
-
-So for now, we have to deal with 1000 lines of incomprehensible preprocessor error
-messages when anything goes wrong.
 
 ## Example: Basic xenum
 Here we declare a simple "Fruits" enum, with values "apple", "orange", "lemon".
@@ -572,24 +570,27 @@ What you can use this for:
 - Name lookup is currently very inefficient, uses linear search. Need to find a way to
   generate a static constexpr string-hashtable, or at least a constexpr way to sort the
   string list and use binary search.
-- Poor error messages, due to how the preprocessor works. Since this is all implemented with
-  preprocessor macros, when something goes wrong you tend to get 1000 lines of
-  incomprehensible error messages, none of which point to where the actual comma is missing.
 - Preprocessing time (wallclock) increases if you add a lot of custom properties, deep
   hierarchies, many values. It does not scale very well. Perhaps depends on the preprocessor
   used.
 
 ## Troubleshooting / developing / debugging
-- First of all, when something goes wrong, use trial and error to make your xenum declaration
-  simpler, until it works.
-- If you are unsure about correct syntax, see the unit tests for working examples.
+What to do when your xenum declaration does not work, the preprocessor just spews a large
+number of errors, and none of them make any sense?
+
+- The xenum declaration (the D() macro) is validated to some extent. If an error is found, a
+  static_assert() is generated instead of any other content. The compiler will fail, probably
+  with a lot of errors, but the static_assert should be the first. Read it.
+- If you are unsure about correct syntax, see the reference above, and the unit tests for
+  working examples.
+- Use trial and error to make your xenum declaration simpler, until it works.
 - You can also use util/xenum5-test-gen to generate xenums of any size, just to inspect
   how it declares them, and perhaps to test the limits of your own compiler.
 - Use util/xenum5-inject script to view the generated code. It is the only way you can
   actually inspect what all the macro code produces, so it is a crucial tool both in
   troubleshooting and development.
   - Troubleshooting: Run xenum5-inject only on the header or source file where the problematic
-    enum is defined. Search the output for "BOOST" and "_XENUM", this is usually the actual
+    enum is defined. Search the output for "BOOST" and "XENUM", this is often the actual
     error location (a macro call that was pasted literally instead of being executed). If no
     such error is found, inspect the generated code/data, you should at least be able to find
     what the compiler complains about.

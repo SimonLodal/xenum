@@ -59,7 +59,7 @@
  */
 #define XENUM5_DECLARE(SUFFIX)									\
 	_XENUM5_MARK(declare begin SUFFIX)							\
-	_XENUM5_DO_DECLARE(_XENUM5_CTXT_INIT(SUFFIX))						\
+	_XENUM5_MAIN_DECLARE(SUFFIX)								\
 	_XENUM5_MARK(declare end SUFFIX)							\
 
 /**
@@ -68,7 +68,7 @@
  */
 #define XENUM5_DEFINE(SUFFIX)									\
 	_XENUM5_MARK(define begin SUFFIX)							\
-	_XENUM5_DO_DEFINE(_XENUM5_CTXT_INIT(SUFFIX))						\
+	_XENUM5_MAIN_DEFINE(SUFFIX)								\
 	_XENUM5_MARK(define end SUFFIX)								\
 
 

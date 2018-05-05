@@ -214,6 +214,25 @@ namespace xenum5 {
 	BOOST_PP_CAT(XENUM5_, _XENUM5_CTXT_SUFFIX(CTXT)) (_XENUM5_NOOP, CALLBACK, CTXT)
 
 
+// ===================================================================================================
+/**
+ * Common helper to check if a value is either empty, 0 or 1.
+ * @return Nothing if valid, else error message.
+ */
+#define _XENUM5_CHECK_BOOL_OR_EMPTY(VALUE, LOC)							\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(BOOST_PP_CAT(_XENUM5_CHECK_BOOL_OR_EMPTY_HELPER, BOOST_PP_CAT(_,VALUE))),	\
+		,										\
+		(LOC: Value must be 0|1|empty (found: VALUE).)					\
+	)											\
+
+/// Helper for _XENUM5_CHECK_BOOL_OR_EMPTY().
+#define _XENUM5_CHECK_BOOL_OR_EMPTY_HELPER_	
+/// Helper for _XENUM5_CHECK_BOOL_OR_EMPTY().
+#define _XENUM5_CHECK_BOOL_OR_EMPTY_HELPER_0	
+/// Helper for _XENUM5_CHECK_BOOL_OR_EMPTY().
+#define _XENUM5_CHECK_BOOL_OR_EMPTY_HELPER_1	
+
 
 // ===================================================================================================
 /**
