@@ -64,38 +64,38 @@
 /**
  * Initialize a custom property definition; generate error if required fields are missing/empty,
  * and fill in defaults where applicable.
- * @param DBGLOC Config location description, for debugging and error reporting.
+ * @param LOC Config location description, for debugging and error reporting.
  * @param ... The custom property definition, expanded as individual parameters.
  * @return Initialized custom property declaration, as a sequence, where all fields are present.
  */
-#define _XENUM5_PDEF_INIT(DBGLOC, ...)								\
-	_XENUM5_PDEF_INIT_NAME(DBGLOC, __VA_ARGS__)						\
+#define _XENUM5_PDEF_INIT(LOC, ...)								\
+	_XENUM5_PDEF_INIT_NAME(LOC, __VA_ARGS__)						\
 
 /*
-_PDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARGS__ _XENUM5_NWLN \
+_PDEF_INIT: loc=LOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARGS__ _XENUM5_NWLN \
 */
 
 /**
  * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PDEF_INIT_NAME(DBGLOC, PNAME, ...)						\
+#define _XENUM5_PDEF_INIT_NAME(LOC, PNAME, ...)							\
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PNAME),							\
 		_XENUM5_ERROR(LOC, Missing custom property name.),				\
 		PNAME										\
 	))											\
-	_XENUM5_PDEF_INIT_TYPE(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_TYPE(LOC, __VA_ARGS__)						\
 
 /**
  * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PDEF_INIT_TYPE(DBGLOC, PROPTYPE, ...)						\
+#define _XENUM5_PDEF_INIT_TYPE(LOC, PROPTYPE, ...)						\
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PROPTYPE),							\
 		_XENUM5_ERROR(LOC, Missing custom property type.),				\
-		(PROPTYPE) _XENUM5_PDEF_ADD_TYPES(DBGLOC, PROPTYPE)				\
+		(PROPTYPE) _XENUM5_PDEF_ADD_TYPES(LOC, PROPTYPE)				\
 	))											\
-	_XENUM5_PDEF_INIT_DEFAULTVALUE(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_DEFAULTVALUE(LOC, __VA_ARGS__)					\
 
 
 /// Helper definition for _XENUM5_PDEF_TYPCAT().
@@ -106,7 +106,7 @@ _PDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARG
 /**
  * Helper for _XENUM5_PDEF_INIT_TYPE().
  */
-#define _XENUM5_PDEF_ADD_TYPES(DBGLOC, PROPTYPE)						\
+#define _XENUM5_PDEF_ADD_TYPES(LOC, PROPTYPE)							\
 	BOOST_PP_IF(										\
 		/* For plain types this symbol is not defined, and is therefore just itself, */	\
 		/* which is true; special types otoh will be defined and resolve to 0. */	\
@@ -114,7 +114,7 @@ _PDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARG
 		BOOST_PP_IF(									\
 			BOOST_PP_EQUAL(1, BOOST_PP_CAT(_XENUM5_PDEF_CATEGORY_IS_, PROPTYPE)),	\
 			(char)(char*)(CSTRING),							\
-			_XENUM5_ERROR(DBGLOC, Unhandled special type [PROPTYPE].)		\
+			_XENUM5_ERROR(LOC, Unhandled special type [PROPTYPE].)			\
 		),										\
 		(PROPTYPE)(PROPTYPE&)(PLAIN)							\
 	)											\
@@ -122,40 +122,47 @@ _PDEF_INIT: dbgloc=DBGLOC argc=BOOST_PP_VARIADIC_SIZE(__VA_ARGS__) args=__VA_ARG
 /**
  * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PDEF_INIT_DEFAULTVALUE(DBGLOC, DEFAULTVALUE, ...)				\
+#define _XENUM5_PDEF_INIT_DEFAULTVALUE(LOC, DEFAULTVALUE, ...)					\
 	(DEFAULTVALUE)										\
-	_XENUM5_PDEF_INIT_DEPTH(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_DEPTH(LOC, __VA_ARGS__)						\
 
 /**
  * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PDEF_INIT_DEPTH(DBGLOC, DEPTH, ...)						\
+#define _XENUM5_PDEF_INIT_DEPTH(LOC, DEPTH, ...)						\
 	(BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(DEPTH),							\
 		0,										\
 		DEPTH										\
 	))											\
-	_XENUM5_PDEF_INIT_FEATURES(DBGLOC, __VA_ARGS__)
+	_XENUM5_PDEF_INIT_FEATURES(LOC, __VA_ARGS__)						\
 
 /**
  * Helper for _XENUM5_PDEF_INIT().
  */
-#define _XENUM5_PDEF_INIT_FEATURES(DBGLOC, FEATURES)						\
+#define _XENUM5_PDEF_INIT_FEATURES(LOC, FEATURES)						\
 	(BOOST_PP_CAT(										\
 		_XENUM5_PDEF_INIT_FEATURES_,							\
 		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(FEATURES))					\
-	) (DBGLOC, BOOST_PP_TUPLE_ENUM(FEATURES)))
+	) (LOC, BOOST_PP_TUPLE_ENUM(FEATURES)))							\
 
 /**
  * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is not defined.
  */
-#define _XENUM5_PDEF_INIT_FEATURES_0(DBGLOC, PLACEMENT)						\
+#define _XENUM5_PDEF_INIT_FEATURES_0(LOC, ...)							\
 	(0)
 
 /**
  * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is defined.
+ * A level of indirection is needed to separate the tuple data into parameters.
  */
-#define _XENUM5_PDEF_INIT_FEATURES_1(DBGLOC, PLACEMENT, ...)					\
+#define _XENUM5_PDEF_INIT_FEATURES_1(LOC, ...)							\
+	_XENUM5_PDEF_INIT_FEATURES_I1(LOC, __VA_ARGS__)						\
+
+/**
+ * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is defined.
+ */
+#define _XENUM5_PDEF_INIT_FEATURES_I1(LOC, PLACEMENT, ...)					\
 	BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(PLACEMENT),							\
 		(0),										\
