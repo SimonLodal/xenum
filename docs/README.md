@@ -1,52 +1,31 @@
 # xenum-5.1-pre1
 
 ## Description
-Xenum is a better C++ enum, a native C++11 enum extended with enum size, iteration,
-conversion to/from string, and custom properties. All static/const(expr). All the
-functionality that native C++ enums lack.
+Want better C++ enums?
 
-C++11's "enum class" is already a big improvement over earlier plain "enum" which were
-just dumb ints. The new "enum class" adds type safety and scoping. But there is still
-a lot left to be desired...
+Xenum is a macro-based code generator. It creates wrapper classes around native C++11 enums,
+adding a lot of functionality that they lack.
 
 ## Features
-- Access to name (string) and index of an enum-value.
-- Lookup enum value by name.
-- Lookup enum value by index.
-- constexpr size.
-- Iteration over enum values.
-- switch() on enum value in a typesafe manner.
-- Unlimited number of values in an enum. All other extended C++ enum I have found have a
-  limit of around 64 or 256 values in an enum, due to recursion limits in preprocessor
-  and/or templates.
+- To/from string
+- Iteration
+- constexpr size
+- XenumSet: Bit-based set of values from an xenum
+- No duplicate declaration of values
+- Unlimited number of values in an enum. Most other 'smart' C++ enums are limited to around
+  64 or 256 values due to recursion limits in preprocessor and/or templates.
+- Custom properties: Static values associated with each enum value.
+- Everything is static and const(expr).
+- No runtime initialization/computation, and no pointers in the generated data (friendly for
+  shared libraries).
+- Type safety: Based on C++11 'enum class'. And generates unique wrapper classes for each enum.
 - Can be placed inside a class, just like regular enums (except if it has custom properties,
   see Caveats).
-- Extensible: You can add custom properties to each enum value. Normal Xenum values
-  have an identifier (a name) and an index value (assigned sequentially), but no "ordinal"
-  value like a plain enum. However, if you want you can just add an "ordinal" property
-  (example below). You can have multiple custom properties. Their datatype can be any plain
-  type (integers), strings (C style), or objects, as long as they are constexpr.
-  Custom properties can even be multidimensional, fx. a list of strings, or a
-  list-of-lists-of-strings, etc.
-- Type safety: Inherently uses the type safety of C++11 enum class. Additionally, the
-  generated classes are unique for each enum, which also provides type safety; you can not
-  assign or compare with other enum classes.
-- Implementation is only headers, no source files. Just include Xenum.hpp.
-- Everything is static and const(expr). So an xenum can be used in template metaprogramming,
-  and also in declaration of data structures, fx. array sizes based on the number of enum
-  values.
-- No runtime initialization/computation, and no pointers in the generated data.
-  This means xenums are friendly for shared libraries; the pages that contain their data
-  are truly static so they can be shared between processes.
-- Reasonably simple declaration of an enum. Requires a few macros in header, and one in a
-  source file. No duplication of value list or other parameters.
-- Includes XenumSet; a container with a set of values from an xenum, implemented as a bitset.
-- Code generation is macro based.
-- Includes a tool (xenum5-inject) to reformat preprocessed output back into readable C++,
-  code, so you can inspect what gets generated. The post-processed code even includes
-  documentation that doxygen can read.
-- xenum5-inject can be used as an external code generator, so you do not run the macro-based
-  code generation every time you compile.
+- Headers only. Just include Xenum.hpp.
+- xenum5-inject tool reformats preprocessed output back into readable C++ code.
+  - You can inspect what gets generated.
+  - You can run doxygen on the post-processed code.
+  - It can even be used as an external code generator.
 
 ## Environment
 ### Supported compilers
