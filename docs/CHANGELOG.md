@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Added
 - Option per custom property to generate the implementation in header or source file.
+- Improved validation of declaration parameters.
 
 ## [5.0] - 2018-04-26
 ### Changed

@@ -7,14 +7,17 @@ Xenum is a macro-based code generator. It creates wrapper classes around native 
 adding a lot of functionality that they lack.
 
 ## Features
+Enums:
 - To/from string
 - Iteration
 - constexpr size
 - XenumSet: Bit-based set of values from an xenum
+- Custom properties: Static data associated with each enum value.
+
+Implementation:
 - No duplicate declaration of values
 - Unlimited number of values in an enum. Most other 'smart' C++ enums are limited to around
   64 or 256 values due to recursion limits in preprocessor and/or templates.
-- Custom properties: Static values associated with each enum value.
 - Everything is static and const(expr).
 - No runtime initialization/computation, and no pointers in the generated data (friendly for
   shared libraries).

@@ -8,6 +8,13 @@
 #ifndef _XENUM5_XENUM_HPP
 #define _XENUM5_XENUM_HPP
 
+/// Major version
+#define XENUM5_VER_MAJOR	5
+/// Minor version
+#define XENUM5_VER_MINOR	1
+/// Micro/patch/pre version
+#define XENUM5_VER_PATCH	pre1
+
 /// Namespace that Xenum lives in.
 /// Note that most of Xenum is macros that ignore namespaces anyway.
 #define _XENUM5_NS xenum5
