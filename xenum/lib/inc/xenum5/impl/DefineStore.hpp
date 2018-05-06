@@ -161,28 +161,6 @@
 		return &((const char*)&_XENUM5_IMPL_LOCAL_NS(XDCL, )::identValues)		\
 			[_XENUM5_IMPL_LOCAL_NS(XDCL, )::getIdentOffset(value)];			_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
-	DSCOPE SNAME::Enum DSCOPE SNAME::fromIndex(DSCOPE SNAME::Index index)			_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		if (index < size)								_XENUM5_NWLN \
-			_XENUM5_INDENT_ADD							\
-			return static_cast<DSCOPE SNAME::Enum>(index);				_XENUM5_NWLN \
-		throw std::out_of_range("Index >= size.");					_XENUM5_NWLN \
-		_XENUM5_INDENT_DEC								\
-	}											_XENUM5_NWLN \
-	bool DSCOPE SNAME::fromIndex(DSCOPE SNAME::Index index,					\
-				::_XENUM5_NS::XenumValue<SNAME>& value) noexcept		_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		if (index < size) {								_XENUM5_NWLN \
-			_XENUM5_INDENT_INC							\
-			value = static_cast<DSCOPE SNAME::Enum>(index);				_XENUM5_NWLN \
-			return true;								_XENUM5_NWLN \
-			_XENUM5_INDENT_DEC							\
-		}										_XENUM5_NWLN \
-		return false;									_XENUM5_NWLN \
-		_XENUM5_INDENT_DEC								\
-	}											_XENUM5_NWLN \
 	DSCOPE SNAME::Enum DSCOPE SNAME::fromIdentifier(const char* identifier)			_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\

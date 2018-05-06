@@ -18,7 +18,7 @@
 	BOOST_PP_CAT(_xenum5_store_, _XENUM5_XDCL_CNAME(XDCL))
 
 
-// ==============================================================================================
+// ========================================== MAIN ==============================================
 /**
  * Main entry function.
  */
@@ -42,6 +42,7 @@
 		)										\
 		friend class _XENUM5_CNTNR_NAME(XDCL);						_XENUM5_NWLN \
 		_XENUM5_DECLS_ENUM(CTXT, XDCL)							\
+		_XENUM5_DECLS_INDEX_FUNCS(CTXT, XDCL)						\
 		_XENUM5_DECLS_FUNCS(CTXT, XDCL)							\
 		_XENUM5_PROPS_DECLS(CTXT)							\
 		_XENUM5_DECLS_CHECK()								\
@@ -49,7 +50,7 @@
 	};											_XENUM5_NWLN
 
 
-// ==============================================================================================
+// ========================================= COMMON =============================================
 /**
  * Declare the native C++ enum and associated stuff.
  */
@@ -66,15 +67,55 @@
 	enum class Enum : Index {								_XENUM5_NWLN \
 		_XENUM5_CALL_VALS(_XENUM5_DECLS_ENUM_MEMBER, CTXT)				\
 	};											_XENUM5_NWLN \
-	_XENUM5_DOC(@return The index of an enum value (zero-based, consecutive).)		\
-	static constexpr Index getIndex(Enum value) noexcept					\
-		{ return static_cast<Index>(value); }						_XENUM5_NWLN \
 
 /**
  * Callback worker for _XENUM5_DECLARE_CNTNR_ENUM().
  */
 #define _XENUM5_DECLS_ENUM_MEMBER(CTXT, VALUEIDENT, ...)					\
 	_XENUM5_INDENT_ADD VALUEIDENT,								_XENUM5_NWLN
+
+
+/**
+ * Declare the getIndex() and fromIndex() methods.
+ */
+#define _XENUM5_DECLS_INDEX_FUNCS(CTXT, XDCL)							\
+	_XENUM5_DOC(@return The index of an enum value (zero-based, consecutive).)		\
+	static constexpr Index getIndex(Enum value) noexcept					_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return static_cast<Index>(value);						_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value with given index.						_XENUM5_NWLN \
+		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if index >= number of enum values.)			\
+	static constexpr Enum fromIndex(Index index)						_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		return (index < size)								_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+			? static_cast<Enum>(index)						_XENUM5_NWLN \
+			: throw std::out_of_range("Index >= size.");				_XENUM5_NWLN \
+			_XENUM5_INDENT_DEC							\
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value with given index, without throwing on error.			_XENUM5_NWLN \
+		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
+		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given index was found, else false.)		\
+	static constexpr bool fromIndex(Index index,						\
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept		_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		return (index < size)								_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+			?  (value = static_cast<Enum>(index)), true				_XENUM5_NWLN \
+			: false;								_XENUM5_NWLN \
+			_XENUM5_INDENT_DEC							\
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
 
 
 // ==============================================================================================
@@ -84,19 +125,6 @@
 #define _XENUM5_DECLS_FUNCS(CTXT, XDCL)								\
 	_XENUM5_DOC(@return Identifier (name) of an enum value.)				\
 	static const char* getIdentifier(Enum value) noexcept;					_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given index.						_XENUM5_NWLN \
-		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
-		@return Requested enum value.							_XENUM5_NWLN \
-		@throws std::out_of_range if index >= number of enum values.)			\
-	static Enum fromIndex(Index index);							_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given index, without throwing on error.			_XENUM5_NWLN \
-		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
-		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
-			_XENUM5_INDENT_ADD							\
-			if it exists, else it is not touched.					_XENUM5_NWLN \
-		@return True if enum-value with given index was found, else false.)		\
-	static bool fromIndex(Index index,							\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept;		_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \

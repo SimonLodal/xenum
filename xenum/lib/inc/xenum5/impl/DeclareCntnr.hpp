@@ -105,43 +105,64 @@
 		@code										_XENUM5_NWLN \
 		for (VNAME enumValue : CREALNAME()) { ... }					_XENUM5_NWLN \
 		@endcode)									\
-	constexpr CREALNAME (void) noexcept {}							_XENUM5_NWLN \
+	constexpr CREALNAME (void) noexcept							_XENUM5_NWLN \
+	{}											_XENUM5_NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	_XENUM5_DOC(Get enum value with given index.						_XENUM5_NWLN \
 		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if index >= number of enum values.)			\
-	static VNAME _fromIndex(_index_t index)							\
-		{ return SNAME::fromIndex(index); }						_XENUM5_NWLN \
+	static constexpr VNAME _fromIndex(_index_t index)					_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::fromIndex(index);							_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given index, without throwing on error.			_XENUM5_NWLN \
 		@param index Enum-value index to retrieve.					_XENUM5_NWLN \
 		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given index was found, else false.)		\
-	static bool _fromIndex(_index_t index, VNAME& value) noexcept				\
-		{ return SNAME::fromIndex(index, value); }					_XENUM5_NWLN \
+	static constexpr bool _fromIndex(_index_t index, VNAME& value) noexcept			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::fromIndex(index, value);						_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if no such identifier exists.)			\
 	static VNAME _fromIdentifier(const char* identifier)					\
-		{ return SNAME::fromIdentifier(identifier); }					_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::fromIdentifier(identifier);					_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
-	static bool _fromIdentifier(const char* identifier, VNAME& value) noexcept		\
-		{ return SNAME::fromIdentifier(identifier, value); }				_XENUM5_NWLN \
+	static bool _fromIdentifier(const char* identifier, VNAME& value) noexcept		_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::fromIdentifier(identifier, value);				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
 	/* Iteration support. */								\
 	_XENUM5_DOC(Iterator type for this container; for iterating the enum values.)		\
 	using iterator = ::_XENUM5_NS::XenumCntnrIterator<CREALNAME>;				_XENUM5_NWLN \
 	_XENUM5_DOC(Get iterator to beginning (before the first enum-value).)			\
-	static iterator begin(void) noexcept { return iterator(0); }				_XENUM5_NWLN \
+	static iterator begin(void) noexcept							_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return iterator(0);								_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get iterator to end (past the last enum-value).)				\
-	static iterator end(void) noexcept { return iterator(_size); }				_XENUM5_NWLN
+	static iterator end(void) noexcept							_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return iterator(_size);								_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
 
 
 #endif // _XENUM5_IMPL_DECLARE_CNTNR_HPP
