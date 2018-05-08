@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 ### Added
-- Option per custom property to generate the implementation in header or source file.
+- Option for enum-value identifiers and per custom property to generate the definitions
+  of data and functions in either header or source file.
 - Improved validation of declaration parameters.
 
 ## [5.0] - 2018-04-26

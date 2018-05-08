@@ -41,6 +41,19 @@
 #define _XENUM5_XDCL_FEATURES(XDCL)		BOOST_PP_SEQ_ELEM(5, XDCL)
 
 /**
+ * Get the "PLACEMENT" feature; 0=place identifier implementation in source file, 1=in header file.
+ */
+#define _XENUM5_XDCL_PLACEMENT(XDCL)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(5, XDCL))
+
+/**
+ * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
+ */
+#define _XENUM5_XDCL_PLACEMENT_STR(XDCL)	BOOST_PP_IF(					\
+							_XENUM5_XDCL_PLACEMENT(XDCL),		\
+							HDR,					\
+							SRC)
+
+/**
  * @return 0|1 if the xenum declaration contains any custom properties.
  */
 #define _XENUM5_XDCL_HAS_PROPS(XDCL)		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_XDCL_PDEFS(XDCL)))
@@ -122,7 +135,7 @@
 	_XENUM5_XDCL_CHECK_FEATURES(LOC, __VA_ARGS__)						\
 
 /**
- * Check feature options.
+ * Check features tuple.
  */
 #define _XENUM5_XDCL_CHECK_FEATURES(LOC, FEATURES, ...)						\
 	BOOST_PP_CAT(_XENUM5_XDCL_CHECK_FEATURES_, BOOST_PP_IS_EMPTY(FEATURES)) (LOC, FEATURES)	\
@@ -140,9 +153,33 @@
 #define _XENUM5_XDCL_CHECK_FEATURES_0_0(LOC, FEATURES)						\
 	(LOC: Feature options must be a parenthesized list (found: FEATURES).)			\
 
-/// Features non-empty; error since no features options are defined yet.
+/// Features is a tuple, check contents.
 #define _XENUM5_XDCL_CHECK_FEATURES_0_1(LOC, FEATURES)						\
-	(LOC: No feature options implemented yet.)						\
+	BOOST_PP_CAT(										\
+		_XENUM5_XDCL_CHECK_FPARMCNT_,							\
+		BOOST_PP_LESS(BOOST_PP_TUPLE_SIZE(FEATURES), 2)					\
+	) (LOC, BOOST_PP_TUPLE_SIZE(FEATURES))							\
+	_XENUM5_XDCL_CHECK_FEATOPTS(LOC features, BOOST_PP_TUPLE_ENUM(FEATURES))		\
+
+/// Parameter count error.
+#define _XENUM5_XDCL_CHECK_FPARMCNT_0(LOC, PCNT)						\
+	(LOC: Excess number of feature options (PCNT).)						\
+
+/// Parameter count ok.
+#define _XENUM5_XDCL_CHECK_FPARMCNT_1(LOC, PCNT)						\
+
+/**
+ * Check feature options.
+ */
+#define _XENUM5_XDCL_CHECK_FEATOPTS(LOC, ...)							\
+	_XENUM5_XDCL_CHECK_PLACEMENT(LOC, __VA_ARGS__)						\
+
+/**
+ * Check 'placement' feature option.
+ */
+#define _XENUM5_XDCL_CHECK_PLACEMENT(LOC, PLACEMENT, ...)					\
+	_XENUM5_CHECK_BOOL_OR_EMPTY(PLACEMENT, LOC[0](placement))				\
+	/* Call next feature option check from here when added */
 
 /**
  * Check custom property declarations.
@@ -209,13 +246,31 @@
  * Init features.
  */
 #define _XENUM5_XDCL_INIT_FEATURES(LOC, FEATURES, ...)						\
-	BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(FEATURES),							\
-		(),										\
-/* FIXME: Process features object */ \
-		FEATURES									\
-	)											\
+	(BOOST_PP_CAT(										\
+		_XENUM5_XDCL_INIT_FEATURES_,							\
+		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(FEATURES))					\
+	) (LOC, BOOST_PP_TUPLE_ENUM(FEATURES)))							\
 	_XENUM5_XDCL_INIT_PDEFS(LOC, __VA_ARGS__)						\
+
+/// Features tuple is not defined. Just generate defaults.
+#define _XENUM5_XDCL_INIT_FEATURES_0(LOC, ...)							\
+	(0)
+
+/// Features tuple is defined.
+/// A level of indirection is needed to separate the tuple data into parameters.
+#define _XENUM5_XDCL_INIT_FEATURES_1(LOC, ...)							\
+	_XENUM5_XDCL_INIT_PLACEMENT(LOC, __VA_ARGS__)						\
+
+/**
+ * Init 'placement' feature option.
+ */
+#define _XENUM5_XDCL_INIT_PLACEMENT(LOC, PLACEMENT, ...)					\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(PLACEMENT),							\
+		(0),										\
+		(PLACEMENT)									\
+	)											\
+
 
 /**
  * Init custom property definitions.

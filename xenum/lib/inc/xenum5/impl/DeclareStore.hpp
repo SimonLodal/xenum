@@ -43,7 +43,10 @@
 		friend class _XENUM5_CNTNR_NAME(XDCL);						_XENUM5_NWLN \
 		_XENUM5_DECLS_ENUM(CTXT, XDCL)							\
 		_XENUM5_DECLS_INDEX_FUNCS(CTXT, XDCL)						\
-		_XENUM5_DECLS_FUNCS(CTXT, XDCL)							\
+		BOOST_PP_CAT(									\
+			BOOST_PP_CAT(_XENUM5_IDENT_, _XENUM5_XDCL_PLACEMENT_STR(XDCL)),		\
+			_DECLS									\
+		) (XDCL, CTXT)									\
 		_XENUM5_PROPS_DECLS(CTXT)							\
 		_XENUM5_DECLS_CHECK()								\
 		_XENUM5_INDENT_DEC								\
@@ -118,28 +121,6 @@
 	}											_XENUM5_NWLN \
 
 
-// ==============================================================================================
-/**
- * Declare accessor and lookup functions.
- */
-#define _XENUM5_DECLS_FUNCS(CTXT, XDCL)								\
-	_XENUM5_DOC(@return Identifier (name) of an enum value.)				\
-	static const char* getIdentifier(Enum value) noexcept;					_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
-		@param identifier Identifier to look up.					_XENUM5_NWLN \
-		@return Requested enum value.							_XENUM5_NWLN \
-		@throws std::out_of_range if no such identifier exists.)			\
-	static Enum fromIdentifier(const char* identifier);					_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
-		@param identifier Identifier to look up.					_XENUM5_NWLN \
-		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
-			_XENUM5_INDENT_ADD							\
-			if it exists, else it is not touched.					_XENUM5_NWLN \
-		@return True if enum-value with given identifier was found, else false.)	\
-	static bool fromIdentifier(const char* identifier,					\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept;		_XENUM5_NWLN \
-
-			
 // ==============================================================================================
 /**
  * Declare function for static_assert() checks on generated data structures.

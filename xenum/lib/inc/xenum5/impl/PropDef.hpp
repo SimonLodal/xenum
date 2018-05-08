@@ -171,11 +171,11 @@
 		_XENUM5_PDEF_CHECK_FPARMCNT_,							\
 		BOOST_PP_LESS(BOOST_PP_TUPLE_SIZE(FEATURES), 2)					\
 	) (LOC, BOOST_PP_TUPLE_SIZE(FEATURES))							\
-	_XENUM5_PDEF_CHECK_FEATOPTS(LOC, BOOST_PP_TUPLE_ENUM(FEATURES))				\
+	_XENUM5_PDEF_CHECK_FEATOPTS(LOC features, BOOST_PP_TUPLE_ENUM(FEATURES))		\
 
 /// Parameter count error.
 #define _XENUM5_PDEF_CHECK_FPARMCNT_0(LOC, PCNT)						\
-	(LOC: Excess property declaration parameters (PCNT).)					\
+	(LOC: Excess number of feature options (PCNT).)						\
 
 /// Parameter count ok.
 #define _XENUM5_PDEF_CHECK_FPARMCNT_1(LOC, PCNT)						\
@@ -187,10 +187,10 @@
 	_XENUM5_PDEF_CHECK_PLACEMENT(LOC, __VA_ARGS__)						\
 
 /**
- * 'placement' feature option: Can not really be checked; must be empty, 0 or 1.
+ * Check 'placement' feature option.
  */
 #define _XENUM5_PDEF_CHECK_PLACEMENT(LOC, PLACEMENT, ...)					\
-	_XENUM5_CHECK_BOOL_OR_EMPTY(PLACEMENT, LOC)						\
+	_XENUM5_CHECK_BOOL_OR_EMPTY(PLACEMENT, LOC[0](placement))				\
 	/* Call next feature option check from here if ever added */
 
 
