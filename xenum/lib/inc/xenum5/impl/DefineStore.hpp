@@ -27,6 +27,7 @@
 #define _XENUM5_DEFINE_STORE(CTXT, XDCL)							\
 	_XENUM5_CMNT(Store:Main)								\
 	_XENUM5_DEFS_SIZE(XDCL)									\
+	_XENUM5_NWLN _XENUM5_CMNT(Store:Ident)							\
 	BOOST_PP_CAT(										\
 		BOOST_PP_CAT(_XENUM5_IDENT_, _XENUM5_XDCL_PLACEMENT_STR(XDCL)),			\
 		_DEFINE										\

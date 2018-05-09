@@ -132,7 +132,7 @@
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if no such identifier exists.)			\
-	static VNAME _fromIdentifier(const char* identifier)					\
+	static VNAME _fromIdentifier(const char* identifier)					_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return SNAME::fromIdentifier(identifier);					_XENUM5_NWLN \
