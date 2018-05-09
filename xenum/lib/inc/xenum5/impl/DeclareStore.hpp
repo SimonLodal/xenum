@@ -9,6 +9,8 @@
 #ifndef _XENUM5_IMPL_DECLARE_STORE_HPP
 #define _XENUM5_IMPL_DECLARE_STORE_HPP
 
+#define _XENUM5_DEBUG_STORE	0
+//#define _XENUM5_DEBUG_STORE	1
 
 // ==============================================================================================
 /**
@@ -49,6 +51,7 @@
 		) (XDCL, CTXT)									\
 		_XENUM5_PROPS_DECLS(CTXT)							\
 		_XENUM5_DECLS_CHECK()								\
+		BOOST_PP_CAT(_XENUM5_DECLS_DBGINFO_, _XENUM5_DEBUG_STORE) (XDCL, CTXT)		\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN
 
@@ -134,6 +137,22 @@
 		placed anywhere, but they need access to private members of the store		_XENUM5_NWLN \
 		class, so need to be part of it.)						\
 	static void _check(void);								_XENUM5_NWLN \
+
+
+// ==============================================================================================
+/**
+ * Do not declare a debugging info function.
+ */
+#define _XENUM5_DECLS_DBGINFO_0(XDCL, CTXT)							\
+
+/**
+ * Declare a debugging info function.
+ */
+#define _XENUM5_DECLS_DBGINFO_1(XDCL, CTXT)							\
+	_XENUM5_INDENT_SUB									\
+public:												_XENUM5_NWLN \
+	_XENUM5_DOC(Print some debugging info)							\
+	static void _dbginfo(void);								_XENUM5_NWLN \
 
 
 #endif // _XENUM5_IMPL_DECLARE_STORE_HPP

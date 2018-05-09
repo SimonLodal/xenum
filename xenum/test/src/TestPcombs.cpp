@@ -27,6 +27,15 @@ public:
 
 
 /// Test custom properties P0* of Pcombs xenum.
+TEST_F(TestPcombs, Basics)
+{
+#if _XENUM5_DEBUG_STORE
+	xenums::_xenum5_store_Pcombs::_dbginfo();
+#endif
+	EXPECT_EQ(3, xenums::Pcombs::_size);
+}
+
+/// Test custom properties P0* of Pcombs xenum.
 TEST_F(TestPcombs, P0)
 {
 	xenums::Pcomb value;

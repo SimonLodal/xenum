@@ -152,6 +152,32 @@
 	)
 
 
+/**
+ * Callback for _XENUM5_DEFS_DBGINFO() loop. Only called if _XENUM5_DEBUG_STORE==1.
+ */
+#define _XENUM5_PROP_DBGINFO(Z, N, CTXT)							\
+	_XENUM5_PROP_DBGINFO_I1									\
+	(											\
+		_XENUM5_XDCL_PDEFN(_XENUM5_CTXT_XDCL(CTXT), N),					\
+		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
+		Z										\
+	)
+
+/**
+ * Worker for _XENUM5_PROP_CHECK().
+ */
+#define _XENUM5_PROP_DBGINFO_I1(PDEF, CTXT, Z)							\
+	_XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))							\
+	BOOST_PP_CAT(_XENUM5_PROP_DBGINFO_, _XENUM5_PDEF_TYPCAT(PDEF))				\
+	(											\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		PDEF,										\
+		_XENUM5_CTXT_XDCL(CTXT),							\
+		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
+		Z										\
+	)
+
+
 // ====================================== COMMON PARTS ==========================================
 
 // ============================ INDEXNODE NAME ===============================

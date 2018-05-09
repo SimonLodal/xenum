@@ -75,6 +75,25 @@
 	)											\
 
 
+/**
+ * Entry point for defining debug info for a custom property of plain type, in source file
+ * context.
+ */
+#define _XENUM5_PROP_DBGINFO_PLAIN(PNAME, PDEF, XDCL, CTXT, Z)					\
+
+/*
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DBGINFO)	\
+	(											\
+		PNAME,										\
+		PDEF,										\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		Z										\
+	)											\
+*/
+
+
 // ====================================== COMMON PARTS ==========================================
 
 // ========================= Node iteration loop =============================

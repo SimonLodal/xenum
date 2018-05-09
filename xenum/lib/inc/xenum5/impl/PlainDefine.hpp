@@ -116,6 +116,7 @@
  * Define the local-ns functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_SRC_DEFL1_FUNCS(DEPTH, XDCL, CTXT, Z)					\
+	_XENUM5_DOC(Alias the native enum into this scope.)					\
 	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
 	_XENUM5_PROP_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
 

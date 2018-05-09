@@ -88,6 +88,7 @@
  * Define the local-ns functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, XDCL, CTXT, Z)					\
+	_XENUM5_DOC(Alias the native enum into this scope.)					\
 	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
@@ -125,10 +126,17 @@
 
 
 // =============================== _check() ==================================
+// FIXME: Merge into one, just set LSCOPE empty.
 /**
  * Define final checks on data structures, for implementation in header.
  */
 #define _XENUM5_CSTRING_HDR_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+	static_assert(										\
+		/* +1: Compiler adds an extra null terminator in Values array */		\
+		sizeof(BOOST_PP_CAT(PNAME, Values)) ==						\
+		sizeof(BOOST_PP_CAT(PNAME, ValueNames)) + 1,					\
+		"BUG: Struct/array size mismatch (ValueNames / Values)."			\
+	);											_XENUM5_NWLN \
 	static_assert(										\
 		sizeof(BOOST_PP_CAT(PNAME, NodeNames)) ==					\
 		BOOST_PP_CAT(PNAME, NodesSize) * sizeof(BOOST_PP_CAT(PNAME, Node)),		\
@@ -146,6 +154,12 @@
  */
 #define _XENUM5_CSTRING_SRC_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
 	static_assert(										\
+		/* +1: Compiler adds an extra null terminator in Values array */		\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values)) ==					\
+		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames)) + 1,				\
+		"BUG: Struct/array size mismatch (ValueNames / Values)."			\
+	);											_XENUM5_NWLN \
+	static_assert(										\
 		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, NodeNames)) ==				\
 		LSCOPE::BOOST_PP_CAT(PNAME, NodesSize) *					\
 		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Node)),					\
@@ -156,6 +170,27 @@
 		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, NodeNames)),					\
 		"BUG: Struct/array size mismatch (Nodes / NodeNames)."				\
 	);											_XENUM5_NWLN \
+
+
+// =============================== _dbginfo() ==================================
+/**
+ * Define debug info, for implementation in header.
+ */
+#define _XENUM5_CSTRING_HDR_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+	std::cout<<BOOST_PP_STRINGIZE(PNAME)<<" (HDR):"<<std::endl				\
+		<<"\tsizeof(BOOST_PP_CAT(PNAME, Values)) = "<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl	\
+		<<"\tsizeof(BOOST_PP_CAT(PNAME, ValueNames)) = "<<sizeof(BOOST_PP_CAT(PNAME, ValueNames))<<std::endl	\
+		;										_XENUM5_NWLN \
+
+
+/**
+ * Define debug info, for implementation in source.
+ */
+#define _XENUM5_CSTRING_SRC_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+	std::cout<<BOOST_PP_STRINGIZE(PNAME)<<" (SRC):"<<std::endl				\
+		<<"\tsizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values)) = "<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<std::endl	\
+		<<"\tsizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames)) = "<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<std::endl	\
+		;										_XENUM5_NWLN \
 
 
 #endif // _XENUM5_IMPL_CSTRING_DEFINE_HPP

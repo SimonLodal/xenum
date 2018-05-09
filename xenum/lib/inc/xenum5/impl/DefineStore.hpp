@@ -26,13 +26,25 @@
  */
 #define _XENUM5_DEFINE_STORE(CTXT, XDCL)							\
 	_XENUM5_CMNT(Store:Main)								\
-	_XENUM5_DEFS_SIZE(CTXT, XDCL)								\
+	_XENUM5_DEFS_SIZE(XDCL)									\
 	BOOST_PP_CAT(										\
 		BOOST_PP_CAT(_XENUM5_IDENT_, _XENUM5_XDCL_PLACEMENT_STR(XDCL)),			\
 		_DEFINE										\
 	) (XDCL, CTXT)										\
 	_XENUM5_PROPS_DEFINE(CTXT, XDCL)							\
-	_XENUM5_DEFS_CHECK(CTXT, XDCL)								\
+	_XENUM5_DEFS_CHECK(									\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		XDCL,										\
+		CTXT										\
+	)											\
+	BOOST_PP_CAT(_XENUM5_DEFS_DBGINFO_, _XENUM5_DEBUG_STORE) (				\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, )::,						\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		XDCL,										\
+		CTXT										\
+	)											\
 
 
 // ==============================================================================================
@@ -40,7 +52,7 @@
  * Define the .size var.
  */
 // FIXME: Is it really necessary to define this at all?
-#define _XENUM5_DEFS_SIZE(CTXT, XDCL)								\
+#define _XENUM5_DEFS_SIZE(XDCL)									\
 	constexpr const size_t _XENUM5_XDCL_DSCOPE(XDCL) _XENUM5_STORE_NAME(XDCL) ::size;	_XENUM5_NWLN
 
 
@@ -48,34 +60,52 @@
 /**
  * Define static_assert() checks on generated data structures.
  */
-#define _XENUM5_DEFS_CHECK(CTXT, XDCL)								\
-	_XENUM5_DEFS_CHECK_I1(									\
-		CTXT,										\
-		XDCL,										\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		_XENUM5_XDCL_VNAME(XDCL)							\
-	)
-
-/**
- * Worker for _XENUM5_DEFS_CHECK().
- */
-#define _XENUM5_DEFS_CHECK_I1(CTXT, XDCL, DSCOPE, SNAME, VNAME)					\
+#define _XENUM5_DEFS_CHECK(DSCOPE, SNAME, XDCL, CTXT)						\
 	_XENUM5_NWLN _XENUM5_CMNT(Store:Check)							\
 	void DSCOPE SNAME::_check(void)								\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		_XENUM5_CMNT(Main)								\
-		static_assert(									\
-			sizeof(_XENUM5_IMPL_LOCAL_NS(XDCL, )::identOffsets) ==			\
-			DSCOPE SNAME ::size *							\
-			sizeof(_XENUM5_IMPL_LOCAL_NS(XDCL, )::IdentIndex),			\
-			"BUG: Struct size mismatch (identOffsets / size)."			\
-		);										_XENUM5_NWLN \
+		BOOST_PP_CAT(									\
+			BOOST_PP_CAT(_XENUM5_IDENT_, _XENUM5_XDCL_PLACEMENT_STR(XDCL)),		\
+			_CHECK									\
+		) (										\
+			_XENUM5_IMPL_LOCAL_NS(XDCL, )::,					\
+			DSCOPE,									\
+			SNAME									\
+		)										\
 		BOOST_PP_REPEAT									\
 		(										\
 			BOOST_PP_SEQ_SIZE(_XENUM5_XDCL_PDEFS(XDCL)),				\
 			_XENUM5_PROP_CHECK,							\
+			CTXT									\
+		)										\
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
+
+
+// ==============================================================================================
+/**
+ * Do not define a debugging info function.
+ */
+#define _XENUM5_DEFS_DBGINFO_0(LSCOPE, DSCOPE, SNAME, XDCL, CTXT)				\
+
+/**
+ * Define a debugging info function.
+ */
+#define _XENUM5_DEFS_DBGINFO_1(LSCOPE, DSCOPE, SNAME, XDCL, CTXT)				\
+	_XENUM5_NWLN _XENUM5_CMNT(Store:Debug)							\
+	void DSCOPE SNAME::_dbginfo(void)							\
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		std::cout									\
+			<<BOOST_PP_STRINGIZE(_XENUM5_STORE_NAME(XDCL))<<"::_dbginfo:"<<std::endl	\
+			<<"\tsizeof(identValues) = "<<sizeof(LSCOPE identValues)<<std::endl	\
+			<<"\tsizeof(IdentValueNames) = "<<sizeof(LSCOPE IdentValueNames)<<std::endl	\
+			;									\
+		BOOST_PP_REPEAT									\
+		(										\
+			BOOST_PP_SEQ_SIZE(_XENUM5_XDCL_PDEFS(XDCL)),				\
+			_XENUM5_PROP_DBGINFO,							\
 			CTXT									\
 		)										\
 		_XENUM5_INDENT_DEC								\
