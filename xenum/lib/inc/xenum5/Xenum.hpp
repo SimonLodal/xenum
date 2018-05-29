@@ -3,7 +3,7 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 5.1-pre1
+ * @version 5.1-pre2
  */
 #ifndef _XENUM5_XENUM_HPP
 #define _XENUM5_XENUM_HPP
