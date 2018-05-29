@@ -429,7 +429,19 @@ This callback defines general parameters of the enum.
 - **intType** Optional. Integer-type for the enum values. Should be unsigned, and must be large
   enough to hold the number of enum values (compile-time error if not). Leave empty
   to let Xenum decide the smallest possible type.
-- **features** Optional. Not implemented yet. Leave empty for now.
+- **features** Optional. A list (comma-separated, in parentheses) of not so common
+  features/options (more may be added):
+  - [0] (getIdentifier): How to implement the getIdentifier() method. See discussion below.
+    Valid values are:
+    - off: Do not implement this method.
+    - ext (the default): Declare in generated header, define in generated source.
+    - cxp: Declare and define constexpr, in generated header.
+  - [1] (fromIdentifier): How to implement the fromIdentifier() method. See discussion below.
+    Valid values are:
+    - off: Do not implement this method.
+    - ext (the default): Declare in generated header, define in generated source.
+    - inl: Declare and define inline, but not constexpr, in generated header.
+    - cxp: Declare and define constexpr, in generated header.
 - **properties** Optional. Defines custom properties. Leave field empty/undefined if the
   xenum does not have any custom properties. If defined, it must be a tuple of one or
   more tuples that each define a property (see below).
@@ -457,13 +469,41 @@ Custom property tuple syntax:
   at level $depth, not somewhere in between.
 - **features** Optional. A list (comma-separated, in parentheses) of not so common
   features/options (more may be added):
-  - [0] (placement): Defines where to place the implementation (data and function bodies) of
+  - [0] (placement): Where to place the implementation (data and function bodies) of
     this custom property; 0=in source file (the default), 1=in header file. The only point in
     header implementation is that the getters become constexpr. So use this option if you
     actually need to access the custom property values in constexpr context. Else do not; it
     increases total compile time, since all source units that include the header will
     run the whole code generation (several iterations over all the custom property values). When
     using source placement, this only happens for the source file where the xenum is declared.
+    See discussion about these options below.
+
+
+##### Warning about inline/constexpr methods
+You can implement the get*() and from*() functions for identifiers and custom properties as
+constexpr (cxp) or just inline but not constexpr (inl).
+
+You should only use these options if you really need constexpr access to the data, or for some
+reason need it to be inlined. They come with big costs.
+
+- Compile time cost: All source units that include the header will run the whole code generation
+  (several iterations over the whole xenum declaration). This can take considerable time if your
+  xenum is big/complex. When using "ext", this only happens for the source file where the xenum
+  is defined.
+- Runtime cost: Non-constexpr functions can use strcmp() and other functions that are highly
+  optimized, but since these functions are often not constexpr themselves, we have to use other
+  implementations of these functions, which are much, much slower.
+  The only advantage is that you can use the method at compile time. The price is terrible runtime
+  performance. In the future C++ may allow to define different code for constexpr and non-constexpr,
+  but until then, this is a problem for everyone.
+
+The default implementation method is "ext", which means that the method is declared in the header,
+but the implementation (definition), including all related data, is in the generated source file.
+This means the implementation is only generated once, and that it is not constrained by constexpr
+requirements.
+
+You can also define a get*() or from*() method implementation as "off" to omit it, it might save
+some space in your compiled binary.
 
 #### V() macro
 This callback defines a single enum value.

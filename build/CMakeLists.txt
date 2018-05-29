@@ -128,6 +128,15 @@ if(DOXYGEN_FOUND)
 		VERBATIM
 	)
 	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Icombs.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum5-inject
+		ARGS -i ${XENUMS_IN_DIR}/Icombs.hpp -o ${XENUMS_PP_DIR}/Icombs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Icombs.hpp
+		COMMENT "Preprocessing Icombs.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/Numbers.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
 		COMMAND util/xenum5-inject
@@ -163,6 +172,7 @@ if(DOXYGEN_FOUND)
 		DEPENDS ${XENUMS_PP_DIR}/FruitsNoNsInCls.hpp
 		DEPENDS ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Icmp.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Icombs.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Numbers.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Pcombs.hpp
 		COMMENT "Generating documentation (doxygen) ..."

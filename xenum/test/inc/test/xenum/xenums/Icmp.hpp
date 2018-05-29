@@ -22,7 +22,7 @@ namespace xenums {
  * - Figure out missing iptables names.
  */
 #define XENUM5_IcmpTypes(D,V,C)									\
-	D(C, test::xenum::xenums::, IcmpTypes, IcmpType, uint8_t, (1), (			\
+	D(C, test::xenum::xenums::, IcmpTypes, IcmpType, uint8_t, (), (			\
 		 (Ipv4, bool, false)								\
 		,(Ipv6, bool, false, , (1))							\
 		,(NfName, cstring, , 1)								\

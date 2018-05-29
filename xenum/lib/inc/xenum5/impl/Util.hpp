@@ -10,7 +10,7 @@
 namespace xenum5 {
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * Report an error. This is tricky since we have no stderr channel, and sometimes not even a
  * stdout; any output from a macro may be gobbled up and discarded by the caller. So this only
@@ -30,14 +30,14 @@ namespace xenum5 {
 	static_assert(false, BOOST_PP_STRINGIZE(Xenum5 error (LOC): MSG));
 
 
-// ===================================================================================================
+// ==============================================================================================
 /// Can be used for unwanted _XENUM5_EXEC_COND branch.
 #define _XENUM5_NOOP(...)
 /// Can be used for unwanted _XENUM5_EXEC_COND branch.
 #define _XENUM5_ECHO(msg) msg
 
 
-// ===================================================================================================
+// ==============================================================================================
 /// Helper for _XENUM5_EXEC_IF*(): Executes if condition is true. Executes macro with args.
 #define _XENUM5_EXEC_IF_1(MACRO, ...) MACRO(__VA_ARGS__)
 /// Helper for _XENUM5_EXEC_IF*(): Executes if condition is false. Does nothing, returns empty.
@@ -50,7 +50,7 @@ namespace xenum5 {
 	) (MACRO, __VA_ARGS__)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * Generic utility function: Execute a macro+args if first arg is true, or another if false.
  * The problem is that if you just use BOOST_PP_IF, it tends to execute both, and just ignore
@@ -76,7 +76,7 @@ namespace xenum5 {
 #define _XENUM5_EXEC_COND_DO(MACRO, ...)	MACRO(__VA_ARGS__)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * @return Size of tuple, or zero if the parameter empty.
  */
@@ -96,7 +96,7 @@ namespace xenum5 {
 	BOOST_PP_TUPLE_SIZE(TUPLE)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * @return Size of seq, or zero if the parameter empty.
  */
@@ -116,7 +116,7 @@ namespace xenum5 {
 	BOOST_PP_SEQ_SIZE(DATA)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * @return Size of tuple, if data looks like it might actually be a tuple, else zero.
  */
@@ -136,7 +136,7 @@ namespace xenum5 {
 	BOOST_PP_TUPLE_SIZE(DATA)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * @return Tuple converted to seq, if data looks like it might be a tuple, else just the data
  *	itself.
@@ -157,7 +157,7 @@ namespace xenum5 {
 	BOOST_PP_TUPLE_TO_SEQ(DATA)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * @return Tuple converted to seq, if data looks like it might actually be a tuple,
  *	and COND is true; else just the data itself.
@@ -181,7 +181,7 @@ namespace xenum5 {
 	BOOST_PP_TUPLE_TO_SEQ(DATA)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * Common helper to return the N'th vararg, if it is defined.
  */
@@ -214,7 +214,7 @@ namespace xenum5 {
 	BOOST_PP_CAT(XENUM5_, _XENUM5_CTXT_SUFFIX(CTXT)) (_XENUM5_NOOP, CALLBACK, CTXT)
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * Common helper to check if a value is either empty, 0 or 1.
  * @return Nothing if valid, else error message.
@@ -234,7 +234,63 @@ namespace xenum5 {
 #define _XENUM5_CHECK_BOOL_OR_EMPTY_HELPER_1	
 
 
-// ===================================================================================================
+// ==============================================================================================
+/**
+ * Common helper to check the "get" feature option, which must be off, ext, cxp, or empty.
+ * @return Nothing if valid, else error message.
+ */
+#define _XENUM5_CHECK_FEATOPT_GET(VALUE, LOC)							\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(								\
+			BOOST_PP_CAT(								\
+				_XENUM5_CHECK_FEATOPT_GET_HELPER_,				\
+				BOOST_PP_IF(BOOST_PP_IS_EMPTY(VALUE), empty, VALUE)		\
+			)									\
+		),										\
+		,										\
+		(LOC: Value must be off|ext|cxp or empty (found: VALUE).)			\
+	)											\
+
+/// Helper for _XENUM5_CHECK_FEATOPT_GET()
+#define _XENUM5_CHECK_FEATOPT_GET_HELPER_empty	
+/// Helper for _XENUM5_CHECK_FEATOPT_GET()
+#define _XENUM5_CHECK_FEATOPT_GET_HELPER_off	
+/// Helper for _XENUM5_CHECK_FEATOPT_GET()
+#define _XENUM5_CHECK_FEATOPT_GET_HELPER_ext	
+/// Helper for _XENUM5_CHECK_FEATOPT_GET()
+#define _XENUM5_CHECK_FEATOPT_GET_HELPER_cxp	
+
+
+// ==============================================================================================
+/**
+ * Common helper to check the "from" feature option, which must be off, ext, inl, cxp, or empty.
+ * @return Nothing if valid, else error message.
+ */
+#define _XENUM5_CHECK_FEATOPT_FROM(VALUE, LOC)							\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(								\
+			BOOST_PP_CAT(								\
+				_XENUM5_CHECK_FEATOPT_FROM_HELPER_,				\
+				BOOST_PP_IF(BOOST_PP_IS_EMPTY(VALUE), empty, VALUE)		\
+			)									\
+		),										\
+		,										\
+		(LOC: Value must be off|ext|inl|cxp or empty (found: VALUE).)			\
+	)											\
+
+/// Helper for _XENUM5_CHECK_FEATOPT_FROM()
+#define _XENUM5_CHECK_FEATOPT_FROM_HELPER_empty	
+/// Helper for _XENUM5_CHECK_FEATOPT_FROM()
+#define _XENUM5_CHECK_FEATOPT_FROM_HELPER_off	
+/// Helper for _XENUM5_CHECK_FEATOPT_FROM()
+#define _XENUM5_CHECK_FEATOPT_FROM_HELPER_ext	
+/// Helper for _XENUM5_CHECK_FEATOPT_FROM()
+#define _XENUM5_CHECK_FEATOPT_FROM_HELPER_inl	
+/// Helper for _XENUM5_CHECK_FEATOPT_FROM()
+#define _XENUM5_CHECK_FEATOPT_FROM_HELPER_cxp	
+
+
+// ==============================================================================================
 /**
  * Integer max() function that is constexpr.
  * std::max is constexpr in c++14, but we are still targeting c++11 where it is not.
@@ -246,7 +302,7 @@ constexpr const T& cxp_max (const T& a, const T& b)
 }
 
 
-// ===================================================================================================
+// ==============================================================================================
 /**
  * String comparison, constexpr, and terribly inefficient.
  */

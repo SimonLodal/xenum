@@ -43,15 +43,69 @@
 /**
  * Get the "PLACEMENT" feature; 0=place identifier implementation in source file, 1=in header file.
  */
-#define _XENUM5_XDCL_PLACEMENT(XDCL)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(5, XDCL))
+// FIXME: DELETE (old, faked temporarily until callers are updated)
+#define _XENUM5_XDCL_PLACEMENT(XDCL)		0
 
 /**
  * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
  */
-#define _XENUM5_XDCL_PLACEMENT_STR(XDCL)	BOOST_PP_IF(					\
-							_XENUM5_XDCL_PLACEMENT(XDCL),		\
-							HDR,					\
-							SRC)
+// FIXME: DELETE (old, faked temporarily until callers are updated)
+#define _XENUM5_XDCL_PLACEMENT_STR(XDCL)	SRC
+
+/**
+ * Get the feature option of how to implement getIdentifier():
+ * - off: Do not implement.
+ * - ext: Declare in generated header, define in generated source.
+ * - cxp: Declare and define constexpr (in header).
+ */
+#define _XENUM5_XDCL_IDENT_GET(XDCL)		BOOST_PP_SEQ_ELEM(0, _XENUM5_XDCL_FEATURES(XDCL))
+
+/**
+ * Get the feature option of how to implement fromIdentifier():
+ * - off: Do not implement.
+ * - ext: Declare in generated header, define in generated source.
+ * - inl: Declare and define inline but not constexpr (in header).
+ * - cxp: Declare and define constexpr (in header).
+ */
+#define _XENUM5_XDCL_IDENT_FROM(XDCL)		BOOST_PP_SEQ_ELEM(1, _XENUM5_XDCL_FEATURES(XDCL))
+
+/**
+ * Get placement of the identifier string data: OFF, SRC or HDR.
+ */
+#define _XENUM5_XDCL_IDENT_DATA(XDCL)		BOOST_PP_CAT(					\
+							_XENUM5_XDCL_IDENT_DATA_HELPER_,	\
+							BOOST_PP_CAT(				\
+								_XENUM5_XDCL_IDENT_GET(XDCL),	\
+								_XENUM5_XDCL_IDENT_FROM(XDCL)	\
+							)					\
+						)						\
+
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_offoff	OFF
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_offext	SRC
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_offinl	HDR
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_offcxp	HDR
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_extoff	SRC
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_extext	SRC
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_extinl	HDR
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_extcxp	HDR
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_cxpoff	HDR
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_cxpext	HDR
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_cxpinl	HDR
+/// Helper for _XENUM5_XDCL_IDENT_DATA()
+#define _XENUM5_XDCL_IDENT_DATA_HELPER_cxpcxp	HDR
+
+
 
 /**
  * @return 0|1 if the xenum declaration contains any custom properties.
@@ -157,7 +211,7 @@
 #define _XENUM5_XDCL_CHECK_FEATURES_0_1(LOC, FEATURES)						\
 	BOOST_PP_CAT(										\
 		_XENUM5_XDCL_CHECK_FPARMCNT_,							\
-		BOOST_PP_LESS(BOOST_PP_TUPLE_SIZE(FEATURES), 2)					\
+		BOOST_PP_LESS(BOOST_PP_TUPLE_SIZE(FEATURES), 3)					\
 	) (LOC, BOOST_PP_TUPLE_SIZE(FEATURES))							\
 	_XENUM5_XDCL_CHECK_FEATOPTS(LOC features, BOOST_PP_TUPLE_ENUM(FEATURES))		\
 
@@ -172,21 +226,29 @@
  * Check feature options.
  */
 #define _XENUM5_XDCL_CHECK_FEATOPTS(LOC, ...)							\
-	_XENUM5_XDCL_CHECK_PLACEMENT(LOC, __VA_ARGS__)						\
+	_XENUM5_XDCL_CHECK_IDENT_GET(LOC, __VA_ARGS__)						\
 
 /**
- * Check 'placement' feature option.
+ * Check 'getIdentifier' feature option.
  */
-#define _XENUM5_XDCL_CHECK_PLACEMENT(LOC, PLACEMENT, ...)					\
-	_XENUM5_CHECK_BOOL_OR_EMPTY(PLACEMENT, LOC[0](placement))				\
-	/* Call next feature option check from here when added */
+#define _XENUM5_XDCL_CHECK_IDENT_GET(LOC, IDENT_GET_OPT, ...)					\
+	_XENUM5_CHECK_FEATOPT_GET(IDENT_GET_OPT, LOC[0](getIdentifier))				\
+	_XENUM5_XDCL_CHECK_IDENT_FROM(LOC, __VA_ARGS__)						\
+
+/**
+ * Check 'fromIdentifier' feature option.
+ */
+#define _XENUM5_XDCL_CHECK_IDENT_FROM(LOC, IDENT_FROM_OPT, ...)					\
+	_XENUM5_CHECK_FEATOPT_FROM(IDENT_FROM_OPT, LOC[1](fromIdentifier))			\
+	/* Call next feature option check from here, when added */
+
 
 /**
  * Check custom property declarations.
  */
 #define _XENUM5_XDCL_CHECK_PDEFS(LOC, PDEFS, ...)						\
 	BOOST_PP_CAT(_XENUM5_XDCL_CHECK_PDEFS_, BOOST_PP_IS_EMPTY(PDEFS)) (LOC, PDEFS)		\
-	/* Call next parameter check from here if ever added */
+	/* Call next parameter check from here, if ever added */
 
 /// Propdefs empty; ok.
 #define _XENUM5_XDCL_CHECK_PDEFS_1(LOC, PDEFS)							\
@@ -259,17 +321,29 @@
 /// Features tuple is defined.
 /// A level of indirection is needed to separate the tuple data into parameters.
 #define _XENUM5_XDCL_INIT_FEATURES_1(LOC, ...)							\
-	_XENUM5_XDCL_INIT_PLACEMENT(LOC, __VA_ARGS__)						\
+	_XENUM5_XDCL_INIT_IDENT_GET(LOC, __VA_ARGS__)						\
 
 /**
- * Init 'placement' feature option.
++ * Init 'getIdentifier' feature option.
  */
-#define _XENUM5_XDCL_INIT_PLACEMENT(LOC, PLACEMENT, ...)					\
+#define _XENUM5_XDCL_INIT_IDENT_GET(LOC, IDENT_GET_OPT, ...)					\
 	BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(PLACEMENT),							\
-		(0),										\
-		(PLACEMENT)									\
+		BOOST_PP_IS_EMPTY(IDENT_GET_OPT),						\
+		(ext),										\
+		(IDENT_GET_OPT)									\
 	)											\
+	_XENUM5_XDCL_INIT_IDENT_FROM(LOC, __VA_ARGS__)						\
+
+/**
+ * Init 'fromIdentifier' feature option.
+ */
+#define _XENUM5_XDCL_INIT_IDENT_FROM(LOC, IDENT_FROM_OPT, ...)					\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(IDENT_FROM_OPT),						\
+		(ext),										\
+		(IDENT_FROM_OPT)								\
+	)											\
+	/* Call next feature option init from here, when added */
 
 
 /**
