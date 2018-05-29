@@ -18,7 +18,7 @@ namespace xenum {
 
 
 /**
- * Test xenum with custom string properties defined in source file.
+ * Test xenums with combinations of custom property options.
  */
 class TestPcombs : public ::testing::Test {
 public:

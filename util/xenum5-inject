@@ -343,7 +343,7 @@ sub formatGenerated($)
 	$input = $outputPart->{generated};
 	$input =~ s/[\r\n]//g;
 	$output .= join("\n", @{doFormatGenerated($input)})."\n";
-	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") end generated #################### */\n";
+	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") - end generated #################### */\n";
 	return $output;
 }
 

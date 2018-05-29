@@ -407,7 +407,7 @@
 #define _XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
 	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
 	using  BOOST_PP_CAT(PNAME, Index) =							\
-	::_XENUM5_NS::SelectInt< ::_XENUM5_NS::ce_max(						\
+	::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cxp_max(						\
 		sizeof(BOOST_PP_CAT(PNAME, Values)) / sizeof(BOOST_PP_CAT(PNAME, Value)),	\
 		BOOST_PP_CAT(PNAME, NodesSize)							\
 	) >::type;										_XENUM5_NWLN \

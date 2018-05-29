@@ -16,10 +16,10 @@ namespace xenums {
 
 
 /**
- * Xenum with a lot of custom properties, for testing all combinations of:
- * - Header/source placement
+ * Xenum for testing all combinations of custom property options:
  * - Data type
  * - Depth
+ * - Getters implementation: off, std, inl, ce
  * All these have different code paths in the generators so it is important to test them all.
  * Default values and empty arrays are also tested in each combination.
  */

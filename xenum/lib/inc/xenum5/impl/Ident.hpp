@@ -258,7 +258,7 @@
 /* FIXME: For non-inline \
 			?( (strcmp(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))]) == 0)	_XENUM5_NWLN \
 */\
-			?(::_XENUM5_NS::ce_strEqual(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
+			?(::_XENUM5_NS::cxp_strEqual(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
 				? static_cast<Enum>(index)					_XENUM5_NWLN \
 				: fromIdentifierT(identifier, index++)				_XENUM5_NWLN \
@@ -288,7 +288,7 @@
 /* FIXME: For non-inline \
 			?( (strcmp(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))]) == 0)	_XENUM5_NWLN \
 */\
-			?(::_XENUM5_NS::ce_strEqual(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
+			?(::_XENUM5_NS::cxp_strEqual(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
 				? (value = static_cast<Enum>(index)), true			_XENUM5_NWLN \
 				: fromIdentifierN(identifier, value, index++)			_XENUM5_NWLN \

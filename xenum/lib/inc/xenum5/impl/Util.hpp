@@ -240,7 +240,7 @@ namespace xenum5 {
  * std::max is constexpr in c++14, but we are still targeting c++11 where it is not.
  */
 template <class T>
-constexpr const T& ce_max (const T& a, const T& b)
+constexpr const T& cxp_max (const T& a, const T& b)
 {
 	return (a>b) ? a : b;
 }
@@ -250,12 +250,12 @@ constexpr const T& ce_max (const T& a, const T& b)
 /**
  * String comparison, constexpr, and terribly inefficient.
  */
-constexpr bool ce_strEqual (const char* a, const char* b)
+constexpr bool cxp_strEqual (const char* a, const char* b)
 {
 	return (*a != *b)
 		? false
 		:((*a != 0)
-			? ce_strEqual(a++, b++)
+			? cxp_strEqual(a++, b++)
 			: true
 		);
 }

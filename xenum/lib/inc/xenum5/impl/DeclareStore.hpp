@@ -9,6 +9,7 @@
 #ifndef _XENUM5_IMPL_DECLARE_STORE_HPP
 #define _XENUM5_IMPL_DECLARE_STORE_HPP
 
+/// Enable/disable some debugging stuff.
 #define _XENUM5_DEBUG_STORE	0
 //#define _XENUM5_DEBUG_STORE	1
 

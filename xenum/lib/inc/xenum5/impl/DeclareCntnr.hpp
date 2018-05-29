@@ -95,17 +95,17 @@
 /**
  * Worker for _XENUM5_DECLC_FUNCS().
  */
-#define _XENUM5_DECLC_FUNCS_I1(CTXT, SNAME, CREALNAME, VNAME)					\
+#define _XENUM5_DECLC_FUNCS_I1(CTXT, SNAME, CNAME, VNAME)					\
 	_XENUM5_DOC(Ctor. Do not use, except when iterating the enum-values.			_XENUM5_NWLN \
 		All members of this class are static, so there is no				_XENUM5_NWLN \
 		need to instantiate an object; just address the members				_XENUM5_NWLN \
-		directly as CREALNAME::SomeValue.						_XENUM5_NWLN \
+		directly as CNAME::SomeValue.							_XENUM5_NWLN \
 		However, range-based loops require an object, so use:				_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		@code										_XENUM5_NWLN \
-		for (VNAME enumValue : CREALNAME()) { ... }					_XENUM5_NWLN \
+		for (VNAME enumValue : CNAME()) { ... }						_XENUM5_NWLN \
 		@endcode)									\
-	constexpr CREALNAME (void) noexcept							_XENUM5_NWLN \
+	constexpr CNAME (void) noexcept								_XENUM5_NWLN \
 	{}											_XENUM5_NWLN \
 	/* Wrapper for store class lookup functions. */						\
 	_XENUM5_DOC(Get enum value with given index.						_XENUM5_NWLN \
@@ -150,7 +150,7 @@
 	}											_XENUM5_NWLN \
 	/* Iteration support. */								\
 	_XENUM5_DOC(Iterator type for this container; for iterating the enum values.)		\
-	using iterator = ::_XENUM5_NS::XenumCntnrIterator<CREALNAME>;				_XENUM5_NWLN \
+	using iterator = ::_XENUM5_NS::XenumCntnrIterator<CNAME>;				_XENUM5_NWLN \
 	_XENUM5_DOC(Get iterator to beginning (before the first enum-value).)			\
 	static iterator begin(void) noexcept							_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
