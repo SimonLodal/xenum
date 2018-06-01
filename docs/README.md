@@ -434,12 +434,12 @@ This callback defines general parameters of the enum.
   - [0] (getIdentifier): How to implement the getIdentifier() method. See discussion below.
     Valid values are:
     - off: Do not implement this method.
-    - ext (the default): Declare in generated header, define in generated source.
+    - ext (the default, if empty): Declare in generated header, define in generated source.
     - cxp: Declare and define constexpr, in generated header.
   - [1] (fromIdentifier): How to implement the fromIdentifier() method. See discussion below.
     Valid values are:
     - off: Do not implement this method.
-    - ext (the default): Declare in generated header, define in generated source.
+    - ext (the default, if empty): Declare in generated header, define in generated source.
     - inl: Declare and define inline, but not constexpr, in generated header.
     - cxp: Declare and define constexpr, in generated header.
 - **properties** Optional. Defines custom properties. Leave field empty/undefined if the

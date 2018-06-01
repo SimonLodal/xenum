@@ -316,7 +316,7 @@
 
 /// Features tuple is not defined. Just generate defaults.
 #define _XENUM5_XDCL_INIT_FEATURES_0(LOC, ...)							\
-	(0)
+	(ext)(ext)
 
 /// Features tuple is defined.
 /// A level of indirection is needed to separate the tuple data into parameters.
@@ -324,7 +324,7 @@
 	_XENUM5_XDCL_INIT_IDENT_GET(LOC, __VA_ARGS__)						\
 
 /**
-+ * Init 'getIdentifier' feature option.
+ * Init 'getIdentifier' feature option.
  */
 #define _XENUM5_XDCL_INIT_IDENT_GET(LOC, IDENT_GET_OPT, ...)					\
 	BOOST_PP_IF(										\
