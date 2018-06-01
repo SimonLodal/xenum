@@ -480,27 +480,25 @@ Custom property tuple syntax:
 
 
 ##### Warning about inline/constexpr methods
-You can implement the get*() and from*() functions for identifiers and custom properties as
-constexpr (cxp) or just inline but not constexpr (inl).
+You can implement the get*() and from*() functions for identifiers and custom properties in
+different ways (the options above). The default ("ext" option) is to generate their declaration
+in the header, and the definition (along with related data) in the source file.
 
-You should only use these options if you really need constexpr access to the data, or for some
-reason need it to be inlined. They come with big costs.
+You can also have these functions implemented inline or constexpr, but you should only use
+these options if you really need constexpr access to the data, or for some reason need it to
+be inlined. They come with big costs.
 
 - Compile time cost: All source units that include the header will run the whole code generation
   (several iterations over the whole xenum declaration). This can take considerable time if your
   xenum is big/complex. When using "ext", this only happens for the source file where the xenum
   is defined.
-- Runtime cost: Non-constexpr functions can use strcmp() and other functions that are highly
-  optimized, but since these functions are often not constexpr themselves, we have to use other
-  implementations of these functions, which are much, much slower.
-  The only advantage is that you can use the method at compile time. The price is terrible runtime
-  performance. In the future C++ may allow to define different code for constexpr and non-constexpr,
-  but until then, this is a problem for everyone.
-
-The default implementation method is "ext", which means that the method is declared in the header,
-but the implementation (definition), including all related data, is in the generated source file.
-This means the implementation is only generated once, and that it is not constrained by constexpr
-requirements.
+- Runtime cost: The get*() methods are fine, but the from*() methods are slow when making them
+  constexpr. Reason is that non-constexpr functions can use strcmp() and other functions that
+  are highly optimized, but since such library functions are usually not constexpr themselves,
+  we have to use other implementations of these functions, which are much, much slower.
+  The only advantage to constexpr is that you can use the method at compile time. The price is
+  terrible runtime performance. In the future C++ may allow to define different code for constexpr
+  and non-constexpr, but until then, this is a problem for everyone.
 
 You can also define a get*() or from*() method implementation as "off" to omit it, it might save
 some space in your compiled binary.

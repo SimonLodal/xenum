@@ -10,10 +10,46 @@
 #define _XENUM5_IMPL_IDENT_HPP
 
 
+// ======================================= MAIN: STORE ==========================================
+ /**
+ * Entry point for all identifier related declarations in store class (header).
+ */
+// FIXME: Do
+#define _XENUM5_IDENT_DECLS(XDCL, CTXT)								\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident)							\
+
+
+// ======================================= MAIN: CNTNR ==========================================
+ /**
+ * Entry point for all identifier related declarations in container class (header).
+ */
+// FIXME: Do
+#define _XENUM5_IDENT_DECLC(XDCL, CTXT)								\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
+
+
+// ====================================== MAIN: DEFINE ==========================================
+/**
+ * Entry point for all identifier related definitions (in source file).
+ */
+// FIXME: Do
+#define _XENUM5_IDENT_DEFINE(XDCL, CTXT)							\
+	_XENUM5_NWLN _XENUM5_CMNT(Store:Ident)							\
+
+
+/**
+ * Entry point for defining final checks for identifier data.
+ */
+#define _XENUM5_IDENT_CHECK(LSCOPE, DSCOPE, SNAME)						\
+	_XENUM5_CMNT(Ident)									\
+
+
+
 // ======================================= STORE (HDR) ==========================================
 /**
  * Entry point for declaring identifiers in store class context, header implementation.
  */
+// FIXME: OLD, DELETE
 #define _XENUM5_IDENT_HDR_DECLS(XDCL, CTXT)							\
 	_XENUM5_IDENT_DEFINE_VALUES(static, CTXT)						\
 	_XENUM5_IDENT_DECLARE_VALUENAMES(CTXT)							\
@@ -26,6 +62,7 @@
 /**
  * Entry point for declaring identifiers in store class context, source implementation.
  */
+// FIXME: OLD, DELETE
 #define _XENUM5_IDENT_SRC_DECLS(XDCL, CTXT)							\
 	_XENUM5_IDENT_SRC_DECLS_FUNCS(XDCL, CTXT)						\
 
@@ -54,6 +91,7 @@
 /**
  * Define the data for identifiers, implemented in header.
  */
+// FIXME: OLD, DELETE
 #define _XENUM5_IDENT_HDR_DEFINE(XDCL, CTXT)							\
 	_XENUM5_IDENT_HDR_DEFINE_I1(								\
 		_XENUM5_XDCL_DSCOPE(XDCL),							\
@@ -72,6 +110,7 @@
 /**
  * Define the data and functions for identifiers, implemented in source.
  */
+// FIXME: OLD, DELETE
 #define _XENUM5_IDENT_SRC_DEFINE(XDCL, CTXT)							\
 	_XENUM5_IDENT_SRC_DEFL(_XENUM5_IMPL_LOCAL_NS(XDCL, ), XDCL, CTXT)			\
 	_XENUM5_IDENT_SRC_DEFS_FUNCS(XDCL, CTXT)						\

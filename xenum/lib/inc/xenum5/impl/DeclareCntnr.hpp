@@ -35,6 +35,8 @@
 		_XENUM5_DECLC_ENUM(CTXT, XDCL)							\
 		_XENUM5_DECLC_ENUM_OBJS(CTXT)							\
 		_XENUM5_DECLC_FUNCS(CTXT, XDCL)							\
+		_XENUM5_IDENT_DECLC(XDCL, CTXT)							\
+		_XENUM5_DECLC_ITERATION(XDCL)							\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN
 
@@ -148,12 +150,18 @@
 		_XENUM5_INDENT_ADD								\
 		return SNAME::fromIdentifier(identifier, value);				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
-	/* Iteration support. */								\
-	_XENUM5_DOC(Iterator type for this container; for iterating the enum values.)		\
-	using iterator = ::_XENUM5_NS::XenumCntnrIterator<CNAME>;				_XENUM5_NWLN \
-	_XENUM5_DOC(Get iterator to beginning (before the first enum-value).)			\
-	static iterator begin(void) noexcept							_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
+
+
+// ==============================================================================================
+/**
+ * Declare iterator class and functions.
+ */
+#define _XENUM5_DECLC_ITERATION(XDCL)								\
+ 	_XENUM5_DOC(Iterator type for this container; for iterating the enum values.)		\
+	using iterator = ::_XENUM5_NS::XenumCntnrIterator<_XENUM5_CNTNR_NAME(XDCL)>;		_XENUM5_NWLN \
+ 	_XENUM5_DOC(Get iterator to beginning (before the first enum-value).)			\
+ 	static iterator begin(void) noexcept							_XENUM5_NWLN \
+ 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return iterator(0);								_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
