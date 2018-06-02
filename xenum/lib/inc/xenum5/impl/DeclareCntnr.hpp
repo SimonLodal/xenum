@@ -84,7 +84,7 @@
 
 // ==============================================================================================
 /**
- * Declare ctors, comparison operators, other stuff.
+ * Declare ctors and common functions.
  */
 #define _XENUM5_DECLC_FUNCS(CTXT, XDCL)								\
 	_XENUM5_DECLC_FUNCS_I1(									\
@@ -129,26 +129,6 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return SNAME::fromIndex(index, value);						_XENUM5_NWLN \
-	}											_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
-		@param identifier Identifier to look up.					_XENUM5_NWLN \
-		@return Requested enum value.							_XENUM5_NWLN \
-		@throws std::out_of_range if no such identifier exists.)			\
-	static VNAME _fromIdentifier(const char* identifier)					_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return SNAME::fromIdentifier(identifier);					_XENUM5_NWLN \
-	}											_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
-		@param identifier Identifier to look up.					_XENUM5_NWLN \
-		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
-			_XENUM5_INDENT_ADD							\
-			if it exists, else it is not touched.					_XENUM5_NWLN \
-		@return True if enum-value with given identifier was found, else false.)	\
-	static bool _fromIdentifier(const char* identifier, VNAME& value) noexcept		_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return SNAME::fromIdentifier(identifier, value);				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
 
 

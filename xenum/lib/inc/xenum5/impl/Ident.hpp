@@ -23,9 +23,55 @@
  /**
  * Entry point for all identifier related declarations in container class (header).
  */
-// FIXME: Do
 #define _XENUM5_IDENT_DECLC(XDCL, CTXT)								\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
+	BOOST_PP_CAT(_XENUM5_IDENT_FROM_DECLC_, _XENUM5_XDCL_IDENT_FROM(XDCL)) (XDCL, CTXT)	\
+
+
+// =========================== DECLC ident from() ============================
+/**
+ * Omit _fromIdentifier(), turned off.
+ */
+#define _XENUM5_IDENT_FROM_DECLC_off(XDCL, CTXT)						\
+
+
+/**
+ * Define _fromIdentifier() as inline, non-constexpr.
+ */
+// FIXME: Make a _STD generator that inl and cxp can also use.
+#define _XENUM5_IDENT_FROM_DECLC_ext(XDCL, CTXT)						\
+	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
+		@param identifier Identifier to look up.					_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such identifier exists.)			\
+	static _XENUM5_XDCL_VNAME(XDCL) _fromIdentifier(const char* identifier)			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return _XENUM5_STORE_NAME(XDCL)::fromIdentifier(identifier);			_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
+		@param identifier Identifier to look up.					_XENUM5_NWLN \
+		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given identifier was found, else false.)	\
+	static bool _fromIdentifier(const char* identifier, _XENUM5_XDCL_VNAME(XDCL)& value) noexcept	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return _XENUM5_STORE_NAME(XDCL)::fromIdentifier(identifier, value);		_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+/**
+ * Define _fromIdentifier() as inline, non-constexpr.
+ */
+#define _XENUM5_IDENT_FROM_DECLC_inl(XDCL, CTXT)						\
+FIXME! _XENUM5_NWLN
+
+/**
+ * Define _fromIdentifier() as inline constexpr.
+ */
+#define _XENUM5_IDENT_FROM_DECLC_cxp(XDCL, CTXT)						\
+FIXME! _XENUM5_NWLN
 
 
 // ====================================== MAIN: DEFINE ==========================================
