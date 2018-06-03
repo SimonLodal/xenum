@@ -62,14 +62,7 @@
 	void DSCOPE SNAME::_check(void)								\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		BOOST_PP_CAT(									\
-			BOOST_PP_CAT(_XENUM5_IDENT_, _XENUM5_XDCL_PLACEMENT_STR(XDCL)),		\
-			_CHECK									\
-		) (										\
-			_XENUM5_IMPL_LOCAL_NS(XDCL, )::,					\
-			DSCOPE,									\
-			SNAME									\
-		)										\
+		_XENUM5_IDENT_CHECK(XDCL)							\
 		BOOST_PP_REPEAT									\
 		(										\
 			BOOST_PP_SEQ_SIZE(_XENUM5_XDCL_PDEFS(XDCL)),				\

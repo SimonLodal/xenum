@@ -26,7 +26,7 @@
 #define XENUM5_TEST_IdentExtInl	0
 #define XENUM5_TEST_IdentExtCxp	0
 #define XENUM5_TEST_IdentCxpOff	0
-#define XENUM5_TEST_IdentCxpExt	0
+#define XENUM5_TEST_IdentCxpExt	1
 #define XENUM5_TEST_IdentCxpInl	0
 #define XENUM5_TEST_IdentCxpCxp	0
 

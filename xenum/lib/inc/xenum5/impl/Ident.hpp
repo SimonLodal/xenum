@@ -177,22 +177,17 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:data: _XENUM5_XDCL_IDENT_DATA(XDCL))
 	BOOST_PP_CAT(_XENUM5_IDENT_DATA_DEFINE_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL, CTXT)	\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:get: _XENUM5_XDCL_IDENT_GET(XDCL))			\
 	BOOST_PP_CAT(_XENUM5_IDENT_GET_DEFINE_, _XENUM5_XDCL_IDENT_GET(XDCL)) (XDCL)		\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))		\
 	BOOST_PP_CAT(_XENUM5_IDENT_FROM_DEFINE_, _XENUM5_XDCL_IDENT_FROM(XDCL)) (XDCL, CTXT)	\
 
 
 /**
  * Entry point for defining final checks for identifier data.
  */
-#define _XENUM5_IDENT_CHECK(LSCOPE, DSCOPE, SNAME)						\
+#define _XENUM5_IDENT_CHECK(XDCL)								\
 	_XENUM5_CMNT(Ident)									\
-
-/* FIXME: DO!
-	BOOST_PP_CAT(										\
-		BOOST_PP_CAT(_XENUM5_IDENT_, _XENUM5_XDCL_PLACEMENT_STR(XDCL)),			\
-		_CHECK										\
-	) (XDCL, CTXT)										\
-*/
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL))		\
+	BOOST_PP_CAT(_XENUM5_IDENT_CHECK_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
 
 
 // =========================== DEFS ident data ===============================
@@ -254,6 +249,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::				\
 	)											\
 
+/**
+ * Omit getIdentifier(), defined inline constexpr in header.
+ */
+#define _XENUM5_IDENT_GET_DEFINE_cxp(XDCL)							\
+
 
 // ========================== DEFS ident from() ==============================
 /**
@@ -282,6 +282,41 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 #define _XENUM5_IDENT_FROM_DEFINE_cxp(XDCL, CTXT)						\
 
 
+// ============================ DEFS _check() ================================
+/**
+ * Final checks on ident data structures: None since they do not exist.
+ */
+#define _XENUM5_IDENT_CHECK_OFF(XDCL)								\
+
+/**
+ * Define final checks on ident data structures, defined in source.
+ */
+#define _XENUM5_IDENT_CHECK_SRC(XDCL)								\
+	_XENUM5_IDENT_CHECK_I1(									\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, )::,						\
+		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::				\
+	)											\
+
+/**
+ * Define final checks on ident data structures, defined in header.
+ */
+#define _XENUM5_IDENT_CHECK_HDR(XDCL)								\
+	_XENUM5_IDENT_CHECK_I1(,)								\
+
+
+/**
+ * Common worker to define the ident data structures checks.
+ */
+#define _XENUM5_IDENT_CHECK_I1(LSCOPE, SSCOPE)							\
+	static_assert(										\
+		/* +1: Compiler adds an extra null terminator in Values array */		\
+		sizeof(LSCOPE identValues) == sizeof(LSCOPE IdentValueNames) + 1,		\
+		"BUG: Struct/array size mismatch (IdentValueNames / identValues)."		\
+	);											_XENUM5_NWLN \
+	static_assert(										\
+		sizeof(LSCOPE identOffsets) == SSCOPE size * sizeof(LSCOPE IdentIndex),		\
+		"BUG: Struct size mismatch (identOffsets / ::size)."				\
+	);											_XENUM5_NWLN \
 
 
 // ====================================== DEFINE (HDR) ==========================================
@@ -301,31 +336,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 #define _XENUM5_IDENT_HDR_DEFINE_I1(DSCOPE, SNAME)						\
 	constexpr const DSCOPE SNAME::IdentValue DSCOPE SNAME::identValues[];			_XENUM5_NWLN \
 	constexpr const DSCOPE SNAME::IdentIndex DSCOPE SNAME::identOffsets[];			_XENUM5_NWLN \
-
-
-// ======================================= CHECK (HDR) ==========================================
-/**
- * Define final checks on data structures, for implementation in header.
- */
-// FIXME: !!
-#define _XENUM5_IDENT_HDR_CHECK(LSCOPE, DSCOPE, SNAME)						\
-
-
-// ======================================= CHECK (SRC) ==========================================
-/**
- * Define final checks on data structures, for implementation in header.
- */
-#define _XENUM5_IDENT_SRC_CHECK(LSCOPE, DSCOPE, SNAME)						\
-	_XENUM5_CMNT(Ident)									\
-	static_assert(										\
-		/* +1: Compiler adds an extra null terminator in Values array */		\
-		sizeof(LSCOPE identValues) == sizeof(LSCOPE IdentValueNames) + 1,		\
-		"BUG: Struct/array size mismatch (IdentValueNames / identValues)."		\
-	);											_XENUM5_NWLN \
-	static_assert(										\
-		sizeof(LSCOPE identOffsets) == DSCOPE SNAME::size * sizeof(LSCOPE IdentIndex),	\
-		"BUG: Struct size mismatch (identOffsets / ::size)."				\
-	);											_XENUM5_NWLN \
 
 
 // ====================================== COMMON PARTS ==========================================

@@ -189,7 +189,32 @@ TEST_F(TestIcombs, IdentExtExt)
 
 
 #if XENUM5_TEST_IdentCxpExt
-// FIXME: Do
+/// Test xenum with identifier features: getIdentifier=cxp, fromIdentifier=ext
+TEST_F(TestIcombs, IdentCxpExt)
+{
+	xenums::IdentCxpExt::Icomb value;
+#if _XENUM5_DEBUG_STORE
+	xenums::_xenum5_store_IdentCxpExt::_dbginfo();
+#endif
+	EXPECT_EQ(3, xenums::IdentCxpExt::Icombs::_size);
+	// getIdentifier()
+	EXPECT_STREQ("CxpExt0", xenums::IdentCxpExt::Icombs::CxpExt0.getIdentifier());
+	EXPECT_STREQ("CxpExt1", xenums::IdentCxpExt::Icombs::CxpExt1.getIdentifier());
+	EXPECT_STREQ("CxpExt2", xenums::IdentCxpExt::Icombs::CxpExt2.getIdentifier());
+	// fromIdentifier()
+	ident = "CxpExt0";
+	EXPECT_EQ(true, xenums::IdentCxpExt::Icombs::_fromIdentifier(ident, value));
+	EXPECT_EQ(value, xenums::IdentCxpExt::Icombs::CxpExt0);
+	EXPECT_EQ(value, xenums::IdentCxpExt::Icombs::_fromIdentifier(ident));
+	ident = "CxpExt1";
+	EXPECT_EQ(true, xenums::IdentCxpExt::Icombs::_fromIdentifier(ident, value));
+	EXPECT_EQ(value, xenums::IdentCxpExt::Icombs::CxpExt1);
+	EXPECT_EQ(value, xenums::IdentCxpExt::Icombs::_fromIdentifier(ident));
+	ident = "CxpExt2";
+	EXPECT_EQ(true, xenums::IdentCxpExt::Icombs::_fromIdentifier(ident, value));
+	EXPECT_EQ(value, xenums::IdentCxpExt::Icombs::CxpExt2);
+	EXPECT_EQ(value, xenums::IdentCxpExt::Icombs::_fromIdentifier(ident));
+}
 #endif
 
 
