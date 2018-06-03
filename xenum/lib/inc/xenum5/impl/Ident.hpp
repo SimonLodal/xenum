@@ -14,9 +14,102 @@
  /**
  * Entry point for all identifier related declarations in store class (header).
  */
-// FIXME: Do
 #define _XENUM5_IDENT_DECLS(XDCL, CTXT)								\
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident)							\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:data: _XENUM5_XDCL_IDENT_DATA(XDCL))			\
+	BOOST_PP_CAT(_XENUM5_IDENT_DATA_DECLS_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL, CTXT)	\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:get: _XENUM5_XDCL_IDENT_GET(XDCL))			\
+	BOOST_PP_CAT(_XENUM5_IDENT_GET_DECLS_, _XENUM5_XDCL_IDENT_GET(XDCL)) ()			\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
+	BOOST_PP_CAT(_XENUM5_IDENT_FROM_DECLS_, _XENUM5_XDCL_IDENT_FROM(XDCL)) (XDCL, CTXT)	\
+
+
+// =========================== DECLS ident data ==============================
+/**
+ * No data to declare since nobody uses it.
+ */
+#define _XENUM5_IDENT_DATA_DECLS_OFF(XDCL, CTXT)						\
+
+/**
+ * No data to declare since it is all defined in source file.
+ */
+#define _XENUM5_IDENT_DATA_DECLS_SRC(XDCL, CTXT)						\
+
+/**
+ * Define data inline since some inline methods use it.
+ */
+#define _XENUM5_IDENT_DATA_DECLS_HDR(XDCL, CTXT)						\
+	_XENUM5_IDENT_DEFINE_VALUES(static, CTXT)						\
+	_XENUM5_IDENT_DECLARE_VALUENAMES(CTXT)							\
+	_XENUM5_IDENT_DEFINE_OFFSETS(static, CTXT)						\
+	_XENUM5_IDENT_DEFINE_GET_OFFSET(static)							\
+
+
+// ============================ DECLS ident get() ============================
+/**
+ * Omit getIdentifier(), turned off.
+ */
+#define _XENUM5_IDENT_GET_DECLS_off()								\
+
+/**
+ * Declare getIdentifier(), defined in source file.
+ */
+#define _XENUM5_IDENT_GET_DECLS_ext()								\
+	_XENUM5_DOC(@return Identifier (name) of an enum value.)				\
+	static const char* getIdentifier(Enum value) noexcept;					_XENUM5_NWLN \
+
+/**
+ * Define getIdentifier() as inline constexpr.
+ */
+#define _XENUM5_IDENT_GET_DECLS_cxp()								\
+	_XENUM5_IDENT_DEFINE_GET_IDENT(static constexpr, , )					\
+
+
+// =========================== DECLS ident from() ============================
+/**
+ * Omit fromIdentifier(), turned off.
+ */
+#define _XENUM5_IDENT_FROM_DECLS_off(XDCL, CTXT)						\
+
+/**
+ * Declare fromIdentifier(), defined in source file.
+ */
+#define _XENUM5_IDENT_FROM_DECLS_ext(XDCL, CTXT)						\
+	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param identifier Identifier to look up.					_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such identifier exists.)			\
+	static Enum fromIdentifier(const char* identifier);					_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param identifier Identifier to look up.					_XENUM5_NWLN \
+		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given identifier was found, else false.)	\
+	static bool fromIdentifier(const char* identifier,					\
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept;		_XENUM5_NWLN \
+
+/**
+ * Define fromIdentifier() as inline, non-constexpr.
+ */
+#define _XENUM5_IDENT_FROM_DECLS_inl(XDCL, CTXT)						\
+	_XENUM5_IDENT_DEFINE_FROM_IDENT_STD(							\
+		static,										\
+		,										\
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>				\
+	)											\
+
+/**
+ * Define fromIdentifier() as inline constexpr.
+ */
+#define _XENUM5_IDENT_FROM_DECLS_cxp(XDCL, CTXT)						\
+	_XENUM5_IDENT_DEFINE_FROM_IDENT_CXP(							\
+		static,										\
+		,										\
+		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>				\
+	)											\
 
 
 // ======================================= MAIN: CNTNR ==========================================
@@ -191,48 +284,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 
 
 
-// ======================================= STORE (HDR) ==========================================
-/**
- * Entry point for declaring identifiers in store class context, header implementation.
- */
-// FIXME: OLD, DELETE
-#define _XENUM5_IDENT_HDR_DECLS(XDCL, CTXT)							\
-	_XENUM5_IDENT_DEFINE_VALUES(static, CTXT)						\
-	_XENUM5_IDENT_DECLARE_VALUENAMES(CTXT)							\
-	_XENUM5_IDENT_DEFINE_OFFSETS(static, CTXT)						\
-	_XENUM5_IDENT_DEFINE_GET_OFFSET(static)							\
-	_XENUM5_IDENT_HDR_DECLS_FUNCS(XDCL, CTXT)						\
-
-
-// ======================================= STORE (SRC) ==========================================
-/**
- * Entry point for declaring identifiers in store class context, source implementation.
- */
-// FIXME: OLD, DELETE
-#define _XENUM5_IDENT_SRC_DECLS(XDCL, CTXT)							\
-	_XENUM5_IDENT_SRC_DECLS_FUNCS(XDCL, CTXT)						\
-
-/**
- * Declare the identifier methods, for implementation in source.
- */
-#define _XENUM5_IDENT_SRC_DECLS_FUNCS(XDCL, CTXT)						\
-	_XENUM5_DOC(@return Identifier (name) of an enum value.)				\
-	static const char* getIdentifier(Enum value) noexcept;					_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
-		@param identifier Identifier to look up.					_XENUM5_NWLN \
-		@return Requested enum value.							_XENUM5_NWLN \
-		@throws std::out_of_range if no such identifier exists.)			\
-	static Enum fromIdentifier(const char* identifier);					_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
-		@param identifier Identifier to look up.					_XENUM5_NWLN \
-		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
-			_XENUM5_INDENT_ADD							\
-			if it exists, else it is not touched.					_XENUM5_NWLN \
-		@return True if enum-value with given identifier was found, else false.)	\
-	static bool fromIdentifier(const char* identifier,					\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept;		_XENUM5_NWLN \
-
-
 // ====================================== DEFINE (HDR) ==========================================
 /**
  * Define the data for identifiers, implemented in header.
@@ -369,21 +420,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 
 
 // =========================== fromIdentifier() ==============================
-/**
- * Declare and define inline identifier functions (HDR).
- * Define fromIdentifier() functions, non-constexpr.
- */
-#define _XENUM5_IDENT_HDR_DECLS_FUNCS(XDCL, CTXT)						\
-	_XENUM5_IDENT_HDR_DECLS_FUNCS_I1(							\
-		static constexpr,								\
-		,										\
-		,										\
-		,										\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>,				\
-		XDCL,										\
-		CTXT										\
-	)
-
+// FIXME: Doc
 #define _XENUM5_IDENT_DEFINE_FROM_IDENT_STD(DECLPFX, SCOPED_SNAME, SCOPED_VNAME)		\
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
