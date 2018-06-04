@@ -24,11 +24,11 @@
 #define XENUM5_TEST_IdentExtOff	0
 #define XENUM5_TEST_IdentExtExt	1
 #define XENUM5_TEST_IdentExtInl	1
-#define XENUM5_TEST_IdentExtCxp	0
+#define XENUM5_TEST_IdentExtCxp	1
 #define XENUM5_TEST_IdentCxpOff	0
 #define XENUM5_TEST_IdentCxpExt	1
 #define XENUM5_TEST_IdentCxpInl	1
-#define XENUM5_TEST_IdentCxpCxp	0
+#define XENUM5_TEST_IdentCxpCxp	1
 
 
 namespace test {

@@ -107,8 +107,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
  */
 #define _XENUM5_IDENT_FROM_DECLS_cxp(XDCL, CTXT)						\
 	_XENUM5_IDENT_DEFINE_FROM_IDENT_CXP(							\
-		static,										\
-		,										\
 		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>				\
 	)											\
 
@@ -153,7 +151,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
  * Define _fromIdentifier() as inline constexpr.
  */
 #define _XENUM5_IDENT_FROM_DECLC_cxp(XDCL, CTXT)						\
-FIXME! _XENUM5_NWLN
+	_XENUM5_IDENT_FROM_DECLC_I1(								\
+		static constexpr,								\
+		_XENUM5_STORE_NAME(XDCL),							\
+		_XENUM5_XDCL_VNAME(XDCL)							\
+	)											\
 
 
 /**
@@ -362,25 +364,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 	);											_XENUM5_NWLN \
 
 
-// ====================================== DEFINE (HDR) ==========================================
-/**
- * Define the data for identifiers, implemented in header.
- */
-// FIXME: OLD, DELETE
-#define _XENUM5_IDENT_HDR_DEFINE(XDCL, CTXT)							\
-	_XENUM5_IDENT_HDR_DEFINE_I1(								\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL)							\
-	)											\
-
-/**
- * Worker for _XENUM5_IDENT_HDR_DEFINE().
- */
-#define _XENUM5_IDENT_HDR_DEFINE_I1(DSCOPE, SNAME)						\
-	constexpr const DSCOPE SNAME::IdentValue DSCOPE SNAME::identValues[];			_XENUM5_NWLN \
-	constexpr const DSCOPE SNAME::IdentIndex DSCOPE SNAME::identOffsets[];			_XENUM5_NWLN \
-
-
 // ====================================== COMMON PARTS ==========================================
 
 // ================================ Values ===================================
@@ -474,7 +457,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 
 // =========================== fromIdentifier() ==============================
 /**
- * Define the fromIdentifier() methods. Both for inline and source definition.
+ * Define fromIdentifier() methods, non-constexpr. Both for inline and source definition.
  */
 #define _XENUM5_IDENT_DEFINE_FROM_IDENT_STD(DECLPFX, STORE_SCOPE, FQ_SNAME, FQ_VNAME)		\
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
@@ -522,60 +505,21 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 	}											_XENUM5_NWLN \
 
 
-// =========================== *Identifier() ==============================
 /**
- * Define identifier functions (SRC).
+ * Define fromIdentifier() methods, constexpr.
  */
-// FIXME: OLD, DELETE
-#define _XENUM5_IDENT_SRC_DEFS_FUNCS(XDCL, CTXT)						\
-	_XENUM5_IDENT_SRC_DEFS_FUNCS_I1(							\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, ),							\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		_XENUM5_XDCL_VNAME(XDCL),							\
-		XDCL,										\
-		CTXT										\
-	)
-
-/**
- * Declare and define inline identifier functions (HDR).
- */
-// FIXME: OLD, DELETE
-#define _XENUM5_IDENT_HDR_DECLS_FUNCS(XDCL, CTXT)						\
-	_XENUM5_IDENT_HDR_DECLS_FUNCS_I1(							\
-		static constexpr,								\
-		,										\
-		,										\
-		,										\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>,				\
-		XDCL,										\
-		CTXT										\
-	)
-
-/**
- * Define identifier functions.
- */
-// FIXME: OLD, DELETE
-#define _XENUM5_IDENT_HDR_DECLS_FUNCS_I1(DECLPFX, LSCOPE, DSCOPE, SNAME, VNAME, XDCL, CTXT)	\
-	_XENUM5_DOC(@return Identifier (name) of an enum value.)				\
-	DECLPFX const char* DSCOPE SNAME getIdentifier(DSCOPE SNAME Enum value) noexcept	_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return &LSCOPE identValues[LSCOPE getIdentOffset(value)];			_XENUM5_NWLN \
-	}											_XENUM5_NWLN \
+#define _XENUM5_IDENT_DEFINE_FROM_IDENT_CXP(VEXPR)						\
 	_XENUM5_DOC(Recursive worker for throwing fromIdentifier().)				\
-	DECLPFX DSCOPE SNAME Enum DSCOPE SNAME fromIdentifierT(const char* identifier, Index index)	_XENUM5_NWLN \
+	static constexpr Enum fromIdentifierT(const char* identifier, Index index)		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		return (index < size)								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-/* FIXME: For non-inline \
-			?( (strcmp(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))]) == 0)	_XENUM5_NWLN \
-*/\
-			?(::_XENUM5_NS::cxp_strEqual(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
+			?(::_XENUM5_NS::cxpStrEqual(identifier,					\
+					&identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
 				? static_cast<Enum>(index)					_XENUM5_NWLN \
-				: fromIdentifierT(identifier, index++)				_XENUM5_NWLN \
+				: fromIdentifierT(identifier, ++index)				_XENUM5_NWLN \
 				_XENUM5_INDENT_DEC						\
 			)									_XENUM5_NWLN \
 			: throw std::out_of_range("No such identifier.");			_XENUM5_NWLN \
@@ -583,29 +527,28 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
-		Warning: Linear search, terrible performance.					_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search, and because		_XENUM5_NWLN \
+		constexpr requirements result in very suboptimal runtime code.			_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if no such identifier exists.)			\
-	DECLPFX DSCOPE SNAME Enum DSCOPE SNAME fromIdentifier(const char* identifier)		_XENUM5_NWLN \
+	static constexpr Enum fromIdentifier(const char* identifier)				_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		return fromIdentifierT(identifier, 0);						_XENUM5_NWLN \
+ 		return fromIdentifierT(identifier, 0);						_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
-	_XENUM5_DOC(Recursive worker for non-throwing fromIdentifier().)			\
-	DECLPFX bool DSCOPE SNAME fromIdentifierN(const char* identifier, VNAME& value, Index index)	_XENUM5_NWLN \
+ 	_XENUM5_DOC(Recursive worker for non-throwing fromIdentifier().)			\
+	static constexpr bool fromIdentifierN(const char* identifier, VEXPR& value, Index index)	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		return (index < size)								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-/* FIXME: For non-inline \
-			?( (strcmp(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))]) == 0)	_XENUM5_NWLN \
-*/\
-			?(::_XENUM5_NS::cxp_strEqual(identifier, &identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
+			?(::_XENUM5_NS::cxpStrEqual(identifier,					\
+					&identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
-				? (value = static_cast<Enum>(index)), true			_XENUM5_NWLN \
-				: fromIdentifierN(identifier, value, index++)			_XENUM5_NWLN \
+ 				? (value = static_cast<Enum>(index)), true			_XENUM5_NWLN \
+ 				: fromIdentifierN(identifier, value, ++index)			_XENUM5_NWLN \
 				_XENUM5_INDENT_DEC						\
 			)									_XENUM5_NWLN \
 			: false;								_XENUM5_NWLN \
@@ -613,66 +556,19 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
-		Warning: Linear search, terrible performance.					_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search, and because		_XENUM5_NWLN \
+		constexpr requirements result in very suboptimal runtime code.			_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
-	DECLPFX bool DSCOPE SNAME fromIdentifier(const char* identifier,			\
-						VNAME& value) noexcept				_XENUM5_NWLN \
+	static constexpr bool fromIdentifier(const char* identifier, VEXPR& value) noexcept	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		return fromIdentifierN(identifier, value, 0);					_XENUM5_NWLN \
+ 		return fromIdentifierN(identifier, value, 0);					_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
-
-
-/**
- * Define identifier functions (SRC).
- */
-// FIXME: OLD, DELETE
-#define _XENUM5_IDENT_SRC_DEFS_FUNCS_I1(LSCOPE, DSCOPE, SNAME, VNAME, XDCL, CTXT)		\
-	const char* DSCOPE SNAME::getIdentifier(DSCOPE SNAME::Enum value) noexcept		_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return &LSCOPE::identValues[LSCOPE::getIdentOffset(value)];			_XENUM5_NWLN \
-	}											_XENUM5_NWLN \
-	DSCOPE SNAME::Enum DSCOPE SNAME::fromIdentifier(const char* identifier)			_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		/* FIXME: Linear search, terrible performance. */				\
-		for (Index index=0; index<size; index++) {					_XENUM5_NWLN \
-			_XENUM5_INDENT_INC							\
-			DSCOPE VNAME value(static_cast<DSCOPE SNAME::Enum>(index));		_XENUM5_NWLN \
-			if (strcmp(value.getIdentifier(), identifier) == 0)			_XENUM5_NWLN \
-				_XENUM5_INDENT_ADD						\
-				return value();							_XENUM5_NWLN \
-			_XENUM5_INDENT_DEC							\
-		}										_XENUM5_NWLN \
-		throw std::out_of_range("No such identifier.");					_XENUM5_NWLN \
-		_XENUM5_INDENT_DEC								\
-	}											_XENUM5_NWLN \
-	bool DSCOPE SNAME::fromIdentifier(const char* identifier,				\
-				::_XENUM5_NS::XenumValue<SNAME>& value) noexcept		_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		/* FIXME: Linear search, terrible performance. */				\
-		for (Index index=0; index<size; index++) {					_XENUM5_NWLN \
-			_XENUM5_INDENT_INC							\
-			if (strcmp(DSCOPE VNAME(static_cast<DSCOPE SNAME::Enum>(index))		\
-					.getIdentifier(), identifier) != 0)			_XENUM5_NWLN \
-				_XENUM5_INDENT_ADD						\
-				continue;							_XENUM5_NWLN \
-			value = static_cast<DSCOPE SNAME::Enum>(index);				_XENUM5_NWLN \
-			return true;								_XENUM5_NWLN \
-			_XENUM5_INDENT_DEC							\
-		}										_XENUM5_NWLN \
-		return false;									_XENUM5_NWLN \
-		_XENUM5_INDENT_DEC								\
-	}											_XENUM5_NWLN \
-
-
 
 
 #endif // _XENUM5_IMPL_IDENT_HPP

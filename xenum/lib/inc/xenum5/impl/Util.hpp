@@ -306,12 +306,12 @@ constexpr const T& cxp_max (const T& a, const T& b)
 /**
  * String comparison, constexpr, and terribly inefficient.
  */
-constexpr bool cxp_strEqual (const char* a, const char* b)
+constexpr bool cxpStrEqual (const char* a, const char* b)
 {
 	return (*a != *b)
 		? false
 		:((*a != 0)
-			? cxp_strEqual(a++, b++)
+			? cxpStrEqual(++a, ++b)
 			: true
 		);
 }
