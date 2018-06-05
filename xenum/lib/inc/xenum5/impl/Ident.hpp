@@ -519,7 +519,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 					&identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
 				? static_cast<Enum>(index)					_XENUM5_NWLN \
-				: fromIdentifierT(identifier, ++index)				_XENUM5_NWLN \
+				: fromIdentifierT(identifier, index+1)				_XENUM5_NWLN \
 				_XENUM5_INDENT_DEC						\
 			)									_XENUM5_NWLN \
 			: throw std::out_of_range("No such identifier.");			_XENUM5_NWLN \
@@ -548,7 +548,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 					&identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
  				? (value = static_cast<Enum>(index)), true			_XENUM5_NWLN \
- 				: fromIdentifierN(identifier, value, ++index)			_XENUM5_NWLN \
+ 				: fromIdentifierN(identifier, value, index+1)			_XENUM5_NWLN \
 				_XENUM5_INDENT_DEC						\
 			)									_XENUM5_NWLN \
 			: false;								_XENUM5_NWLN \

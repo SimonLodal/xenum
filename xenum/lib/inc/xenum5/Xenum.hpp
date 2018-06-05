@@ -13,7 +13,7 @@
 /// Minor version
 #define XENUM5_VER_MINOR	1
 /// Micro/patch/pre version
-#define XENUM5_VER_PATCH	pre1
+#define XENUM5_VER_PATCH	pre2
 
 /// Namespace that Xenum lives in.
 /// Note that most of Xenum is macros that ignore namespaces anyway.

@@ -41,18 +41,6 @@
 #define _XENUM5_XDCL_FEATURES(XDCL)		BOOST_PP_SEQ_ELEM(5, XDCL)
 
 /**
- * Get the "PLACEMENT" feature; 0=place identifier implementation in source file, 1=in header file.
- */
-// FIXME: DELETE (old, faked temporarily until callers are updated)
-#define _XENUM5_XDCL_PLACEMENT(XDCL)		0
-
-/**
- * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
- */
-// FIXME: DELETE (old, faked temporarily until callers are updated)
-#define _XENUM5_XDCL_PLACEMENT_STR(XDCL)	SRC
-
-/**
  * Get the feature option of how to implement getIdentifier():
  * - off: Do not implement.
  * - ext: Declare in generated header, define in generated source.

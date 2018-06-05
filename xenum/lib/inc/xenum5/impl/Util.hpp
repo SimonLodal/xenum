@@ -311,7 +311,7 @@ constexpr bool cxpStrEqual (const char* a, const char* b)
 	return (*a != *b)
 		? false
 		:((*a != 0)
-			? cxpStrEqual(++a, ++b)
+			? cxpStrEqual(a+1, b+1)
 			: true
 		);
 }
