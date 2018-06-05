@@ -49,6 +49,12 @@
 #define _XENUM5_XDCL_IDENT_GET(XDCL)		BOOST_PP_SEQ_ELEM(0, _XENUM5_XDCL_FEATURES(XDCL))
 
 /**
+ * Tell if getIdentifier() exists.
+ * @return Literal true or false.
+ */
+#define _XENUM5_XDCL_IDENT_HAS_GET(XDCL)	BOOST_PP_CAT(_XENUM5_XDCL_IDENT_HAS_GET_HELPER_, _XENUM5_XDCL_IDENT_GET(XDCL))
+
+/**
  * Get the feature option of how to implement fromIdentifier():
  * - off: Do not implement.
  * - ext: Declare in generated header, define in generated source.
@@ -67,6 +73,13 @@
 								_XENUM5_XDCL_IDENT_FROM(XDCL)	\
 							)					\
 						)						\
+
+/// Helper for _XENUM5_XDCL_IDENT_HAS_GET()
+#define _XENUM5_XDCL_IDENT_HAS_GET_HELPER_off	false
+/// Helper for _XENUM5_XDCL_IDENT_HAS_GET()
+#define _XENUM5_XDCL_IDENT_HAS_GET_HELPER_ext	true
+/// Helper for _XENUM5_XDCL_IDENT_HAS_GET()
+#define _XENUM5_XDCL_IDENT_HAS_GET_HELPER_cxp	true
 
 /// Helper for _XENUM5_XDCL_IDENT_DATA()
 #define _XENUM5_XDCL_IDENT_DATA_HELPER_offoff	OFF

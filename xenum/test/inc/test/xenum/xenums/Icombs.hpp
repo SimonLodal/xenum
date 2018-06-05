@@ -18,9 +18,9 @@
 
 // Flags to turn each Icombs xenum on/off, while developing.
 #define XENUM5_TEST_IdentOffOff	0
-#define XENUM5_TEST_IdentOffExt	0
-#define XENUM5_TEST_IdentOffInl	0
-#define XENUM5_TEST_IdentOffCxp	0
+#define XENUM5_TEST_IdentOffExt	1
+#define XENUM5_TEST_IdentOffInl	1
+#define XENUM5_TEST_IdentOffCxp	1
 #define XENUM5_TEST_IdentExtOff	0
 #define XENUM5_TEST_IdentExtExt	1
 #define XENUM5_TEST_IdentExtInl	1

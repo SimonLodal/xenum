@@ -16,7 +16,7 @@ namespace xenum5 {
  * Can never have an invalid value.
  * @param XenumStore The xenum store class, containing the native C++ enum.
  */
-template<class XenumStore>
+template<class XenumStore, bool enableGetIdentifier = true>
 class XenumValue {
 protected:
 	/// The internal store class.
@@ -51,7 +51,18 @@ public:
 	constexpr Index getIndex(void) const noexcept { return XenumStore::getIndex(value); }
 
 	/// @return Identifier (name) of this enum value.
-	constexpr const char* getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
+	template<bool doEnable = enableGetIdentifier>
+	constexpr typename std::enable_if<doEnable, const char*>::type
+	getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
+
+#ifdef _XENUM5_UNIT_TEST
+	/// Fake getIdentifier() that just throws, for testing the case where it should not exist.
+	/// It is not possible for a unit test to detect if a class member exists, but it can
+	/// test if it throws.
+	template<bool doEnable = enableGetIdentifier>
+	typename std::enable_if<!doEnable, const char*>::type
+	getIdentifier(void) const { throw std::logic_error("getIdentifier() is configured 'off'."); }
+#endif
 
 public:
 	/// @name Comparison operators

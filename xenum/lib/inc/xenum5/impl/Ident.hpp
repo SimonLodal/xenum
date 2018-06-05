@@ -97,7 +97,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 	_XENUM5_IDENT_DEFINE_FROM_IDENT_STD(							\
 		static,										\
 		,										\
-		Value										\
+												\
 	)											\
 
 /**
@@ -308,7 +308,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 	_XENUM5_IDENT_DEFINE_FROM_IDENT_STD(							\
 		,										\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
-		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_XDCL_VNAME(XDCL)				\
+		_XENUM5_IDENT_DATA_SCOPE(XDCL)							\
 	)											\
 
 /**
@@ -454,7 +454,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 /**
  * Define fromIdentifier() methods, non-constexpr. Both for inline and source definition.
  */
-#define _XENUM5_IDENT_DEFINE_FROM_IDENT_STD(DECLPFX, STORE_SCOPE, FQ_VNAME)			\
+#define _XENUM5_IDENT_DEFINE_FROM_IDENT_STD(DECLPFX, STORE_SCOPE, DATA_SCOPE)			\
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
@@ -465,10 +465,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 		_XENUM5_INDENT_INC								\
 		for (Index index=0; index<size; index++) {					_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			FQ_VNAME value(static_cast<Enum>(index));				_XENUM5_NWLN \
-			if (strcmp(value.getIdentifier(), identifier) == 0)			_XENUM5_NWLN \
+			if (strcmp(&DATA_SCOPE identValues[DATA_SCOPE getIdentOffset(static_cast<Enum>(index))],	\
+				   identifier) == 0)						_XENUM5_NWLN \
 				_XENUM5_INDENT_ADD						\
-				return value();							_XENUM5_NWLN \
+				return static_cast<Enum>(index);				_XENUM5_NWLN \
 			_XENUM5_INDENT_DEC							\
 		}										_XENUM5_NWLN \
 		throw std::out_of_range("No such identifier.");					_XENUM5_NWLN \
@@ -486,7 +486,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 		_XENUM5_INDENT_INC								\
 		for (Index index=0; index<size; index++) {					_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			if (strcmp(FQ_VNAME(static_cast<Enum>(index)).getIdentifier(),		\
+			if (strcmp(&DATA_SCOPE identValues[DATA_SCOPE getIdentOffset(static_cast<Enum>(index))],	\
 				   identifier) != 0)						_XENUM5_NWLN \
 				_XENUM5_INDENT_ADD						\
 				continue;							_XENUM5_NWLN \

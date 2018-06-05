@@ -82,7 +82,7 @@
 
 /// Print an XenumValue.
 template<class XenumStore>
-inline std::ostream& operator<<(std::ostream& out, ::_XENUM5_NS::XenumValue<XenumStore> enumValue) {
+inline std::ostream& operator<<(std::ostream& out, ::_XENUM5_NS::XenumValue<XenumStore,true> enumValue) {
 	return out << enumValue.getIdentifier();
 }
 

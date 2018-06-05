@@ -11,11 +11,14 @@
 #include <type_traits>
 
 #include <gtest/gtest.h>
+
+/// To get throwing getIdentifier() and fromIdentifier() instead of not compiling them.
+#define _XENUM5_UNIT_TEST	1
+
 #include <test/xenum/xenums/Icombs.hpp>
 
 namespace test {
 namespace xenum {
-
 
 /**
  * Test xenums with combinations of identifier feature options.
@@ -40,6 +43,10 @@ TEST_F(TestIcombs, IdentOffOff)
 #endif
 	EXPECT_EQ(3, xenums::IdentOffOff::Icombs::_size);
 	// getIdentifier(): Not present.
+	success = false;
+	try { xenums::IdentOffOff::Icombs::OffOff1.getIdentifier(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 	// fromIdentifier(): Not present.
 }
 #endif
@@ -55,6 +62,10 @@ TEST_F(TestIcombs, IdentOffExt)
 #endif
 	EXPECT_EQ(3, xenums::IdentOffExt::Icombs::_size);
 	// getIdentifier(): Not present.
+	success = false;
+	try { xenums::IdentOffExt::Icombs::OffExt1.getIdentifier(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 	// fromIdentifier()
 	ident = "OffExt0";
 	EXPECT_EQ(true, xenums::IdentOffExt::Icombs::_fromIdentifier(ident, value));
@@ -89,6 +100,10 @@ TEST_F(TestIcombs, IdentOffInl)
 #endif
 	EXPECT_EQ(3, xenums::IdentOffInl::Icombs::_size);
 	// getIdentifier(): Not present.
+	success = false;
+	try { xenums::IdentOffInl::Icombs::OffInl1.getIdentifier(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 	// fromIdentifier()
 	ident = "OffInl0";
 	EXPECT_EQ(true, xenums::IdentOffInl::Icombs::_fromIdentifier(ident, value));
@@ -123,6 +138,10 @@ TEST_F(TestIcombs, IdentOffCxp)
 #endif
 	EXPECT_EQ(3, xenums::IdentOffCxp::Icombs::_size);
 	// getIdentifier(): Not present.
+	success = false;
+	try { xenums::IdentOffCxp::Icombs::OffCxp1.getIdentifier(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 	// fromIdentifier()
 	ident = "OffCxp0";
 	EXPECT_EQ(true, xenums::IdentOffCxp::Icombs::_fromIdentifier(ident, value));
