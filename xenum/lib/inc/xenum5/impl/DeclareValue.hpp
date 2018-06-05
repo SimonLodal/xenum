@@ -10,6 +10,14 @@
 
 // ==============================================================================================
 /**
+ * @return Fully qualified expression of the base value class.
+ */
+#define _XENUM5_VEXPR(XDCL)									\
+	::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>					\
+
+
+// ==============================================================================================
+/**
  * Declare the enum-value class.
  */
 #define _XENUM5_DECLARE_VALUE(CTXT, XDCL)							\
@@ -30,8 +38,7 @@ _DECLARE_VALUE_DO: ctxt=CTXT xdcl=XDCL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(
 	_XENUM5_DOC(Enum-value class type.							_XENUM5_NWLN \
 		Thin wrapper around a native enum value.					_XENUM5_NWLN \
 		Can never have an invalid value.)						\
-	using _XENUM5_XDCL_VNAME(XDCL) =							\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>;				_XENUM5_NWLN \
+	using _XENUM5_XDCL_VNAME(XDCL) = _XENUM5_VEXPR(XDCL);					_XENUM5_NWLN \
 
 
 // ==============================================================================================
@@ -45,7 +52,7 @@ _XENUM5_DOC(Enum-value class for xenum _XENUM5_XDCL_CNAME(XDCL).				_XENUM5_NWLN
 	Thin wrapper around a native enum value.						_XENUM5_NWLN \
 	Can never have an invalid value.)							\
 class _XENUM5_XDCL_VNAME(XDCL)									\
-	: public ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)> {				_XENUM5_NWLN \
+	: public _XENUM5_VEXPR(XDCL) {								_XENUM5_NWLN \
 public:												_XENUM5_NWLN \
 	_XENUM5_INDENT_INC									\
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)							\

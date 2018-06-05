@@ -28,8 +28,11 @@
 #define _XENUM5_DECLARE_STORE(CTXT, XDCL)							\
 	BOOST_PP_EXPR_IF(									\
 		_XENUM5_XDCL_HAS_PROPS(XDCL),							\
+		_XENUM5_DOC(Forward-declare value class since it is not only an XenumValue	_XENUM5_NWLN \
+			instance but inherits from it.)						\
 		class _XENUM5_XDCL_VNAME(XDCL);							_XENUM5_NWLN \
 	)											\
+	_XENUM5_DOC(Forward-declare container class.)						\
 	class _XENUM5_CNTNR_NAME(XDCL);								_XENUM5_NWLN \
 	_XENUM5_DOC(Internal/private class for xenum _XENUM5_XDCL_CNAME(XDCL).			_XENUM5_NWLN \
 		Contains data and accessors for the enum.					_XENUM5_NWLN \
@@ -38,11 +41,17 @@
 	private:										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_INDENT_SUB _XENUM5_CMNT(Main)						\
-		friend class ::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>;		_XENUM5_NWLN \
+		_XENUM5_DOC(The actual value class is declared later, but we need it in some	_XENUM5_NWLN \
+			method signatures and inline functions.)				\
+		using Value = _XENUM5_VEXPR(XDCL);						_XENUM5_NWLN \
+		_XENUM5_DOC(The value base class calls into this store class.)			\
+		friend class _XENUM5_VEXPR(XDCL);						_XENUM5_NWLN \
 		BOOST_PP_EXPR_IF(								\
 			_XENUM5_XDCL_HAS_PROPS(XDCL),						\
+			_XENUM5_DOC(The inherited value class also calls into this store class.)	\
 			friend class _XENUM5_XDCL_VNAME(XDCL);					_XENUM5_NWLN \
 		)										\
+		_XENUM5_DOC(The container class calls into this store class.)			\
 		friend class _XENUM5_CNTNR_NAME(XDCL);						_XENUM5_NWLN \
 		_XENUM5_DECLS_ENUM(CTXT, XDCL)							\
 		_XENUM5_DECLS_INDEX_FUNCS(CTXT, XDCL)						\
@@ -109,8 +118,7 @@
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given index was found, else false.)		\
-	static constexpr bool fromIndex(Index index,						\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept		_XENUM5_NWLN \
+	static constexpr bool fromIndex(Index index, Value& value) noexcept			_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		return (index < size)								_XENUM5_NWLN \

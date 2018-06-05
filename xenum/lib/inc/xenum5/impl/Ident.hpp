@@ -88,8 +88,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
-	static bool fromIdentifier(const char* identifier,					\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>& value) noexcept;		_XENUM5_NWLN \
+	static bool fromIdentifier(const char* identifier, Value& value) noexcept;		_XENUM5_NWLN \
 
 /**
  * Define fromIdentifier() as inline, non-constexpr.
@@ -98,17 +97,14 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 	_XENUM5_IDENT_DEFINE_FROM_IDENT_STD(							\
 		static,										\
 		,										\
-		_XENUM5_STORE_NAME(XDCL),							\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>				\
+		Value										\
 	)											\
 
 /**
  * Define fromIdentifier() as inline constexpr.
  */
 #define _XENUM5_IDENT_FROM_DECLS_cxp(XDCL, CTXT)						\
-	_XENUM5_IDENT_DEFINE_FROM_IDENT_CXP(							\
-		::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL)>				\
-	)											\
+	_XENUM5_IDENT_DEFINE_FROM_IDENT_CXP()							\
 
 
 // ======================================= MAIN: CNTNR ==========================================
@@ -312,7 +308,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 	_XENUM5_IDENT_DEFINE_FROM_IDENT_STD(							\
 		,										\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
-		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL),				\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_XDCL_VNAME(XDCL)				\
 	)											\
 
@@ -459,7 +454,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 /**
  * Define fromIdentifier() methods, non-constexpr. Both for inline and source definition.
  */
-#define _XENUM5_IDENT_DEFINE_FROM_IDENT_STD(DECLPFX, STORE_SCOPE, FQ_SNAME, FQ_VNAME)		\
+#define _XENUM5_IDENT_DEFINE_FROM_IDENT_STD(DECLPFX, STORE_SCOPE, FQ_VNAME)			\
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
@@ -486,14 +481,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
-	DECLPFX bool STORE_SCOPE fromIdentifier(const char* identifier,				\
-				::_XENUM5_NS::XenumValue<FQ_SNAME>& value) noexcept		_XENUM5_NWLN \
+	DECLPFX bool STORE_SCOPE fromIdentifier(const char* identifier, Value& value) noexcept	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		for (Index index=0; index<size; index++) {					_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			if (strcmp(FQ_VNAME(static_cast<Enum>(index))				\
-					.getIdentifier(), identifier) != 0)			_XENUM5_NWLN \
+			if (strcmp(FQ_VNAME(static_cast<Enum>(index)).getIdentifier(),		\
+				   identifier) != 0)						_XENUM5_NWLN \
 				_XENUM5_INDENT_ADD						\
 				continue;							_XENUM5_NWLN \
 			value = static_cast<Enum>(index);					_XENUM5_NWLN \
@@ -508,7 +502,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 /**
  * Define fromIdentifier() methods, constexpr.
  */
-#define _XENUM5_IDENT_DEFINE_FROM_IDENT_CXP(VEXPR)						\
+#define _XENUM5_IDENT_DEFINE_FROM_IDENT_CXP()							\
 	_XENUM5_DOC(Recursive worker for throwing fromIdentifier().)				\
 	static constexpr Enum fromIdentifierT(const char* identifier, Index index)		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
@@ -539,7 +533,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
  	_XENUM5_DOC(Recursive worker for non-throwing fromIdentifier().)			\
-	static constexpr bool fromIdentifierN(const char* identifier, VEXPR& value, Index index)	_XENUM5_NWLN \
+	static constexpr bool fromIdentifierN(const char* identifier, Value& value, Index index)	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		return (index < size)								_XENUM5_NWLN \
@@ -563,7 +557,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
-	static constexpr bool fromIdentifier(const char* identifier, VEXPR& value) noexcept	_XENUM5_NWLN \
+	static constexpr bool fromIdentifier(const char* identifier, Value& value) noexcept	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
  		return fromIdentifierN(identifier, value, 0);					_XENUM5_NWLN \
