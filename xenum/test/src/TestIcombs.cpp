@@ -48,6 +48,10 @@ TEST_F(TestIcombs, IdentOffOff)
 	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	// fromIdentifier(): Not present.
+	success = false;
+	try { xenums::IdentOffOff::Icombs::_fromIdentifier("foo"); }
+	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 #endif
 
@@ -179,6 +183,10 @@ TEST_F(TestIcombs, IdentExtOff)
 	EXPECT_STREQ("ExtOff1", xenums::IdentExtOff::Icombs::ExtOff1.getIdentifier());
 	EXPECT_STREQ("ExtOff2", xenums::IdentExtOff::Icombs::ExtOff2.getIdentifier());
 	// fromIdentifier(): Not present.
+	success = false;
+	try { xenums::IdentExtOff::Icombs::_fromIdentifier("foo"); }
+	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 #endif
 
@@ -305,7 +313,34 @@ TEST_F(TestIcombs, IdentExtCxp)
 
 
 #if XENUM5_TEST_IdentCxpOff
-// FIXME: Do
+/// Function that only compiles if the constexpr getIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::IdentCxpOff::Icombs::CxpOff0.getIdentifier(), "CxpOff0"), bool>::type cxpGetCxpOff0(void) { return true; }
+/// Function that only compiles if the constexpr getIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::IdentCxpOff::Icombs::CxpOff1.getIdentifier(), "CxpOff1"), bool>::type cxpGetCxpOff1(void) { return true; }
+/// Function that only compiles if the constexpr getIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::IdentCxpOff::Icombs::CxpOff2.getIdentifier(), "CxpOff2"), bool>::type cxpGetCxpOff2(void) { return true; }
+/// Test xenum with identifier features: getIdentifier=cxp, fromIdentifier=off
+TEST_F(TestIcombs, IdentCxpOff)
+{
+	xenums::IdentCxpOff::Icomb value;
+#if _XENUM5_DEBUG_STORE
+	xenums::_xenum5_store_IdentCxpOff::_dbginfo();
+#endif
+	EXPECT_EQ(3, xenums::IdentCxpOff::Icombs::_size);
+	// getIdentifier()
+	EXPECT_STREQ("CxpOff0", xenums::IdentCxpOff::Icombs::CxpOff0.getIdentifier());
+	EXPECT_STREQ("CxpOff1", xenums::IdentCxpOff::Icombs::CxpOff1.getIdentifier());
+	EXPECT_STREQ("CxpOff2", xenums::IdentCxpOff::Icombs::CxpOff2.getIdentifier());
+	// getIdentifier() at compile time
+	EXPECT_EQ(true, cxpGetCxpOff0<void>());
+	EXPECT_EQ(true, cxpGetCxpOff1<void>());
+	EXPECT_EQ(true, cxpGetCxpOff2<void>());
+	// fromIdentifier(): Not present.
+	success = false;
+	try { xenums::IdentCxpOff::Icombs::_fromIdentifier("foo"); }
+	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+}
 #endif
 
 

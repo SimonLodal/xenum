@@ -117,11 +117,29 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 
 
 // =========================== DECLC ident from() ============================
+#ifdef _XENUM5_UNIT_TEST
+/**
+ * Omit _fromIdentifier(), turned off (but replace with a throwing variant just so unit test
+ * can detect that it is "not present").
+ */
+#define _XENUM5_IDENT_FROM_DECLC_off(XDCL, CTXT)						\
+	static _XENUM5_XDCL_VNAME(XDCL) _fromIdentifier(const char* identifier)			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error("fromIdentifier() is configured 'off'.");		_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	static bool _fromIdentifier(const char* identifier, _XENUM5_XDCL_VNAME(XDCL)& value)	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error("fromIdentifier() is configured 'off'.");		_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+#else
 /**
  * Omit _fromIdentifier(), turned off.
  */
-#define _XENUM5_IDENT_FROM_DECLC_off(XDCL, CTXT)						\
-
+#define _XENUM5_IDENT_FROM_DECLC_off(XDCL, CTXT)	
+#endif
 
 /**
  * Define _fromIdentifier() as inline, non-constexpr.

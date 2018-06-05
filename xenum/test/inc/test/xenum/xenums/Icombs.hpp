@@ -16,18 +16,29 @@
 #include <xenum5/Xenum.hpp>
 
 
-// Flags to turn each Icombs xenum on/off, while developing.
-#define XENUM5_TEST_IdentOffOff	0
+/// Flag to turn testing of this xenum on/off, while developing.
+#define XENUM5_TEST_IdentOffOff	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentOffExt	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentOffInl	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentOffCxp	1
-#define XENUM5_TEST_IdentExtOff	0
+/// Flag to turn testing of this xenum on/off, while developing.
+#define XENUM5_TEST_IdentExtOff	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentExtExt	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentExtInl	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentExtCxp	1
-#define XENUM5_TEST_IdentCxpOff	0
+/// Flag to turn testing of this xenum on/off, while developing.
+#define XENUM5_TEST_IdentCxpOff	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentCxpExt	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentCxpInl	1
+/// Flag to turn testing of this xenum on/off, while developing.
 #define XENUM5_TEST_IdentCxpCxp	1
 
 
