@@ -46,13 +46,24 @@
 #define _XENUM5_PDEF_DEPTH(PDEF)		BOOST_PP_SEQ_ELEM(3, PDEF)
 
 /**
+ * Get the implementation option for the getter; ext|cxp.
+ */
+#define _XENUM5_PDEF_IMPL_GET(PDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PDEF))
+
+/**
  * Get the "PLACEMENT" feature; 0=place implementation in source file, 1=in header file.
  */
-#define _XENUM5_PDEF_PLACEMENT(PDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PDEF))
+// FIXME: OLD - delete when all callers have been updated.
+#define _XENUM5_PDEF_PLACEMENT(PDEF)		BOOST_PP_CAT(_XENUM5_PDEF_PLACEMENT_COMPAT_HELPER_, _XENUM5_PDEF_IMPL_GET(PDEF))
+/// Compat helper to translate new ext|cxp values to old 0|1 values.
+#define _XENUM5_PDEF_PLACEMENT_COMPAT_HELPER_ext	0
+/// Compat helper to translate new ext|cxp values to old 0|1 values.
+#define _XENUM5_PDEF_PLACEMENT_COMPAT_HELPER_cxp	1
 
 /**
  * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
  */
+// FIXME: OLD - delete when all callers have been updated.
 #define _XENUM5_PDEF_PLACEMENT_STR(PDEF)	BOOST_PP_IF(					\
 							_XENUM5_PDEF_PLACEMENT(PDEF),		\
 							HDR,					\
@@ -184,13 +195,13 @@
  * Check feature options.
  */
 #define _XENUM5_PDEF_CHECK_FEATOPTS(LOC, ...)							\
-	_XENUM5_PDEF_CHECK_PLACEMENT(LOC, __VA_ARGS__)						\
+	_XENUM5_PDEF_CHECK_IMPL_GET(LOC, __VA_ARGS__)						\
 
 /**
- * Check 'placement' feature option.
+ * Check getter implementation option.
  */
-#define _XENUM5_PDEF_CHECK_PLACEMENT(LOC, PLACEMENT, ...)					\
-	_XENUM5_CHECK_BOOL_OR_EMPTY(PLACEMENT, LOC[0](placement))				\
+#define _XENUM5_PDEF_CHECK_IMPL_GET(LOC, IMPL_GET_OPT, ...)					\
+	_XENUM5_CHECK_FEATOPT_GET(IMPL_GET_OPT, LOC[0](getter))					\
 	/* Call next feature option check from here if ever added */
 
 
@@ -263,24 +274,26 @@
  * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is not defined.
  */
 #define _XENUM5_PDEF_INIT_FEATURES_0(LOC, ...)							\
-	(0)
+	(ext)
 
 /**
  * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is defined.
  * A level of indirection is needed to separate the tuple data into parameters.
  */
 #define _XENUM5_PDEF_INIT_FEATURES_1(LOC, ...)							\
-	_XENUM5_PDEF_INIT_FEATURES_I1(LOC, __VA_ARGS__)						\
+	_XENUM5_PDEF_INIT_IMPL_GET(LOC, __VA_ARGS__)						\
 
 /**
  * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is defined.
  */
-#define _XENUM5_PDEF_INIT_FEATURES_I1(LOC, PLACEMENT, ...)					\
+#define _XENUM5_PDEF_INIT_IMPL_GET(LOC, IMPL_GET_OPT, ...)					\
 	BOOST_PP_IF(										\
-		BOOST_PP_IS_EMPTY(PLACEMENT),							\
-		(0),										\
-		(PLACEMENT)									\
+		BOOST_PP_IS_EMPTY(IMPL_GET_OPT),						\
+		(ext),										\
+		(IMPL_GET_OPT)									\
 	)											\
+	/* Call next feature option init from here, when added */				\
+	/*_XENUM5_PDEF_INIT_...(LOC, __VA_ARGS__) */						\
 
 
 #endif // _XENUM5_IMPL_PROPDEF_HPP

@@ -19,79 +19,79 @@ namespace xenums {
  * Xenum for testing all combinations of custom property options:
  * - Data type
  * - Depth
- * - Getters implementation: off, std, inl, ce
+ * - Getters implementation: off (future), ext, inl (maybe not), cxp
  * All these have different code paths in the generators so it is important to test them all.
  * Default values and empty arrays are also tested in each combination.
  */
 #define XENUM5_Pcombs(D,V,C)				\
 	D(C, test::xenum::xenums::, Pcombs, Pcomb, , ,	\
 	(						\
-		/* plain, depth=0, source */		\
-		(P0S, int, -1, 0, (0)),			\
-		/* plain, depth=0, header */		\
-		(P0H, int, -2, 0, (1)),			\
-		/* plain, depth=1, source */		\
-		(P1S, int, -3, 1, (0)),			\
-		/* plain, depth=1, header */		\
-		(P1H, int, -4, 1, (1)),			\
-		/* plain, depth=2, source */		\
-		(P2S, int, -5, 2, (0)),			\
-		/* plain, depth=2, header */		\
-		(P2H, int, -6, 2, (1)),			\
-		/* cstring, depth=0, source */		\
-		(S0S, cstring, "-1", 0, (0)),		\
-		/* cstring, depth=0, header */		\
-		(S0H, cstring, "-2", 0, (1)),		\
-		/* cstring, depth=1, source */		\
-		(S1S, cstring, "-3", 1, (0)),		\
-		/* cstring, depth=1, header */		\
-		(S1H, cstring, "-4", 1, (1)),		\
-		/* cstring, depth=2, source */		\
-		(S2S, cstring, "-5", 2, (0)),		\
-		/* cstring, depth=2, header */		\
-		(S2H, cstring, "-6", 2, (1))		\
+		/* plain, depth=0, (ext) */		\
+		(P0E, int, -1, 0, (ext)),		\
+		/* plain, depth=0, (cxp) */		\
+		(P0C, int, -2, 0, (ext)),		\
+		/* plain, depth=1, (ext) */		\
+		(P1E, int, -3, 1, (ext)),		\
+		/* plain, depth=1, (cxp) */		\
+		(P1C, int, -4, 1, (cxp)),		\
+		/* plain, depth=2, (ext) */		\
+		(P2E, int, -5, 2, (ext)),		\
+		/* plain, depth=2, (cxp) */		\
+		(P2C, int, -6, 2, (cxp)),		\
+		/* cstring, depth=0, (ext) */		\
+		(S0E, cstring, "-1", 0, (ext)),		\
+		/* cstring, depth=0, (cxp) */		\
+		(S0C, cstring, "-2", 0, (cxp)),		\
+		/* cstring, depth=1, (ext) */		\
+		(S1E, cstring, "-3", 1, (ext)),		\
+		/* cstring, depth=1, (cxp) */		\
+		(S1C, cstring, "-4", 1, (cxp)),		\
+		/* cstring, depth=2, (ext) */		\
+		(S2E, cstring, "-5", 2, (ext)),		\
+		/* cstring, depth=2, (cxp) */		\
+		(S2C, cstring, "-6", 2, (cxp))		\
 	))						\
 	V(C, V0						\
-		, 0			/* P0S */	\
-		, 1			/* P0H */	\
-		, (2, , 3)		/* P1S */	\
-		, (4, , 5)		/* P1H */	\
-		, ((6,,7),())		/* P2S */	\
-		, ((8,,9),())		/* P2H */	\
-		, "0"			/* S0S */	\
-		, "1"			/* S0H */	\
-		, ("2", , "3")		/* S1S */	\
-		, ("4", , "5")		/* S1H */	\
-		, (("6",,"7"),())	/* S2S */	\
-		, (("8",,"9"),())	/* S2H */	\
+		, 0			/* P0E */	\
+		, 1			/* P0C */	\
+		, (2, , 3)		/* P1E */	\
+		, (4, , 5)		/* P1C */	\
+		, ((6,,7),())		/* P2E */	\
+		, ((8,,9),())		/* P2C */	\
+		, "0"			/* S0E */	\
+		, "1"			/* S0C */	\
+		, ("2", , "3")		/* S1E */	\
+		, ("4", , "5")		/* S1C */	\
+		, (("6",,"7"),())	/* S2E */	\
+		, (("8",,"9"),())	/* S2C */	\
 	)						\
 	V(C, V1						\
-		, 			/* P0S */	\
-		, 			/* P0H */	\
-		, 			/* P1S */	\
-		, 			/* P1H */	\
-		,			/* P2S */	\
-		,			/* P2H */	\
-		, 			/* S0S */	\
-		, 			/* S0H */	\
-		, 			/* S1S */	\
-		, 			/* S1H */	\
-		,			/* S2S */	\
-		,			/* S2H */	\
+		, 			/* P0E */	\
+		, 			/* P0C */	\
+		, 			/* P1E */	\
+		, 			/* P1C */	\
+		,			/* P2E */	\
+		,			/* P2C */	\
+		, 			/* S0E */	\
+		, 			/* S0C */	\
+		, 			/* S1E */	\
+		, 			/* S1C */	\
+		,			/* S2E */	\
+		,			/* S2C */	\
 	)						\
 	V(C, V2						\
-		, 10			/* P0S */	\
-		, 11			/* P0H */	\
-		, ()			/* P1S */	\
-		, ()			/* P1H */	\
-		, ()			/* P2S */	\
-		, ()			/* P2H */	\
-		, "10"			/* S0S */	\
-		, "11"			/* S0H */	\
-		, ()			/* S1S */	\
-		, ()			/* S1H */	\
-		, ()			/* S2S */	\
-		, ()			/* S2H */	\
+		, 10			/* P0E */	\
+		, 11			/* P0C */	\
+		, ()			/* P1E */	\
+		, ()			/* P1C */	\
+		, ()			/* P2E */	\
+		, ()			/* P2C */	\
+		, "10"			/* S0E */	\
+		, "11"			/* S0C */	\
+		, ()			/* S1E */	\
+		, ()			/* S1C */	\
+		, ()			/* S2E */	\
+		, ()			/* S2C */	\
 	)						\
 
 XENUM5_DECLARE(Pcombs)

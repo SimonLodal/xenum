@@ -469,14 +469,10 @@ Custom property tuple syntax:
   at level $depth, not somewhere in between.
 - **features** Optional. A list (comma-separated, in parentheses) of not so common
   features/options (more may be added):
-  - [0] (placement): Where to place the implementation (data and function bodies) of
-    this custom property; 0=in source file (the default), 1=in header file. The only point in
-    header implementation is that the getters become constexpr. So use this option if you
-    actually need to access the custom property values in constexpr context. Else do not; it
-    increases total compile time, since all source units that include the header will
-    run the whole code generation (several iterations over all the custom property values). When
-    using source placement, this only happens for the source file where the xenum is declared.
-    See discussion about these options below.
+  - [0] (get${propertyName}): How to implement the getter method for this custom property.
+    See discussion below. Valid values are:
+    - ext (the default, if empty): Declare in generated header, define in generated source.
+    - cxp: Declare and define constexpr, in generated header.
 
 
 ##### Warning about inline/constexpr methods
@@ -485,16 +481,16 @@ different ways (the options above). The default ("ext" option) is to generate th
 in the header, and the definition (along with related data) in the source file.
 
 You can also have these functions implemented inline or constexpr, but you should only use
-these options if you really need constexpr access to the data, or for some reason need it to
+these options if you really need constexpr access to the data, or for some reason want it to
 be inlined. They come with big costs.
 
 - Compile time cost: All source units that include the header will run the whole code generation
   (several iterations over the whole xenum declaration). This can take considerable time if your
   xenum is big/complex. When using "ext", this only happens for the source file where the xenum
   is defined.
-- Runtime cost: The get*() methods are fine, but the from*() methods are slow when making them
-  constexpr. Reason is that non-constexpr functions can use strcmp() and other functions that
-  are highly optimized, but since such library functions are usually not constexpr themselves,
+- Runtime cost: Inline from*() and constexpr get*() methods are fine, but the constexpr from*()
+  methods are slow. Reason is that non-constexpr functions can use strcmp() and other functions
+  that are highly optimized, but since such library functions are usually not constexpr themselves,
   we have to use other implementations of these functions, which are much, much slower.
   The only advantage to constexpr is that you can use the method at compile time. The price is
   terrible runtime performance. In the future C++ may allow to define different code for constexpr

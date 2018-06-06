@@ -42,18 +42,18 @@ TEST_F(TestPcombs, P0)
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(0, value.getP0S());
-	EXPECT_EQ(1, value.getP0H());
+	EXPECT_EQ(0, value.getP0E());
+	EXPECT_EQ(1, value.getP0C());
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(-1, value.getP0S());
-	EXPECT_EQ(-2, value.getP0H());
+	EXPECT_EQ(-1, value.getP0E());
+	EXPECT_EQ(-2, value.getP0C());
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(10, value.getP0S());
-	EXPECT_EQ(11, value.getP0H());
+	EXPECT_EQ(10, value.getP0E());
+	EXPECT_EQ(11, value.getP0C());
 }
 
 
@@ -64,50 +64,50 @@ TEST_F(TestPcombs, P1)
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(3, value.getP1SSize());
-	EXPECT_EQ(3, value.getP1HSize());
+	EXPECT_EQ(3, value.getP1ESize());
+	EXPECT_EQ(3, value.getP1CSize());
 
-	EXPECT_EQ(2, value.getP1S(0));
-	EXPECT_EQ(4, value.getP1H(0));
-	EXPECT_EQ(-3, value.getP1S(1));
-	EXPECT_EQ(-4, value.getP1H(1));
-	EXPECT_EQ(3, value.getP1S(2));
-	EXPECT_EQ(5, value.getP1H(2));
+	EXPECT_EQ(2, value.getP1E(0));
+	EXPECT_EQ(4, value.getP1C(0));
+	EXPECT_EQ(-3, value.getP1E(1));
+	EXPECT_EQ(-4, value.getP1C(1));
+	EXPECT_EQ(3, value.getP1E(2));
+	EXPECT_EQ(5, value.getP1C(2));
 	success = false;
-	try { value.getP1S(3); }
+	try { value.getP1E(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP1H(3); }
+	try { value.getP1C(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(0, value.getP1SSize());
-	EXPECT_EQ(0, value.getP1HSize());
+	EXPECT_EQ(0, value.getP1ESize());
+	EXPECT_EQ(0, value.getP1CSize());
 	success = false;
-	try { value.getP1S(0); }
+	try { value.getP1E(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP1H(0); }
+	try { value.getP1C(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(1, value.getP1SSize());
-	EXPECT_EQ(1, value.getP1HSize());
+	EXPECT_EQ(1, value.getP1ESize());
+	EXPECT_EQ(1, value.getP1CSize());
 
-	EXPECT_EQ(-3, value.getP1S(0));
-	EXPECT_EQ(-4, value.getP1H(0));
+	EXPECT_EQ(-3, value.getP1E(0));
+	EXPECT_EQ(-4, value.getP1C(0));
 	success = false;
-	try { value.getP1S(1); }
+	try { value.getP1E(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP1H(1); }
+	try { value.getP1C(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -120,103 +120,103 @@ TEST_F(TestPcombs, P2)
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(2, value.getP2SSize());
-	EXPECT_EQ(2, value.getP2HSize());
+	EXPECT_EQ(2, value.getP2ESize());
+	EXPECT_EQ(2, value.getP2CSize());
 
-	EXPECT_EQ(3, value.getP2SSize(0));
-	EXPECT_EQ(3, value.getP2HSize(0));
-	EXPECT_EQ(1, value.getP2SSize(1));
-	EXPECT_EQ(1, value.getP2HSize(1));
+	EXPECT_EQ(3, value.getP2ESize(0));
+	EXPECT_EQ(3, value.getP2CSize(0));
+	EXPECT_EQ(1, value.getP2ESize(1));
+	EXPECT_EQ(1, value.getP2CSize(1));
 
 	success = false;
-	try { value.getP2SSize(2); }
+	try { value.getP2ESize(2); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2HSize(2); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-
-	EXPECT_EQ(6, value.getP2S(0, 0));
-	EXPECT_EQ(8, value.getP2H(0, 0));
-	EXPECT_EQ(-5, value.getP2S(0, 1));
-	EXPECT_EQ(-6, value.getP2H(0, 1));
-	EXPECT_EQ(7, value.getP2S(0, 2));
-	EXPECT_EQ(9, value.getP2H(0, 2));
-	success = false;
-	try { value.getP2S(0, 3); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-	success = false;
-	try { value.getP2H(0, 3); }
+	try { value.getP2CSize(2); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_EQ(-5, value.getP2S(1, 0));
-	EXPECT_EQ(-6, value.getP2H(1, 0));
+	EXPECT_EQ(6, value.getP2E(0, 0));
+	EXPECT_EQ(8, value.getP2C(0, 0));
+	EXPECT_EQ(-5, value.getP2E(0, 1));
+	EXPECT_EQ(-6, value.getP2C(0, 1));
+	EXPECT_EQ(7, value.getP2E(0, 2));
+	EXPECT_EQ(9, value.getP2C(0, 2));
 	success = false;
-	try { value.getP2S(1, 1); }
+	try { value.getP2E(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2H(1, 1); }
+	try { value.getP2C(0, 3); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+
+	EXPECT_EQ(-5, value.getP2E(1, 0));
+	EXPECT_EQ(-6, value.getP2C(1, 0));
+	success = false;
+	try { value.getP2E(1, 1); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { value.getP2C(1, 1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getP2S(2, 0); }
+	try { value.getP2E(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2H(2, 0); }
+	try { value.getP2C(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(0, value.getP2SSize());
-	EXPECT_EQ(0, value.getP2HSize());
+	EXPECT_EQ(0, value.getP2ESize());
+	EXPECT_EQ(0, value.getP2CSize());
 
 	success = false;
-	try { value.getP2SSize(0); }
+	try { value.getP2ESize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2HSize(0); }
+	try { value.getP2CSize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getP2S(0, 0); }
+	try { value.getP2E(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2H(0, 0); }
+	try { value.getP2C(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(1, value.getP2SSize());
-	EXPECT_EQ(1, value.getP2HSize());
+	EXPECT_EQ(1, value.getP2ESize());
+	EXPECT_EQ(1, value.getP2CSize());
 
-	EXPECT_EQ(0, value.getP2SSize(0));
-	EXPECT_EQ(0, value.getP2HSize(0));
+	EXPECT_EQ(0, value.getP2ESize(0));
+	EXPECT_EQ(0, value.getP2CSize(0));
 	success = false;
-	try { value.getP2SSize(1); }
+	try { value.getP2ESize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2HSize(1); }
+	try { value.getP2CSize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getP2S(0, 0); }
+	try { value.getP2E(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2H(0, 0); }
+	try { value.getP2C(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -229,22 +229,22 @@ TEST_F(TestPcombs, S0)
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_STREQ("0", value.getS0S());
-	EXPECT_STREQ("1", value.getS0H());
-	EXPECT_EQ(2, value.getS0SSize());
-	EXPECT_EQ(2, value.getS0HSize());
+	EXPECT_STREQ("0", value.getS0E());
+	EXPECT_STREQ("1", value.getS0C());
+	EXPECT_EQ(2, value.getS0ESize());
+	EXPECT_EQ(2, value.getS0CSize());
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_STREQ("-1", value.getS0S());
-	EXPECT_STREQ("-2", value.getS0H());
-	EXPECT_EQ(3, value.getS0SSize());
-	EXPECT_EQ(3, value.getS0HSize());
+	EXPECT_STREQ("-1", value.getS0E());
+	EXPECT_STREQ("-2", value.getS0C());
+	EXPECT_EQ(3, value.getS0ESize());
+	EXPECT_EQ(3, value.getS0CSize());
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_STREQ("10", value.getS0S());
-	EXPECT_STREQ("11", value.getS0H());
-	EXPECT_EQ(3, value.getS0SSize());
-	EXPECT_EQ(3, value.getS0HSize());
+	EXPECT_STREQ("10", value.getS0E());
+	EXPECT_STREQ("11", value.getS0C());
+	EXPECT_EQ(3, value.getS0ESize());
+	EXPECT_EQ(3, value.getS0CSize());
 }
 
 
@@ -255,82 +255,82 @@ TEST_F(TestPcombs, S1)
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(3, value.getS1SSize());
-	EXPECT_EQ(3, value.getS1HSize());
+	EXPECT_EQ(3, value.getS1ESize());
+	EXPECT_EQ(3, value.getS1CSize());
 
-	EXPECT_STREQ("2", value.getS1S(0));
-	EXPECT_STREQ("4", value.getS1H(0));
-	EXPECT_EQ(2, value.getS1SSize(0));
-	EXPECT_EQ(2, value.getS1HSize(0));
-	EXPECT_STREQ("-3", value.getS1S(1));
-	EXPECT_STREQ("-4", value.getS1H(1));
-	EXPECT_EQ(3, value.getS1SSize(1));
-	EXPECT_EQ(3, value.getS1HSize(1));
-	EXPECT_STREQ("3", value.getS1S(2));
-	EXPECT_STREQ("5", value.getS1H(2));
-	EXPECT_EQ(2, value.getS1SSize(2));
-	EXPECT_EQ(2, value.getS1HSize(2));
+	EXPECT_STREQ("2", value.getS1E(0));
+	EXPECT_STREQ("4", value.getS1C(0));
+	EXPECT_EQ(2, value.getS1ESize(0));
+	EXPECT_EQ(2, value.getS1CSize(0));
+	EXPECT_STREQ("-3", value.getS1E(1));
+	EXPECT_STREQ("-4", value.getS1C(1));
+	EXPECT_EQ(3, value.getS1ESize(1));
+	EXPECT_EQ(3, value.getS1CSize(1));
+	EXPECT_STREQ("3", value.getS1E(2));
+	EXPECT_STREQ("5", value.getS1C(2));
+	EXPECT_EQ(2, value.getS1ESize(2));
+	EXPECT_EQ(2, value.getS1CSize(2));
 	success = false;
-	try { value.getS1S(3); }
+	try { value.getS1E(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1H(3); }
+	try { value.getS1C(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1SSize(3); }
+	try { value.getS1ESize(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1HSize(3); }
+	try { value.getS1CSize(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(0, value.getS1SSize());
-	EXPECT_EQ(0, value.getS1HSize());
+	EXPECT_EQ(0, value.getS1ESize());
+	EXPECT_EQ(0, value.getS1CSize());
 	success = false;
-	try { value.getS1S(0); }
+	try { value.getS1E(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1H(0); }
+	try { value.getS1C(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1SSize(0); }
+	try { value.getS1ESize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1HSize(0); }
+	try { value.getS1CSize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(1, value.getS1SSize());
-	EXPECT_EQ(1, value.getS1HSize());
+	EXPECT_EQ(1, value.getS1ESize());
+	EXPECT_EQ(1, value.getS1CSize());
 
-	EXPECT_STREQ("-3", value.getS1S(0));
-	EXPECT_STREQ("-4", value.getS1H(0));
-	EXPECT_EQ(3, value.getS1SSize(0));
-	EXPECT_EQ(3, value.getS1HSize(0));
+	EXPECT_STREQ("-3", value.getS1E(0));
+	EXPECT_STREQ("-4", value.getS1C(0));
+	EXPECT_EQ(3, value.getS1ESize(0));
+	EXPECT_EQ(3, value.getS1CSize(0));
 	success = false;
-	try { value.getS1S(1); }
+	try { value.getS1E(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1H(1); }
+	try { value.getS1C(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1SSize(1); }
+	try { value.getS1ESize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS1HSize(1); }
+	try { value.getS1CSize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -343,150 +343,150 @@ TEST_F(TestPcombs, S2)
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(2, value.getS2SSize());
-	EXPECT_EQ(2, value.getS2HSize());
+	EXPECT_EQ(2, value.getS2ESize());
+	EXPECT_EQ(2, value.getS2CSize());
 
-	EXPECT_EQ(3, value.getS2SSize(0));
-	EXPECT_EQ(3, value.getS2HSize(0));
-	EXPECT_EQ(1, value.getS2SSize(1));
-	EXPECT_EQ(1, value.getS2HSize(1));
+	EXPECT_EQ(3, value.getS2ESize(0));
+	EXPECT_EQ(3, value.getS2CSize(0));
+	EXPECT_EQ(1, value.getS2ESize(1));
+	EXPECT_EQ(1, value.getS2CSize(1));
 	success = false;
-	try { value.getS2SSize(2); }
+	try { value.getS2ESize(2); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2HSize(2); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-
-	EXPECT_STREQ("6", value.getS2S(0, 0));
-	EXPECT_STREQ("8", value.getS2H(0, 0));
-	EXPECT_EQ(2, value.getS2SSize(0, 0));
-	EXPECT_EQ(2, value.getS2HSize(0, 0));
-	EXPECT_STREQ("-5", value.getS2S(0, 1));
-	EXPECT_STREQ("-6", value.getS2H(0, 1));
-	EXPECT_EQ(3, value.getS2SSize(0, 1));
-	EXPECT_EQ(3, value.getS2HSize(0, 1));
-	EXPECT_STREQ("7", value.getS2S(0, 2));
-	EXPECT_STREQ("9", value.getS2H(0, 2));
-	EXPECT_EQ(2, value.getS2SSize(0, 2));
-	EXPECT_EQ(2, value.getS2HSize(0, 2));
-	success = false;
-	try { value.getS2S(0, 3); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-	success = false;
-	try { value.getS2H(0, 3); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-	success = false;
-	try { value.getS2SSize(0, 3); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-	success = false;
-	try { value.getS2HSize(0, 3); }
+	try { value.getS2CSize(2); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_STREQ("-5", value.getS2S(1, 0));
-	EXPECT_STREQ("-6", value.getS2H(1, 0));
-	EXPECT_EQ(3, value.getS2SSize(1, 0));
-	EXPECT_EQ(3, value.getS2HSize(1, 0));
+	EXPECT_STREQ("6", value.getS2E(0, 0));
+	EXPECT_STREQ("8", value.getS2C(0, 0));
+	EXPECT_EQ(2, value.getS2ESize(0, 0));
+	EXPECT_EQ(2, value.getS2CSize(0, 0));
+	EXPECT_STREQ("-5", value.getS2E(0, 1));
+	EXPECT_STREQ("-6", value.getS2C(0, 1));
+	EXPECT_EQ(3, value.getS2ESize(0, 1));
+	EXPECT_EQ(3, value.getS2CSize(0, 1));
+	EXPECT_STREQ("7", value.getS2E(0, 2));
+	EXPECT_STREQ("9", value.getS2C(0, 2));
+	EXPECT_EQ(2, value.getS2ESize(0, 2));
+	EXPECT_EQ(2, value.getS2CSize(0, 2));
 	success = false;
-	try { value.getS2S(1, 1); }
+	try { value.getS2E(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2H(1, 1); }
+	try { value.getS2C(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2SSize(1, 1); }
+	try { value.getS2ESize(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2HSize(1, 1); }
+	try { value.getS2CSize(0, 3); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+
+	EXPECT_STREQ("-5", value.getS2E(1, 0));
+	EXPECT_STREQ("-6", value.getS2C(1, 0));
+	EXPECT_EQ(3, value.getS2ESize(1, 0));
+	EXPECT_EQ(3, value.getS2CSize(1, 0));
+	success = false;
+	try { value.getS2E(1, 1); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { value.getS2C(1, 1); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { value.getS2ESize(1, 1); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { value.getS2CSize(1, 1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getS2S(2, 0); }
+	try { value.getS2E(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2H(2, 0); }
+	try { value.getS2C(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2SSize(2, 0); }
+	try { value.getS2ESize(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2HSize(2, 0); }
+	try { value.getS2CSize(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(0, value.getS2SSize());
-	EXPECT_EQ(0, value.getS2HSize());
+	EXPECT_EQ(0, value.getS2ESize());
+	EXPECT_EQ(0, value.getS2CSize());
 
 	success = false;
-	try { value.getS2SSize(0); }
+	try { value.getS2ESize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2HSize(0); }
+	try { value.getS2CSize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getS2S(0, 0); }
+	try { value.getS2E(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2H(0, 0); }
+	try { value.getS2C(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2SSize(0, 0); }
+	try { value.getS2ESize(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2HSize(0, 0); }
+	try { value.getS2CSize(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(1, value.getS2SSize());
-	EXPECT_EQ(1, value.getS2HSize());
+	EXPECT_EQ(1, value.getS2ESize());
+	EXPECT_EQ(1, value.getS2CSize());
 
-	EXPECT_EQ(0, value.getS2SSize(0));
-	EXPECT_EQ(0, value.getS2HSize(0));
+	EXPECT_EQ(0, value.getS2ESize(0));
+	EXPECT_EQ(0, value.getS2CSize(0));
 	success = false;
-	try { value.getS2SSize(1); }
+	try { value.getS2ESize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2HSize(1); }
+	try { value.getS2CSize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getS2S(0, 0); }
+	try { value.getS2E(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2H(0, 0); }
+	try { value.getS2C(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2SSize(0, 0); }
+	try { value.getS2ESize(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getS2HSize(0, 0); }
+	try { value.getS2CSize(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
