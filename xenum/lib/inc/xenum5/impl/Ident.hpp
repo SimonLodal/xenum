@@ -224,6 +224,15 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 	BOOST_PP_CAT(_XENUM5_IDENT_CHECK_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
 
 
+/**
+ * Entry point for debug dumping of identifier data.
+ */
+#define _XENUM5_IDENT_DBGINFO(XDCL)								\
+	_XENUM5_CMNT(Ident)									\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDCL))		\
+	BOOST_PP_CAT(_XENUM5_IDENT_DBGINFO_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
+
+
 // =========================== DEFS ident data ===============================
 /**
  * No data to define since nobody uses it.
@@ -375,6 +384,39 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL)
 		sizeof(LSCOPE identOffsets) == SSCOPE size * sizeof(LSCOPE IdentIndex),		\
 		"BUG: Struct size mismatch (identOffsets / ::size)."				\
 	);											_XENUM5_NWLN \
+
+
+// =========================== DEFS _dbginfo() ===============================
+/**
+ * Debug info: None since there is no data.
+ */
+#define _XENUM5_IDENT_DBGINFO_OFF(XDCL)								\
+
+/**
+ * Debug info for ident data structures, defined in source.
+ */
+#define _XENUM5_IDENT_DBGINFO_SRC(XDCL)								\
+	_XENUM5_IDENT_DBGINFO_I1(								\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, )::,						\
+		XDCL										\
+	)											\
+
+/**
+ * Debug info for ident data structures, defined in source.
+ */
+#define _XENUM5_IDENT_DBGINFO_HDR(XDCL)								\
+	_XENUM5_IDENT_DBGINFO_I1(, XDCL)							\
+
+
+/**
+ * Common worker to define debug info for ident data structures.
+ */
+#define _XENUM5_IDENT_DBGINFO_I1(DATA_SCOPE, XDCL)						\
+	std::cout										\
+		<<"\tident:"<<std::endl								\
+		<<"\t\tsizeof(identValues) = "<<sizeof(DATA_SCOPE identValues)<<std::endl	\
+		<<"\t\tsizeof(IdentValueNames) = "<<sizeof(DATA_SCOPE IdentValueNames )<<std::endl	\
+		;										\
 
 
 // ====================================== COMMON PARTS ==========================================

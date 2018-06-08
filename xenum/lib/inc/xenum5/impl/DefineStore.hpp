@@ -87,11 +87,9 @@
 	void DSCOPE SNAME::_dbginfo(void)							\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		std::cout									\
-			<<BOOST_PP_STRINGIZE(_XENUM5_STORE_NAME(XDCL))<<"::_dbginfo:"<<std::endl	\
-			<<"\tsizeof(identValues) = "<<sizeof(LSCOPE identValues)<<std::endl	\
-			<<"\tsizeof(IdentValueNames) = "<<sizeof(LSCOPE IdentValueNames)<<std::endl	\
-			;									\
+		std::cout<<BOOST_PP_STRINGIZE(_XENUM5_STORE_NAME(XDCL))				\
+			 <<"::_dbginfo:"<<std::endl;						\
+		_XENUM5_IDENT_DBGINFO(XDCL)							\
 		BOOST_PP_REPEAT									\
 		(										\
 			BOOST_PP_SEQ_SIZE(_XENUM5_XDCL_PDEFS(XDCL)),				\

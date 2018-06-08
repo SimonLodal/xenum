@@ -10,6 +10,16 @@
 #define _XENUM5_IMPL_CSTRING_DECL_STORE_HPP
 
 
+// ========================================== MAIN ==============================================
+/**
+ * Entry point for all custom-prop related declarations in store class (header).
+ */
+// FIXME: ext/cxp
+#define _XENUM5_CSTRING_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLS)	\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
+
+
 // ======================================= MAIN (HDR) ===========================================
 /**
  * Declare the data and functions related to a single custom property, implemented in header.

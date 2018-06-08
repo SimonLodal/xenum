@@ -4,89 +4,10 @@
  * @copyright 2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  *
- * Implementation of the "cstring" data type category for custom properties.
+ * Common parts for implementation of the "cstring" data type category for custom properties.
  */
 #ifndef _XENUM5_IMPL_CSTRING_HPP
 #define _XENUM5_IMPL_CSTRING_HPP
-
-
-// ============================= DECLARATION IN CONTAINER CLASS ================================
-/**
- * Entry point for declaring a custom property of cstring type, in store class context.
- */
-#define _XENUM5_PROP_DECLS_CSTRING(PDEF, XDCL, CTXT, Z)						\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLS)	\
-	(											\
-		_XENUM5_PDEF_NAME(PDEF),							\
-		_XENUM5_PDEF_DEPTH(PDEF),							\
-		PDEF,										\
-		CTXT,										\
-		Z										\
-	)
-
-
-// =============================== DECLARATION IN VALUE CLASS ==================================
-/**
- * Entry point for declaring a custom property of cstring type, in value class context.
- */
-#define _XENUM5_PROP_DECLV_CSTRING(PDEF, CTXT, Z)						\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLV)	\
-	(											\
-		_XENUM5_PDEF_NAME(PDEF),							\
-		_XENUM5_PDEF_DEPTH(PDEF),							\
-		PDEF,										\
-		CTXT,										\
-		Z										\
-	)
-
-
-// ======================================= DEFINITION ==========================================
-/**
- * Entry point for defining the data of a custom properties of cstring type, in source file
- * context.
- */
-#define _XENUM5_PROP_DEFINE_CSTRING(PDEF, XDCL, CTXT, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DEFINE)	\
-	(											\
-		_XENUM5_PDEF_NAME(PDEF),							\
-		_XENUM5_PDEF_DEPTH(PDEF),							\
-		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		CTXT,										\
-		Z										\
-	)											\
-
-/**
- * Entry point for defining final checks for a custom property of cstring type, in source file
- * context.
- */
-#define _XENUM5_PROP_CHECK_CSTRING(PNAME, PDEF, XDCL, CTXT, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _CHECK)	\
-	(											\
-		PNAME,										\
-		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		Z										\
-	)											\
-
-/**
- * Entry point for defining debug info for a custom property of cstring type, in source file
- * context.
- */
-#define _XENUM5_PROP_DBGINFO_CSTRING(PNAME, PDEF, XDCL, CTXT, Z)				\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DBGINFO)\
-	(											\
-		PNAME,										\
-		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		Z										\
-	)											\
 
 
 // ====================================== COMMON PARTS ==========================================

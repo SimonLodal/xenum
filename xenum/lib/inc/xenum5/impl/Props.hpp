@@ -40,13 +40,14 @@
  */
 #define _XENUM5_PROP_DECLS_I1(PDEF, CTXT, Z)							\
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))				\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLS_, _XENUM5_PDEF_TYPCAT(PDEF))				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DECLS)			\
 	(											\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
 		PDEF,										\
-		_XENUM5_CTXT_XDCL(CTXT),							\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
-	)
+	)											\
 
 
 // =============================== DECLARATION IN VALUE CLASS ===================================
@@ -78,12 +79,14 @@
  */
 #define _XENUM5_PROP_DECLV_I1(PDEF, CTXT, Z)							\
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))				\
-	BOOST_PP_CAT(_XENUM5_PROP_DECLV_, _XENUM5_PDEF_TYPCAT(PDEF))				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DECLV)			\
 	(											\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
 		PDEF,										\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
-	)
+	)											\
 
 
 // ======================================= DEFINITION ===========================================
@@ -106,6 +109,7 @@
 	_XENUM5_PROP_DEFINE_I1									\
 	(											\
 		_XENUM5_XDCL_PDEFN(_XENUM5_CTXT_XDCL(CTXT), N),					\
+		_XENUM5_CTXT_XDCL(CTXT),							\
 		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -114,12 +118,16 @@
 /**
  * Worker for _XENUM5_PROP_DEFINE().
  */
-#define _XENUM5_PROP_DEFINE_I1(PDEF, CTXT, Z)							\
+#define _XENUM5_PROP_DEFINE_I1(PDEF, XDCL, CTXT, Z)						\
 	_XENUM5_NWLN _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:_XENUM5_PDEF_NAME(PDEF))		\
-	BOOST_PP_CAT(_XENUM5_PROP_DEFINE_, _XENUM5_PDEF_TYPCAT(PDEF))				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DEFINE)		\
 	(											\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
 		PDEF,										\
-		_XENUM5_CTXT_XDCL(CTXT),							\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
@@ -133,6 +141,7 @@
 	_XENUM5_PROP_CHECK_I1									\
 	(											\
 		_XENUM5_XDCL_PDEFN(_XENUM5_CTXT_XDCL(CTXT), N),					\
+		_XENUM5_CTXT_XDCL(CTXT),							\
 		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
@@ -140,16 +149,18 @@
 /**
  * Worker for _XENUM5_PROP_CHECK().
  */
-#define _XENUM5_PROP_CHECK_I1(PDEF, CTXT, Z)							\
+#define _XENUM5_PROP_CHECK_I1(PDEF, XDCL, CTXT, Z)						\
 	_XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))							\
-	BOOST_PP_CAT(_XENUM5_PROP_CHECK_, _XENUM5_PDEF_TYPCAT(PDEF))				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _CHECK)			\
 	(											\
 		_XENUM5_PDEF_NAME(PDEF),							\
 		PDEF,										\
-		_XENUM5_CTXT_XDCL(CTXT),							\
-		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		/*_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),*/						\
 		Z										\
-	)
+	)											\
 
 
 /**
@@ -159,23 +170,26 @@
 	_XENUM5_PROP_DBGINFO_I1									\
 	(											\
 		_XENUM5_XDCL_PDEFN(_XENUM5_CTXT_XDCL(CTXT), N),					\
+		_XENUM5_CTXT_XDCL(CTXT),							\
 		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
 		Z										\
 	)
 
 /**
- * Worker for _XENUM5_PROP_CHECK().
+ * Worker for _XENUM5_PROP_DBGINFO().
  */
-#define _XENUM5_PROP_DBGINFO_I1(PDEF, CTXT, Z)							\
+#define _XENUM5_PROP_DBGINFO_I1(PDEF, XDCL, CTXT, Z)						\
 	_XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))							\
-	BOOST_PP_CAT(_XENUM5_PROP_DBGINFO_, _XENUM5_PDEF_TYPCAT(PDEF))				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DBGINFO)		\
 	(											\
 		_XENUM5_PDEF_NAME(PDEF),							\
 		PDEF,										\
-		_XENUM5_CTXT_XDCL(CTXT),							\
-		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
+		_XENUM5_XDCL_DSCOPE(XDCL),							\
+		_XENUM5_STORE_NAME(XDCL),							\
+		/*_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),*/						\
 		Z										\
-	)
+	)											\
 
 
 // ====================================== COMMON PARTS ==========================================

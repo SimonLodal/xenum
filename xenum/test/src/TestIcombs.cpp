@@ -39,7 +39,7 @@ public:
 TEST_F(TestIcombs, IdentOffOff)
 {
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentOffOff::_dbginfo();
+	xenums::IdentOffOff::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentOffOff::Icombs::_size);
 	// getIdentifier(): Not present.
@@ -62,7 +62,7 @@ TEST_F(TestIcombs, IdentOffExt)
 {
 	xenums::IdentOffExt::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentOffExt::_dbginfo();
+	xenums::IdentOffExt::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentOffExt::Icombs::_size);
 	// getIdentifier(): Not present.
@@ -100,7 +100,7 @@ TEST_F(TestIcombs, IdentOffInl)
 {
 	xenums::IdentOffInl::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentOffInl::_dbginfo();
+	xenums::IdentOffInl::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentOffInl::Icombs::_size);
 	// getIdentifier(): Not present.
@@ -138,7 +138,7 @@ TEST_F(TestIcombs, IdentOffCxp)
 {
 	xenums::IdentOffCxp::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentOffCxp::_dbginfo();
+	xenums::IdentOffCxp::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentOffCxp::Icombs::_size);
 	// getIdentifier(): Not present.
@@ -175,7 +175,7 @@ TEST_F(TestIcombs, IdentOffCxp)
 TEST_F(TestIcombs, IdentExtOff)
 {
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentExtOff::_dbginfo();
+	xenums::IdentExtOff::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentExtOff::Icombs::_size);
 	// getIdentifier()
@@ -197,7 +197,7 @@ TEST_F(TestIcombs, IdentExtExt)
 {
 	xenums::IdentExtExt::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentExtExt::_dbginfo();
+	xenums::IdentExtExt::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentExtExt::Icombs::_size);
 	// getIdentifier()
@@ -234,7 +234,7 @@ TEST_F(TestIcombs, IdentExtInl)
 {
 	xenums::IdentExtInl::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentExtInl::_dbginfo();
+	xenums::IdentExtInl::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentExtInl::Icombs::_size);
 	// getIdentifier()
@@ -277,7 +277,7 @@ TEST_F(TestIcombs, IdentExtCxp)
 {
 	xenums::IdentExtCxp::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentExtCxp::_dbginfo();
+	xenums::IdentExtCxp::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentExtCxp::Icombs::_size);
 	// getIdentifier()
@@ -324,7 +324,7 @@ TEST_F(TestIcombs, IdentCxpOff)
 {
 	xenums::IdentCxpOff::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentCxpOff::_dbginfo();
+	xenums::IdentCxpOff::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentCxpOff::Icombs::_size);
 	// getIdentifier()
@@ -356,7 +356,7 @@ TEST_F(TestIcombs, IdentCxpExt)
 {
 	xenums::IdentCxpExt::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentCxpExt::_dbginfo();
+	xenums::IdentCxpExt::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentCxpExt::Icombs::_size);
 	// getIdentifier()
@@ -403,7 +403,7 @@ TEST_F(TestIcombs, IdentCxpInl)
 {
 	xenums::IdentCxpInl::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentCxpInl::_dbginfo();
+	xenums::IdentCxpInl::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentCxpInl::Icombs::_size);
 	// getIdentifier()
@@ -456,7 +456,7 @@ TEST_F(TestIcombs, IdentCxpCxp)
 {
 	xenums::IdentCxpCxp::Icomb value;
 #if _XENUM5_DEBUG_STORE
-	xenums::_xenum5_store_IdentCxpCxp::_dbginfo();
+	xenums::IdentCxpCxp::_xenum5_store_Icombs::_dbginfo();
 #endif
 	EXPECT_EQ(3, xenums::IdentCxpCxp::Icombs::_size);
 	// getIdentifier()

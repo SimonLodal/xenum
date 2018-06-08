@@ -10,6 +10,32 @@
 #define _XENUM5_IMPL_CSTRING_DEFINE_HPP
 
 
+// ========================================== MAIN ==============================================
+/**
+ * Entry point for all custom-prop related definitions in source file.
+ */
+// FIXME: ext/cxp
+#define _XENUM5_CSTRING_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DEFINE)	\
+		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
+
+
+/**
+ * Entry point for definition of final checks on data structures.
+ */
+// FIXME: ext/cxp
+#define _XENUM5_CSTRING_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _CHECK)	\
+		(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)						\
+
+/**
+ * Entry point for definition of debug info printing.
+ */
+#define _XENUM5_CSTRING_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DBGINFO)\
+		(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)						\
+
+
 // ======================================= MAIN (HDR) ===========================================
 /**
  * Define the data of a single custom property, for "cstring" data types, implemented in header.
@@ -177,9 +203,11 @@
  * Define debug info, for implementation in header.
  */
 #define _XENUM5_CSTRING_HDR_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
-	std::cout<<BOOST_PP_STRINGIZE(PNAME)<<" (HDR):"<<std::endl				\
-		<<"\tsizeof(BOOST_PP_CAT(PNAME, Values)) = "<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl	\
-		<<"\tsizeof(BOOST_PP_CAT(PNAME, ValueNames)) = "<<sizeof(BOOST_PP_CAT(PNAME, ValueNames))<<std::endl	\
+	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<" (HDR):"<<std::endl			\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, Values))<<") = "	\
+			<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl			\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
+			<<sizeof(BOOST_PP_CAT(PNAME, ValueNames))<<std::endl			\
 		;										_XENUM5_NWLN \
 
 
@@ -187,9 +215,11 @@
  * Define debug info, for implementation in source.
  */
 #define _XENUM5_CSTRING_SRC_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
-	std::cout<<BOOST_PP_STRINGIZE(PNAME)<<" (SRC):"<<std::endl				\
-		<<"\tsizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values)) = "<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<std::endl	\
-		<<"\tsizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames)) = "<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<std::endl	\
+	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<" (SRC):"<<std::endl			\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<") = "	\
+			<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<std::endl		\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
+			<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<std::endl		\
 		;										_XENUM5_NWLN \
 
 

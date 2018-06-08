@@ -12,7 +12,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL Clang)
 	# Same as g++ options
 	add_definitions(-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE)
-	set(CFLAGS_COMMON " -Wall -Wstrict-overflow=5 -std=c++11 -Os")
+	set(CFLAGS_COMMON " -Wall -Wstrict-overflow=5 -std=c++11 -Os -fmacro-backtrace-limit=0")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CFLAGS_COMMON}")
 	# -lstdc++ required for clang-3.5 to link with exceptions enabled
 	set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined -lstdc++")

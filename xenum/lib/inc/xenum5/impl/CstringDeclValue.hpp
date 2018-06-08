@@ -11,6 +11,16 @@
 
 
 
+// ========================================== MAIN ==============================================
+/**
+ * Entry point for all custom-prop related declarations in value class (header).
+ */
+// FIXME: ext/cxp
+#define _XENUM5_CSTRING_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLV)	\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
+
+
 // ======================================= MAIN (HDR) ===========================================
 /**
  * Declare the functions related to a single custom property, implemented in header.

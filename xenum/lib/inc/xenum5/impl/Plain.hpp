@@ -4,94 +4,10 @@
  * @copyright 2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
  *
- * Implementation of the "plain" data type category for custom properties.
+ * Common parts for implementation of the "plain" data type category for custom properties.
  */
 #ifndef _XENUM5_IMPL_PLAIN_HPP
 #define _XENUM5_IMPL_PLAIN_HPP
-
-
-
-// =============================== DECLARATION IN STORE CLASS ==================================
-/**
- * Entry point for declaring a custom property of plain type, in store class context.
- */
-#define _XENUM5_PROP_DECLS_PLAIN(PDEF, XDCL, CTXT, Z)						\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLS)	\
-	(											\
-		_XENUM5_PDEF_NAME(PDEF),							\
-		_XENUM5_PDEF_DEPTH(PDEF),							\
-		PDEF,										\
-		CTXT,										\
-		Z										\
-	)
-
-
-// =============================== DECLARATION IN VALUE CLASS ==================================
-/**
- * Entry point for declaring a custom property of plain type, in value class context.
- */
-#define _XENUM5_PROP_DECLV_PLAIN(PDEF, CTXT, Z)							\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLV)	\
-	(											\
-		_XENUM5_PDEF_NAME(PDEF),							\
-		_XENUM5_PDEF_DEPTH(PDEF),							\
-		PDEF,										\
-		CTXT,										\
-		Z										\
-	)
-
-
-// ======================================= DEFINITION ==========================================
-/**
- * Entry point for defining a custom property of plain type, in source file context.
- */
-#define _XENUM5_PROP_DEFINE_PLAIN(PDEF, XDCL, CTXT, Z)						\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DEFINE)	\
-	(											\
-		_XENUM5_PDEF_NAME(PDEF),							\
-		_XENUM5_PDEF_DEPTH(PDEF),							\
-		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		CTXT,										\
-		Z										\
-	)
-
-
-/**
- * Entry point for defining final checks for a custom property of plain type, in source file
- * context.
- */
-#define _XENUM5_PROP_CHECK_PLAIN(PNAME, PDEF, XDCL, CTXT, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _CHECK)	\
-	(											\
-		PNAME,										\
-		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		Z										\
-	)											\
-
-
-/**
- * Entry point for defining debug info for a custom property of plain type, in source file
- * context.
- */
-#define _XENUM5_PROP_DBGINFO_PLAIN(PNAME, PDEF, XDCL, CTXT, Z)					\
-
-/*
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DBGINFO)	\
-	(											\
-		PNAME,										\
-		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		Z										\
-	)											\
-*/
 
 
 // ====================================== COMMON PARTS ==========================================
