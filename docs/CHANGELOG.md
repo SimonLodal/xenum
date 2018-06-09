@@ -2,8 +2,9 @@
 
 ## [Unreleased]
 ### Added
-- Option for enum-value identifiers and per custom property to generate the definitions
-  of data and functions in either header or source file.
+- Options for identifiers and custom properties for how to implement their get*() and
+  from*() methods; off, inline, constexpr, or just plain external (declared in header,
+  defined in source).
 - Improved validation of declaration parameters.
 
 ## [5.0] - 2018-04-26

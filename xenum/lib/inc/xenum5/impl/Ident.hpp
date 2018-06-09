@@ -65,7 +65,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 	_XENUM5_IDENT_DEFINE_GET_IDENT(static constexpr, , )					\
 
 
-// =========================== DECLS ident from() ============================
+// ========================== DECLS ident from() =============================
 /**
  * Omit fromIdentifier(), turned off.
  */

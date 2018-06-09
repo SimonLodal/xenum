@@ -14,45 +14,34 @@
 /**
  * Entry point for all custom-prop related declarations in store class (header).
  */
-// FIXME: ext/cxp
 #define _XENUM5_CSTRING_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLS)	\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_CSTRING_DATA_DECLS_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
+	BOOST_PP_CAT(_XENUM5_CSTRING_GET_DECLS_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
 		(PNAME, DEPTH, PDEF, CTXT, Z)							\
 
 
-// ======================================= MAIN (HDR) ===========================================
+// =========================== DECLS prop data ===============================
 /**
- * Declare the data and functions related to a single custom property, implemented in header.
+ * No data to declare since nobody uses it.
  */
-#define _XENUM5_CSTRING_HDR_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_CSTRING_HDR_DECLS_VALUES(PNAME, PDEF, CTXT, Z)					\
-	_XENUM5_CSTRING_HDR_DECLS_NODES(PNAME, CTXT, Z)						\
-	_XENUM5_CSTRING_HDR_DECLS_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
+/* FIXME: Implement later
+#define _XENUM5_CSTRING_DATA_DECLS_OFF(PNAME, DEPTH, PDEF, CTXT, Z)				\
+*/
 
-
-// ======================================= MAIN (SRC) ===========================================
 /**
- * Declare the data related to a single custom property, implemented in source.
+ * No data to declare since it is all defined in source file.
  */
-#define _XENUM5_CSTRING_SRC_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_CSTRING_SRC_DECLS_FUNCS(PNAME, DEPTH, PDEF, Z)					\
+#define _XENUM5_CSTRING_DATA_DECLS_SRC(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
-
-// ====================================== VALUES (HDR) ==========================================
 /**
- * Declare and define the value type and values.
+ * Define data inline since some inline methods use it.
  */
-#define _XENUM5_CSTRING_HDR_DECLS_VALUES(PNAME, PDEF, CTXT, Z)					\
+#define _XENUM5_CSTRING_DATA_DECLS_HDR(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
 	_XENUM5_CSTRING_DEFINE_VALUES(static, PNAME, CTXT)					\
-
-
-// ======================================= NODES (HDR) ==========================================
-/**
- * Define the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
- * we always need an indexnodes table since each string needs to be referenced by an indexnode.
- */
-#define _XENUM5_CSTRING_HDR_DECLS_NODES(PNAME, CTXT, Z)						\
 	_XENUM5_CSTRING_DEFINE_NODESSIZE(static, PNAME, CTXT)					\
 	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
 	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
@@ -61,11 +50,27 @@
 	_XENUM5_CSTRING_DEFINE_NODES(static, PNAME, CTXT)					\
 
 
-// ===================================== FUNCTIONS (HDR) ========================================
+// ========================== DECLS prop getters =============================
 /**
- * Declare the functions related to a single custom property, implemented in header.
+ * Omit getters, turned off.
  */
-#define _XENUM5_CSTRING_HDR_DECLS_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
+/* FIXME: Implement later
+#define _XENUM5_CSTRING_GET_DECLS_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
+*/
+
+/**
+ * Declare getters, defined in source file.
+ */
+#define _XENUM5_CSTRING_GET_DECLS_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
+	_XENUM5_PROP_SRC_DECLS_INDEX_TYPE(PNAME, BOOST_PP_INC(DEPTH))				\
+	_XENUM5_PROP_SRC_DECLS_GET_SIZE(BOOST_PP_INC(DEPTH), PDEF, Z)				\
+	_XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+
+/**
+ * Define getters as inline constexpr.
+ */
+#define _XENUM5_CSTRING_GET_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_DEFINE_GET_NODE(								\
 		/* INC() because Nodes also has indexnodes for the leaf string values */	\
 		BOOST_PP_INC(DEPTH),								\
@@ -73,14 +78,13 @@
 		Z										\
 	)											\
 	_XENUM5_PROP_HDR_DECLS_GET_SIZE(BOOST_PP_INC(DEPTH), PDEF, Z)				\
-	_XENUM5_CSTRING_HDR_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)				\
+	_XENUM5_CSTRING_GET_DEFS_cxp(PNAME, DEPTH, PDEF, Z)					\
 
-
-// ========================= get${PNAME}() (HDR) =============================
 /**
  * Generate get${propname}() value getter.
  */
-#define _XENUM5_CSTRING_HDR_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)				\
+// FIXME: Merge with function to define the source implementation.
+#define _XENUM5_CSTRING_GET_DEFS_cxp(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get value of the custom property PNAME.)					\
 	static constexpr const _XENUM5_PDEF_PARM_TYPE(PDEF)					\
 	BOOST_PP_CAT(get, PNAME) (								\
@@ -95,17 +99,6 @@
 			.index									\
 		];										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
-
-
-// ===================================== FUNCTIONS (SRC) ========================================
-/**
- * Declare the functions related to a single custom property, implemented in source.
- */
-#define _XENUM5_CSTRING_SRC_DECLS_FUNCS(PNAME, DEPTH, PDEF, Z)					\
-	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
-	_XENUM5_PROP_SRC_DECLS_INDEX_TYPE(PNAME, BOOST_PP_INC(DEPTH))				\
-	_XENUM5_PROP_SRC_DECLS_GET_SIZE(BOOST_PP_INC(DEPTH), PDEF, Z)				\
-	_XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 
 
 #endif // _XENUM5_IMPL_CSTRING_DECL_STORE_HPP

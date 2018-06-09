@@ -10,62 +10,54 @@
 #define _XENUM5_IMPL_PLAIN_DECL_STORE_HPP
 
 
-// ========================================== MAIN ==============================================
+// ======================================= MAIN: STORE ==========================================
 /**
  * Entry point for all custom-prop related declarations in store class (header).
  */
-// FIXME: ext/cxp
 #define _XENUM5_PLAIN_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_PLAIN_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DECLS)	\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DECLS_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
+	BOOST_PP_CAT(_XENUM5_PLAIN_GET_DECLS_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
 		(PNAME, DEPTH, PDEF, CTXT, Z)							\
 
 
-// ======================================= MAIN (HDR) ===========================================
+// =========================== DECLS prop data ===============================
 /**
- * Declare the data and functions related to a single custom property, implemented in header.
+ * No data to declare since nobody uses it.
  */
-#define _XENUM5_PLAIN_HDR_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PLAIN_HDR_DECLS_VALUES(PNAME, PDEF, CTXT, Z)					\
-	BOOST_PP_CAT(_XENUM5_PLAIN_HDR_DECLS, BOOST_PP_BOOL(DEPTH))				\
-		(PNAME, PDEF, CTXT, Z)								\
-	_XENUM5_PLAIN_HDR_DECLS_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
+/* FIXME: Implement later
+#define _XENUM5_PLAIN_DATA_DECLS_OFF(PNAME, DEPTH, PDEF, CTXT, Z)				\
+*/
 
 /**
- * Worker for _XENUM5_PLAIN_HDR_DECLS(), for depth==0.
+ * No data to declare since it is all defined in source file.
+ */
+#define _XENUM5_PLAIN_DATA_DECLS_SRC(PNAME, DEPTH, PDEF, CTXT, Z)				\
+
+/**
+ * Define data inline since some inline methods use it.
+ */
+#define _XENUM5_PLAIN_DATA_DECLS_HDR(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
+	_XENUM5_PLAIN_DEFINE_VALUES(static, PNAME, CTXT)					\
+	BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DECLS_HDR_, BOOST_PP_BOOL(DEPTH))			\
+		(PNAME, PDEF, CTXT, Z)								\
+
+
+/**
+ * Worker for _XENUM5_PLAIN_DATA_DECLS_HDR(), for depth==0.
  * Values are already defined as a single plain array of values, directly indexed
  * by enum value; no need for name struct or nodes table.
  */
-#define _XENUM5_PLAIN_HDR_DECLS0(PNAME, PDEF, CTXT, Z)						\
+#define _XENUM5_PLAIN_DATA_DECLS_HDR_0(PNAME, PDEF, CTXT, Z)					\
 
 /**
- * Worker for _XENUM5_PLAIN_HDR_DECLS(), for depth!=0.
+ * Worker for _XENUM5_PLAIN_DATA_DECLS_HDR(), for depth!=0.
+ * Declares variables related to index nodes (depth>0).
  */
-#define _XENUM5_PLAIN_HDR_DECLS1(PNAME, PDEF, CTXT, Z)						\
-	_XENUM5_PLAIN_HDR_DECLS1_NODES(PNAME, PDEF, CTXT, Z)					\
-
-
-// ======================================= MAIN (SRC) ===========================================
-/**
- * Declare the functions related to a single custom property, implemented in source.
- */
-#define _XENUM5_PLAIN_SRC_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DECLS_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
-
-
-// ====================================== VALUES (HDR) ==========================================
-/**
- * Declare and define the value type and values.
- */
-#define _XENUM5_PLAIN_HDR_DECLS_VALUES(PNAME, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
-	_XENUM5_PLAIN_DEFINE_VALUES(static, PNAME, CTXT)					\
-
-
-// ======================================= NODES (HDR) ==========================================
-/**
- * Worker for _XENUM5_PLAIN_HDR_DECLS_DATA(). Declares variables related to index nodes (depth>0).
- */
-#define _XENUM5_PLAIN_HDR_DECLS1_NODES(PNAME, PDEF, CTXT, Z)					\
+#define _XENUM5_PLAIN_DATA_DECLS_HDR_1(PNAME, PDEF, CTXT, Z)					\
 	_XENUM5_PLAIN_DEFINE_NODESSIZE(static, PNAME, CTXT)					\
 	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
 	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
@@ -74,25 +66,40 @@
 	_XENUM5_PLAIN_DEFINE_NODES(static, PNAME, CTXT)						\
 
 
-// ===================================== FUNCTIONS (HDR) ========================================
+// ========================== DECLS prop getters =============================
 /**
- * Declare the functions related to a single custom property, implemented in header.
+ * Omit getters, turned off.
  */
-#define _XENUM5_PLAIN_HDR_DECLS_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
+/* FIXME: Implement later
+#define _XENUM5_PLAIN_GET_DECLS_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
+*/
+
+/**
+ * Declare getters, defined in source file.
+ */
+#define _XENUM5_PLAIN_GET_DECLS_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_SRC_DECLS_INDEX_TYPE(PNAME, DEPTH)						\
+	_XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
+	_XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+
+/**
+ * Define getters as inline constexpr.
+ */
+#define _XENUM5_PLAIN_GET_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_DEFINE_GET_NODE(								\
 		DEPTH,										\
 		_XENUM5_CTXT_SET_DECLPFX(CTXT, static),						\
 		Z										\
 	)											\
 	_XENUM5_PROP_HDR_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
-	_XENUM5_PLAIN_HDR_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)				\
+	_XENUM5_PLAIN_GET_DEFS_cxp(PNAME, DEPTH, PDEF, Z)					\
 
 
-// ========================= get${PNAME}() (HDR) =============================
 /**
  * Generate get${propname}() value getter.
  */
-#define _XENUM5_PLAIN_HDR_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)				\
+// FIXME: Merge with function to define the source implementation.
+#define _XENUM5_PLAIN_GET_DEFS_cxp(PNAME, DEPTH, PDEF, Z)				\
 	_XENUM5_DOC(Get value of the custom property PNAME.)					\
 	static constexpr const _XENUM5_PDEF_PARM_TYPE(PDEF)					\
 	BOOST_PP_CAT(get, PNAME) (								\
@@ -122,17 +129,6 @@
 		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
-
-
-// ===================================== FUNCTIONS (SRC) ========================================
-/**
- * Worker for _XENUM5_PROP_DECLS_PLAIN().
- * Declare the functions related to a single custom property, implemented in source.
- */
-#define _XENUM5_PLAIN_SRC_DECLS_FUNCS(PNAME, DEPTH, PDEF, CTXT, Z)				\
-	_XENUM5_PROP_SRC_DECLS_INDEX_TYPE(PNAME, DEPTH)						\
-	_XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
-	_XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 
 
 #endif // _XENUM5_IMPL_PLAIN_DECL_STORE_HPP

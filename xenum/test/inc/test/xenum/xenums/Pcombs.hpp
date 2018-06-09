@@ -29,7 +29,7 @@ namespace xenums {
 		/* plain, depth=0, (ext) */		\
 		(P0E, int, -1, 0, (ext)),		\
 		/* plain, depth=0, (cxp) */		\
-		(P0C, int, -2, 0, (ext)),		\
+		(P0C, int, -2, 0, (cxp)),		\
 		/* plain, depth=1, (ext) */		\
 		(P1E, int, -3, 1, (ext)),		\
 		/* plain, depth=1, (cxp) */		\

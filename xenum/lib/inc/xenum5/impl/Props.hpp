@@ -691,9 +691,9 @@
 
 // =================== DECL Store::get${PNAME}() (SRC) =======================
 /**
- * Declare Store::get${propname}() value getter.
- * For properties implemented in source.
+ * Declare Store::get${pname}() value getter (defined in source).
  */
+// FIXME: Rename: _XENUM5_PROP_GET_DECLS_ext
 #define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get value of the custom property PNAME.)					\
 	static const _XENUM5_PDEF_PARM_TYPE(PDEF)						\

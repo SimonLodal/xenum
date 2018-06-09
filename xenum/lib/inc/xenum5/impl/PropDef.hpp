@@ -72,6 +72,25 @@
 //#define _XENUM5_PDEF_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
 
 
+/**
+ * Get placement of the custom property data: OFF, SRC or HDR.
+ */
+#define _XENUM5_PDEF_PROP_DATA(PDEF)		BOOST_PP_CAT(					\
+							_XENUM5_PDEF_PROP_DATA_HELPER_,		\
+							BOOST_PP_CAT(				\
+								_XENUM5_PDEF_IMPL_GET(PDEF),	\
+/* FIXME: Add real from() value when added. */\
+							)					\
+						)						\
+
+/// Helper for _XENUM5_PDEF_PROP_DATA()
+#define _XENUM5_PDEF_PROP_DATA_HELPER_ext	SRC
+/// Helper for _XENUM5_PDEF_PROP_DATA()
+#define _XENUM5_PDEF_PROP_DATA_HELPER_cxp	HDR
+
+
+
+
 
 /**
  * Validate a custom property definition from XENUM5_{suffix}'s D() declaration.
