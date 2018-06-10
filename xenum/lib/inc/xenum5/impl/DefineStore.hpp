@@ -88,7 +88,7 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		std::cout<<BOOST_PP_STRINGIZE(_XENUM5_STORE_NAME(XDCL))				\
-			 <<"::_dbginfo:"<<std::endl;						\
+			 <<"::_dbginfo:"<<std::endl;						_XENUM5_NWLN \
 		_XENUM5_IDENT_DBGINFO(XDCL)							\
 		BOOST_PP_REPEAT									\
 		(										\

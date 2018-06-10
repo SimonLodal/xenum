@@ -220,7 +220,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))
  */
 #define _XENUM5_IDENT_CHECK(XDCL)								\
 	_XENUM5_CMNT(Ident)									\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:check: _XENUM5_XDCL_IDENT_DATA(XDCL))		\
 	BOOST_PP_CAT(_XENUM5_IDENT_CHECK_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
 
 
@@ -233,14 +232,14 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 	BOOST_PP_CAT(_XENUM5_IDENT_DBGINFO_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
 
 
-// =========================== DEFS ident data ===============================
+// ============================= Define data =================================
 /**
  * No data to define since nobody uses it.
  */
 #define _XENUM5_IDENT_DATA_DEFINE_OFF(XDCL, CTXT)						\
 
 /**
- * Define all the data.
+ * Define all the data, in local ns.
  */
 #define _XENUM5_IDENT_DATA_DEFINE_SRC(XDCL, CTXT)						\
 	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
@@ -274,7 +273,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 	constexpr const SCOPE_SNAME::IdentIndex SCOPE_SNAME::identOffsets[];			_XENUM5_NWLN \
 
 
-// =========================== DEFS ident get() ==============================
+// ============================ Define getter ================================
 /**
  * Omit getIdentifier(), turned off.
  */
@@ -413,10 +412,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
  */
 #define _XENUM5_IDENT_DBGINFO_I1(DATA_SCOPE, XDCL)						\
 	std::cout										\
-		<<"\tident:"<<std::endl								\
+		<<"\tident ("<<BOOST_PP_STRINGIZE(_XENUM5_XDCL_IDENT_DATA(XDCL))<<"):"<<std::endl	\
 		<<"\t\tsizeof(identValues) = "<<sizeof(DATA_SCOPE identValues)<<std::endl	\
 		<<"\t\tsizeof(IdentValueNames) = "<<sizeof(DATA_SCOPE IdentValueNames )<<std::endl	\
-		;										\
+		;										_XENUM5_NWLN \
 
 
 // ====================================== COMMON PARTS ==========================================

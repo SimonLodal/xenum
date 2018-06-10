@@ -14,33 +14,34 @@
 /**
  * Entry point for all custom-prop related definitions in source file.
  */
-// FIXME: ext/cxp
 #define _XENUM5_CSTRING_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DEFINE)	\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_CSTRING_DATA_DEFINE_, _XENUM5_PDEF_PROP_DATA(PDEF))		\
 		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
-
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_CSTRING_GET_DEFINE_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
+		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
 
 /**
  * Entry point for definition of final checks on data structures.
  */
-// FIXME: ext/cxp
 #define _XENUM5_CSTRING_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _CHECK)	\
+	BOOST_PP_CAT(_XENUM5_CSTRING_CHECK_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
 		(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)						\
 
 /**
  * Entry point for definition of debug info printing.
  */
 #define _XENUM5_CSTRING_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
-	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_CSTRING_, _XENUM5_PDEF_PLACEMENT_STR(PDEF)), _DBGINFO)\
+	BOOST_PP_CAT(_XENUM5_CSTRING_DBGINFO_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
 		(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)						\
 
 
-// ======================================= MAIN (HDR) ===========================================
+// ============================= Define data =================================
 /**
- * Define the data of a single custom property, for "cstring" data types, implemented in header.
+ * Define the data, without content since that is in the header.
  */
-#define _XENUM5_CSTRING_HDR_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
+#define _XENUM5_CSTRING_DATA_DEFINE_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* FIXME: Also define NodesSize - ? */							\
 	constexpr const										\
 		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Value)					\
@@ -51,19 +52,10 @@
 		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Nodes)					\
 		[];										_XENUM5_NWLN \
 
-
-// ======================================= MAIN (SRC) ===========================================
 /**
- * Define all the data and functions of a single custom property, implemented in source.
+ * Define all the data, in local ns.
  */
-#define _XENUM5_CSTRING_SRC_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
-	_XENUM5_CSTRING_SRC_DEFL(PNAME, DEPTH, PDEF, LSCOPE, CTXT, Z)				\
-	_XENUM5_CSTRING_SRC_DEFS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
-
-/**
- * Define the local data and functions.
- */
-#define _XENUM5_CSTRING_SRC_DEFL(PNAME, DEPTH, PDEF, LSCOPE, CTXT, Z)				\
+#define _XENUM5_CSTRING_DATA_DEFINE_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
 	namespace {										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
@@ -79,61 +71,24 @@
 	} _XENUM5_CMNT(Anon namespace)								\
 
 
+// ============================ Define getters ===============================
 /**
- * Define the functions declared in the store class.
+ * Omit getters, they are defined inline constexpr in header.
  */
-#define _XENUM5_CSTRING_SRC_DEFS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
-	_XENUM5_CSTRING_SRC_DEFS_FUNCS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_CSTRING_GET_DEFINE_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
-
-// ====================================== VALUES (SRC) ==========================================
 /**
- * Define the string values.
+ * Define getters, declared in header file.
  */
-#define _XENUM5_CSTRING_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
-	_XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
-	_XENUM5_CSTRING_DEFINE_VALUES(, PNAME, CTXT)						\
-
-
-// ======================================= NODES (SRC) ==========================================
-/**
- * Define the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
- * we always need an indexnodes table since each string needs to be referenced by an indexnode.
- */
-#define _XENUM5_CSTRING_SRC_DEFL_NODES(PNAME, CTXT, Z)						\
-	_XENUM5_CSTRING_DEFINE_NODESSIZE(, PNAME, CTXT)						\
-	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
-	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
-	_XENUM5_CSTRING_DECLARE_NODENAMES(PNAME, CTXT)						\
-	_XENUM5_CSTRING_DEFINE_NODES(, PNAME, CTXT)						\
-
-
-// ================================== LOCAL FUNCTIONS (SRC) =====================================
-/**
- * Define the local-ns functions related to a single custom property, implemented in source.
- */
-#define _XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, XDCL, CTXT, Z)					\
-	_XENUM5_DOC(Alias the native enum into this scope.)					\
-	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
-	/* INC() because Nodes also has indexnodes for the leaf string values */		\
-	_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
-
-
-// ================================== STORE FUNCTIONS (SRC) =====================================
-/**
- * Define the store class functions related to a single custom property.
- */
-#define _XENUM5_CSTRING_SRC_DEFS_FUNCS(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_CSTRING_GET_DEFINE_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
 	_XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
 
-
-// ========================= get${PNAME}() (SRC) =============================
 /**
- * Define get${propname}() value getter.
+ * Define get${pname}() value getter.
  */
+// FIXME: Rename. Merge with constexpr generator.
 #define _XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)	\
 	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
 	DSCOPE SNAME :: BOOST_PP_CAT(get, PNAME) (						\
@@ -151,12 +106,51 @@
 	}											_XENUM5_NWLN
 
 
-// =============================== _check() ==================================
+// ====================================== VALUES (SRC) ==========================================
+/**
+ * Define the string values.
+ */
+// FIXME: Rename
+#define _XENUM5_CSTRING_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)					\
+	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
+	_XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
+	_XENUM5_CSTRING_DEFINE_VALUES(, PNAME, CTXT)						\
+
+
+// ======================================= NODES (SRC) ==========================================
+/**
+ * Define the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
+ * we always need an indexnodes table since each string needs to be referenced by an indexnode.
+ */
+// FIXME: Rename
+#define _XENUM5_CSTRING_SRC_DEFL_NODES(PNAME, CTXT, Z)						\
+	_XENUM5_CSTRING_DEFINE_NODESSIZE(, PNAME, CTXT)						\
+	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
+	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
+	_XENUM5_CSTRING_DECLARE_NODENAMES(PNAME, CTXT)						\
+	_XENUM5_CSTRING_DEFINE_NODES(, PNAME, CTXT)						\
+
+
+// ================================== LOCAL FUNCTIONS (SRC) =====================================
+/**
+ * Define the local-ns functions related to a single custom property, implemented in source.
+ */
+// FIXME: Rename
+#define _XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, XDCL, CTXT, Z)					\
+	_XENUM5_DOC(Alias the native enum into this scope.)					\
+	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
+	/* INC() because Nodes also has indexnodes for the leaf string values */		\
+	_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
+
+
+
+
+// ============================ DEFS _check() ================================
 // FIXME: Merge into one, just set LSCOPE empty.
 /**
  * Define final checks on data structures, for implementation in header.
  */
-#define _XENUM5_CSTRING_HDR_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+#define _XENUM5_CSTRING_CHECK_HDR(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
 	static_assert(										\
 		/* +1: Compiler adds an extra null terminator in Values array */		\
 		sizeof(BOOST_PP_CAT(PNAME, Values)) ==						\
@@ -178,7 +172,7 @@
 /**
  * Define final checks on data structures, for implementation in source.
  */
-#define _XENUM5_CSTRING_SRC_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+#define _XENUM5_CSTRING_CHECK_SRC(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
 	static_assert(										\
 		/* +1: Compiler adds an extra null terminator in Values array */		\
 		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values)) ==					\
@@ -198,11 +192,11 @@
 	);											_XENUM5_NWLN \
 
 
-// =============================== _dbginfo() ==================================
+// =========================== DEFS _dbginfo() ===============================
 /**
- * Define debug info, for implementation in header.
+ * Define debug info for prop data structures, defined in header.
  */
-#define _XENUM5_CSTRING_HDR_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+#define _XENUM5_CSTRING_DBGINFO_HDR(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
 	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<" (HDR):"<<std::endl			\
 		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, Values))<<") = "	\
 			<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl			\
@@ -212,9 +206,9 @@
 
 
 /**
- * Define debug info, for implementation in source.
+ * Define debug info for prop data structures, defined in source.
  */
-#define _XENUM5_CSTRING_SRC_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+#define _XENUM5_CSTRING_DBGINFO_SRC(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
 	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<" (SRC):"<<std::endl			\
 		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<") = "	\
 			<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<std::endl		\

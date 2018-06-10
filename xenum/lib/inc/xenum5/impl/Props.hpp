@@ -557,6 +557,7 @@
  * Declare and inline-define Store::get${propname}Size() for all levels.
  * For properties implemented in header.
  */
+// FIXME: Rename: _XENUM5_PROP_GETSIZE_DECLS_cxp
 #define _XENUM5_PROP_HDR_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
@@ -609,6 +610,7 @@
  * Declare Store::get${propname}Size() for all levels.
  * For properties implemented in source.
  */
+// FIXME: Rename: _XENUM5_PROP_GETSIZE_DECLS_ext
 #define _XENUM5_PROP_SRC_DECLS_GET_SIZE(DEPTH, PDEF, Z)						\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
@@ -648,6 +650,7 @@
 /**
  * Define Store::get${propname}Size() getters for all levels. For source implementation.
  */
+// FIXME: Rename: _XENUM5_PROP_GETSIZE_DEFS_ext
 #define _XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
 	BOOST_PP_REPEAT_ ## Z									\
 	(											\
@@ -693,7 +696,7 @@
 /**
  * Declare Store::get${pname}() value getter (defined in source).
  */
-// FIXME: Rename: _XENUM5_PROP_GET_DECLS_ext
+// FIXME: Rename: _XENUM5_PROP_GETVALUE_DECLS_ext
 #define _XENUM5_PROP_SRC_DECLS_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
 	_XENUM5_DOC(Get value of the custom property PNAME.)					\
 	static const _XENUM5_PDEF_PARM_TYPE(PDEF)						\
