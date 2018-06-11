@@ -46,31 +46,14 @@
 #define _XENUM5_PDEF_DEPTH(PDEF)		BOOST_PP_SEQ_ELEM(3, PDEF)
 
 /**
+ * Get the 'features' options set.
+ */
+#define _XENUM5_PDEF_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
+
+/**
  * Get the implementation option for the getter; ext|cxp.
  */
-#define _XENUM5_PDEF_IMPL_GET(PDEF)		BOOST_PP_SEQ_ELEM(0, BOOST_PP_SEQ_ELEM(4, PDEF))
-
-/**
- * Get the "PLACEMENT" feature; 0=place implementation in source file, 1=in header file.
- */
-// FIXME: OLD - delete when all callers have been updated.
-#define _XENUM5_PDEF_PLACEMENT(PDEF)		BOOST_PP_CAT(_XENUM5_PDEF_PLACEMENT_COMPAT_HELPER_, _XENUM5_PDEF_IMPL_GET(PDEF))
-/// Compat helper to translate new ext|cxp values to old 0|1 values.
-#define _XENUM5_PDEF_PLACEMENT_COMPAT_HELPER_ext	0
-/// Compat helper to translate new ext|cxp values to old 0|1 values.
-#define _XENUM5_PDEF_PLACEMENT_COMPAT_HELPER_cxp	1
-
-/**
- * Get the "PLACEMENT" feature as suffix string; HDR or SRC.
- */
-// FIXME: OLD - delete when all callers have been updated.
-#define _XENUM5_PDEF_PLACEMENT_STR(PDEF)	BOOST_PP_IF(					\
-							_XENUM5_PDEF_PLACEMENT(PDEF),		\
-							HDR,					\
-							SRC)
-
-//#define _XENUM5_PDEF_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
-
+#define _XENUM5_PDEF_IMPL_GET(PDEF)		BOOST_PP_SEQ_ELEM(0, _XENUM5_PDEF_FEATURES(PDEF))
 
 /**
  * Get placement of the custom property data: OFF, SRC or HDR.
