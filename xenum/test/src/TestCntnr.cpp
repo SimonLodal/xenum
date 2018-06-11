@@ -27,10 +27,16 @@ public:
 };
 
 
+/// Function that only compiles if the constexpr fromIndex() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Fruits::_fromIndex(1) == xenums::Fruits::pear, bool>::type cxpFromIndex(void) { return true; }
 /// Test fromIndex().
 TEST_F(TestCntnr, FromIndex)
 {
 	xenums::Fruit fruit;
+
+	// fromIndex() at compile time
+	EXPECT_EQ(true, cxpFromIndex<void>());
+
 	for (size_t index=0; index<xenums::Fruits::_size; index++) {
 		EXPECT_EQ(true, xenums::Fruits::_fromIndex(index, fruit));
 		EXPECT_EQ(index, fruit.getIndex());

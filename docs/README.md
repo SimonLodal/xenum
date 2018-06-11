@@ -617,13 +617,9 @@ number of errors, and none of them make any sense?
 ## Future plans
 - Support for more compilers / versions.
 - Per-enum options:
-  - Omit identifier string table, if you want to save some space and can do
-    without conversion to/from string.
-  - Placement of identifier string table (header/source).
   - Omit iteration functions, and perhaps other parts.
 - Lookup of enum value by custom property value.
 - Per-custom-property options:
-  - Placement of property data (header/source).
   - Generate lookup function.
   - Custom getter prefix.
 - Make xenum with custom properties work when declared inside a class. Probably requires a

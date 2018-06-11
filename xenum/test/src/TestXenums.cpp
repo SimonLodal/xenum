@@ -190,11 +190,14 @@ TEST_F(TestXenums, SelectInt)
 }
 
 
+/// Function that only compiles if the constexpr ::_size is really constexpr.
+template <class T> typename std::enable_if<XenumFruits::_size == 2, bool>::type cxpSizeNoNsNoCls(void) { return true; }
 /// Test basics of the FruitsNoNsNoCls xenum.
 TEST_F(TestXenums, FruitsNoNsNoCls)
 {
 	EXPECT_EQ(1, sizeof(XenumFruits::_index_t));
 	EXPECT_EQ(false, std::is_signed<XenumFruits::_index_t>::value);
+	EXPECT_EQ(true, cxpSizeNoNsNoCls<void>());
 	EXPECT_EQ(2, XenumFruits::_size);
 	XenumFruit fruit0 = XenumFruits::apple;
 	XenumFruit fruit1 = XenumFruits::grape;
@@ -203,11 +206,14 @@ TEST_F(TestXenums, FruitsNoNsNoCls)
 }
 
 
+/// Function that only compiles if the constexpr ::_size is really constexpr.
+template <class T> typename std::enable_if<XenumWrapNoNs::Fruits::_size == 3, bool>::type cxpSizeNoNsInCls(void) { return true; }
 /// Test basics of the FruitsNoNsInCls xenum.
 TEST_F(TestXenums, FruitsNoNsInCls)
 {
 	EXPECT_EQ(1, sizeof(XenumWrapNoNs::Fruits::_index_t));
 	EXPECT_EQ(false, std::is_signed<XenumWrapNoNs::Fruits::_index_t>::value);
+	EXPECT_EQ(true, cxpSizeNoNsInCls<void>());
 	EXPECT_EQ(3, XenumWrapNoNs::Fruits::_size);
 	XenumWrapNoNs::Fruit fruit0 = XenumWrapNoNs::Fruits::banana;
 	XenumWrapNoNs::Fruit fruit1 = XenumWrapNoNs::Fruits::orange;
@@ -218,11 +224,14 @@ TEST_F(TestXenums, FruitsNoNsInCls)
 }
 
 
+/// Function that only compiles if the constexpr ::_size is really constexpr.
+template <class T> typename std::enable_if<xenums::Fruits::_size == 4, bool>::type cxpSizeInNsNoCls(void) { return true; }
 /// Test basics of the FruitsInNsNoCls xenum.
 TEST_F(TestXenums, FruitsInNsNoCls)
 {
 	EXPECT_EQ(4, sizeof(xenums::Fruits::_index_t));
 	EXPECT_EQ(false, std::is_signed<xenums::Fruits::_index_t>::value);
+	EXPECT_EQ(true, cxpSizeInNsNoCls<void>());
 	EXPECT_EQ(4, xenums::Fruits::_size);
 	xenums::Fruit fruit0 = xenums::Fruits::tomato;
 	xenums::Fruit fruit1 = xenums::Fruits::pear;
@@ -235,11 +244,14 @@ TEST_F(TestXenums, FruitsInNsNoCls)
 }
 
 
+/// Function that only compiles if the constexpr ::_size is really constexpr.
+template <class T> typename std::enable_if<xenums::WrapInNs::Fruits::_size == 5, bool>::type cxpSizeInNsInCls(void) { return true; }
 /// Test basics of the FruitsInNsInCls xenum.
 TEST_F(TestXenums, FruitsInNsInCls)
 {
 	EXPECT_EQ(8, sizeof(xenums::WrapInNs::Fruits::_index_t));
 	EXPECT_EQ(false, std::is_signed<xenums::WrapInNs::Fruits::_index_t>::value);
+	EXPECT_EQ(true, cxpSizeInNsInCls<void>());
 	EXPECT_EQ(5, xenums::WrapInNs::Fruits::_size);
 	xenums::WrapInNs::Fruit fruit0 = xenums::WrapInNs::Fruits::plum;
 	xenums::WrapInNs::Fruit fruit1 = xenums::WrapInNs::Fruits::mango;
