@@ -62,9 +62,23 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
 		namespace LSCOPE {								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			_XENUM5_CSTRING_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)			\
-			_XENUM5_CSTRING_SRC_DEFL_NODES(PNAME, CTXT, Z)				\
-			_XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, _XENUM5_CTXT_XDCL(CTXT), CTXT, Z)	\
+			/* Values */								\
+			_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)				\
+			_XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)				\
+			_XENUM5_CSTRING_DEFINE_VALUES(, PNAME, CTXT)				\
+			/* Nodes. For cstrings (contrary to "plain") we always need an */	\
+			/* indexnodes table since each string needs to be referenced by */	\
+			/* an indexnode. */							\
+			_XENUM5_CSTRING_DEFINE_NODESSIZE(, PNAME, CTXT)				\
+			_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)					\
+			_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)					\
+			_XENUM5_CSTRING_DECLARE_NODENAMES(PNAME, CTXT)				\
+			_XENUM5_CSTRING_DEFINE_NODES(, PNAME, CTXT)				\
+			/* Funcs */								\
+			_XENUM5_DOC(Alias the native enum into this scope.)			\
+			using Enum = _XENUM5_XDCL_DSCOPE(_XENUM5_CTXT_XDCL(CTXT))_XENUM5_CNTNR_NAME(_XENUM5_CTXT_XDCL(CTXT))::_enum;	_XENUM5_NWLN \
+			/* INC() because Nodes also has indexnodes for the leaf stringvalues */	\
+			_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)		\
 			_XENUM5_INDENT_DEC							\
 		} _XENUM5_CMNT(namespace LSCOPE)						\
 		_XENUM5_INDENT_DEC								\
@@ -83,13 +97,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 #define _XENUM5_CSTRING_GET_DEFINE_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
-	_XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
+	_XENUM5_CSTRING_GETVALUE_DEFINE_EXT(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
 
 /**
  * Define get${pname}() value getter.
  */
 // FIXME: Rename. Merge with constexpr generator.
-#define _XENUM5_CSTRING_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)	\
+#define _XENUM5_CSTRING_GETVALUE_DEFINE_EXT(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)	\
 	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
 	DSCOPE SNAME :: BOOST_PP_CAT(get, PNAME) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(DSCOPE SNAME::Enum,				\
@@ -106,46 +120,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 	}											_XENUM5_NWLN
 
 
-// ====================================== VALUES (SRC) ==========================================
-/**
- * Define the string values.
- */
-// FIXME: Rename
-#define _XENUM5_CSTRING_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
-	_XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
-	_XENUM5_CSTRING_DEFINE_VALUES(, PNAME, CTXT)						\
-
-
-// ======================================= NODES (SRC) ==========================================
-/**
- * Define the indexnodes. Note: Called even when depth==0; for cstrings (contrary to "plain")
- * we always need an indexnodes table since each string needs to be referenced by an indexnode.
- */
-// FIXME: Rename
-#define _XENUM5_CSTRING_SRC_DEFL_NODES(PNAME, CTXT, Z)						\
-	_XENUM5_CSTRING_DEFINE_NODESSIZE(, PNAME, CTXT)						\
-	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
-	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
-	_XENUM5_CSTRING_DECLARE_NODENAMES(PNAME, CTXT)						\
-	_XENUM5_CSTRING_DEFINE_NODES(, PNAME, CTXT)						\
-
-
-// ================================== LOCAL FUNCTIONS (SRC) =====================================
-/**
- * Define the local-ns functions related to a single custom property, implemented in source.
- */
-// FIXME: Rename
-#define _XENUM5_CSTRING_SRC_DEFL_FUNCS(DEPTH, XDCL, CTXT, Z)					\
-	_XENUM5_DOC(Alias the native enum into this scope.)					\
-	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
-	/* INC() because Nodes also has indexnodes for the leaf string values */		\
-	_XENUM5_PROP_DEFINE_GET_NODE(BOOST_PP_INC(DEPTH), CTXT, Z)				\
-
-
-
-
-// ============================ DEFS _check() ================================
+// =========================== Define _check() ===============================
 // FIXME: Merge into one, just set LSCOPE empty.
 /**
  * Define final checks on data structures, for implementation in header.

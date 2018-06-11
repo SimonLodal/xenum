@@ -15,7 +15,6 @@
 /**
  * Entry point for all custom-prop related declarations in value class (header).
  */
-// FIXME: ext/cxp
 #define _XENUM5_CSTRING_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
 	/* INC() to ensure that the index type always gets defined */				\
 	_XENUM5_PROP_DECLV_TYPES(PNAME, BOOST_PP_INC(DEPTH))					\

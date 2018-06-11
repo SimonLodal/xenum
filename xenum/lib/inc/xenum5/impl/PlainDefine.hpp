@@ -75,7 +75,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
 		namespace LSCOPE {								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			_XENUM5_PLAIN_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)			\
+			/* Values */								\
+			_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)				\
+			_XENUM5_PLAIN_DEFINE_VALUES(, PNAME, CTXT)				\
+			/* Nodes, if depth!=0 */						\
 			BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DEFINE_SRC_, BOOST_PP_BOOL(DEPTH))	\
 				(PNAME, DEPTH, PDEF, CTXT, Z)					\
 			_XENUM5_INDENT_DEC							\
@@ -91,11 +94,21 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 #define _XENUM5_PLAIN_DATA_DEFINE_SRC_0(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 /**
- * For depth!=0: Define nodes.
+ * For depth!=0: Define nodes; declare a name struct and define an array of nodes
+ * with same layout.
  */
 #define _XENUM5_PLAIN_DATA_DEFINE_SRC_1(PNAME, DEPTH, PDEF, CTXT, Z)				\
-	_XENUM5_PLAIN_SRC_DEFL1_NODES(PNAME, CTXT, Z)						\
-	_XENUM5_PLAIN_SRC_DEFL1_FUNCS(DEPTH, _XENUM5_CTXT_XDCL(CTXT), CTXT, Z)			\
+	/* Nodes */										\
+	_XENUM5_PLAIN_DEFINE_NODESSIZE(, PNAME, CTXT)						\
+	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
+	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
+	_XENUM5_PLAIN_DECLARE_NODENAMES(PNAME, CTXT)						\
+	_XENUM5_PLAIN_DECLARE_VALUENAMES(PNAME, CTXT)						\
+	_XENUM5_PLAIN_DEFINE_NODES(, PNAME, CTXT)							\
+	/* Funcs */										\
+	_XENUM5_DOC(Alias the native enum into this scope.)					\
+	using Enum = _XENUM5_XDCL_DSCOPE(_XENUM5_CTXT_XDCL(CTXT))_XENUM5_CNTNR_NAME(_XENUM5_CTXT_XDCL(CTXT))::_enum;	_XENUM5_NWLN \
+	_XENUM5_PROP_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
 
 
 // ============================ Define getters ===============================
@@ -109,14 +122,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
  */
 #define _XENUM5_PLAIN_GET_DEFINE_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
-	_XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
+	_XENUM5_PLAIN_GETVALUE_DEFINE_EXT(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
 
 
 /**
  * Define get${pname}() value getter.
  */
-// FIXME: Rename. Merge with constexpr generator.
-#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)		\
+#define _XENUM5_PLAIN_GETVALUE_DEFINE_EXT(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)		\
 	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
 	DSCOPE SNAME::BOOST_PP_CAT(get, PNAME) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(DSCOPE SNAME::Enum,				\
@@ -125,7 +137,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return LSCOPE BOOST_PP_CAT(PNAME, Values)[					\
-			BOOST_PP_CAT(_XENUM5_PLAIN_SRC_DEFS_GET_VALUE_, BOOST_PP_BOOL(DEPTH))	\
+			BOOST_PP_CAT(_XENUM5_PLAIN_GETVALUE_DEFINE_EXT_, BOOST_PP_BOOL(DEPTH))	\
 				(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)			\
 		];										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
@@ -133,56 +145,20 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 /**
  * Define get${pname}() indexing for depth==0.
  */
-#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_0(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
+#define _XENUM5_PLAIN_GETVALUE_DEFINE_EXT_0(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
 	DSCOPE SNAME::getIndex(index0)								\
 
 /**
  * Define get${pname}() indexing for depth!=0.
  */
-#define _XENUM5_PLAIN_SRC_DEFS_GET_VALUE_1(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
+#define _XENUM5_PLAIN_GETVALUE_DEFINE_EXT_1(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
 	LSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (					\
 		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
 
 
-// ====================================== VALUES (SRC) ==========================================
-/**
- * Define the values.
- */
-// FIXME: Rename
-#define _XENUM5_PLAIN_SRC_DEFL_VALUES(PNAME, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)						\
-	_XENUM5_PLAIN_DEFINE_VALUES(, PNAME, CTXT)						\
-
-
-// ======================================= NODES (SRC) ==========================================
-/**
- * Define the index nodes, for depth!=0; declare a name struct and define an array of nodes
- * with same layout.
- */
-// FIXME: Rename
-#define _XENUM5_PLAIN_SRC_DEFL1_NODES(PNAME, CTXT, Z)						\
-	_XENUM5_PLAIN_DEFINE_NODESSIZE(, PNAME, CTXT)						\
-	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
-	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
-	_XENUM5_PLAIN_DECLARE_NODENAMES(PNAME, CTXT)						\
-	_XENUM5_PLAIN_DECLARE_VALUENAMES(PNAME, CTXT)						\
-	_XENUM5_PLAIN_DEFINE_NODES(, PNAME, CTXT)							\
-
-
-// ================================== LOCAL FUNCTIONS (SRC) =====================================
-/**
- * Define the local-ns functions related to a single custom property, implemented in source.
- */
-// FIXME: Rename
-#define _XENUM5_PLAIN_SRC_DEFL1_FUNCS(DEPTH, XDCL, CTXT, Z)					\
-	_XENUM5_DOC(Alias the native enum into this scope.)					\
-	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
-	_XENUM5_PROP_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
-
-
-// ============================ DEFS _check() ================================
+// =========================== Define _check() ===============================
 /**
  * Define final checks on data structures, for implementation in header.
  */
