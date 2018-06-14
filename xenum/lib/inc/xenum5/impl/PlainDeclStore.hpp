@@ -43,7 +43,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
 	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
 	_XENUM5_PLAIN_VALUES_DEF(static, PNAME, CTXT)						\
 	BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DECLS_HDR_, BOOST_PP_BOOL(DEPTH))			\
-		(PNAME, PDEF, CTXT, Z)								\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
 
 
 /**
@@ -51,19 +51,24 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
  * Values are already defined as a single plain array of values, directly indexed
  * by enum value; no need for name struct or nodes table.
  */
-#define _XENUM5_PLAIN_DATA_DECLS_HDR_0(PNAME, PDEF, CTXT, Z)					\
+#define _XENUM5_PLAIN_DATA_DECLS_HDR_0(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 /**
  * Worker for _XENUM5_PLAIN_DATA_DECLS_HDR(), for depth!=0.
  * Declares variables related to index nodes (depth>0).
  */
-#define _XENUM5_PLAIN_DATA_DECLS_HDR_1(PNAME, PDEF, CTXT, Z)					\
+#define _XENUM5_PLAIN_DATA_DECLS_HDR_1(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PLAIN_NODESSIZE_DEF(static, PNAME, CTXT)					\
 	_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)						\
 	_XENUM5_PROP_NODETYPE_DECL(PNAME)							\
 	_XENUM5_PLAIN_NODENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_PLAIN_NODES_DEF(static, PNAME, CTXT)						\
+	_XENUM5_PROP_GETNODE_DEF(								\
+		DEPTH,										\
+		_XENUM5_CTXT_SET_DECLPFX(CTXT, static),						\
+		Z										\
+	)											\
 
 
 // ========================== DECLS prop getters =============================
@@ -86,11 +91,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
  * Define getters as inline constexpr.
  */
 #define _XENUM5_PLAIN_GETTERS_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
-	_XENUM5_PROP_GETNODE_DEF(								\
-		DEPTH,										\
-		_XENUM5_CTXT_SET_DECLPFX(CTXT, static),						\
-		Z										\
-	)											\
 	_XENUM5_PROP_GETSIZE_CXP_DEFS(DEPTH, PDEF, Z)						\
 	_XENUM5_PLAIN_GETVALUE_CXP_DEFS(PNAME, DEPTH, PDEF, Z)					\
 

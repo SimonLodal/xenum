@@ -96,27 +96,6 @@
 	)
 
 
-// ============================== ValueNames =================================
-/**
- * Declare the ${pname}ValueNames struct.
- */
-#define _XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)						\
-	_XENUM5_DOC(Layout of all PNAME values.)						\
-	using BOOST_PP_CAT(PNAME, ValueNames) = struct {					_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_VALUENAME_DECL, CTXT)			\
-		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN \
-
-/**
- * Declare a single field of the ValueNames struct.
- */
-#define _XENUM5_CSTRING_VALUENAME_DECL(ITERPOS, NODE, CTXT)					\
-	BOOST_PP_CAT(_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)), Value) 			\
-	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS))			\
-	[sizeof(_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)))];				_XENUM5_NWLN \
-
-
 // ================================ Values ===================================
 /**
  * Define the values array.
@@ -173,6 +152,27 @@
 		_XENUM5_CSTRING_ITER_NODES(_XENUM5_PROP_NODENAME_DECL, CTXT)			\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN \
+
+
+// ============================== ValueNames =================================
+/**
+ * Declare the ${pname}ValueNames struct.
+ */
+#define _XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_DOC(Layout of all PNAME values.)						\
+	using BOOST_PP_CAT(PNAME, ValueNames) = struct {					_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_VALUENAME_DECL, CTXT)			\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN \
+
+/**
+ * Declare a single field of the ValueNames struct.
+ */
+#define _XENUM5_CSTRING_VALUENAME_DECL(ITERPOS, NODE, CTXT)					\
+	BOOST_PP_CAT(_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)), Value) 			\
+	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS))			\
+	[sizeof(_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)))];				_XENUM5_NWLN \
 
 
 // ================================ Nodes ====================================

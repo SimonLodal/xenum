@@ -48,6 +48,12 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
 	_XENUM5_CSTRING_NODENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_CSTRING_NODES_DEF(static, PNAME, CTXT)						\
+	_XENUM5_PROP_GETNODE_DEF(								\
+		/* INC() because Nodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(DEPTH),								\
+		_XENUM5_CTXT_SET_DECLPFX(CTXT, static),						\
+		Z										\
+	)											\
 
 
 // ========================== DECLS prop getters =============================
@@ -71,12 +77,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
  * Define getters as inline constexpr.
  */
 #define _XENUM5_CSTRING_GETTERS_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
-	_XENUM5_PROP_GETNODE_DEF(								\
-		/* INC() because Nodes also has indexnodes for the leaf string values */	\
-		BOOST_PP_INC(DEPTH),								\
-		_XENUM5_CTXT_SET_DECLPFX(CTXT, static),						\
-		Z										\
-	)											\
 	_XENUM5_PROP_GETSIZE_CXP_DEFS(BOOST_PP_INC(DEPTH), PDEF, Z)				\
 	_XENUM5_CSTRING_GETVALUE_CXP_DEFS(PNAME, DEPTH, PDEF, Z)				\
 

@@ -64,7 +64,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 			_XENUM5_INDENT_INC							\
 			/* Values */								\
 			_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)				\
-			_XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)				\
 			_XENUM5_CSTRING_VALUES_DEF(, PNAME, CTXT)				\
 			/* Nodes. For cstrings (contrary to "plain") we always need an */	\
 			/* indexnodes table since each string needs to be referenced by */	\
@@ -73,6 +72,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 			_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)				\
 			_XENUM5_PROP_NODETYPE_DECL(PNAME)					\
 			_XENUM5_CSTRING_NODENAMES_DECL(PNAME, CTXT)				\
+			_XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)				\
 			_XENUM5_CSTRING_NODES_DEF(, PNAME, CTXT)				\
 			/* Funcs */								\
 			_XENUM5_DOC(Alias the native enum into this scope.)			\
