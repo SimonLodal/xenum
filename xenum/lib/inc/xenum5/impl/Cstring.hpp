@@ -98,20 +98,20 @@
 
 // ============================== ValueNames =================================
 /**
- * Declare the ${propname}ValueNames struct.
+ * Declare the ${pname}ValueNames struct.
  */
-#define _XENUM5_CSTRING_DECLARE_VALUENAMES(PNAME, CTXT)						\
+#define _XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_DOC(Layout of all PNAME values.)						\
 	using BOOST_PP_CAT(PNAME, ValueNames) = struct {					_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_DECLARE_VALUENAME, CTXT)		\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_VALUENAME_DECL, CTXT)			\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN \
 
 /**
  * Declare a single field of the ValueNames struct.
  */
-#define _XENUM5_CSTRING_DECLARE_VALUENAME(ITERPOS, NODE, CTXT)					\
+#define _XENUM5_CSTRING_VALUENAME_DECL(ITERPOS, NODE, CTXT)					\
 	BOOST_PP_CAT(_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)), Value) 			\
 	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS))			\
 	[sizeof(_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)))];				_XENUM5_NWLN \
@@ -121,19 +121,19 @@
 /**
  * Define the values array.
  */
-#define _XENUM5_CSTRING_DEFINE_VALUES(DECLPFX, PNAME, CTXT)					\
+#define _XENUM5_CSTRING_VALUES_DEF(DECLPFX, PNAME, CTXT)					\
 	_XENUM5_DOC(All PNAME values.)								\
 	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Value) BOOST_PP_CAT(PNAME, Values)[] =	\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_DEFINE_VALUE, CTXT)			\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_VALUE_DEF, CTXT)			\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN
 
 /**
- * Loop worker for _XENUM5_CSTRING_DEFINE_VALUES().
+ * Loop worker for _XENUM5_CSTRING_VALUES_DEF().
  */
-#define _XENUM5_CSTRING_DEFINE_VALUE(ITERPOS, NODE, CTXT)					\
+#define _XENUM5_CSTRING_VALUE_DEF(ITERPOS, NODE, CTXT)						\
 	_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)) "\0"					_XENUM5_NWLN
 
 
@@ -141,13 +141,13 @@
 /**
  * Define the NodesSize count.
  */
-#define _XENUM5_CSTRING_DEFINE_NODESSIZE(DECLPFX, PNAME, CTXT)					\
+#define _XENUM5_CSTRING_NODESSIZE_DEF(DECLPFX, PNAME, CTXT)					\
 	_XENUM5_DOC(Total number of indexnodes for indexing PNAME values.)			\
 	DECLPFX constexpr const size_t BOOST_PP_CAT(PNAME, NodesSize) = 0			\
 		_XENUM5_CALL_VALS(_XENUM5_CSTRING_COUNT_NODES, CTXT);				_XENUM5_NWLN \
 
 /**
- * Callback worker for _XENUM5_CSTRING_DEFINE_NODESSIZE().
+ * Callback worker for _XENUM5_CSTRING_NODESSIZE_DEF().
  */
 #define _XENUM5_CSTRING_COUNT_NODES(CTXT, IDENT, ...)						\
 	+_XENUM5_TT_ITERATE_DEPTH_CALC(								\
@@ -163,51 +163,51 @@
 
 // ============================== NodeNames ==================================
 /**
- * Declare the ${propname}NodeNames struct.
+ * Declare the ${pname}NodeNames struct.
  */
-#define _XENUM5_CSTRING_DECLARE_NODENAMES(PNAME, CTXT)						\
+#define _XENUM5_CSTRING_NODENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PNAME, Nodes) array,		\
 		has same layout.)								\
 	using BOOST_PP_CAT(PNAME, NodeNames) = struct {						_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		_XENUM5_CSTRING_ITER_NODES(_XENUM5_PROP_DECLARE_NODENAME, CTXT)			\
+		_XENUM5_CSTRING_ITER_NODES(_XENUM5_PROP_NODENAME_DECL, CTXT)			\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN \
 
 
 // ================================ Nodes ====================================
 /**
- * Define the ${propname}Nodes array.
+ * Define the ${pname}Nodes array.
  */
-#define _XENUM5_CSTRING_DEFINE_NODES(DECLPFX, PNAME, CTXT)					\
+#define _XENUM5_CSTRING_NODES_DEF(DECLPFX, PNAME, CTXT)						\
 	_XENUM5_DOC(Mapping of all nodes and values in the PNAME data hierarchy.)		\
 	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Node) BOOST_PP_CAT(PNAME, Nodes)[] =	\
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		_XENUM5_CSTRING_ITER_NODES(_XENUM5_CSTRING_DEFINE_NODE, CTXT)			\
+		_XENUM5_CSTRING_ITER_NODES(_XENUM5_CSTRING_NODE_DEF, CTXT)			\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN \
 
 /**
- * Worker for _XENUM5_CSTRING_NODES_DATA().
+ * Worker for _XENUM5_CSTRING_NODES_DEF().
  */
-#define _XENUM5_CSTRING_DEFINE_NODE(ITERPOS, NODE, CTXT)					\
+#define _XENUM5_CSTRING_NODE_DEF(ITERPOS, NODE, CTXT)						\
 	BOOST_PP_CAT(										\
-		_XENUM5_CSTRING_DEFINE_NODE_,							\
+		_XENUM5_CSTRING_NODE_DEF_,							\
 		BOOST_PP_BOOL(_XENUM5_TT_ITERPOS_LEVEL(ITERPOS))				\
 	) (ITERPOS, NODE, CTXT)									\
 
 
 /**
- * Worker for _XENUM5_CSTRING_DEFINE_NODE().
+ * Worker for _XENUM5_CSTRING_NODE_DEF().
  * Define a node for level==0.
  */
-#define _XENUM5_CSTRING_DEFINE_NODE_0(ITERPOS, NODE, CTXT)					\
+#define _XENUM5_CSTRING_NODE_DEF_0(ITERPOS, NODE, CTXT)						\
 	{											\
 		/* Size */									\
 		sizeof(_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT))),			\
 		/* Index */									\
-		_XENUM5_CSTRING_DEFINE_NODE_0_INDEX(						\
+		_XENUM5_CSTRING_NODE_DEF_0_INDEX(						\
 			_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS),					\
 			_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),				\
 			CTXT									\
@@ -215,10 +215,10 @@
 	},											_XENUM5_NWLN \
 
 /**
- * Worker for _XENUM5_CSTRING_DEFINE_NODE_0().
+ * Worker for _XENUM5_CSTRING_NODE_DEF_0().
  * Define Node.index as an offset expression into a ValueNames struct.
  */
-#define _XENUM5_CSTRING_DEFINE_NODE_0_INDEX(INDEXPATH, PNAME, CTXT)				\
+#define _XENUM5_CSTRING_NODE_DEF_0_INDEX(INDEXPATH, PNAME, CTXT)				\
 	(offsetof(										\
 		BOOST_PP_CAT(PNAME, ValueNames),						\
 		_XENUM5_PROP_GEN_NODE_NAME(CTXT, INDEXPATH)					\
@@ -226,42 +226,42 @@
 
 
 /**
- * Worker for _XENUM5_CSTRING_DEFINE_NODE().
+ * Worker for _XENUM5_CSTRING_NODE_DEF().
  * Define a node for level>0.
  */
-#define _XENUM5_CSTRING_DEFINE_NODE_1(ITERPOS, NODE, CTXT)					\
+#define _XENUM5_CSTRING_NODE_DEF_1(ITERPOS, NODE, CTXT)						\
 	{											\
 		/* Size */									\
 		_XENUM5_TT_ITERPOS_CHILDCOUNT(ITERPOS),						\
 		/* Index */									\
 		BOOST_PP_CAT(									\
-			_XENUM5_CSTRING_DEFINE_NODE_1_INDEX_,					\
+			_XENUM5_CSTRING_NODE_DEF_1_INDEX_,					\
 			BOOST_PP_BOOL(_XENUM5_TT_ITERPOS_CHILDCOUNT(ITERPOS))			\
 		) (ITERPOS, CTXT)								\
 	},											_XENUM5_NWLN \
 
 /**
- * Worker for _XENUM5_CSTRING_DEFINE_NODE_1().
+ * Worker for _XENUM5_CSTRING_NODE_DEF_1().
  * Define Node.index to 0 since node has no children.
  */
-#define _XENUM5_CSTRING_DEFINE_NODE_1_INDEX_0(ITERPOS, CTXT)					\
+#define _XENUM5_CSTRING_NODE_DEF_1_INDEX_0(ITERPOS, CTXT)					\
 	0
 
 /**
- * Worker for _XENUM5_CSTRING_NODE_DATA_1().
+ * Worker for _XENUM5_CSTRING_NODE_DEF_1().
  * Define Node.index as an offset expression into a Node table.
  */
-#define _XENUM5_CSTRING_DEFINE_NODE_1_INDEX_1(ITERPOS, CTXT)					\
-	_XENUM5_CSTRING_DEFINE_NODE_1_INDEX_1_DO(						\
+#define _XENUM5_CSTRING_NODE_DEF_1_INDEX_1(ITERPOS, CTXT)					\
+	_XENUM5_CSTRING_NODE_DEF_1_INDEX_1_DO(							\
 		_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS),						\
 		_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),					\
 		CTXT										\
 	)
 
 /**
- * Worker for _XENUM5_CSTRING_NODE_VALUE_INDEX_1().
+ * Worker for _XENUM5_CSTRING_NODE_DEF_1_INDEX_1().
  */
-#define _XENUM5_CSTRING_DEFINE_NODE_1_INDEX_1_DO(INDEXPATH, PNAME, CTXT)			\
+#define _XENUM5_CSTRING_NODE_DEF_1_INDEX_1_DO(INDEXPATH, PNAME, CTXT)			\
 	(offsetof(										\
 		BOOST_PP_CAT(PNAME, NodeNames),							\
 		_XENUM5_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\

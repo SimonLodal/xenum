@@ -48,7 +48,6 @@
 /**
  * Define the .size var.
  */
-// FIXME: Is it really necessary to define this at all?
 #define _XENUM5_DEFS_SIZE(XDCL)									\
 	constexpr const size_t _XENUM5_XDCL_DSCOPE(XDCL) _XENUM5_STORE_NAME(XDCL) ::size;	_XENUM5_NWLN
 

@@ -17,7 +17,7 @@
  */
 #define _XENUM5_CSTRING_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
 	/* INC() to ensure that the index type always gets defined */				\
-	_XENUM5_PROP_DECLV_TYPES(PNAME, BOOST_PP_INC(DEPTH))					\
+	_XENUM5_PROP_TYPES_DECLV(PNAME, BOOST_PP_INC(DEPTH))					\
 	BOOST_PP_CAT(_XENUM5_CSTRING_DECLV_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
 		(PNAME, DEPTH, PDEF, CTXT, Z)							\
 
@@ -28,8 +28,8 @@
  */
 #define _XENUM5_CSTRING_DECLV_HDR(PNAME, DEPTH, PDEF, CTXT, Z)					\
 	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
-	_XENUM5_PROP_HDR_DECLV_GET_SIZE(BOOST_PP_INC(DEPTH), PDEF, Z)				\
-	_XENUM5_PROP_HDR_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+	_XENUM5_PROP_GETSIZE_CXP_DEFV(BOOST_PP_INC(DEPTH), PDEF, Z)				\
+	_XENUM5_PROP_GETVALUE_CXP_DEFV(PNAME, DEPTH, PDEF, Z)					\
 
 
 // ======================================= MAIN (SRC) ===========================================
@@ -38,8 +38,8 @@
  */
 #define _XENUM5_CSTRING_DECLV_SRC(PNAME, DEPTH, PDEF, CTXT, Z)					\
 	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
-	_XENUM5_PROP_SRC_DECLV_GET_SIZE(BOOST_PP_INC(DEPTH), PDEF, Z)				\
-	_XENUM5_PROP_SRC_DECLV_GET_VALUE(PNAME, DEPTH, PDEF, Z)					\
+	_XENUM5_PROP_GETSIZE_EXT_DEFV(BOOST_PP_INC(DEPTH), PDEF, Z)				\
+	_XENUM5_PROP_GETVALUE_EXT_DEFV(PNAME, DEPTH, PDEF, Z)					\
 
 
 #endif // _XENUM5_IMPL_CSTRING_DECL_VALUE_HPP

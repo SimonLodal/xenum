@@ -16,10 +16,10 @@
  */
 #define _XENUM5_PLAIN_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))			\
-	BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DEFINE_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DEF_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
 		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			\
-	BOOST_PP_CAT(_XENUM5_PLAIN_GET_DEFINE_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_PLAIN_GETTERS_DEF_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
 		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
 
 /**
@@ -41,25 +41,25 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 /**
  * Define the data, without content since that is in the header.
  */
-#define _XENUM5_PLAIN_DATA_DEFINE_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_DATA_DEF_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
 	/* FIXME: Also define NodesSize - ? */							\
 	constexpr const										\
 		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Value)					\
 		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Values)					\
 		[];										_XENUM5_NWLN \
-	BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DEFINE_HDR_, BOOST_PP_BOOL(DEPTH))			\
+	BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DEF_HDR_, BOOST_PP_BOOL(DEPTH))				\
 		(PNAME, DSCOPE, SNAME)								\
 
 /**
  * Define nothing since the custom property has depth==0.
  */
-#define _XENUM5_PLAIN_DATA_DEFINE_HDR_0(PNAME, DSCOPE, SNAME)
+#define _XENUM5_PLAIN_DATA_DEF_HDR_0(PNAME, DSCOPE, SNAME)					\
 
 
 /**
  * Define the data of a single multilevel custom property, when depth!=0.
  */
-#define _XENUM5_PLAIN_DATA_DEFINE_HDR_1(PNAME, DSCOPE, SNAME)					\
+#define _XENUM5_PLAIN_DATA_DEF_HDR_1(PNAME, DSCOPE, SNAME)					\
 	constexpr const										\
 		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Node)					\
 		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Nodes)					\
@@ -68,7 +68,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 /**
  * Define all the data, in local ns.
  */
-#define _XENUM5_PLAIN_DATA_DEFINE_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_DATA_DEF_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
 	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
 	namespace {										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
@@ -76,10 +76,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 		namespace LSCOPE {								_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
 			/* Values */								\
-			_XENUM5_PROP_DECLARE_VALUE_TYPE(PNAME, PDEF)				\
-			_XENUM5_PLAIN_DEFINE_VALUES(, PNAME, CTXT)				\
+			_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)				\
+			_XENUM5_PLAIN_VALUES_DEF(, PNAME, CTXT)					\
 			/* Nodes, if depth!=0 */						\
-			BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DEFINE_SRC_, BOOST_PP_BOOL(DEPTH))	\
+			BOOST_PP_CAT(_XENUM5_PLAIN_DATA_DEF_SRC_, BOOST_PP_BOOL(DEPTH))		\
 				(PNAME, DEPTH, PDEF, CTXT, Z)					\
 			_XENUM5_INDENT_DEC							\
 		} _XENUM5_CMNT(namespace LSCOPE)						\
@@ -91,44 +91,44 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
  * For depth==0: Values are already defined as a single plain array of values,
  * directly indexed by enum value; no need for name struct or nodes table.
  */
-#define _XENUM5_PLAIN_DATA_DEFINE_SRC_0(PNAME, DEPTH, PDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_DATA_DEF_SRC_0(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 /**
  * For depth!=0: Define nodes; declare a name struct and define an array of nodes
  * with same layout.
  */
-#define _XENUM5_PLAIN_DATA_DEFINE_SRC_1(PNAME, DEPTH, PDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_DATA_DEF_SRC_1(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	/* Nodes */										\
-	_XENUM5_PLAIN_DEFINE_NODESSIZE(, PNAME, CTXT)						\
-	_XENUM5_PROP_DECLARE_INDEX_TYPE(PNAME)							\
-	_XENUM5_PROP_DECLARE_NODE_TYPE(PNAME)							\
-	_XENUM5_PLAIN_DECLARE_NODENAMES(PNAME, CTXT)						\
-	_XENUM5_PLAIN_DECLARE_VALUENAMES(PNAME, CTXT)						\
-	_XENUM5_PLAIN_DEFINE_NODES(, PNAME, CTXT)							\
+	_XENUM5_PLAIN_NODESSIZE_DEF(, PNAME, CTXT)						\
+	_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)						\
+	_XENUM5_PROP_NODETYPE_DECL(PNAME)							\
+	_XENUM5_PLAIN_NODENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_PLAIN_NODES_DEF(, PNAME, CTXT)							\
 	/* Funcs */										\
 	_XENUM5_DOC(Alias the native enum into this scope.)					\
 	using Enum = _XENUM5_XDCL_DSCOPE(_XENUM5_CTXT_XDCL(CTXT))_XENUM5_CNTNR_NAME(_XENUM5_CTXT_XDCL(CTXT))::_enum;	_XENUM5_NWLN \
-	_XENUM5_PROP_DEFINE_GET_NODE(DEPTH, CTXT, Z)						\
+	_XENUM5_PROP_GETNODE_DEF(DEPTH, CTXT, Z)						\
 
 
 // ============================ Define getters ===============================
 /**
  * Omit getters, they are defined inline constexpr in header.
  */
-#define _XENUM5_PLAIN_GET_DEFINE_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_GETTERS_DEF_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
 /**
  * Define getters, declared in header file.
  */
-#define _XENUM5_PLAIN_GET_DEFINE_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-	_XENUM5_PROP_SRC_DEFINE_GET_SIZE(DEPTH, CTXT, Z)					\
-	_XENUM5_PLAIN_GETVALUE_DEFINE_EXT(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
+#define _XENUM5_PLAIN_GETTERS_DEF_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+	_XENUM5_PROP_GETSIZE_EXT_DEFS(DEPTH, CTXT, Z)						\
+	_XENUM5_PLAIN_GETVALUE_EXT_DEF(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)		\
 
 
 /**
  * Define get${pname}() value getter.
  */
-#define _XENUM5_PLAIN_GETVALUE_DEFINE_EXT(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)		\
+#define _XENUM5_PLAIN_GETVALUE_EXT_DEF(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)		\
 	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
 	DSCOPE SNAME::BOOST_PP_CAT(get, PNAME) (						\
 		_XENUM5_PROP_GEN_INDEX0_PARMS(DSCOPE SNAME::Enum,				\
@@ -137,7 +137,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return LSCOPE BOOST_PP_CAT(PNAME, Values)[					\
-			BOOST_PP_CAT(_XENUM5_PLAIN_GETVALUE_DEFINE_EXT_, BOOST_PP_BOOL(DEPTH))	\
+			BOOST_PP_CAT(_XENUM5_PLAIN_GETVALUE_EXT_DEF_, BOOST_PP_BOOL(DEPTH))	\
 				(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)			\
 		];										_XENUM5_NWLN \
 	}											_XENUM5_NWLN
@@ -145,13 +145,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 /**
  * Define get${pname}() indexing for depth==0.
  */
-#define _XENUM5_PLAIN_GETVALUE_DEFINE_EXT_0(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
+#define _XENUM5_PLAIN_GETVALUE_EXT_DEF_0(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
 	DSCOPE SNAME::getIndex(index0)								\
 
 /**
  * Define get${pname}() indexing for depth!=0.
  */
-#define _XENUM5_PLAIN_GETVALUE_DEFINE_EXT_1(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
+#define _XENUM5_PLAIN_GETVALUE_EXT_DEF_1(PNAME, DEPTH, LSCOPE, DSCOPE, SNAME, Z)		\
 	LSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (					\
 		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
 	)											\
