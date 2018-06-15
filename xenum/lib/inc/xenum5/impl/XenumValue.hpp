@@ -15,8 +15,9 @@ namespace xenum5 {
  * Thin wrapper around a native enum value.
  * Can never have an invalid value.
  * @param XenumStore The xenum store class, containing the native C++ enum.
+ * @param enableGetIdentifier 0=off, 1=inline, 2=constexpr
  */
-template<class XenumStore, bool enableGetIdentifier = true>
+template<class XenumStore, int enableGetIdentifier>
 class XenumValue {
 protected:
 	/// The internal store class.
@@ -51,16 +52,21 @@ public:
 	constexpr Index getIndex(void) const noexcept { return XenumStore::getIndex(value); }
 
 	/// @return Identifier (name) of this enum value.
-	template<bool doEnable = enableGetIdentifier>
-	constexpr typename std::enable_if<doEnable, const char*>::type
+	template<int doEnable = enableGetIdentifier>
+	typename std::enable_if<doEnable==1, const char*>::type
+	getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
+
+	/// @return Identifier (name) of this enum value.
+	template<int doEnable = enableGetIdentifier>
+	constexpr typename std::enable_if<doEnable==2, const char*>::type
 	getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
 
 #ifdef _XENUM5_UNIT_TEST
 	/// Fake getIdentifier() that just throws, for testing the case where it should not exist.
 	/// It is not possible for a unit test to detect if a class member exists, but it can
 	/// test if it throws.
-	template<bool doEnable = enableGetIdentifier>
-	typename std::enable_if<!doEnable, const char*>::type
+	template<int doEnable = enableGetIdentifier>
+	typename std::enable_if<doEnable==0, const char*>::type
 	getIdentifier(void) const { throw std::logic_error("getIdentifier() is configured 'off'."); }
 #endif
 

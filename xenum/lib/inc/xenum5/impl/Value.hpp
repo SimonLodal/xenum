@@ -15,7 +15,7 @@
  * @return Fully qualified expression of the base value class.
  */
 #define _XENUM5_VEXPR(XDCL)									\
-	::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_IDENT_HAS_GET(XDCL)>	\
+	::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_IDENT_INT_GET(XDCL)>	\
 
 
 // ======================================= MAIN: DECLV ==========================================
