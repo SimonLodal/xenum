@@ -237,4 +237,46 @@
 	) / sizeof(BOOST_PP_CAT(PNAME, MEMBERTYPE)))
 
 
+// ========================= Define get${PNAME}() ============================
+/**
+ * Define Store::get${pname}(), inline/constexpr or ext as declared in header.
+ */
+#define _XENUM5_PLAIN_GETVALUE_DEFS(DECLPFX, PNAME, DEPTH, PDEF, LSCOPED, SSCOPED, Z)		\
+	_XENUM5_DOC(Get value of the custom property PNAME.)					\
+	DECLPFX const _XENUM5_PDEF_PARM_TYPE(PDEF)						\
+	SSCOPED BOOST_PP_CAT(get, PNAME) (							\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
+			SSCOPED Enum,								\
+			SSCOPED BOOST_PP_CAT(PNAME, Index),					\
+			DEPTH,									\
+			Z									\
+		)										\
+	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return LSCOPED BOOST_PP_CAT(PNAME, Values)[					\
+			BOOST_PP_CAT(								\
+				_XENUM5_PLAIN_GEN_VALUE_INDEXING_,				\
+				BOOST_PP_BOOL(DEPTH)						\
+			) (LSCOPED, PNAME, DEPTH, Z)						\
+		];										_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+/**
+ * Generate value indexing expression for a property having depth==0.
+ */
+#define _XENUM5_PLAIN_GEN_VALUE_INDEXING_0(LSCOPED, PNAME, DEPTH, Z)				\
+	getIndex(index0)
+
+/**
+ * Generate value indexing expression for a property having depth!=0.
+ */
+#define _XENUM5_PLAIN_GEN_VALUE_INDEXING_1(LSCOPED, PNAME, DEPTH, Z)				\
+	LSCOPED BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (					\
+		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
+	)											\
+	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
+
+
 #endif // _XENUM5_IMPL_PLAIN_HPP

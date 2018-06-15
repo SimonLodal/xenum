@@ -623,11 +623,11 @@
 	_XENUM5_PROP_GETSIZE_DEFS_N_I1								\
 	(											\
 		static constexpr const BOOST_PP_CAT(PNAME, Index)&,				\
-		,										\
-		,										\
 		PNAME,										\
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
+		,										\
+		,										\
 		Z										\
 	)											\
 
@@ -638,18 +638,18 @@
 	_XENUM5_PROP_GETSIZE_DEFS_N_I1								\
 	(											\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::BOOST_PP_CAT(PNAME, Index),	\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)::,						\
-		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		PNAME,										\
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)::,						\
+		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		Z										\
 	)											\
 
 /**
  * Define Store::get${pname}Size(), inline/constexpr or ext, defined by parms.
  */
-#define _XENUM5_PROP_GETSIZE_DEFS_N_I1(DECLPFX, LSCOPED, SSCOPED, PNAME, DEPTH, LEVEL, Z)	\
+#define _XENUM5_PROP_GETSIZE_DEFS_N_I1(DECLPFX, PNAME, DEPTH, LEVEL, LSCOPED, SSCOPED, Z)	\
 	_XENUM5_DOC(Get number of								\
 		BOOST_PP_IF(									\
 			BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),				\

@@ -92,43 +92,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
  */
 #define _XENUM5_PLAIN_GETTERS_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_GETSIZE_DEFS(DEPTH, CTXT, Z)						\
-	_XENUM5_PLAIN_GETVALUE_CXP_DEFS(PNAME, DEPTH, PDEF, Z)					\
-
-
-/**
- * Generate get${pname}() value getter.
- */
-// FIXME: Merge with function to define the source implementation.
-#define _XENUM5_PLAIN_GETVALUE_CXP_DEFS(PNAME, DEPTH, PDEF, Z)					\
-	_XENUM5_DOC(Get value of the custom property PNAME.)					\
-	static constexpr const _XENUM5_PDEF_PARM_TYPE(PDEF)					\
-	BOOST_PP_CAT(get, PNAME) (								\
-		_XENUM5_PROP_GEN_INDEX0_PARMS(Enum, BOOST_PP_CAT(PNAME, Index), DEPTH, Z)	\
-	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return BOOST_PP_CAT(PNAME, Values)[						\
-			BOOST_PP_CAT(								\
-				_XENUM5_PLAIN_GEN_VALUE_INDEXING_,				\
-				BOOST_PP_BOOL(DEPTH)						\
-			) (PNAME, DEPTH, Z)							\
-		];										_XENUM5_NWLN \
-	}											_XENUM5_NWLN \
-
-/**
- * Generate value indexing expression for a property having depth==0.
- */
-#define _XENUM5_PLAIN_GEN_VALUE_INDEXING_0(PNAME, DEPTH, Z)					\
-	getIndex(index0)
-
-/**
- * Generate value indexing expression for a property having depth!=0.
- */
-#define _XENUM5_PLAIN_GEN_VALUE_INDEXING_1(PNAME, DEPTH, Z)					\
-	BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (						\
-		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
-	)											\
-	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
+	_XENUM5_PLAIN_GETVALUE_DEFS(static constexpr, PNAME, DEPTH, PDEF, , , Z)		\
 
 
 #endif // _XENUM5_IMPL_PLAIN_DECL_STORE_HPP

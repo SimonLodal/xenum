@@ -26,15 +26,14 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
  * Entry point for definition of final checks on data structures.
  */
 #define _XENUM5_CSTRING_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
-	BOOST_PP_CAT(_XENUM5_CSTRING_CHECK_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
-		(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)						\
+	BOOST_PP_CAT(_XENUM5_CSTRING_CHECK_, _XENUM5_PDEF_PROP_DATA(PDEF)) (PNAME, LSCOPE)	\
 
 /**
  * Entry point for definition of debug info printing.
  */
 #define _XENUM5_CSTRING_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
 	BOOST_PP_CAT(_XENUM5_CSTRING_DBGINFO_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
-		(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)						\
+		(PNAME, LSCOPE, SNAME)								\
 
 
 // ============================= Define data =================================
@@ -97,98 +96,67 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			
 #define _XENUM5_CSTRING_GETTERS_DEF_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_GETSIZE_DEFS(BOOST_PP_INC(DEPTH), CTXT, Z)					\
-	_XENUM5_CSTRING_GETVALUE_EXT_DEF(PNAME, DEPTH, PDEF, LSCOPE ::, DSCOPE, SNAME, Z)	\
-
-/**
- * Define get${pname}() value getter.
- */
-// FIXME: Rename. Merge with constexpr generator.
-#define _XENUM5_CSTRING_GETVALUE_EXT_DEF(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, Z)	\
-	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
-	DSCOPE SNAME :: BOOST_PP_CAT(get, PNAME) (						\
-		_XENUM5_PROP_GEN_INDEX0_PARMS(DSCOPE SNAME::Enum,				\
-			DSCOPE SNAME::BOOST_PP_CAT(PNAME, Index), DEPTH, Z)			\
-	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return & LSCOPE BOOST_PP_CAT(PNAME, Values)[					\
-			LSCOPE BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (			\
-				_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\
-			)									\
-			.index									\
-		];										_XENUM5_NWLN \
-	}											_XENUM5_NWLN
+	_XENUM5_CSTRING_GETVALUE_DEFS(, PNAME, DEPTH, PDEF, LSCOPE::, DSCOPE SNAME::, Z)	\
 
 
-// =========================== Define _check() ===============================
-// FIXME: Merge into one, just set LSCOPE empty.
+// ======================= Define _check() contents ==========================
 /**
  * Define final checks on data structures, for implementation in header.
  */
-#define _XENUM5_CSTRING_CHECK_HDR(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
-	static_assert(										\
-		/* +1: Compiler adds an extra null terminator in Values array */		\
-		sizeof(BOOST_PP_CAT(PNAME, Values)) ==						\
-		sizeof(BOOST_PP_CAT(PNAME, ValueNames)) + 1,					\
-		"BUG: Struct/array size mismatch (ValueNames / Values)."			\
-	);											_XENUM5_NWLN \
-	static_assert(										\
-		sizeof(BOOST_PP_CAT(PNAME, NodeNames)) ==					\
-		BOOST_PP_CAT(PNAME, NodesSize) * sizeof(BOOST_PP_CAT(PNAME, Node)),		\
-		"BUG: Struct size mismatch (NodeNames / NodesSize)."				\
-	);											_XENUM5_NWLN \
-	static_assert(										\
-		sizeof(BOOST_PP_CAT(PNAME, Nodes)) ==						\
-		sizeof(BOOST_PP_CAT(PNAME, NodeNames)),						\
-		"BUG: Struct/array size mismatch (Nodes / NodeNames)."				\
-	);											_XENUM5_NWLN \
-
+#define _XENUM5_CSTRING_CHECK_HDR(PNAME, LSCOPE)						\
+	_XENUM5_CSTRING_CHECK_I1(PNAME, )							\
 
 /**
  * Define final checks on data structures, for implementation in source.
  */
-#define _XENUM5_CSTRING_CHECK_SRC(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
+#define _XENUM5_CSTRING_CHECK_SRC(PNAME, LSCOPE)						\
+	_XENUM5_CSTRING_CHECK_I1(PNAME, LSCOPE::)						\
+
+/**
+ * Define final checks on data structures, both for hdr and src.
+ */
+#define _XENUM5_CSTRING_CHECK_I1(PNAME, LSCOPED)						\
 	static_assert(										\
 		/* +1: Compiler adds an extra null terminator in Values array */		\
-		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values)) ==					\
-		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames)) + 1,				\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, Values)) ==					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, ValueNames)) + 1,				\
 		"BUG: Struct/array size mismatch (ValueNames / Values)."			\
 	);											_XENUM5_NWLN \
 	static_assert(										\
-		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, NodeNames)) ==				\
-		LSCOPE::BOOST_PP_CAT(PNAME, NodesSize) *					\
-		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Node)),					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, NodeNames)) ==				\
+		LSCOPED BOOST_PP_CAT(PNAME, NodesSize) *					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, Node)),					\
 		"BUG: Struct size mismatch (NodeNames / NodesSize)."				\
 	);											_XENUM5_NWLN \
 	static_assert(										\
-		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Nodes)) ==					\
-		sizeof(LSCOPE::BOOST_PP_CAT(PNAME, NodeNames)),					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, Nodes)) ==					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, NodeNames)),					\
 		"BUG: Struct/array size mismatch (Nodes / NodeNames)."				\
 	);											_XENUM5_NWLN \
 
 
-// =========================== DEFS _dbginfo() ===============================
+// ====================== Define _dbginfo() contents =========================
 /**
  * Define debug info for prop data structures, defined in header.
  */
-#define _XENUM5_CSTRING_DBGINFO_HDR(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
-	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<" (HDR):"<<std::endl			\
-		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, Values))<<") = "	\
-			<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl			\
-		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
-			<<sizeof(BOOST_PP_CAT(PNAME, ValueNames))<<std::endl			\
-		;										_XENUM5_NWLN \
-
+#define _XENUM5_CSTRING_DBGINFO_HDR(PNAME, LSCOPE, SNAME)					\
+	_XENUM5_CSTRING_DBGINFO_I1(PNAME, , SNAME)						\
 
 /**
  * Define debug info for prop data structures, defined in source.
  */
-#define _XENUM5_CSTRING_DBGINFO_SRC(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)			\
-	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<" (SRC):"<<std::endl			\
-		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<") = "	\
-			<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, Values))<<std::endl		\
-		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
-			<<sizeof(LSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<std::endl		\
+#define _XENUM5_CSTRING_DBGINFO_SRC(PNAME, LSCOPE, SNAME)					\
+	_XENUM5_CSTRING_DBGINFO_I1(PNAME, LSCOPE::, LSCOPE)					\
+
+/**
+ * Define debug info for prop data structures, for both hdr/src.
+ */
+#define _XENUM5_CSTRING_DBGINFO_I1(PNAME, LSCOPED, INFSCOPE)					\
+	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<":"<<std::endl				\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(INFSCOPE::BOOST_PP_CAT(PNAME, Values))<<") = "	\
+			<<sizeof(LSCOPED BOOST_PP_CAT(PNAME, Values))<<std::endl		\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(INFSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
+			<<sizeof(LSCOPED BOOST_PP_CAT(PNAME, ValueNames))<<std::endl		\
 		;										_XENUM5_NWLN \
 
 

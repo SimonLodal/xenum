@@ -268,4 +268,30 @@
 	) / sizeof(BOOST_PP_CAT(PNAME, Node)))
 
 
+// ========================= Define get${PNAME}() ============================
+/**
+ * Define Store::get${pname}() value getter, inline/constexpr or ext.
+ */
+#define _XENUM5_CSTRING_GETVALUE_DEFS(DECLPFX, PNAME, DEPTH, PDEF, LSCOPED, SSCOPED, Z)		\
+	_XENUM5_DOC(Get value of the custom property PNAME.)					\
+	DECLPFX const _XENUM5_PDEF_PARM_TYPE(PDEF)						\
+	SSCOPED BOOST_PP_CAT(get, PNAME) (							\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
+			SSCOPED Enum,								\
+			SSCOPED BOOST_PP_CAT(PNAME, Index),					\
+			DEPTH,									\
+			Z									\
+		)										\
+	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return & LSCOPED BOOST_PP_CAT(PNAME, Values)[					\
+			LSCOPED BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (			\
+				_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\
+			)									\
+			.index									\
+		];										_XENUM5_NWLN \
+	}											_XENUM5_NWLN
+
+
 #endif // _XENUM5_IMPL_CSTRING_HPP
