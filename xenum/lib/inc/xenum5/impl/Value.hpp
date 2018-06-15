@@ -3,9 +3,11 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
+ *
+ * Inheriting an enum value class from XenumValue.
  */
-#ifndef _XENUM5_IMPL_DECLARE_VALUE_HPP
-#define _XENUM5_IMPL_DECLARE_VALUE_HPP
+#ifndef _XENUM5_IMPL_VALUE_HPP
+#define _XENUM5_IMPL_VALUE_HPP
 
 
 // ==============================================================================================
@@ -16,7 +18,7 @@
 	::_XENUM5_NS::XenumValue<_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_IDENT_HAS_GET(XDCL)>	\
 
 
-// ==============================================================================================
+// ======================================= MAIN: DECLV ==========================================
 /**
  * Declare the enum-value class.
  */
@@ -29,7 +31,6 @@
 DECLARE_VALUE: ctxt=CTXT xdcl=XDCL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_XDCL_PDEFS(XDCL))) _XENUM5_NWLN \
 */
 
-// ==============================================================================================
 /**
  * Declare the enum-value class as a simple alias of the template class.
  * For enums that do not have custom properties.
@@ -41,7 +42,6 @@ DECLARE_VALUE: ctxt=CTXT xdcl=XDCL has-props=BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XEN
 	using _XENUM5_XDCL_VNAME(XDCL) = _XENUM5_VEXPR(XDCL);					_XENUM5_NWLN \
 
 
-// ==============================================================================================
 /**
  * Declare the enum-value class as a subclass of the template class.
  * For enums that have custom properties.
@@ -74,4 +74,4 @@ public:												_XENUM5_NWLN \
 	constexpr VNAME(const VNAME& other) noexcept : XenumValue(other) {}			_XENUM5_NWLN \
 
 
-#endif // _XENUM5_IMPL_DECLARE_VALUE_HPP
+#endif // _XENUM5_IMPL_VALUE_HPP

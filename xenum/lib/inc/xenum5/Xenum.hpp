@@ -46,18 +46,10 @@
 #include <xenum5/impl/Ident.hpp>
 #include <xenum5/impl/Props.hpp>
 #include <xenum5/impl/Plain.hpp>
-#include <xenum5/impl/PlainDeclStore.hpp>
-#include <xenum5/impl/PlainDeclValue.hpp>
-#include <xenum5/impl/PlainDefine.hpp>
 #include <xenum5/impl/Cstring.hpp>
-#include <xenum5/impl/CstringDeclStore.hpp>
-#include <xenum5/impl/CstringDeclValue.hpp>
-#include <xenum5/impl/CstringDefine.hpp>
-#include <xenum5/impl/DeclareStore.hpp>
-#include <xenum5/impl/DeclareCntnr.hpp>
-#include <xenum5/impl/DeclareValue.hpp>
-#include <xenum5/impl/DefineStore.hpp>
-#include <xenum5/impl/DefineCntnr.hpp>
+#include <xenum5/impl/Store.hpp>
+#include <xenum5/impl/Value.hpp>
+#include <xenum5/impl/Cntnr.hpp>
 #include <xenum5/impl/Main.hpp>
 
 
