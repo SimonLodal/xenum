@@ -25,8 +25,11 @@
  * Declare the data and functions related to a single custom property, implemented in header.
  */
 #define _XENUM5_PLAIN_DECLV_HDR(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_GETSIZE_CXP_DEFV(DEPTH, PDEF, Z)						\
-	_XENUM5_PROP_GETVALUE_CXP_DEFV(PNAME, DEPTH, PDEF, Z)					\
+	_XENUM5_PROP_GETSIZE_DEFV(								\
+		constexpr const BOOST_PP_CAT(PNAME, Index)&,					\
+		DEPTH, CTXT, Z									\
+	)											\
+	_XENUM5_PROP_GETVALUE_DEFV(constexpr, PNAME, DEPTH, PDEF, Z)				\
 
 
 // ======================================= MAIN (SRC) ===========================================
@@ -34,8 +37,11 @@
  * Declare the functions related to a single custom property, implemented in source.
  */
 #define _XENUM5_PLAIN_DECLV_SRC(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_GETSIZE_EXT_DEFV(DEPTH, PDEF, Z)						\
-	_XENUM5_PROP_GETVALUE_EXT_DEFV(PNAME, DEPTH, PDEF, Z)					\
+	_XENUM5_PROP_GETSIZE_DEFV(								\
+		BOOST_PP_CAT(PNAME, Index),							\
+		DEPTH, CTXT, Z									\
+	)											\
+	_XENUM5_PROP_GETVALUE_DEFV(, PNAME, DEPTH, PDEF, Z)					\
 
 
 #endif // _XENUM5_IMPL_PLAIN_DECL_VALUE_HPP
