@@ -441,7 +441,8 @@ This callback defines general parameters of the enum.
     - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
     - inl: Declare and define inline, but not constexpr, in generated header.
-    - cxp: Declare and define constexpr, in generated header.
+    - cxp: Declare and define constexpr, in generated header. This produces a separate
+      cxpFromIdentifier() method, but also includes the plain inline fromIdentifier().
 - **properties** Optional. Defines custom properties. Leave field empty/undefined if the
   xenum does not have any custom properties. If defined, it must be a tuple of one or
   more tuples that each define a property (see below).
@@ -489,12 +490,13 @@ be inlined. They come with big costs.
   xenum is big/complex. When using "ext", this only happens for the source file where the xenum
   is defined.
 - Runtime cost: Inline from*() and constexpr get*() methods are fine, but the constexpr from*()
-  methods are slow. Reason is that non-constexpr functions can use strcmp() and other functions
-  that are highly optimized, but since such library functions are usually not constexpr themselves,
-  we have to use other implementations of these functions, which are much, much slower.
-  The only advantage to constexpr is that you can use the method at compile time. The price is
-  terrible runtime performance. In the future C++ may allow to define different code for constexpr
-  and non-constexpr, but until then, this is a problem for everyone.
+  methods are slow. That is why the plain inline method is still included, and the constexpr
+  variant is named cxpFrom*(). Reason for bad performance is that non-constexpr functions can
+  use strcmp() and other functions that are highly optimized, but since such library functions
+  are usually not constexpr themselves, we have to use other implementations of these functions,
+  which are much, much slower. The only advantage to constexpr is that you can use the method at
+  compile time. The price is terrible runtime performance. In the future C++ may allow to define
+  different code for constexpr and non-constexpr, but until then, this is a problem for everyone.
 
 You can also define a get*() or from*() method implementation as "off" to omit it, it might save
 some space in your compiled binary.
@@ -533,6 +535,7 @@ Underscore-prefixed members are:
 - \_enum
 - \_fromIndex
 - \_fromIdentifier
+- \_cxpFromIdentifier
 
 A few members do not have an underscore prefix.
 - The default constructor

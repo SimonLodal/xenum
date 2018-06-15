@@ -101,9 +101,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 	)											\
 
 /**
- * Define fromIdentifier() as inline constexpr.
+ * Define cxpFromIdentifier() as inline constexpr (also include plain inline variant).
  */
 #define _XENUM5_IDENT_FROMVALUE_DECLS_cxp(XDCL, CTXT)						\
+	_XENUM5_IDENT_FROMVALUE_DECLS_inl(XDCL, CTXT)						\
 	_XENUM5_IDENT_FROMVALUE_CXP_DEF()							\
 
 
@@ -145,43 +146,32 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
  * Define _fromIdentifier() as inline, non-constexpr.
  */
 #define _XENUM5_IDENT_FROMVALUE_DECLC_ext(XDCL, CTXT)						\
-	_XENUM5_IDENT_FROMVALUE_DECLC_I1(							\
-		static,										\
-		_XENUM5_STORE_NAME(XDCL),							\
-		_XENUM5_XDCL_VNAME(XDCL)							\
-	)											\
+	_XENUM5_IDENT_FROMVALUE_STD_DECLC_I1(_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_VNAME(XDCL))\
 
 /**
  * Define _fromIdentifier() as inline, non-constexpr.
  */
 #define _XENUM5_IDENT_FROMVALUE_DECLC_inl(XDCL, CTXT)						\
-	_XENUM5_IDENT_FROMVALUE_DECLC_I1(							\
-		static,										\
-		_XENUM5_STORE_NAME(XDCL),							\
-		_XENUM5_XDCL_VNAME(XDCL)							\
-	)											\
+	_XENUM5_IDENT_FROMVALUE_STD_DECLC_I1(_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_VNAME(XDCL))\
 
 /**
  * Define _fromIdentifier() as inline constexpr.
  */
 #define _XENUM5_IDENT_FROMVALUE_DECLC_cxp(XDCL, CTXT)						\
-	_XENUM5_IDENT_FROMVALUE_DECLC_I1(							\
-		static constexpr,								\
-		_XENUM5_STORE_NAME(XDCL),							\
-		_XENUM5_XDCL_VNAME(XDCL)							\
-	)											\
+	_XENUM5_IDENT_FROMVALUE_STD_DECLC_I1(_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_VNAME(XDCL))\
+	_XENUM5_IDENT_FROMVALUE_CXP_DECLC_I1(_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_VNAME(XDCL))\
 
 
 /**
  * Common fromIdentifier() generator for container class.
  */
-#define _XENUM5_IDENT_FROMVALUE_DECLC_I1(DECLPFX, SNAME, VNAME)					\
+#define _XENUM5_IDENT_FROMVALUE_STD_DECLC_I1(SNAME, VNAME)					\
 	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
 		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if no such identifier exists.)			\
-	DECLPFX VNAME _fromIdentifier(const char* identifier)					_XENUM5_NWLN \
+	static VNAME _fromIdentifier(const char* identifier)					_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return SNAME::fromIdentifier(identifier);					_XENUM5_NWLN \
@@ -193,10 +183,40 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
-	DECLPFX bool _fromIdentifier(const char* identifier, VNAME& value) noexcept		_XENUM5_NWLN \
+	static bool _fromIdentifier(const char* identifier, VNAME& value) noexcept		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return SNAME::fromIdentifier(identifier, value);				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+/**
+ * Constexpr cxpFromIdentifier() generator for container class.
+ */
+#define _XENUM5_IDENT_FROMVALUE_CXP_DECLC_I1(SNAME, VNAME)					\
+	_XENUM5_DOC(Get enum value with given identifier (name).				_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search, and because		_XENUM5_NWLN \
+		constexpr requirements result in very suboptimal runtime code.			_XENUM5_NWLN \
+		@param identifier Identifier to look up.					_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such identifier exists.)			\
+	static constexpr VNAME _cxpFromIdentifier(const char* identifier)			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::cxpFromIdentifier(identifier);					_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search, and because		_XENUM5_NWLN \
+		constexpr requirements result in very suboptimal runtime code.			_XENUM5_NWLN \
+		@param identifier Identifier to look up.					_XENUM5_NWLN \
+		@param value Return value; is set to the requested enum value,			_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given identifier was found, else false.)	\
+	static constexpr bool _cxpFromIdentifier(const char* identifier, VNAME& value) noexcept	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::cxpFromIdentifier(identifier, value);				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
 
 
@@ -559,11 +579,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 
 
 /**
- * Define fromIdentifier() method, constexpr.
+ * Define cxpFromIdentifier() method; constexpr variant of fromIdentifier().
  */
 #define _XENUM5_IDENT_FROMVALUE_CXP_DEF()							\
-	_XENUM5_DOC(Recursive worker for throwing fromIdentifier().)				\
-	static constexpr Enum fromIdentifierT(const char* identifier, Index index)		_XENUM5_NWLN \
+	_XENUM5_DOC(Recursive worker for throwing cxpFromIdentifier().)				\
+	static constexpr Enum cxpFromIdentifierT(const char* identifier, Index index)		_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		return (index < size)								_XENUM5_NWLN \
@@ -572,7 +592,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 					&identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
 				? static_cast<Enum>(index)					_XENUM5_NWLN \
-				: fromIdentifierT(identifier, index+1)				_XENUM5_NWLN \
+				: cxpFromIdentifierT(identifier, index+1)			_XENUM5_NWLN \
 				_XENUM5_INDENT_DEC						\
 			)									_XENUM5_NWLN \
 			: throw std::out_of_range("No such identifier.");			_XENUM5_NWLN \
@@ -585,14 +605,14 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 		@param identifier Identifier to look up.					_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if no such identifier exists.)			\
-	static constexpr Enum fromIdentifier(const char* identifier)				_XENUM5_NWLN \
+	static constexpr Enum cxpFromIdentifier(const char* identifier)				_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
- 		return fromIdentifierT(identifier, 0);						_XENUM5_NWLN \
+ 		return cxpFromIdentifierT(identifier, 0);						_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
- 	_XENUM5_DOC(Recursive worker for non-throwing fromIdentifier().)			\
-	static constexpr bool fromIdentifierN(const char* identifier, Value& value, Index index)	_XENUM5_NWLN \
+ 	_XENUM5_DOC(Recursive worker for non-throwing cxpFromIdentifier().)			\
+	static constexpr bool cxpFromIdentifierN(const char* identifier, Value& value, Index index)	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		return (index < size)								_XENUM5_NWLN \
@@ -601,7 +621,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 					&identValues[getIdentOffset(static_cast<Enum>(index))])	_XENUM5_NWLN \
 				_XENUM5_INDENT_INC						\
  				? (value = static_cast<Enum>(index)), true			_XENUM5_NWLN \
- 				: fromIdentifierN(identifier, value, index+1)			_XENUM5_NWLN \
+ 				: cxpFromIdentifierN(identifier, value, index+1)			_XENUM5_NWLN \
 				_XENUM5_INDENT_DEC						\
 			)									_XENUM5_NWLN \
 			: false;								_XENUM5_NWLN \
@@ -616,10 +636,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given identifier was found, else false.)	\
-	static constexpr bool fromIdentifier(const char* identifier, Value& value) noexcept	_XENUM5_NWLN \
+	static constexpr bool cxpFromIdentifier(const char* identifier, Value& value) noexcept	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
- 		return fromIdentifierN(identifier, value, 0);					_XENUM5_NWLN \
+ 		return cxpFromIdentifierN(identifier, value, 0);					_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
 

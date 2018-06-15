@@ -133,6 +133,12 @@ TEST_F(TestIcombs, IdentOffInl)
 
 
 #if XENUM5_TEST_IdentOffCxp
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("OffCxp0") == xenums::IdentOffCxp::Icombs::OffCxp0, bool>::type cxpFromOffCxp0(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("OffCxp1") == xenums::IdentOffCxp::Icombs::OffCxp1, bool>::type cxpFromOffCxp1(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("OffCxp2") == xenums::IdentOffCxp::Icombs::OffCxp2, bool>::type cxpFromOffCxp2(void) { return true; }
 /// Test xenum with identifier features: getIdentifier=off, fromIdentifier=cxp
 TEST_F(TestIcombs, IdentOffCxp)
 {
@@ -166,6 +172,10 @@ TEST_F(TestIcombs, IdentOffCxp)
 	try { xenums::IdentOffCxp::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
+	// cxpFromIdentifier() at compile time
+	EXPECT_EQ(true, cxpFromOffCxp0<void>());
+	EXPECT_EQ(true, cxpFromOffCxp1<void>());
+	EXPECT_EQ(true, cxpFromOffCxp2<void>());
 }
 #endif
 
@@ -266,12 +276,12 @@ TEST_F(TestIcombs, IdentExtInl)
 
 
 #if XENUM5_TEST_IdentExtCxp
-/// Function that only compiles if the constexpr fromIdentifier() actually works at compile time.
-template <class T> typename std::enable_if<xenums::IdentExtCxp::Icombs::_fromIdentifier("ExtCxp0") == xenums::IdentExtCxp::Icombs::ExtCxp0, bool>::type cxpFromExtCxp0(void) { return true; }
-/// Function that only compiles if the constexpr fromIdentifier() actually works at compile time.
-template <class T> typename std::enable_if<xenums::IdentExtCxp::Icombs::_fromIdentifier("ExtCxp1") == xenums::IdentExtCxp::Icombs::ExtCxp1, bool>::type cxpFromExtCxp1(void) { return true; }
-/// Function that only compiles if the constexpr fromIdentifier() actually works at compile time.
-template <class T> typename std::enable_if<xenums::IdentExtCxp::Icombs::_fromIdentifier("ExtCxp2") == xenums::IdentExtCxp::Icombs::ExtCxp2, bool>::type cxpFromExtCxp2(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("ExtCxp0") == xenums::IdentExtCxp::Icombs::ExtCxp0, bool>::type cxpFromExtCxp0(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("ExtCxp1") == xenums::IdentExtCxp::Icombs::ExtCxp1, bool>::type cxpFromExtCxp1(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("ExtCxp2") == xenums::IdentExtCxp::Icombs::ExtCxp2, bool>::type cxpFromExtCxp2(void) { return true; }
 /// Test xenum with identifier features: getIdentifier=ext, fromIdentifier=cxp
 TEST_F(TestIcombs, IdentExtCxp)
 {
@@ -304,7 +314,7 @@ TEST_F(TestIcombs, IdentExtCxp)
 	try { xenums::IdentExtCxp::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
-	// fromIdentifier() at compile time
+	// cxpFromIdentifier() at compile time
 	EXPECT_EQ(true, cxpFromExtCxp0<void>());
 	EXPECT_EQ(true, cxpFromExtCxp1<void>());
 	EXPECT_EQ(true, cxpFromExtCxp2<void>());
@@ -445,12 +455,12 @@ template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Ide
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::IdentCxpCxp::Icombs::CxpCxp1.getIdentifier(), "CxpCxp1"), bool>::type cxpGetCxpCxp1(void) { return true; }
 /// Function that only compiles if the constexpr getIdentifier() actually works at compile time.
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::IdentCxpCxp::Icombs::CxpCxp2.getIdentifier(), "CxpCxp2"), bool>::type cxpGetCxpCxp2(void) { return true; }
-/// Function that only compiles if the constexpr fromIdentifier() actually works at compile time.
-template <class T> typename std::enable_if<xenums::IdentCxpCxp::Icombs::_fromIdentifier("CxpCxp0") == xenums::IdentCxpCxp::Icombs::CxpCxp0, bool>::type cxpFromCxpCxp0(void) { return true; }
-/// Function that only compiles if the constexpr fromIdentifier() actually works at compile time.
-template <class T> typename std::enable_if<xenums::IdentCxpCxp::Icombs::_fromIdentifier("CxpCxp1") == xenums::IdentCxpCxp::Icombs::CxpCxp1, bool>::type cxpFromCxpCxp1(void) { return true; }
-/// Function that only compiles if the constexpr fromIdentifier() actually works at compile time.
-template <class T> typename std::enable_if<xenums::IdentCxpCxp::Icombs::_fromIdentifier("CxpCxp2") == xenums::IdentCxpCxp::Icombs::CxpCxp2, bool>::type cxpFromCxpCxp2(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("CxpCxp0") == xenums::IdentCxpCxp::Icombs::CxpCxp0, bool>::type cxpFromCxpCxp0(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("CxpCxp1") == xenums::IdentCxpCxp::Icombs::CxpCxp1, bool>::type cxpFromCxpCxp1(void) { return true; }
+/// Function that only compiles if cxpFromIdentifier() actually works at compile time.
+template <class T> typename std::enable_if<xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("CxpCxp2") == xenums::IdentCxpCxp::Icombs::CxpCxp2, bool>::type cxpFromCxpCxp2(void) { return true; }
 /// Test xenum with identifier features: getIdentifier=cxp, fromIdentifier=cxp
 TEST_F(TestIcombs, IdentCxpCxp)
 {
@@ -487,7 +497,7 @@ TEST_F(TestIcombs, IdentCxpCxp)
 	try { xenums::IdentCxpCxp::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
-	// fromIdentifier() at compile time
+	// cxpFromIdentifier() at compile time
 	EXPECT_EQ(true, cxpFromCxpCxp0<void>());
 	EXPECT_EQ(true, cxpFromCxpCxp1<void>());
 	EXPECT_EQ(true, cxpFromCxpCxp2<void>());
