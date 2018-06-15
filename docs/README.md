@@ -1,4 +1,4 @@
-# xenum-5.1-pre2
+# xenum-5.1
 
 ## Description
 Want better C++ enums?
