@@ -190,7 +190,7 @@ TEST_F(TestXenums, SelectInt)
 }
 
 
-/// Function that only compiles if the constexpr ::_size is really constexpr.
+/// Function that only compiles if the constexpr _size is really constexpr.
 template <class T> typename std::enable_if<XenumFruits::_size == 2, bool>::type cxpSizeNoNsNoCls(void) { return true; }
 /// Test basics of the FruitsNoNsNoCls xenum.
 TEST_F(TestXenums, FruitsNoNsNoCls)
@@ -206,7 +206,7 @@ TEST_F(TestXenums, FruitsNoNsNoCls)
 }
 
 
-/// Function that only compiles if the constexpr ::_size is really constexpr.
+/// Function that only compiles if the constexpr _size is really constexpr.
 template <class T> typename std::enable_if<XenumWrapNoNs::Fruits::_size == 3, bool>::type cxpSizeNoNsInCls(void) { return true; }
 /// Test basics of the FruitsNoNsInCls xenum.
 TEST_F(TestXenums, FruitsNoNsInCls)
@@ -224,7 +224,7 @@ TEST_F(TestXenums, FruitsNoNsInCls)
 }
 
 
-/// Function that only compiles if the constexpr ::_size is really constexpr.
+/// Function that only compiles if the constexpr _size is really constexpr.
 template <class T> typename std::enable_if<xenums::Fruits::_size == 4, bool>::type cxpSizeInNsNoCls(void) { return true; }
 /// Test basics of the FruitsInNsNoCls xenum.
 TEST_F(TestXenums, FruitsInNsNoCls)
@@ -244,7 +244,7 @@ TEST_F(TestXenums, FruitsInNsNoCls)
 }
 
 
-/// Function that only compiles if the constexpr ::_size is really constexpr.
+/// Function that only compiles if the constexpr _size is really constexpr.
 template <class T> typename std::enable_if<xenums::WrapInNs::Fruits::_size == 5, bool>::type cxpSizeInNsInCls(void) { return true; }
 /// Test basics of the FruitsInNsInCls xenum.
 TEST_F(TestXenums, FruitsInNsInCls)
