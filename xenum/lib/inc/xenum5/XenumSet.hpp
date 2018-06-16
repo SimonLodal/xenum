@@ -34,7 +34,7 @@ public:
 protected:
 #if 1 // 64bit chunks
 	/// Integer type used in the bit store.
-	typedef uint64_t Chunk;
+	using Chunk = uint64_t;
 	/// When you have the index of an enum-value, right-shift .chunkIndexShift times to
 	/// get the index of the chunk that this enum-value bit is in.
 	/// Same as dividing the index by the bitsize of Chunk.
@@ -42,7 +42,7 @@ protected:
 	/// Mask of the bits that are removed by right-shifting by chunkIndexShift.
 	static constexpr const Chunk bitShiftMask = 63;
 #else // 8bit chunks
-	typedef uint8_t Chunk;
+	using Chunk = uint8_t;
 	static constexpr const Index chunkIndexShift = 3;
 	static constexpr const Chunk bitShiftMask = 7;
 #endif

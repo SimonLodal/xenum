@@ -27,10 +27,16 @@ public:
 };
 
 
+/// Function that only compiles if the constexpr fromIndex() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Fruits::_fromIndex(1) == xenums::Fruits::pear, bool>::type cxpFromIndex(void) { return true; }
 /// Test fromIndex().
 TEST_F(TestCntnr, FromIndex)
 {
 	xenums::Fruit fruit;
+
+	// fromIndex() at compile time
+	EXPECT_EQ(true, cxpFromIndex<void>());
+
 	for (size_t index=0; index<xenums::Fruits::_size; index++) {
 		EXPECT_EQ(true, xenums::Fruits::_fromIndex(index, fruit));
 		EXPECT_EQ(index, fruit.getIndex());
@@ -38,6 +44,11 @@ TEST_F(TestCntnr, FromIndex)
 	}
 	EXPECT_EQ(false, xenums::Fruits::_fromIndex(xenums::Fruits::_size, fruit));
 	EXPECT_EQ(xenums::Fruits::_size-1, fruit.getIndex()); // unchanged since last loop
+
+	success = false;
+	try { xenums::Fruits::_fromIndex(xenums::Fruits::_size); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Index >= size.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -54,6 +65,11 @@ TEST_F(TestCntnr, FromIdentifier)
 	}
 	EXPECT_EQ(false, xenums::Fruits::_fromIdentifier("non-existing identifier", fruit1));
 	EXPECT_EQ(fruit2, fruit1); // untouched fruit1
+
+	success = false;
+	try { xenums::Fruits::_fromIdentifier("foo"); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 

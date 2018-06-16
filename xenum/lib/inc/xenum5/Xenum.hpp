@@ -3,10 +3,17 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 5.0
+ * @version 5.1
  */
 #ifndef _XENUM5_XENUM_HPP
 #define _XENUM5_XENUM_HPP
+
+/// Major version
+#define XENUM5_VER_MAJOR	5
+/// Minor version
+#define XENUM5_VER_MINOR	1
+/// Micro/patch/pre version
+#define XENUM5_VER_PATCH	
 
 /// Namespace that Xenum lives in.
 /// Note that most of Xenum is macros that ignore namespaces anyway.
@@ -32,24 +39,17 @@
 #include <xenum5/impl/XenumCntnrIterator.hpp>
 #include <xenum5/impl/XenumValue.hpp>
 #include <xenum5/impl/TupleTree.hpp>
-#include <xenum5/impl/Decl.hpp>
+#include <xenum5/impl/Xdcl.hpp>
 #include <xenum5/impl/PropDef.hpp>
 #include <xenum5/impl/Ctxt.hpp>
 #include <xenum5/impl/IndexNode.hpp>
+#include <xenum5/impl/Ident.hpp>
 #include <xenum5/impl/Props.hpp>
 #include <xenum5/impl/Plain.hpp>
-#include <xenum5/impl/PlainDeclStore.hpp>
-#include <xenum5/impl/PlainDeclValue.hpp>
-#include <xenum5/impl/PlainDefine.hpp>
 #include <xenum5/impl/Cstring.hpp>
-#include <xenum5/impl/CstringDeclStore.hpp>
-#include <xenum5/impl/CstringDeclValue.hpp>
-#include <xenum5/impl/CstringDefine.hpp>
-#include <xenum5/impl/DeclareStore.hpp>
-#include <xenum5/impl/DeclareCntnr.hpp>
-#include <xenum5/impl/DeclareValue.hpp>
-#include <xenum5/impl/DefineStore.hpp>
-#include <xenum5/impl/DefineCntnr.hpp>
+#include <xenum5/impl/Store.hpp>
+#include <xenum5/impl/Value.hpp>
+#include <xenum5/impl/Cntnr.hpp>
 #include <xenum5/impl/Main.hpp>
 
 
@@ -59,7 +59,7 @@
  */
 #define XENUM5_DECLARE(SUFFIX)									\
 	_XENUM5_MARK(declare begin SUFFIX)							\
-	_XENUM5_DO_DECLARE(_XENUM5_CTXT_INIT(SUFFIX))						\
+	_XENUM5_MAIN_DECLARE(SUFFIX)								\
 	_XENUM5_MARK(declare end SUFFIX)							\
 
 /**
@@ -68,13 +68,18 @@
  */
 #define XENUM5_DEFINE(SUFFIX)									\
 	_XENUM5_MARK(define begin SUFFIX)							\
-	_XENUM5_DO_DEFINE(_XENUM5_CTXT_INIT(SUFFIX))						\
+	_XENUM5_MAIN_DEFINE(SUFFIX)								\
 	_XENUM5_MARK(define end SUFFIX)								\
 
 
 /// Print an XenumValue.
 template<class XenumStore>
-inline std::ostream& operator<<(std::ostream& out, ::_XENUM5_NS::XenumValue<XenumStore> enumValue) {
+inline std::ostream& operator<<(std::ostream& out, ::_XENUM5_NS::XenumValue<XenumStore,1> enumValue) {
+	return out << enumValue.getIdentifier();
+}
+/// Print an XenumValue.
+template<class XenumStore>
+inline std::ostream& operator<<(std::ostream& out, ::_XENUM5_NS::XenumValue<XenumStore,2> enumValue) {
 	return out << enumValue.getIdentifier();
 }
 

@@ -16,37 +16,37 @@
 /**
  * Get enum suffix. Must always be defined.
  */
-#define _XENUM5_CTXT_GET_SUFFIX(CTXT)			BOOST_PP_SEQ_ELEM(0, CTXT)
+#define _XENUM5_CTXT_SUFFIX(CTXT)			BOOST_PP_SEQ_ELEM(0, CTXT)
 
 /**
- * Get enum declaration; a seq containing all the parameters of the XENUM_DECL_$suffix macro.
+ * Get enum declaration; a seq containing all the parameters of the XENUM5_$suffix macro.
  */
-#define _XENUM5_CTXT_GET_DECL(CTXT)			BOOST_PP_SEQ_ELEM(1, CTXT)
+#define _XENUM5_CTXT_XDCL(CTXT)				BOOST_PP_SEQ_ELEM(1, CTXT)
 
 /**
  * Get the current property index, if any.
  */
-#define _XENUM5_CTXT_GET_PROPINDEX(CTXT)		BOOST_PP_SEQ_ELEM(2, CTXT)
+#define _XENUM5_CTXT_PINDEX(CTXT)			BOOST_PP_SEQ_ELEM(2, CTXT)
 
 /**
  * Set the current property index.
  */
-#define _XENUM5_CTXT_SET_PROPINDEX(CTXT, PROPINDEX)	BOOST_PP_SEQ_REPLACE(CTXT, 2, PROPINDEX)
+#define _XENUM5_CTXT_SET_PINDEX(CTXT, PINDEX)		BOOST_PP_SEQ_REPLACE(CTXT, 2, PINDEX)
 
 /**
  * Get the current property definition field, if any.
  */
-#define _XENUM5_CTXT_GET_PROPDEF(CTXT)			BOOST_PP_SEQ_ELEM(3, CTXT)
+#define _XENUM5_CTXT_PDEF(CTXT)				BOOST_PP_SEQ_ELEM(3, CTXT)
 
 /**
  * Set the current property definition field.
  */
-#define _XENUM5_CTXT_SET_PROPDEF(CTXT, PROPDEF)		BOOST_PP_SEQ_REPLACE(CTXT, 3, PROPDEF)
+#define _XENUM5_CTXT_SET_PDEF(CTXT, PDEF)		BOOST_PP_SEQ_REPLACE(CTXT, 3, PDEF)
 
 /**
  * Get current enum-value identifier, if any.
  */
-#define _XENUM5_CTXT_GET_IDENT(CTXT)			BOOST_PP_SEQ_ELEM(4, CTXT)
+#define _XENUM5_CTXT_IDENT(CTXT)			BOOST_PP_SEQ_ELEM(4, CTXT)
 
 /**
  * Set the current enum-value identifier.
@@ -56,7 +56,7 @@
 /**
  * Get current data tree iteration position, if any.
  */
-#define _XENUM5_CTXT_GET_ITERPOS(CTXT)			BOOST_PP_SEQ_ELEM(5, CTXT)
+#define _XENUM5_CTXT_ITERPOS(CTXT)			BOOST_PP_SEQ_ELEM(5, CTXT)
 
 /**
  * Set the current data tree iteration position.
@@ -66,7 +66,7 @@
 /**
  * Get current data tree node, if any.
  */
-#define _XENUM5_CTXT_GET_NODE(CTXT)			BOOST_PP_SEQ_ELEM(6, CTXT)
+#define _XENUM5_CTXT_NODE(CTXT)				BOOST_PP_SEQ_ELEM(6, CTXT)
 
 /**
  * Set the current data tree node.
@@ -76,7 +76,7 @@
 /**
  * Get current callback function, if any.
  */
-#define _XENUM5_CTXT_GET_CALLBACK(CTXT)			BOOST_PP_SEQ_ELEM(7, CTXT)
+#define _XENUM5_CTXT_CALLBACK(CTXT)			BOOST_PP_SEQ_ELEM(7, CTXT)
 
 /**
  * Set the current callback function.
@@ -84,11 +84,23 @@
 #define _XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)	BOOST_PP_SEQ_REPLACE(CTXT, 7, CALLBACK)
 
 /**
+ * Get current declaration prefix, if any.
+ */
+#define _XENUM5_CTXT_DECLPFX(CTXT)			BOOST_PP_SEQ_ELEM(8, CTXT)
+
+/**
+ * Set the current declaration prefix.
+ */
+#define _XENUM5_CTXT_SET_DECLPFX(CTXT, DECLPFX)		BOOST_PP_SEQ_REPLACE(CTXT, 8, DECLPFX)
+
+
+/**
  * Create a new context object.
  */
 #define _XENUM5_CTXT_INIT(SUFFIX)								\
 	(SUFFIX)										\
-	(_XENUM5_DECL_INIT(SUFFIX))								\
+	(_XENUM5_XDCL_INIT(SUFFIX))								\
+	()											\
 	()											\
 	()											\
 	()											\

@@ -10,65 +10,546 @@
 #define _XENUM5_IMPL_CSTRING_HPP
 
 
-// ============================= DECLARATION IN CONTAINER CLASS ================================
+// ======================================= MAIN: DECLS ==========================================
 /**
- * Entry point for declaring a custom property of cstring type, in store class context.
+ * Entry point for all custom-prop related declarations in store class (header).
  */
-#define _XENUM5_PROP_DECLS_CSTRING(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM5_CSTRING_DECLS_FUNCS(								\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
-		CTXT,										\
+#define _XENUM5_CSTRING_DECLS(PNAME, DEPTH, PDEF, CTXT, Z)					\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_CSTRING_DATA_DECLS_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
+	BOOST_PP_CAT(_XENUM5_CSTRING_GETTERS_DECLS_, _XENUM5_PDEF_IMPL_GET(PDEF))		\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
+
+
+// =========================== DECLS prop data ===============================
+/**
+ * No data to declare since nobody uses it.
+ */
+/* FIXME: Implement later
+#define _XENUM5_CSTRING_DATA_DECLS_OFF(PNAME, DEPTH, PDEF, CTXT, Z)				\
+*/
+
+/**
+ * No data to declare since it is all defined in source file.
+ */
+#define _XENUM5_CSTRING_DATA_DECLS_SRC(PNAME, DEPTH, PDEF, CTXT, Z)				\
+
+/**
+ * Define data inline since some inline methods use it.
+ */
+#define _XENUM5_CSTRING_DATA_DECLS_HDR(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
+	_XENUM5_CSTRING_VALUES_DEF(static, PNAME, CTXT)						\
+	_XENUM5_CSTRING_NODESSIZE_DEF(static, PNAME, CTXT)					\
+	_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)						\
+	_XENUM5_PROP_NODETYPE_DECL(PNAME)							\
+	_XENUM5_CSTRING_NODENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_CSTRING_NODES_DEF(static, PNAME, CTXT)						\
+	_XENUM5_PROP_GETNODE_DEF(								\
+		/* INC() because Nodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(DEPTH),								\
+		_XENUM5_CTXT_SET_DECLPFX(CTXT, static),						\
 		Z										\
+	)											\
+
+
+// ========================== DECLS prop getters =============================
+/**
+ * Omit getters, turned off.
+ */
+/* FIXME: Implement later
+#define _XENUM5_CSTRING_GETTERS_DECLS_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
+*/
+
+/**
+ * Declare getters, defined in source file.
+ */
+#define _XENUM5_CSTRING_GETTERS_DECLS_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
+	_XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, BOOST_PP_INC(DEPTH))				\
+	_XENUM5_PROP_GETSIZE_EXT_DECL(BOOST_PP_INC(DEPTH), PDEF, Z)				\
+	_XENUM5_PROP_GETVALUE_EXT_DECL(PNAME, DEPTH, PDEF, Z)					\
+
+/**
+ * Define getters as inline constexpr.
+ */
+#define _XENUM5_CSTRING_GETTERS_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
+	_XENUM5_PROP_GETSIZE_DEFS(BOOST_PP_INC(DEPTH), CTXT, Z)					\
+	_XENUM5_CSTRING_GETVALUE_DEFS(static constexpr, PNAME, DEPTH, PDEF, , , Z)		\
+
+
+
+// ======================================= MAIN: DECLV ==========================================
+/**
+ * Entry point for all custom-prop related declarations in value class (header).
+ */
+#define _XENUM5_CSTRING_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	/* INC() to ensure that the index type always gets defined */				\
+	_XENUM5_PROP_TYPES_DECLV(PNAME, BOOST_PP_INC(DEPTH))					\
+	BOOST_PP_CAT(_XENUM5_CSTRING_DECLV_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+		(PNAME, DEPTH, PDEF, CTXT, Z)							\
+
+/**
+ * Declare the functions related to a single custom property, implemented in header.
+ */
+#define _XENUM5_CSTRING_DECLV_HDR(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	_XENUM5_PROP_GETSIZE_DEFV(								\
+		constexpr const BOOST_PP_CAT(PNAME, Index)&,					\
+		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(DEPTH), CTXT, Z							\
+	)											\
+	_XENUM5_PROP_GETVALUE_DEFV(constexpr, PNAME, DEPTH, PDEF, Z)				\
+
+/**
+ * Declare the data related to a single custom property, implemented in source.
+ */
+#define _XENUM5_CSTRING_DECLV_SRC(PNAME, DEPTH, PDEF, CTXT, Z)					\
+	_XENUM5_PROP_GETSIZE_DEFV(								\
+		BOOST_PP_CAT(PNAME, Index),							\
+		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(DEPTH), CTXT, Z							\
+	)											\
+	_XENUM5_PROP_GETVALUE_DEFV(, PNAME, DEPTH, PDEF, Z)					\
+
+
+
+// ====================================== MAIN: DEFINE ==========================================
+/**
+ * Entry point for all custom-prop related definitions in source file.
+ */
+#define _XENUM5_CSTRING_DEFINE(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_CSTRING_DATA_DEF_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_CSTRING_GETTERS_DEF_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
+		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
+
+/**
+ * Entry point for definition of final checks on data structures.
+ */
+#define _XENUM5_CSTRING_CHECK(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
+	BOOST_PP_CAT(_XENUM5_CSTRING_CHECK_, _XENUM5_PDEF_PROP_DATA(PDEF)) (PNAME, LSCOPE)	\
+
+/**
+ * Entry point for definition of debug info printing.
+ */
+#define _XENUM5_CSTRING_DBGINFO(PNAME, PDEF, LSCOPE, DSCOPE, SNAME, Z)				\
+	BOOST_PP_CAT(_XENUM5_CSTRING_DBGINFO_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+		(PNAME, LSCOPE, SNAME)								\
+
+
+// ============================= Define data =================================
+/**
+ * Define the data, without content since that is in the header.
+ */
+#define _XENUM5_CSTRING_DATA_DEF_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+	/* FIXME: Also define NodesSize - ? */							\
+	constexpr const										\
+		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Value)					\
+		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Values)					\
+		[];										_XENUM5_NWLN \
+	constexpr const										\
+		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Node)					\
+		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, Nodes)					\
+		[];										_XENUM5_NWLN \
+
+/**
+ * Define all the data, in local ns.
+ */
+#define _XENUM5_CSTRING_DATA_DEF_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
+	namespace {										_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
+		namespace LSCOPE {								_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+			/* Values */								\
+			_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)				\
+			_XENUM5_CSTRING_VALUES_DEF(, PNAME, CTXT)				\
+			/* Nodes. For cstrings (contrary to "plain") we always need an */	\
+			/* indexnodes table since each string needs to be referenced by */	\
+			/* an indexnode. */							\
+			_XENUM5_CSTRING_NODESSIZE_DEF(, PNAME, CTXT)				\
+			_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)				\
+			_XENUM5_PROP_NODETYPE_DECL(PNAME)					\
+			_XENUM5_CSTRING_NODENAMES_DECL(PNAME, CTXT)				\
+			_XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)				\
+			_XENUM5_CSTRING_NODES_DEF(, PNAME, CTXT)				\
+			/* Funcs */								\
+			_XENUM5_DOC(Alias the native enum into this scope.)			\
+			using Enum = _XENUM5_XDCL_DSCOPE(_XENUM5_CTXT_XDCL(CTXT))_XENUM5_CNTNR_NAME(_XENUM5_CTXT_XDCL(CTXT))::_enum;	_XENUM5_NWLN \
+			/* INC() because Nodes also has indexnodes for the leaf stringvalues */	\
+			_XENUM5_PROP_GETNODE_DEF(BOOST_PP_INC(DEPTH), CTXT, Z)			\
+			_XENUM5_INDENT_DEC							\
+		} _XENUM5_CMNT(namespace LSCOPE)						\
+		_XENUM5_INDENT_DEC								\
+	} _XENUM5_CMNT(Anon namespace)								\
+
+
+// ============================ Define getters ===============================
+/**
+ * Omit getters, they are defined inline constexpr in header.
+ */
+#define _XENUM5_CSTRING_GETTERS_DEF_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+
+/**
+ * Define getters, declared in header file.
+ */
+#define _XENUM5_CSTRING_GETTERS_DEF_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+	/* INC() because Nodes also has indexnodes for the leaf string values */		\
+	_XENUM5_PROP_GETSIZE_DEFS(BOOST_PP_INC(DEPTH), CTXT, Z)					\
+	_XENUM5_CSTRING_GETVALUE_DEFS(, PNAME, DEPTH, PDEF, LSCOPE::, DSCOPE SNAME::, Z)	\
+
+
+// ======================= Define _check() contents ==========================
+/**
+ * Define final checks on data structures, for implementation in header.
+ */
+#define _XENUM5_CSTRING_CHECK_HDR(PNAME, LSCOPE)						\
+	_XENUM5_CSTRING_CHECK_I1(PNAME, )							\
+
+/**
+ * Define final checks on data structures, for implementation in source.
+ */
+#define _XENUM5_CSTRING_CHECK_SRC(PNAME, LSCOPE)						\
+	_XENUM5_CSTRING_CHECK_I1(PNAME, LSCOPE::)						\
+
+/**
+ * Define final checks on data structures, both for hdr and src.
+ */
+#define _XENUM5_CSTRING_CHECK_I1(PNAME, LSCOPED)						\
+	static_assert(										\
+		/* +1: Compiler adds an extra null terminator in Values array */		\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, Values)) ==					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, ValueNames)) + 1,				\
+		"BUG: Struct/array size mismatch (ValueNames / Values)."			\
+	);											_XENUM5_NWLN \
+	static_assert(										\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, NodeNames)) ==				\
+		LSCOPED BOOST_PP_CAT(PNAME, NodesSize) *					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, Node)),					\
+		"BUG: Struct size mismatch (NodeNames / NodesSize)."				\
+	);											_XENUM5_NWLN \
+	static_assert(										\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, Nodes)) ==					\
+		sizeof(LSCOPED BOOST_PP_CAT(PNAME, NodeNames)),					\
+		"BUG: Struct/array size mismatch (Nodes / NodeNames)."				\
+	);											_XENUM5_NWLN \
+
+
+// ====================== Define _dbginfo() contents =========================
+/**
+ * Define debug info for prop data structures, defined in header.
+ */
+#define _XENUM5_CSTRING_DBGINFO_HDR(PNAME, LSCOPE, SNAME)					\
+	_XENUM5_CSTRING_DBGINFO_I1(PNAME, , SNAME)						\
+
+/**
+ * Define debug info for prop data structures, defined in source.
+ */
+#define _XENUM5_CSTRING_DBGINFO_SRC(PNAME, LSCOPE, SNAME)					\
+	_XENUM5_CSTRING_DBGINFO_I1(PNAME, LSCOPE::, LSCOPE)					\
+
+/**
+ * Define debug info for prop data structures, for both hdr/src.
+ */
+#define _XENUM5_CSTRING_DBGINFO_I1(PNAME, LSCOPED, INFSCOPE)					\
+	std::cout<<"\t"<<BOOST_PP_STRINGIZE(PNAME)<<":"<<std::endl				\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(INFSCOPE::BOOST_PP_CAT(PNAME, Values))<<") = "	\
+			<<sizeof(LSCOPED BOOST_PP_CAT(PNAME, Values))<<std::endl		\
+		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(INFSCOPE::BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
+			<<sizeof(LSCOPED BOOST_PP_CAT(PNAME, ValueNames))<<std::endl		\
+		;										_XENUM5_NWLN \
+
+
+
+// ====================================== COMMON PARTS ==========================================
+
+// ========================= Node iteration loop =============================
+/**
+ * Iterate data structure using ITERATE_FLAT_GEN(); execute callback for each branch-node.
+ * Used by both nodenames- and nodedata-generation iterations, to ensure that they have
+ * identical layout; that the placement of node data in the IndexNodes table match the names
+ * in the NodeNames struct.
+ * Note: The root nodes (enum-values) must appear first in the tables so they can be directly
+ * indexed by an enum-value.
+ * Note: Contrary to _PLAIN_ITER_NODES, this loop iterates all nodes, including the leafs
+ * (values), else we could share these functions.
+ */
+#define _XENUM5_CSTRING_ITER_NODES(CALLBACK, CTXT)						\
+	/* First, execute callback only for the enum values (root nodes), so they are */	\
+	/* executed in one block. */								\
+	_XENUM5_CALL_VALS(									\
+		_XENUM5_CSTRING_ITER_NODES_ROOT,							\
+		_XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
+	)											\
+	/* Secondly, iterate all non-root nodes. */						\
+	_XENUM5_CALL_VALS(									\
+		_XENUM5_CSTRING_ITER_NODES_NONROOT,						\
+		_XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
+	)
+
+/**
+ * Callback worker for _XENUM5_CSTRING_ITER_NODES(); loop function for each root node
+ * (enum-value). Execute the callback only for the root node (no further iteration).
+ */
+#define _XENUM5_CSTRING_ITER_NODES_ROOT(CTXT, IDENT, ...)						\
+	_XENUM5_CSTRING_ITER_NODES_ROOT_I1							\
+	(											\
+		_XENUM5_GET_VARARG(_XENUM5_CTXT_PINDEX(CTXT), __VA_ARGS__),			\
+		_XENUM5_PDEF_DEPTH(_XENUM5_CTXT_PDEF(CTXT)),					\
+		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
+	)
+
+/**
+ * Worker for _XENUM5_CSTRING_ITER_NODES_ROOT().
+ */
+#define _XENUM5_CSTRING_ITER_NODES_ROOT_I1(DATA, DEPTH, CTXT)					\
+	_XENUM5_CTXT_CALLBACK(CTXT) (								\
+		_XENUM5_TT_ITERPOS_INIT(							\
+			DEPTH,									\
+			,									\
+			0,									\
+			_XENUM5_GET_TUPLE_SIZE_IF_TUPLE(DATA)					\
+		),										\
+		_XENUM5_TUPLE_TO_SEQ_COND(DATA, BOOST_PP_BOOL(DEPTH)),				\
+		CTXT										\
+	)
+
+/**
+ * Callback worker for _XENUM5_CSTRING_ITER_NODES(); loop function for each node.
+ */
+#define _XENUM5_CSTRING_ITER_NODES_NONROOT(CTXT, IDENT, ...)					\
+	_XENUM5_CSTRING_ITER_NODES_NONROOT_I1							\
+	(											\
+		_XENUM5_GET_VARARG(_XENUM5_CTXT_PINDEX(CTXT), __VA_ARGS__),			\
+		_XENUM5_PDEF_DEPTH(_XENUM5_CTXT_PDEF(CTXT)),					\
+		_XENUM5_CTXT_SET_IDENT(CTXT, IDENT)						\
+	)
+
+/**
+ * Worker for _XENUM5_CSTRING_ITER_NODES_NONROOT().
+ * Execute tupletree iteration.
+ */
+#define _XENUM5_CSTRING_ITER_NODES_NONROOT_I1(DATA, DEPTH, CTXT)					\
+	_XENUM5_TT_ITERATE_FLAT_GEN(								\
+		DATA,										\
+		DEPTH,										\
+		(_XENUM5_CTXT_CALLBACK(CTXT), _XENUM5_CSTRING_ITER_NODES_NONROOT_FLT),		\
+		CTXT										\
+	)
+
+/**
+ * Filter function for non-root nodes iteration.
+ */
+#define _XENUM5_CSTRING_ITER_NODES_NONROOT_FLT(ITERPOS, NODE, CTXT)				\
+	BOOST_PP_AND(										\
+		BOOST_PP_NOT(_XENUM5_TT_ITERPOS_NEXTCHILD(ITERPOS)),				\
+		BOOST_PP_NOT(BOOST_PP_IS_EMPTY(_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS)))		\
 	)
 
 
-// =============================== DECLARATION IN VALUE CLASS ==================================
+// ================================ Values ===================================
 /**
- * Entry point for declaring a custom property of cstring type, in value class context.
+ * Define the values array.
  */
-#define _XENUM5_PROP_DECLV_CSTRING(CTXT, PROPDEF, Z)						\
-	_XENUM5_CSTRING_DECLV_FUNCS(								\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		_XENUM5_PROPDEF_GET_DEPTH(PROPDEF),						\
-		PROPDEF,									\
+#define _XENUM5_CSTRING_VALUES_DEF(DECLPFX, PNAME, CTXT)					\
+	_XENUM5_DOC(All PNAME values.)								\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Value) BOOST_PP_CAT(PNAME, Values)[] =	\
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_VALUE_DEF, CTXT)			\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN
+
+/**
+ * Loop worker for _XENUM5_CSTRING_VALUES_DEF().
+ */
+#define _XENUM5_CSTRING_VALUE_DEF(ITERPOS, NODE, CTXT)						\
+	_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)) "\0"					_XENUM5_NWLN
+
+
+// ============================== NodesSize ==================================
+/**
+ * Define the NodesSize count.
+ */
+#define _XENUM5_CSTRING_NODESSIZE_DEF(DECLPFX, PNAME, CTXT)					\
+	_XENUM5_DOC(Total number of indexnodes for indexing PNAME values.)			\
+	DECLPFX constexpr const size_t BOOST_PP_CAT(PNAME, NodesSize) = 0			\
+		_XENUM5_CALL_VALS(_XENUM5_CSTRING_COUNT_NODES, CTXT);				_XENUM5_NWLN \
+
+/**
+ * Callback worker for _XENUM5_CSTRING_NODESSIZE_DEF().
+ */
+#define _XENUM5_CSTRING_COUNT_NODES(CTXT, IDENT, ...)						\
+	+_XENUM5_TT_ITERATE_DEPTH_CALC(								\
+		_XENUM5_GET_VARARG(_XENUM5_CTXT_PINDEX(CTXT), __VA_ARGS__),			\
+		/* Count all nodes, including leaf values, since each string value needs */	\
+		/* to be referenced by an indexnode. */						\
+		_XENUM5_PDEF_DEPTH(_XENUM5_CTXT_PDEF(CTXT)),					\
+		(_XENUM5_PROP_COUNT_NODES_ADD),							\
 		CTXT,										\
-		Z										\
+		0										\
+	)											\
+
+
+// ============================== NodeNames ==================================
+/**
+ * Declare the ${pname}NodeNames struct.
+ */
+#define _XENUM5_CSTRING_NODENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PNAME, Nodes) array,		\
+		has same layout.)								\
+	using BOOST_PP_CAT(PNAME, NodeNames) = struct {						_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_CSTRING_ITER_NODES(_XENUM5_PROP_NODENAME_DECL, CTXT)			\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN \
+
+
+// ============================== ValueNames =================================
+/**
+ * Declare the ${pname}ValueNames struct.
+ */
+#define _XENUM5_CSTRING_VALUENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_DOC(Layout of all PNAME values.)						\
+	using BOOST_PP_CAT(PNAME, ValueNames) = struct {					_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_VALUENAME_DECL, CTXT)			\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN \
+
+/**
+ * Declare a single field of the ValueNames struct.
+ */
+#define _XENUM5_CSTRING_VALUENAME_DECL(ITERPOS, NODE, CTXT)					\
+	BOOST_PP_CAT(_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)), Value) 			\
+	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS))			\
+	[sizeof(_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)))];				_XENUM5_NWLN \
+
+
+// ================================ Nodes ====================================
+/**
+ * Define the ${pname}Nodes array.
+ */
+#define _XENUM5_CSTRING_NODES_DEF(DECLPFX, PNAME, CTXT)						\
+	_XENUM5_DOC(Mapping of all nodes and values in the PNAME data hierarchy.)		\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, Node) BOOST_PP_CAT(PNAME, Nodes)[] =	\
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_CSTRING_ITER_NODES(_XENUM5_CSTRING_NODE_DEF, CTXT)			\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN \
+
+/**
+ * Worker for _XENUM5_CSTRING_NODES_DEF().
+ */
+#define _XENUM5_CSTRING_NODE_DEF(ITERPOS, NODE, CTXT)						\
+	BOOST_PP_CAT(										\
+		_XENUM5_CSTRING_NODE_DEF_,							\
+		BOOST_PP_BOOL(_XENUM5_TT_ITERPOS_LEVEL(ITERPOS))				\
+	) (ITERPOS, NODE, CTXT)									\
+
+
+/**
+ * Worker for _XENUM5_CSTRING_NODE_DEF().
+ * Define a node for level==0.
+ */
+#define _XENUM5_CSTRING_NODE_DEF_0(ITERPOS, NODE, CTXT)						\
+	{											\
+		/* Size */									\
+		sizeof(_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT))),			\
+		/* Index */									\
+		_XENUM5_CSTRING_NODE_DEF_0_INDEX(						\
+			_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS),					\
+			_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),				\
+			CTXT									\
+		)										\
+	},											_XENUM5_NWLN \
+
+/**
+ * Worker for _XENUM5_CSTRING_NODE_DEF_0().
+ * Define Node.index as an offset expression into a ValueNames struct.
+ */
+#define _XENUM5_CSTRING_NODE_DEF_0_INDEX(INDEXPATH, PNAME, CTXT)				\
+	(offsetof(										\
+		BOOST_PP_CAT(PNAME, ValueNames),						\
+		_XENUM5_PROP_GEN_NODE_NAME(CTXT, INDEXPATH)					\
+	) / sizeof(BOOST_PP_CAT(PNAME, Value)))							\
+
+
+/**
+ * Worker for _XENUM5_CSTRING_NODE_DEF().
+ * Define a node for level>0.
+ */
+#define _XENUM5_CSTRING_NODE_DEF_1(ITERPOS, NODE, CTXT)						\
+	{											\
+		/* Size */									\
+		_XENUM5_TT_ITERPOS_CHILDCOUNT(ITERPOS),						\
+		/* Index */									\
+		BOOST_PP_CAT(									\
+			_XENUM5_CSTRING_NODE_DEF_1_INDEX_,					\
+			BOOST_PP_BOOL(_XENUM5_TT_ITERPOS_CHILDCOUNT(ITERPOS))			\
+		) (ITERPOS, CTXT)								\
+	},											_XENUM5_NWLN \
+
+/**
+ * Worker for _XENUM5_CSTRING_NODE_DEF_1().
+ * Define Node.index to 0 since node has no children.
+ */
+#define _XENUM5_CSTRING_NODE_DEF_1_INDEX_0(ITERPOS, CTXT)					\
+	0
+
+/**
+ * Worker for _XENUM5_CSTRING_NODE_DEF_1().
+ * Define Node.index as an offset expression into a Node table.
+ */
+#define _XENUM5_CSTRING_NODE_DEF_1_INDEX_1(ITERPOS, CTXT)					\
+	_XENUM5_CSTRING_NODE_DEF_1_INDEX_1_DO(							\
+		_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS),						\
+		_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),					\
+		CTXT										\
 	)
 
-
-// ======================================= DEFINITION ==========================================
 /**
- * Entry point for defining the data of a custom properties of cstring type, in source file
- * context.
+ * Worker for _XENUM5_CSTRING_NODE_DEF_1_INDEX_1().
  */
-#define _XENUM5_PROP_DEFINE_CSTRING(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM5_CSTRING_DEFINE									\
-	(											\
-		CTXT,										\
-		DECL,										\
-		PROPDEF,									\
-		_XENUM5_DECL_GET_SCOPE(DECL),							\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		Z										\
-	)											\
+#define _XENUM5_CSTRING_NODE_DEF_1_INDEX_1_DO(INDEXPATH, PNAME, CTXT)			\
+	(offsetof(										\
+		BOOST_PP_CAT(PNAME, NodeNames),							\
+		_XENUM5_PROP_GEN_NODE_NAME(CTXT, BOOST_PP_SEQ_PUSH_BACK(INDEXPATH, 0))		\
+	) / sizeof(BOOST_PP_CAT(PNAME, Node)))
 
+
+// ========================= Define get${PNAME}() ============================
 /**
- * Entry point for defining final checks for a custom property of cstring type, in source file
- * context.
+ * Define Store::get${pname}() value getter, inline/constexpr or ext.
  */
-#define _XENUM5_PROP_CHECK_CSTRING(CTXT, DECL, PROPDEF, Z)					\
-	_XENUM5_CSTRING_CHECK									\
-	(											\
-		CTXT,										\
-		DECL,										\
-		PROPDEF,									\
-		_XENUM5_DECL_GET_SCOPE(DECL),							\
-		_XENUM5_STORE_NAME(DECL),							\
-		_XENUM5_PROPDEF_GET_NAME(PROPDEF),						\
-		Z										\
-	)											\
+#define _XENUM5_CSTRING_GETVALUE_DEFS(DECLPFX, PNAME, DEPTH, PDEF, LSCOPED, SSCOPED, Z)		\
+	_XENUM5_DOC(Get value of the custom property PNAME.)					\
+	DECLPFX const _XENUM5_PDEF_PARM_TYPE(PDEF)						\
+	SSCOPED BOOST_PP_CAT(get, PNAME) (							\
+		_XENUM5_PROP_GEN_INDEX0_PARMS(							\
+			SSCOPED Enum,								\
+			SSCOPED BOOST_PP_CAT(PNAME, Index),					\
+			DEPTH,									\
+			Z									\
+		)										\
+	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return & LSCOPED BOOST_PP_CAT(PNAME, Values)[					\
+			LSCOPED BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (			\
+				_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\
+			)									\
+			.index									\
+		];										_XENUM5_NWLN \
+	}											_XENUM5_NWLN
 
 
 #endif // _XENUM5_IMPL_CSTRING_HPP

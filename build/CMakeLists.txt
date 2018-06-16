@@ -1,6 +1,6 @@
 project(xenum)
 cmake_minimum_required(VERSION 2.8)
-set(APP_VERSION "5.0")
+set(APP_VERSION "5.1")
 
 ############################### COMPILER FLAGS ###############################
 # Do not use -ansi, it prevents boost.prepropcessor's variadic stuff from working.
@@ -12,7 +12,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL Clang)
 	# Same as g++ options
 	add_definitions(-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE)
-	set(CFLAGS_COMMON " -Wall -Wstrict-overflow=5 -std=c++11 -Os")
+	set(CFLAGS_COMMON " -Wall -Wstrict-overflow=5 -std=c++11 -Os -fmacro-backtrace-limit=0")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CFLAGS_COMMON}")
 	# -lstdc++ required for clang-3.5 to link with exceptions enabled
 	set(CMAKE_EXE_LINKER_FLAGS "-Wl,--no-undefined -lstdc++")
@@ -128,6 +128,15 @@ if(DOXYGEN_FOUND)
 		VERBATIM
 	)
 	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Icombs.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum5-inject
+		ARGS -i ${XENUMS_IN_DIR}/Icombs.hpp -o ${XENUMS_PP_DIR}/Icombs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Icombs.hpp
+		COMMENT "Preprocessing Icombs.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
 		OUTPUT ${XENUMS_PP_DIR}/Numbers.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
 		COMMAND util/xenum5-inject
@@ -137,30 +146,12 @@ if(DOXYGEN_FOUND)
 		VERBATIM
 	)
 	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Sstrs0.hpp
+		OUTPUT ${XENUMS_PP_DIR}/Pcombs.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
 		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Sstrs0.hpp -o ${XENUMS_PP_DIR}/Sstrs0.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Sstrs0.hpp
-		COMMENT "Preprocessing Sstrs0.hpp ..."
-		VERBATIM
-	)
-	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Sstrs1.hpp
-		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Sstrs1.hpp -o ${XENUMS_PP_DIR}/Sstrs1.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Sstrs1.hpp
-		COMMENT "Preprocessing Sstrs1.hpp ..."
-		VERBATIM
-	)
-	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Sstrs2.hpp
-		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
-		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Sstrs2.hpp -o ${XENUMS_PP_DIR}/Sstrs2.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Sstrs2.hpp
-		COMMENT "Preprocessing Sstrs2.hpp ..."
+		ARGS -i ${XENUMS_IN_DIR}/Pcombs.hpp -o ${XENUMS_PP_DIR}/Pcombs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Pcombs.hpp
+		COMMENT "Preprocessing Pcombs.hpp ..."
 		VERBATIM
 	)
 
@@ -181,10 +172,9 @@ if(DOXYGEN_FOUND)
 		DEPENDS ${XENUMS_PP_DIR}/FruitsNoNsInCls.hpp
 		DEPENDS ${XENUMS_PP_DIR}/FruitsNoNsNoCls.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Icmp.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Icombs.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Numbers.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Sstrs0.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Sstrs1.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Sstrs2.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Pcombs.hpp
 		COMMENT "Generating documentation (doxygen) ..."
 		VERBATIM
 	)

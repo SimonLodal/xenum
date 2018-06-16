@@ -27,11 +27,13 @@ public:
 	/// Get index at next level.
 	/// @param offset Offset relative to this node's index.
 	/// @throws std::out_of_range if offset >= number of elements at next level.
-	Index getNextIndex(Index offset) const
+	constexpr Index getNextIndex(Index offset) const
 	{
-		if (offset >= size)
-			throw std::out_of_range("Offset >= size");
-		return index + offset;
+		return (
+			offset >= size
+			? throw std::out_of_range("Offset >= size")
+			: index + offset
+		);
 	}
 };
 

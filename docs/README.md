@@ -1,52 +1,34 @@
-# xenum-5.0
+# xenum-5.1
 
 ## Description
-Xenum is a better C++ enum, a native C++11 enum extended with enum size, iteration,
-conversion to/from string, and custom properties. All static/const(expr). All the
-functionality that native C++ enums lack.
+Want better C++ enums?
 
-C++11's "enum class" is already a big improvement over earlier plain "enum" which were
-just dumb ints. The new "enum class" adds type safety and scoping. But there is still
-a lot left to be desired...
+Xenum is a macro-based code generator. It creates wrapper classes around native C++11 enums,
+adding a lot of functionality that they lack.
 
 ## Features
-- Access to name (string) and index of an enum-value.
-- Lookup enum value by name.
-- Lookup enum value by index.
-- constexpr size.
-- Iteration over enum values.
-- switch() on enum value in a typesafe manner.
-- Unlimited number of values in an enum. All other extended C++ enum I have found have a
-  limit of around 64 or 256 values in an enum, due to recursion limits in preprocessor
-  and/or templates.
+Enums:
+- To/from string
+- Iteration
+- constexpr size
+- XenumSet: Bit-based set of values from an xenum
+- Custom properties: Static data associated with each enum value.
+
+Implementation:
+- No duplicate declaration of values
+- Unlimited number of values in an enum. Most other 'smart' C++ enums are limited to around
+  64 or 256 values due to recursion limits in preprocessor and/or templates.
+- Everything is static and const(expr).
+- No runtime initialization/computation, and no pointers in the generated data (friendly for
+  shared libraries).
+- Type safety: Based on C++11 'enum class'. And generates unique wrapper classes for each enum.
 - Can be placed inside a class, just like regular enums (except if it has custom properties,
   see Caveats).
-- Extensible: You can add custom properties to each enum value. Normal Xenum values
-  have an identifier (a name) and an index value (assigned sequentially), but no "ordinal"
-  value like a plain enum. However, if you want you can just add an "ordinal" property
-  (example below). You can have multiple custom properties. Their datatype can be any plain
-  type (integers), strings (C style), or objects, as long as they are constexpr.
-  Custom properties can even be multidimensional, fx. a list of strings, or a
-  list-of-lists-of-strings, etc.
-- Type safety: Inherently uses the type safety of C++11 enum class. Additionally, the
-  generated classes are unique for each enum, which also provides type safety; you can not
-  assign or compare with other enum classes.
-- Implementation is only headers, no source files. Just include Xenum.hpp.
-- Everything is static and const(expr). So an xenum can be used in template metaprogramming,
-  and also in declaration of data structures, fx. array sizes based on the number of enum
-  values.
-- No runtime initialization/computation, and no pointers in the generated data.
-  This means xenums are friendly for shared libraries; the pages that contain their data
-  are truly static so they can be shared between processes.
-- Reasonably simple declaration of an enum. Requires a few macros in header, and one in a
-  source file. No duplication of value list or other parameters.
-- Includes XenumSet; a container with a set of values from an xenum, implemented as a bitset.
-- Code generation is macro based.
-- Includes a tool (xenum5-inject) to reformat preprocessed output back into readable C++,
-  code, so you can inspect what gets generated. The post-processed code even includes
-  documentation that doxygen can read.
-- xenum5-inject can be used as an external code generator, so you do not run the macro-based
-  code generation every time you compile.
+- Headers only. Just include Xenum.hpp.
+- xenum5-inject tool reformats preprocessed output back into readable C++ code.
+  - You can inspect what gets generated.
+  - You can run doxygen on the post-processed code.
+  - It can even be used as an external code generator.
 
 ## Environment
 ### Supported compilers
@@ -123,12 +105,10 @@ compiler should treat the value object just like a native enum value.
 Implementation is based on preprocessor macros, not templates, at least the core task
 of defining the enum values and associated data. Template metaprogramming would have been
 nice for it's elegance and power, but it has some shortcomings:
-- It can not generate identifiers (the enum values), only types or values.
+- It can not generate identifiers (the enum values, and associated getter functions), only
+  types or values.
 - Big lists do not work (fx >256 entries), since all iteration over lists is recursive,
   and all preprocessors have a rather small recursion limit.
-
-So for now, we have to deal with 1000 lines of incomprehensible preprocessor error
-messages when anything goes wrong.
 
 ## Example: Basic xenum
 Here we declare a simple "Fruits" enum, with values "apple", "orange", "lemon".
@@ -299,9 +279,9 @@ Source part:
 ### Use the xenum
 In the xenum value class, a getter function is created for each property:
 
-	const int& getOrdinal() const;
-	const bool& getSour() const;
-	const char* getColor() const;
+	const int& getOrdinal() const noexcept;
+	const bool& getSour() const noexcept;
+	const char* getColor() const noexcept;
 So you can do:
 
 	Fruit fruit = Fruits::lemon;
@@ -335,12 +315,13 @@ In your header file:
 The getter function now includes an index, naturally, and you can get the size of the arrays
 too:
 
-	size_t getColorSize() const;
-	const char* getColor(size_t index) const;
+	using ColorIndex = size_t;
+	ColorIndex getColorSize() const noexcept;
+	const char* getColor(ColorIndex index) const;
 So you can do:
 
 	Fruit fruit = Fruits::orange;
-	size_t colors = fruit.getColorSize(); // => 2
+	auto colors = fruit.getColorSize(); // => 2
 	const char* color0 = fruit.getColor(0); // => "orange"
 	const char* color1 = fruit.getColor(1); // => "green"
 	const char* color2 = fruit.getColor(2); // => throws std::out_of_range
@@ -393,19 +374,20 @@ Note that the data is now defined with two levels - arrays in arrays.
 ### Use the xenum
 The getter functions are extended with one index level:
 
+	using RandNumIndex = size_t;
 	// size of level0 array
-	size_t getRandNumSize() const;		
+	RandNumIndex getRandNumSize() const noexcept;
 	// size of level1 array
-	size_t getRandNumSize(size_t index1) const;
-	const char* getRandNum(size_t index1, size_t index2) const;
+	RandNumIndex getRandNumSize(RandNumIndex index1) const;
+	const char* getRandNum(RandNumIndex index1, RandNumIndex index2) const;
 So:
 
-	size_t size0;
+	RandNumIndex size0;
 	size0 = Fruits::apple.getRandNumSize(); // => 3
 	size0 = Fruits::orange.getRandNumSize(); // => 1 (empty array is not empty, it contains one undefined child array)
 	size0 = Fruits::lemon.getRandNumSize(); // => 0
 
-	size_t size1;
+	RandNumIndex size1;
 	size1 = Fruits::apple.getRandNumSize(0); // => 3
 	size1 = Fruits::apple.getRandNumSize(1); // => 2
 	size1 = Fruits::apple.getRandNumSize(2); // => 4
@@ -447,14 +429,27 @@ This callback defines general parameters of the enum.
 - **intType** Optional. Integer-type for the enum values. Should be unsigned, and must be large
   enough to hold the number of enum values (compile-time error if not). Leave empty
   to let Xenum decide the smallest possible type.
-- **features** Optional. Not implemented yet. Leave empty for now.
+- **features** Optional. A list (comma-separated, in parentheses) of not so common
+  features/options (more may be added):
+  - [0] (getIdentifier): How to implement the getIdentifier() method. See discussion below.
+    Valid values are:
+    - off: Do not implement this method.
+    - ext (the default, if empty): Declare in generated header, define in generated source.
+    - cxp: Declare and define constexpr, in generated header.
+  - [1] (fromIdentifier): How to implement the fromIdentifier() method. See discussion below.
+    Valid values are:
+    - off: Do not implement this method.
+    - ext (the default, if empty): Declare in generated header, define in generated source.
+    - inl: Declare and define inline, but not constexpr, in generated header.
+    - cxp: Declare and define constexpr, in generated header. This produces a separate
+      cxpFromIdentifier() method, but also includes the plain inline fromIdentifier().
 - **properties** Optional. Defines custom properties. Leave field empty/undefined if the
   xenum does not have any custom properties. If defined, it must be a tuple of one or
   more tuples that each define a property (see below).
 
 Custom property tuple syntax:
 
-	(propertyName, propertyType [, defaultValue [, depth]])
+	(propertyName, propertyType [, defaultValue [, depth [, features]]])
 
 - **propertyName** Name of the custom property.
 - **propertyType** Data-type of the custom property. You may use simple types, like int/bool
@@ -473,6 +468,38 @@ Custom property tuple syntax:
   to/from size_t).
   Values can only exist as leaf nodes in the data hierarchy, that is, they can only appear
   at level $depth, not somewhere in between.
+- **features** Optional. A list (comma-separated, in parentheses) of not so common
+  features/options (more may be added):
+  - [0] (get${propertyName}): How to implement the getter method for this custom property.
+    See discussion below. Valid values are:
+    - ext (the default, if empty): Declare in generated header, define in generated source.
+    - cxp: Declare and define constexpr, in generated header.
+
+
+##### Warning about inline/constexpr methods
+You can implement the get*() and from*() functions for identifiers and custom properties in
+different ways (the options above). The default ("ext" option) is to generate their declaration
+in the header, and the definition (along with related data) in the source file.
+
+You can also have these functions implemented inline or constexpr, but you should only use
+these options if you really need constexpr access to the data, or for some reason want it to
+be inlined. They come with big costs.
+
+- Compile time cost: All source units that include the header will run the whole code generation
+  (several iterations over the whole xenum declaration). This can take considerable time if your
+  xenum is big/complex. When using "ext", this only happens for the source file where the xenum
+  is defined.
+- Runtime cost: Inline from*() and constexpr get*() methods are fine, but the constexpr from*()
+  methods are slow. That is why the plain inline method is still included, and the constexpr
+  variant is named cxpFrom*(). Reason for bad performance is that non-constexpr functions can
+  use strcmp() and other functions that are highly optimized, but since such library functions
+  are usually not constexpr themselves, we have to use other implementations of these functions,
+  which are much, much slower. The only advantage to constexpr is that you can use the method at
+  compile time. The price is terrible runtime performance. In the future C++ may allow to define
+  different code for constexpr and non-constexpr, but until then, this is a problem for everyone.
+
+You can also define a get*() or from*() method implementation as "off" to omit it, it might save
+some space in your compiled binary.
 
 #### V() macro
 This callback defines a single enum value.
@@ -508,6 +535,7 @@ Underscore-prefixed members are:
 - \_enum
 - \_fromIndex
 - \_fromIdentifier
+- \_cxpFromIdentifier
 
 A few members do not have an underscore prefix.
 - The default constructor
@@ -561,24 +589,27 @@ What you can use this for:
 - Name lookup is currently very inefficient, uses linear search. Need to find a way to
   generate a static constexpr string-hashtable, or at least a constexpr way to sort the
   string list and use binary search.
-- Poor error messages, due to how the preprocessor works. Since this is all implemented with
-  preprocessor macros, when something goes wrong you tend to get 1000 lines of
-  incomprehensible error messages, none of which point to where the actual comma is missing.
 - Preprocessing time (wallclock) increases if you add a lot of custom properties, deep
   hierarchies, many values. It does not scale very well. Perhaps depends on the preprocessor
   used.
 
 ## Troubleshooting / developing / debugging
-- First of all, when something goes wrong, use trial and error to make your xenum declaration
-  simpler, until it works.
-- If you are unsure about correct syntax, see the unit tests for working examples.
+What to do when your xenum declaration does not work, the preprocessor just spews a large
+number of errors, and none of them make any sense?
+
+- The xenum declaration (the D() macro) is validated to some extent. If an error is found, a
+  static_assert() is generated instead of any other content. The compiler will fail, probably
+  with a lot of errors, but the static_assert should be the first. Read it.
+- If you are unsure about correct syntax, see the reference above, and the unit tests for
+  working examples.
+- Use trial and error to make your xenum declaration simpler, until it works.
 - You can also use util/xenum5-test-gen to generate xenums of any size, just to inspect
   how it declares them, and perhaps to test the limits of your own compiler.
 - Use util/xenum5-inject script to view the generated code. It is the only way you can
   actually inspect what all the macro code produces, so it is a crucial tool both in
   troubleshooting and development.
   - Troubleshooting: Run xenum5-inject only on the header or source file where the problematic
-    enum is defined. Search the output for "BOOST" and "_XENUM", this is usually the actual
+    enum is defined. Search the output for "BOOST" and "XENUM", this is often the actual
     error location (a macro call that was pasted literally instead of being executed). If no
     such error is found, inspect the generated code/data, you should at least be able to find
     what the compiler complains about.
@@ -589,13 +620,9 @@ What you can use this for:
 ## Future plans
 - Support for more compilers / versions.
 - Per-enum options:
-  - Omit identifier string table, if you want to save some space and can do
-    without conversion to/from string.
-  - Placement of identifier string table (header/source).
   - Omit iteration functions, and perhaps other parts.
 - Lookup of enum value by custom property value.
 - Per-custom-property options:
-  - Placement of property data (header/source).
   - Generate lookup function.
   - Custom getter prefix.
 - Make xenum with custom properties work when declared inside a class. Probably requires a

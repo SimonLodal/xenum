@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [5.1] - 2018-06-15
+### Added
+- Options for how to implement custom properties' get*() methods, and identifiers'
+  get*() and from*() methods; off, inline, constexpr, or just plain external
+  (declared in header, defined in source).
+- Improved validation of declaration parameters.
+
 ## [5.0] - 2018-04-26
 ### Changed
 - Merge the two declaration macros XENUM_DECL_$suffix and XENUM_VALS_$suffix into

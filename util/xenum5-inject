@@ -249,7 +249,7 @@ sub doFormatGenerated($)
 	my ($text) = @_;
 	my ($line);
 	my ($globalIndent, $localIndent, $finalIndent);
-	my ($cmntText, $cmntType1, $cmntType2);
+	my ($cmntType1, $cmntType2, $cmntText, $cmntLine);
 	my ($out) = [];
 
 	$globalIndent = 0;
@@ -271,25 +271,38 @@ sub doFormatGenerated($)
 			}
 		}
 		$finalIndent = $globalIndent + $localIndent;
-		if ($text =~ /^\@XENUM5-(CMNT|DOC)-BEG:(.*?) XENUM5-(CMNT|DOC)-END\@(.*)$/o) {
-			($cmntType1, $cmntText, $cmntType2, $text) = ($1, $2, $3, $4);
-			if ($cmntType1 ne $cmntType2) {
-				die("BUG: Mismatched CMNT/DOC begin/end markers.\n");
-			}
-			foreach $line (@{doFormatGenerated_rec($cmntText)}) {
-				if (!($line =~ /^\s/o)) {
-					$line = " " . $line;
-				}
-				$line = ($cmntType1 eq "DOC" ? "/" : "") . "//" . $line;
-				if ($finalIndent > 0) {
-					$line = ("\t" x $finalIndent) . $line;
-				}
-				push(@{$out}, $line);
-			}
-			next;
-		}
-		elsif ($text =~ /^(.*?)\@XENUM5-NWLN\@(.*)$/) {
+		if ($text =~ /^(.*?)(\@XENUM5-.*)$/o) {
 			($line, $text) = ($1, $2);
+			if ($text =~ /^\@XENUM5-NWLN\@(.*)$/) {
+				$text = $1;
+			}
+			elsif ($text =~ /^\@XENUM5-(CMNT|DOC)-BEG:(.*?) XENUM5-(CMNT|DOC)-END\@(.*)$/o) {
+				($cmntType1, $cmntText, $cmntType2, $text) = ($1, $2, $3, $4);
+				if ($cmntType1 ne $cmntType2) {
+					die("BUG: Mismatched CMNT/DOC begin/end markers.\n");
+				}
+				$line =~ s/\s*$//o;
+				if ($line) {
+					if ($finalIndent > 0) {
+						$line = ("\t" x $finalIndent) . $line;
+					}
+				}
+				foreach $cmntLine (@{doFormatGenerated_rec($cmntText)}) {
+					if (!($cmntLine =~ /^\s/o)) {
+						$cmntLine = " " . $cmntLine;
+					}
+					$cmntLine = ($cmntType1 eq "DOC" ? "/" : "") . "//" . $cmntLine;
+					if ($line) {
+						$cmntLine = "${line} ${cmntLine}";
+						$line = "";
+					}
+					elsif ($finalIndent > 0) {
+						$cmntLine = ("\t" x $finalIndent) . $cmntLine;
+					}
+					push(@{$out}, $cmntLine);
+				}
+				next;
+			}
 		}
 		else {
 			$line = $text;
@@ -326,11 +339,11 @@ sub formatGenerated($)
 	}
 
 	$output = "";
-	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") - generated begin #################### */\n";
+	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") - begin generated #################### */\n";
 	$input = $outputPart->{generated};
 	$input =~ s/[\r\n]//g;
 	$output .= join("\n", @{doFormatGenerated($input)})."\n";
-	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") generated end #################### */\n";
+	$output .= "/* #################### XENUM5_" . uc($outputPart->{macro}) . "(". $outputPart->{suffix} . ") - end generated #################### */\n";
 	return $output;
 }
 
