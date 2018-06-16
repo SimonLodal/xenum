@@ -1979,8 +1979,8 @@ sub generateHeader()
 			if ($popts->{depth}) {
 				$line .= ", ".$popts->{depth};
 			}
-# FIXME: hdr/src should be configurable.
-			$line .= ", (1)";
+# FIXME: Implementation options (off|ext|inl/cxp) and other features should be configurable.
+			$line .= ", ";
 			$line .= ")";
 			if ($pidx < ($gopts->{propCount} - 1)) {
 				$line .= ",";
