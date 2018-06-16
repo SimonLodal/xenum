@@ -109,7 +109,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 
 
 // ======================================= MAIN: CNTNR ==========================================
- /**
+/**
  * Entry point for all identifier related declarations in container class (header).
  */
 #define _XENUM5_IDENT_DECLC(XDCL, CTXT)								\
@@ -117,7 +117,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 	BOOST_PP_CAT(_XENUM5_IDENT_FROMVALUE_DECLC_, _XENUM5_XDCL_IDENT_FROM(XDCL)) (XDCL, CTXT)	\
 
 
-// =========================== DECLC ident from() ============================
+// ========================== DECLC ident from() =============================
 #ifdef _XENUM5_UNIT_TEST
 /**
  * Omit _fromIdentifier(), turned off (but replace with a throwing variant just so unit test
@@ -143,7 +143,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IDENT_FROM(XDCL))			\
 #endif
 
 /**
- * Define _fromIdentifier() as inline, non-constexpr.
+ * Declare _fromIdentifier(), defined in source file.
  */
 #define _XENUM5_IDENT_FROMVALUE_DECLC_ext(XDCL, CTXT)						\
 	_XENUM5_IDENT_FROMVALUE_STD_DECLC_I1(_XENUM5_STORE_NAME(XDCL), _XENUM5_XDCL_VNAME(XDCL))\

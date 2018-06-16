@@ -319,7 +319,7 @@
 
 /// Features tuple is not defined. Just generate defaults.
 #define _XENUM5_XDCL_INIT_FEATURES_0(LOC, ...)							\
-	(ext)(ext)
+	(ext)(ext)										\
 
 /// Features tuple is defined.
 /// A level of indirection is needed to separate the tuple data into parameters.

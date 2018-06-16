@@ -89,6 +89,46 @@
 	)											\
 
 
+// =============================== DECLARATION IN CNTNR CLASS ===================================
+/**
+ * Entry point for all custom-prop related declarations in container class (header).
+ */
+#define _XENUM5_PROPS_DECLC(CTXT)								\
+	BOOST_PP_REPEAT										\
+	(											\
+		BOOST_PP_SEQ_SIZE(_XENUM5_XDCL_PDEFS(_XENUM5_CTXT_XDCL(CTXT))),			\
+		_XENUM5_PROP_DECLC,								\
+		CTXT										\
+	)											\
+
+/**
+ * Callback for _XENUM5_PROPS_DECLC() loop.
+ */
+#define _XENUM5_PROP_DECLC(Z, N, CTXT)								\
+	_XENUM5_PROP_DECLC_I1									\
+	(											\
+		_XENUM5_XDCL_PDEFN(_XENUM5_CTXT_XDCL(CTXT), N),					\
+		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
+		Z										\
+	)
+
+/**
+ * Worker for _XENUM5_PROP_DECLC().
+ */
+#define _XENUM5_PROP_DECLC_I1(PDEF, CTXT, Z)							\
+
+/*
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DECLC)			\
+	(											\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		_XENUM5_PDEF_DEPTH(PDEF),							\
+		PDEF,										\
+		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
+		Z										\
+	)											\
+*/
+
 // ======================================= DEFINITION ===========================================
 /**
  * Main entry function for defining the data for custom properties.

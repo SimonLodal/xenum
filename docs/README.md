@@ -474,16 +474,26 @@ Custom property tuple syntax:
     See discussion below. Valid values are:
     - ext (the default, if empty): Declare in generated header, define in generated source.
     - cxp: Declare and define constexpr, in generated header.
-
+  - [1] (from${propertyName}): How to implement the from${propertyName}() lookup method for
+    this custom property. See discussion about efficiency below. Also note that this requires
+    that all the values of this custom property are unique; if not, the lookup function results
+    are undefined (it may return any of them, or even just fail). - Valid values are:
+    - off (the default, if empty): Do not implement this method.
+    - ext: Declare in generated header, define in generated source.
+    - inl: Declare and define inline, but not constexpr, in generated header.
+    - cxp: Declare and define constexpr, in generated header. This produces a separate
+      cxpFrom${propertyName}() method, but also includes the plain inline from${propertyName}().
 
 ##### Warning about inline/constexpr methods
 You can implement the get*() and from*() functions for identifiers and custom properties in
 different ways (the options above). The default ("ext" option) is to generate their declaration
-in the header, and the definition (along with related data) in the source file.
+in the header, and the definition (along with related data) in the source file (and in the case
+of from${propertyName}(), the default is to not generate it at all, because it requires all
+values to be unique).
 
-You can also have these functions implemented inline or constexpr, but you should only use
-these options if you really need constexpr access to the data, or for some reason want it to
-be inlined. They come with big costs.
+You can also have these functions implemented inline or constexpr, but you should only do this
+if you really need constexpr access to the data, or for some reason want it to be inlined.
+They come with big costs:
 
 - Compile time cost: All source units that include the header will run the whole code generation
   (several iterations over the whole xenum declaration). This can take considerable time if your
