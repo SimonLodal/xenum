@@ -3,7 +3,7 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 5.1
+ * @version 5.2-pre1
  */
 #ifndef _XENUM5_XENUM_HPP
 #define _XENUM5_XENUM_HPP
@@ -11,9 +11,9 @@
 /// Major version
 #define XENUM5_VER_MAJOR	5
 /// Minor version
-#define XENUM5_VER_MINOR	1
+#define XENUM5_VER_MINOR	2
 /// Micro/patch/pre version
-#define XENUM5_VER_PATCH	
+#define XENUM5_VER_PATCH	pre1
 
 /// Namespace that Xenum lives in.
 /// Note that most of Xenum is macros that ignore namespaces anyway.
