@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# Util for development cycle. Goes with pp2h and pp2s scripts.
+# When committing a changeset, run this script to copy the "2" files over the "1" files,
+# thus saving the generated output of this commit as the previous version to compare
+# changes against when developing the next changeset.
+
+BASENAME=$1
+if [ -z "$BASENAME" ]; then
+	echo "Synopsis: cp2to1 BASENAME"
+	echo "Doc in script header."
+	exit -1
+fi
+
+cp ${BASENAME}.2.hpp ${BASENAME}.1.hpp
+cp ${BASENAME}.2.cpp ${BASENAME}.1.cpp
