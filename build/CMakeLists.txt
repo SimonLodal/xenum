@@ -154,6 +154,15 @@ if(DOXYGEN_FOUND)
 		COMMENT "Preprocessing Pcombs.hpp ..."
 		VERBATIM
 	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/Scombs.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum5-inject
+		ARGS -i ${XENUMS_IN_DIR}/Scombs.hpp -o ${XENUMS_PP_DIR}/Scombs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/Scombs.hpp
+		COMMENT "Preprocessing Scombs.hpp ..."
+		VERBATIM
+	)
 
 	configure_file(
 		"${DOX_CFG_DIR}/doxygen.conf.in"
@@ -175,6 +184,7 @@ if(DOXYGEN_FOUND)
 		DEPENDS ${XENUMS_PP_DIR}/Icombs.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Numbers.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Pcombs.hpp
+		DEPENDS ${XENUMS_PP_DIR}/Scombs.hpp
 		COMMENT "Generating documentation (doxygen) ..."
 		VERBATIM
 	)
