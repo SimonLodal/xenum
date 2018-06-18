@@ -472,12 +472,13 @@ Custom property tuple syntax:
   features/options (more may be added):
   - [0] (get${propertyName}): How to implement the getter method for this custom property.
     See discussion below. Valid values are:
+    - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
     - cxp: Declare and define constexpr, in generated header.
   - [1] (from${propertyName}): How to implement the from${propertyName}() lookup method for
     this custom property. See discussion about efficiency below. Also note that this requires
-    that all the values of this custom property are unique; if not, the lookup function results
-    are undefined (it may return any of them, or even just fail). - Valid values are:
+    that all the values of this custom property are different; if not, the lookup function
+    results are undefined (it may return any of them, or even just fail). - Valid values are:
     - off (the default, if empty): Do not implement this method.
     - ext: Declare in generated header, define in generated source.
     - inl: Declare and define inline, but not constexpr, in generated header.

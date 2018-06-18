@@ -51,7 +51,7 @@
 #define _XENUM5_PDEF_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
 
 /**
- * Get the implementation option for the getter; ext|cxp.
+ * Get the implementation option for the getter; off|ext|cxp.
  */
 #define _XENUM5_PDEF_IMPL_GET(PDEF)		BOOST_PP_SEQ_ELEM(0, _XENUM5_PDEF_FEATURES(PDEF))
 
@@ -71,6 +71,14 @@
 							)					\
 						)						\
 
+/// Helper for _XENUM5_PDEF_PROP_DATA()
+#define _XENUM5_PDEF_PROP_DATA_HELPER_offoff	OFF
+/// Helper for _XENUM5_PDEF_PROP_DATA()
+#define _XENUM5_PDEF_PROP_DATA_HELPER_offext	SRC
+/// Helper for _XENUM5_PDEF_PROP_DATA()
+#define _XENUM5_PDEF_PROP_DATA_HELPER_offinl	HDR
+/// Helper for _XENUM5_PDEF_PROP_DATA()
+#define _XENUM5_PDEF_PROP_DATA_HELPER_offcxp	HDR
 /// Helper for _XENUM5_PDEF_PROP_DATA()
 #define _XENUM5_PDEF_PROP_DATA_HELPER_extoff	SRC
 /// Helper for _XENUM5_PDEF_PROP_DATA()

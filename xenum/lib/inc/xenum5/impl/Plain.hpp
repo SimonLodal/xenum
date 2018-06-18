@@ -21,18 +21,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))			\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))				\
 	BOOST_PP_CAT(_XENUM5_PLAIN_GETTERS_DECLS_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
 		(PNAME, DEPTH, PDEF, CTXT, Z)							\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
-	BOOST_PP_CAT(_XENUM5_PLAIN_FROMVALUE_DECLS_, _XENUM5_PDEF_IMPL_FROM(PDEF))		\
-		(PNAME, DEPTH, PDEF, CTXT, Z)							\
 
 
 // =========================== DECLS prop data ===============================
 /**
  * No data to declare since nobody uses it.
  */
-/* FIXME: Implement later
 #define _XENUM5_PLAIN_DATA_DECLS_OFF(PNAME, DEPTH, PDEF, CTXT, Z)				\
-*/
 
 /**
  * No data to declare since it is all defined in source file.
@@ -78,9 +73,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 /**
  * Omit getters, turned off.
  */
-/* FIXME: Implement later
 #define _XENUM5_PLAIN_GETTERS_DECLS_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
-*/
 
 /**
  * Declare getters, defined in source file.
@@ -98,102 +91,60 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 	_XENUM5_PLAIN_GETVALUE_DEFS(static constexpr, PNAME, DEPTH, PDEF, , , Z)		\
 
 
-// ========================== DECLS prop lookup ==============================
-/**
- * Omit from${pname}(), turned off.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLS_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
-
-/**
- * Declare from${pname}(), defined in source file.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLS_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:decls:ext) not implemented yet.");		_XENUM5_NWLN \
-
-/**
- * Define from${pname}() as inline, non-constexpr.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLS_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:decls:inl) not implemented yet.");		_XENUM5_NWLN \
-
-/**
- * Define cxpFrom${pname}() as inline constexpr (also include plain inline variant).
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:decls:cxp) not implemented yet.");		_XENUM5_NWLN \
-
-
 
 // ======================================= MAIN: DECLV ==========================================
 /**
  * Entry point for all custom-prop related declarations in value class (header).
  */
 #define _XENUM5_PLAIN_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_TYPES_DECLV(PNAME, DEPTH)							\
-	BOOST_PP_CAT(_XENUM5_PLAIN_DECLV_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_PLAIN_GETTERS_DECLV_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
 		(PNAME, DEPTH, PDEF, CTXT, Z)							\
 
+
+// ========================== DECLV prop getters =============================
+#ifdef _XENUM5_UNIT_TEST
 /**
- * Declare the data and functions related to a single custom property, implemented in header.
+ * Omit getters, turned off (but replace with a throwing variants just so unit test
+ * can detect that they are "not present").
  */
-#define _XENUM5_PLAIN_DECLV_HDR(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_GETSIZE_DEFV(								\
-		constexpr const BOOST_PP_CAT(PNAME, Index)&,					\
-		DEPTH, CTXT, Z									\
-	)											\
-	_XENUM5_PROP_GETVALUE_DEFV(constexpr, PNAME, DEPTH, PDEF, Z)				\
+#define _XENUM5_PLAIN_GETTERS_DECLV_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
+	BOOST_PP_CAT(get, PNAME) (								\
+		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
+	) const											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error("get" BOOST_PP_STRINGIZE(PNAME) "() is configured 'off'.");	_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+#else
+/**
+ * Omit getters, turned off.
+ */
+#define _XENUM5_PLAIN_GETTERS_DECLV_off(PNAME, DEPTH, PDEF, CTXT, Z)				
+#endif
 
 /**
- * Declare the functions related to a single custom property, implemented in source.
+ * Define getters calling store implementation that is defined in source file.
  */
-#define _XENUM5_PLAIN_DECLV_SRC(PNAME, DEPTH, PDEF, CTXT, Z)					\
+#define _XENUM5_PLAIN_GETTERS_DECLV_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_TYPES_DECLV(PNAME, DEPTH)							\
 	_XENUM5_PROP_GETSIZE_DEFV(								\
 		BOOST_PP_CAT(PNAME, Index),							\
 		DEPTH, CTXT, Z									\
 	)											\
 	_XENUM5_PROP_GETVALUE_DEFV(, PNAME, DEPTH, PDEF, Z)					\
 
-
-
-// ======================================= MAIN: DECLC ==========================================
 /**
- * Entry point for all custom-prop related declarations in container class (header).
+ * Define getters calling store implementation that is constexpr.
  */
-#define _XENUM5_PLAIN_DECLC(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	BOOST_PP_CAT(_XENUM5_PLAIN_FROMVALUE_DECLC_, _XENUM5_PDEF_IMPL_FROM(PDEF))		\
-		(PNAME, DEPTH, PDEF, CTXT, Z)							\
-
-
-// ========================== DECLC prop lookup ==============================
-/**
- * Omit _from${pname}(), turned off.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLC_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
-
-/**
- * Declare _from${pname}(), defined in source file.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLC_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:declc:ext) not implemented yet.");		_XENUM5_NWLN \
-
-/**
- * Define _from${pname}() as inline, non-constexpr.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLC_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:declc:inl) not implemented yet.");		_XENUM5_NWLN \
-
-/**
- * Define _from${pname}() as inline, non-constexpr.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DECLC_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:declc:cxp) not implemented yet.");		_XENUM5_NWLN \
-
+#define _XENUM5_PLAIN_GETTERS_DECLV_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_TYPES_DECLV(PNAME, DEPTH)							\
+	_XENUM5_PROP_GETSIZE_DEFV(								\
+		constexpr const BOOST_PP_CAT(PNAME, Index)&,					\
+		DEPTH, CTXT, Z									\
+	)											\
+	_XENUM5_PROP_GETVALUE_DEFV(constexpr, PNAME, DEPTH, PDEF, Z)				\
 
 
 // ====================================== MAIN: DEFINE ==========================================
@@ -206,9 +157,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:data: _XENUM5_PDEF_PROP_DATA(PDEF))	
 		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:get: _XENUM5_PDEF_IMPL_GET(PDEF))			\
 	BOOST_PP_CAT(_XENUM5_PLAIN_GETTERS_DEF_, _XENUM5_PDEF_IMPL_GET(PDEF))			\
-		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
-	BOOST_PP_CAT(_XENUM5_PLAIN_FROMVALUE_DEF_, _XENUM5_PDEF_IMPL_FROM(PDEF))		\
 		(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)				\
 
 /**
@@ -232,6 +180,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
 
 
 // ============================= Define data =================================
+/**
+ * No data to define since nobody uses it.
+ */
+#define _XENUM5_PLAIN_DATA_DEF_OFF(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
+
 /**
  * Define the data, without content since that is in the header.
  */
@@ -307,9 +260,9 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
 
 // ============================ Define getters ===============================
 /**
- * Omit getters, they are defined inline constexpr in header.
+ * Omit getters, they are configured off.
  */
-#define _XENUM5_PLAIN_GETTERS_DEF_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_GETTERS_DEF_off(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
 /**
  * Define getters, declared in header file.
@@ -318,32 +271,18 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
 	_XENUM5_PROP_GETSIZE_DEFS(DEPTH, CTXT, Z)						\
 	_XENUM5_PLAIN_GETVALUE_DEFS(, PNAME, DEPTH, PDEF, LSCOPE::, DSCOPE SNAME::, Z)		\
 
-
-// ============================ Define lookup ================================
 /**
- * Omit from${pname}(), turned off.
+ * Omit getters, they are defined inline constexpr in header.
  */
-#define _XENUM5_PLAIN_FROMVALUE_DEF_off(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-
-/**
- * Define from${pname}(), declared in header file.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DEF_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:def:ext) not implemented yet.");		_XENUM5_NWLN \
-
-/**
- * Omit from${pname}(), defined inline in header.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DEF_inl(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-
-/**
- * Omit from${pname}(), defined inline constexpr in header.
- */
-#define _XENUM5_PLAIN_FROMVALUE_DEF_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_PLAIN_GETTERS_DEF_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
 
 // ======================= Define _check() contents ==========================
+/**
+ * Final checks on data structures: None since they do not exist.
+ */
+#define _XENUM5_PLAIN_CHECK_OFF(PNAME, DEPTH, LSCOPE, SSCOPE)					\
+
 /**
  * Define final checks on data structures, for implementation in header.
  */

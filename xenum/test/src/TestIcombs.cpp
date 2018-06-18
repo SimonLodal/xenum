@@ -12,7 +12,8 @@
 
 #include <gtest/gtest.h>
 
-/// To get throwing getIdentifier() and fromIdentifier() instead of not compiling them.
+/// To get throwing getIdentifier() and fromIdentifier() instead of not
+/// compiling them when they are "off".
 #define _XENUM5_UNIT_TEST	1
 
 #include <test/xenum/xenums/Icombs.hpp>

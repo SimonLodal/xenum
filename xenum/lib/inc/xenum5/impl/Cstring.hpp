@@ -30,9 +30,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 /**
  * No data to declare since nobody uses it.
  */
-/* FIXME: Implement later
 #define _XENUM5_CSTRING_DATA_DECLS_OFF(PNAME, DEPTH, PDEF, CTXT, Z)				\
-*/
 
 /**
  * No data to declare since it is all defined in source file.
@@ -63,9 +61,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 /**
  * Omit getters, turned off.
  */
-/* FIXME: Implement later
 #define _XENUM5_CSTRING_GETTERS_DECLS_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
-*/
 
 /**
  * Declare getters, defined in source file.
@@ -119,32 +115,58 @@ static_assert(false, "Custom-prop fromValue() (cstring:decls:cxp) not implemente
  * Entry point for all custom-prop related declarations in value class (header).
  */
 #define _XENUM5_CSTRING_DECLV(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	/* INC() to ensure that the index type always gets defined */				\
-	_XENUM5_PROP_TYPES_DECLV(PNAME, BOOST_PP_INC(DEPTH))					\
-	BOOST_PP_CAT(_XENUM5_CSTRING_DECLV_, _XENUM5_PDEF_PROP_DATA(PDEF))			\
+	BOOST_PP_CAT(_XENUM5_CSTRING_GETTERS_DECLV_, _XENUM5_PDEF_IMPL_GET(PDEF))		\
 		(PNAME, DEPTH, PDEF, CTXT, Z)							\
 
+
+// ========================== DECLV prop getters =============================
+#ifdef _XENUM5_UNIT_TEST
 /**
- * Declare the functions related to a single custom property, implemented in header.
+ * Omit getters, turned off (but replace with a throwing variants just so unit test
+ * can detect that they are "not present").
  */
-#define _XENUM5_CSTRING_DECLV_HDR(PNAME, DEPTH, PDEF, CTXT, Z)					\
-	_XENUM5_PROP_GETSIZE_DEFV(								\
-		constexpr const BOOST_PP_CAT(PNAME, Index)&,					\
-		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
-		BOOST_PP_INC(DEPTH), CTXT, Z							\
-	)											\
-	_XENUM5_PROP_GETVALUE_DEFV(constexpr, PNAME, DEPTH, PDEF, Z)				\
+#define _XENUM5_CSTRING_GETTERS_DECLV_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
+	BOOST_PP_CAT(get, PNAME) (								\
+		_XENUM5_PROP_GEN_INDEX1_PARMS(size_t, DEPTH, Z)					\
+	) const											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error("get" BOOST_PP_STRINGIZE(PNAME) "() is configured 'off'.");	_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+#else
+/**
+ * Omit getters, turned off.
+ */
+#define _XENUM5_CSTRING_GETTERS_DECLV_off(PNAME, DEPTH, PDEF, CTXT, Z)				
+#endif
 
 /**
- * Declare the data related to a single custom property, implemented in source.
+ * Define getters calling store implementation that is defined in source file.
  */
-#define _XENUM5_CSTRING_DECLV_SRC(PNAME, DEPTH, PDEF, CTXT, Z)					\
+#define _XENUM5_CSTRING_GETTERS_DECLV_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	/* INC() to ensure that the index type always gets defined */				\
+	_XENUM5_PROP_TYPES_DECLV(PNAME, BOOST_PP_INC(DEPTH))					\
 	_XENUM5_PROP_GETSIZE_DEFV(								\
 		BOOST_PP_CAT(PNAME, Index),							\
 		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
 		BOOST_PP_INC(DEPTH), CTXT, Z							\
 	)											\
 	_XENUM5_PROP_GETVALUE_DEFV(, PNAME, DEPTH, PDEF, Z)					\
+
+/**
+ * Define getters calling store implementation that is constexpr.
+ */
+#define _XENUM5_CSTRING_GETTERS_DECLV_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	/* INC() to ensure that the index type always gets defined */				\
+	_XENUM5_PROP_TYPES_DECLV(PNAME, BOOST_PP_INC(DEPTH))					\
+	_XENUM5_PROP_GETSIZE_DEFV(								\
+		constexpr const BOOST_PP_CAT(PNAME, Index)&,					\
+		/* INC() because IndexNodes also has indexnodes for the leaf string values */	\
+		BOOST_PP_INC(DEPTH), CTXT, Z							\
+	)											\
+	_XENUM5_PROP_GETVALUE_DEFV(constexpr, PNAME, DEPTH, PDEF, Z)				\
 
 
 
@@ -217,6 +239,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
 
 // ============================= Define data =================================
 /**
+ * No data to define since nobody uses it.
+ */
+#define _XENUM5_CSTRING_DATA_DEF_OFF(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+
+/**
  * Define the data, without content since that is in the header.
  */
 #define _XENUM5_CSTRING_DATA_DEF_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
@@ -265,9 +292,9 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
 
 // ============================ Define getters ===============================
 /**
- * Omit getters, they are defined inline constexpr in header.
+ * Omit getters, they are configured off.
  */
-#define _XENUM5_CSTRING_GETTERS_DEF_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+#define _XENUM5_CSTRING_GETTERS_DEF_off(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
 /**
  * Define getters, declared in header file.
@@ -276,6 +303,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_GETSIZE_DEFS(BOOST_PP_INC(DEPTH), CTXT, Z)					\
 	_XENUM5_CSTRING_GETVALUE_DEFS(, PNAME, DEPTH, PDEF, LSCOPE::, DSCOPE SNAME::, Z)	\
+
+/**
+ * Omit getters, they are defined inline constexpr in header.
+ */
+#define _XENUM5_CSTRING_GETTERS_DEF_cxp(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
 
 // ============================ Define lookup ================================
@@ -303,6 +335,11 @@ static_assert(false, "Custom-prop fromValue() (cstring:def:ext) not implemented 
 
 
 // ======================= Define _check() contents ==========================
+/**
+ * Final checks on data structures: None since they do not exist.
+ */
+#define _XENUM5_CSTRING_CHECK_OFF(PNAME, LSCOPE)						\
+
 /**
  * Define final checks on data structures, for implementation in header.
  */

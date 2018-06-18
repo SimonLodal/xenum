@@ -27,40 +27,55 @@ namespace xenums {
 #define XENUM5_Pcombs(D,V,C)				\
 	D(C, test::xenum::xenums::, Pcombs, Pcomb, , ,	\
 	(						\
-		/* plain, depth=0, (ext) */		\
-		(P0E, int, -1, 0, (ext)),		\
-		/* plain, depth=0, (cxp) */		\
-		(P0C, int, -2, 0, (cxp)),		\
-		/* plain, depth=1, (ext) */		\
-		(P1E, int, -3, 1, (ext)),		\
-		/* plain, depth=1, (cxp) */		\
-		(P1C, int, -4, 1, (cxp)),		\
-		/* plain, depth=2, (ext) */		\
-		(P2E, int, -5, 2, (ext)),		\
-		/* plain, depth=2, (cxp) */		\
-		(P2C, int, -6, 2, (cxp))		\
+		/* depth=0, (off) */			\
+		(P0O, int, -11, 0, (off)),		\
+		/* depth=0, (ext) */			\
+		(P0E, int, -12, 0, (ext)),		\
+		/* depth=0, (cxp) */			\
+		(P0C, int, -13, 0, (cxp)),		\
+		/* depth=1, (off) */			\
+		(P1O, int, -21, 1, (off)),		\
+		/* depth=1, (ext) */			\
+		(P1E, int, -22, 1, (ext)),		\
+		/* depth=1, (cxp) */			\
+		(P1C, int, -23, 1, (cxp)),		\
+		/* depth=2, (ext) */			\
+		(P2O, int, -31, 2, (off)),		\
+		/* depth=2, (off) */			\
+		(P2E, int, -32, 2, (ext)),		\
+		/* depth=2, (cxp) */			\
+		(P2C, int, -33, 2, (cxp))		\
 	))						\
 	V(C, V0						\
-		, 0			/* P0E */	\
-		, 1			/* P0C */	\
-		, (2, , 3)		/* P1E */	\
-		, (4, , 5)		/* P1C */	\
-		, ((6,,7),())		/* P2E */	\
-		, ((8,,9),())		/* P2C */	\
+		, 11			/* P00 */	\
+		, 12			/* P0E */	\
+		, 13			/* P0C */	\
+		, (21, , 22)		/* P1O */	\
+		, (23, , 24)		/* P1E */	\
+		, (25, , 26)		/* P1C */	\
+		, ((31,,32),())		/* P2E */	\
+		, ((33,,34),())		/* P2O */	\
+		, ((35,,36),())		/* P2C */	\
 	)						\
 	V(C, V1						\
+		, 			/* P0O */	\
 		, 			/* P0E */	\
 		, 			/* P0C */	\
+		, 			/* P1O */	\
 		, 			/* P1E */	\
 		, 			/* P1C */	\
+		,			/* P2O */	\
 		,			/* P2E */	\
 		,			/* P2C */	\
 	)						\
 	V(C, V2						\
-		, 10			/* P0E */	\
-		, 11			/* P0C */	\
+		, 211			/* P0O */	\
+		, 212			/* P0E */	\
+		, 213			/* P0C */	\
+		, ()			/* P1O */	\
 		, ()			/* P1E */	\
 		, ()			/* P1C */	\
+		, ()			/* P2O */	\
 		, ()			/* P2E */	\
 		, ()			/* P2C */	\
 	)						\
