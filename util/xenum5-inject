@@ -184,6 +184,8 @@ sub parsePreProcessed()
 	my ($curMacro, $curSuffix, $outputIndex, $outputPart);
 
 	$cmd = "${compiler} -E -x c++ -std=c++11 -P -DXENUM5_DEBUG_PP=1" .
+# FIXME: Add cmdline option to add defines.
+#		" -D_XENUM5_UNIT_TEST" .
 		" ".join(" ", map {"-I $_"} @{$includeDirs}).
 		" ".join(" ", map {"-I $_"} @{$defaultIncludeDirs}).
 		" ".$inputFileName;

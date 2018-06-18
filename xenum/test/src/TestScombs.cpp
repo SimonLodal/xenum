@@ -55,7 +55,15 @@ TEST_F(TestScombs, S0OffOff)
 	catch (std::logic_error e) { EXPECT_STREQ("getS0OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS0OO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS0OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS0OO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS0OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -103,7 +111,15 @@ TEST_F(TestScombs, S0ExtOff)
 	EXPECT_STREQ("212", value.getS0EO());
 	EXPECT_EQ(4, value.getS0EOSize());
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS0EO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS0EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS0EO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS0EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -160,7 +176,15 @@ TEST_F(TestScombs, S0CxpOff)
 	EXPECT_STREQ("213", value.getS0CO());
 	EXPECT_EQ(4, value.getS0COSize());
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS0CO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS0CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS0CO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS0CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -201,7 +225,15 @@ TEST_F(TestScombs, S1OffOff)
 	catch (std::logic_error e) { EXPECT_STREQ("getS1OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS1OO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS1OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS1OO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS1OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -278,7 +310,15 @@ TEST_F(TestScombs, S1ExtOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS1EO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS1EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS1EO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS1EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -368,7 +408,15 @@ TEST_F(TestScombs, S1CxpOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS1CO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS1CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS1CO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS1CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -409,7 +457,15 @@ TEST_F(TestScombs, S2OffOff)
 	catch (std::logic_error e) { EXPECT_STREQ("getS2OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS2OO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS2OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS2OO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS2OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -522,7 +578,15 @@ TEST_F(TestScombs, S2ExtOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS2EO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS2EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS2EO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS2EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -652,7 +716,15 @@ TEST_F(TestScombs, S2CxpOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Scombs::_fromS2CO("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS2CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Scombs::_fromS2CO("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromS2CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 

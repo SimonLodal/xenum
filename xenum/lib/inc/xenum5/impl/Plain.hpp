@@ -134,8 +134,8 @@ static_assert(false, "Custom-prop fromValue() (plain:decls:cxp) not implemented 
 // ========================== DECLV prop getters =============================
 #ifdef _XENUM5_UNIT_TEST
 /**
- * Omit getters, turned off (but replace with a throwing variants just so unit test
- * can detect that they are "not present").
+ * Omit getters, turned off, but replace with a throwing variants just so unit test
+ * can detect that they are "not present".
  */
 #define _XENUM5_PLAIN_GETTERS_DECLV_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	const _XENUM5_PDEF_PARM_TYPE(PDEF)							\
@@ -187,10 +187,20 @@ static_assert(false, "Custom-prop fromValue() (plain:decls:cxp) not implemented 
 
 
 // ========================== DECLC prop lookup ==============================
+#ifdef _XENUM5_UNIT_TEST
+/**
+ * Omit _from${pname}(), turned off, but replace with a throwing variant just so unit test
+ * can detect that it is "not present".
+ */
+#define _XENUM5_PLAIN_FROMVALUE_DECLC_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_FROMVALUE_OFF_DEFC(PNAME, PDEF, _XENUM5_XDCL_VNAME(_XENUM5_CTXT_XDCL(CTXT)))
+
+#else
 /**
  * Omit _from${pname}(), turned off.
  */
-#define _XENUM5_PLAIN_FROMVALUE_DECLC_off(PNAME, DEPTH, PDEF, CTXT, Z)				\
+#define _XENUM5_PLAIN_FROMVALUE_DECLC_off(PNAME, DEPTH, PDEF, CTXT, Z)				
+#endif
 
 /**
  * Declare _from${pname}(), defined in source file.

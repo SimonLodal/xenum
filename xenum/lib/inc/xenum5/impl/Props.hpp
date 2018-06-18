@@ -795,4 +795,25 @@
 	}											_XENUM5_NWLN \
 
 
+// ====================== Define Cntnr::fromValue() ==========================
+/**
+ * Throwing from${pname}() generator, for unit testing only.
+ */
+#define _XENUM5_PROP_FROMVALUE_OFF_DEFC(PNAME, PDEF, VNAME)					\
+	static VNAME BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error(BOOST_PP_STRINGIZE(BOOST_PP_CAT(_from, PNAME))		\
+				       "() is configured 'off'.");				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	static bool BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) identifier,	\
+					       VNAME& enumValue)				_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error(BOOST_PP_STRINGIZE(BOOST_PP_CAT(_from, PNAME))		\
+				       "() is configured 'off'.");				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+
 #endif // _XENUM5_IMPL_PROPS_HPP

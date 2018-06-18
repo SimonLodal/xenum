@@ -54,7 +54,15 @@ TEST_F(TestPcombs, P0OffOff)
 	catch (std::logic_error e) { EXPECT_STREQ("getP0OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP0OO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP0OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP0OO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP0OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -93,7 +101,15 @@ TEST_F(TestPcombs, P0ExtOff)
 	EXPECT_EQ(-12, xenums::Pcombs::V1.getP0EO());
 	EXPECT_EQ(212, xenums::Pcombs::V2.getP0EO());
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP0EO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP0EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP0EO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP0EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -137,7 +153,15 @@ TEST_F(TestPcombs, P0CxpOff)
 	EXPECT_EQ(-13, xenums::Pcombs::V1.getP0CO());
 	EXPECT_EQ(213, xenums::Pcombs::V2.getP0CO());
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP0CO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP0CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP0CO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP0CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -178,7 +202,15 @@ TEST_F(TestPcombs, P1OffOff)
 	catch (std::logic_error e) { EXPECT_STREQ("getP1OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue=off
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP1OO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP1OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP1OO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP1OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -237,7 +269,15 @@ TEST_F(TestPcombs, P1ExtOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP1EO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP1EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP1EO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP1EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -307,7 +347,15 @@ TEST_F(TestPcombs, P1CxpOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP1CO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP1CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP1CO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP1CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -348,7 +396,15 @@ TEST_F(TestPcombs, P2OffOff)
 	catch (std::logic_error e) { EXPECT_STREQ("getP2OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue=off
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP2OO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP2OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP2OO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP2OO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -437,7 +493,15 @@ TEST_F(TestPcombs, P2ExtOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP2EO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP2EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP2EO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP2EO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
@@ -539,7 +603,15 @@ TEST_F(TestPcombs, P2CxpOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue
+	// fromValue=off
+	success = false;
+	try { xenums::Pcombs::_fromP2CO(42); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP2CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { xenums::Pcombs::_fromP2CO(42, value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromP2CO() is configured 'off'.", e.what()); success = true; }
+	EXPECT_EQ(true, success);
 }
 
 
