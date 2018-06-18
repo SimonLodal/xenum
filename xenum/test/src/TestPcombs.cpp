@@ -40,233 +40,233 @@ TEST_F(TestPcombs, Basics)
 	EXPECT_EQ(3, xenums::Pcombs::_size);
 }
 
-/// Function that only compiles if the constexpr getP0C() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V1.getP0C() == -13, bool>::type cxpGetP0C(void) { return true; }
+/// Function that only compiles if the constexpr getP0CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP0CO() == -13, bool>::type cxpGetP0CO(void) { return true; }
 /// Test custom properties P0* of Pcombs xenum.
 TEST_F(TestPcombs, P0)
 {
 	xenums::Pcomb value;
 
-	// getP0C() at compile time
-	EXPECT_EQ(true, cxpGetP0C<void>());
+	// getP0CO() at compile time
+	EXPECT_EQ(true, cxpGetP0CO<void>());
 
-	// getP0O()=off
+	// getP0OO()=off
 	success = false;
-	try { xenums::Pcombs::V0.getP0O(); }
-	catch (std::logic_error e) { EXPECT_STREQ("getP0O() is configured 'off'.", e.what()); success = true; }
+	try { xenums::Pcombs::V0.getP0OO(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getP0OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(12, value.getP0E());
-	EXPECT_EQ(13, value.getP0C());
+	EXPECT_EQ(12, value.getP0EO());
+	EXPECT_EQ(13, value.getP0CO());
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(-12, value.getP0E());
-	EXPECT_EQ(-13, value.getP0C());
+	EXPECT_EQ(-12, value.getP0EO());
+	EXPECT_EQ(-13, value.getP0CO());
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(212, value.getP0E());
-	EXPECT_EQ(213, value.getP0C());
+	EXPECT_EQ(212, value.getP0EO());
+	EXPECT_EQ(213, value.getP0CO());
 }
 
 
-/// Function that only compiles if the constexpr getP1CSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CSize() == 3, bool>::type cxpGetP1CSize(void) { return true; }
-/// Function that only compiles if the constexpr getP1C() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1C(2) == 26, bool>::type cxpGetP1C(void) { return true; }
+/// Function that only compiles if the constexpr getP1COSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1COSize() == 3, bool>::type cxpGetP1COSize(void) { return true; }
+/// Function that only compiles if the constexpr getP1CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CO(2) == 26, bool>::type cxpGetP1CO(void) { return true; }
 /// Test custom properties P1* of Pcombs xenum.
 TEST_F(TestPcombs, P1)
 {
 	xenums::Pcomb value;
 
-	// getP1CSize() at compile time
-	EXPECT_EQ(true, cxpGetP1CSize<void>());
-	// getP1C() at compile time
-	EXPECT_EQ(true, cxpGetP1C<void>());
+	// getP1COSize() at compile time
+	EXPECT_EQ(true, cxpGetP1COSize<void>());
+	// getP1CO() at compile time
+	EXPECT_EQ(true, cxpGetP1CO<void>());
 
-	// getP1O()=off
+	// getP1OO()=off
 	success = false;
-	try { xenums::Pcombs::V0.getP1O(0); }
-	catch (std::logic_error e) { EXPECT_STREQ("getP1O() is configured 'off'.", e.what()); success = true; }
+	try { xenums::Pcombs::V0.getP1OO(0); }
+	catch (std::logic_error e) { EXPECT_STREQ("getP1OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(3, value.getP1ESize());
-	EXPECT_EQ(3, value.getP1CSize());
+	EXPECT_EQ(3, value.getP1EOSize());
+	EXPECT_EQ(3, value.getP1COSize());
 
-	EXPECT_EQ(23, value.getP1E(0));
-	EXPECT_EQ(25, value.getP1C(0));
-	EXPECT_EQ(-22, value.getP1E(1));
-	EXPECT_EQ(-23, value.getP1C(1));
-	EXPECT_EQ(24, value.getP1E(2));
-	EXPECT_EQ(26, value.getP1C(2));
+	EXPECT_EQ(23, value.getP1EO(0));
+	EXPECT_EQ(25, value.getP1CO(0));
+	EXPECT_EQ(-22, value.getP1EO(1));
+	EXPECT_EQ(-23, value.getP1CO(1));
+	EXPECT_EQ(24, value.getP1EO(2));
+	EXPECT_EQ(26, value.getP1CO(2));
 	success = false;
-	try { value.getP1E(3); }
+	try { value.getP1EO(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP1C(3); }
+	try { value.getP1CO(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(0, value.getP1ESize());
-	EXPECT_EQ(0, value.getP1CSize());
+	EXPECT_EQ(0, value.getP1EOSize());
+	EXPECT_EQ(0, value.getP1COSize());
 	success = false;
-	try { value.getP1E(0); }
+	try { value.getP1EO(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP1C(0); }
+	try { value.getP1CO(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(1, value.getP1ESize());
-	EXPECT_EQ(1, value.getP1CSize());
+	EXPECT_EQ(1, value.getP1EOSize());
+	EXPECT_EQ(1, value.getP1COSize());
 
-	EXPECT_EQ(-22, value.getP1E(0));
-	EXPECT_EQ(-23, value.getP1C(0));
+	EXPECT_EQ(-22, value.getP1EO(0));
+	EXPECT_EQ(-23, value.getP1CO(0));
 	success = false;
-	try { value.getP1E(1); }
+	try { value.getP1EO(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP1C(1); }
+	try { value.getP1CO(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
 
-/// Function that only compiles if the constexpr getP2CSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CSize() == 2, bool>::type cxpGetP2CSize() { return true; }
-/// Function that only compiles if the constexpr getP2CSize(index1) actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CSize(0) == 3, bool>::type cxpGetP2CSize1() { return true; }
-/// Function that only compiles if the constexpr getP2C() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2C(1,0) == -33, bool>::type cxpGetP2C(void) { return true; }
+/// Function that only compiles if the constexpr getP2COSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize() == 2, bool>::type cxpGetP2COSize() { return true; }
+/// Function that only compiles if the constexpr getP2COSize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize(0) == 3, bool>::type cxpGetP2COSize1() { return true; }
+/// Function that only compiles if the constexpr getP2CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(1,0) == -33, bool>::type cxpGetP2CO(void) { return true; }
 /// Test custom properties P2* of Pcombs xenum.
 TEST_F(TestPcombs, P2)
 {
 	xenums::Pcomb value;
 
-	// getP2CSize() at compile time
-	EXPECT_EQ(true, cxpGetP2CSize<void>());
-	// getP2CSize(index1) at compile time
-	EXPECT_EQ(true, cxpGetP2CSize1<void>());
-	// getP2C() at compile time
-	EXPECT_EQ(true, cxpGetP2C<void>());
+	// getP2COSize() at compile time
+	EXPECT_EQ(true, cxpGetP2COSize<void>());
+	// getP2COSize(index1) at compile time
+	EXPECT_EQ(true, cxpGetP2COSize1<void>());
+	// getP2CO() at compile time
+	EXPECT_EQ(true, cxpGetP2CO<void>());
 
-	// getP2O()=off
+	// getP2OO()=off
 	success = false;
-	try { xenums::Pcombs::V0.getP2O(0, 0); }
-	catch (std::logic_error e) { EXPECT_STREQ("getP2O() is configured 'off'.", e.what()); success = true; }
+	try { xenums::Pcombs::V0.getP2OO(0, 0); }
+	catch (std::logic_error e) { EXPECT_STREQ("getP2OO() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V0
 	value = xenums::Pcombs::V0;
-	EXPECT_EQ(2, value.getP2ESize());
-	EXPECT_EQ(2, value.getP2CSize());
+	EXPECT_EQ(2, value.getP2EOSize());
+	EXPECT_EQ(2, value.getP2COSize());
 
-	EXPECT_EQ(3, value.getP2ESize(0));
-	EXPECT_EQ(3, value.getP2CSize(0));
-	EXPECT_EQ(1, value.getP2ESize(1));
-	EXPECT_EQ(1, value.getP2CSize(1));
+	EXPECT_EQ(3, value.getP2EOSize(0));
+	EXPECT_EQ(3, value.getP2COSize(0));
+	EXPECT_EQ(1, value.getP2EOSize(1));
+	EXPECT_EQ(1, value.getP2COSize(1));
 
 	success = false;
-	try { value.getP2ESize(2); }
+	try { value.getP2EOSize(2); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2CSize(2); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-
-	EXPECT_EQ(33, value.getP2E(0, 0));
-	EXPECT_EQ(35, value.getP2C(0, 0));
-	EXPECT_EQ(-32, value.getP2E(0, 1));
-	EXPECT_EQ(-33, value.getP2C(0, 1));
-	EXPECT_EQ(34, value.getP2E(0, 2));
-	EXPECT_EQ(36, value.getP2C(0, 2));
-	success = false;
-	try { value.getP2E(0, 3); }
-	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
-	EXPECT_EQ(true, success);
-	success = false;
-	try { value.getP2C(0, 3); }
+	try { value.getP2COSize(2); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_EQ(-32, value.getP2E(1, 0));
-	EXPECT_EQ(-33, value.getP2C(1, 0));
+	EXPECT_EQ(33, value.getP2EO(0, 0));
+	EXPECT_EQ(35, value.getP2CO(0, 0));
+	EXPECT_EQ(-32, value.getP2EO(0, 1));
+	EXPECT_EQ(-33, value.getP2CO(0, 1));
+	EXPECT_EQ(34, value.getP2EO(0, 2));
+	EXPECT_EQ(36, value.getP2CO(0, 2));
 	success = false;
-	try { value.getP2E(1, 1); }
+	try { value.getP2EO(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2C(1, 1); }
+	try { value.getP2CO(0, 3); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+
+	EXPECT_EQ(-32, value.getP2EO(1, 0));
+	EXPECT_EQ(-33, value.getP2CO(1, 0));
+	success = false;
+	try { value.getP2EO(1, 1); }
+	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
+	EXPECT_EQ(true, success);
+	success = false;
+	try { value.getP2CO(1, 1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getP2E(2, 0); }
+	try { value.getP2EO(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2C(2, 0); }
+	try { value.getP2CO(2, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V1
 	value = xenums::Pcombs::V1;
-	EXPECT_EQ(0, value.getP2ESize());
-	EXPECT_EQ(0, value.getP2CSize());
+	EXPECT_EQ(0, value.getP2EOSize());
+	EXPECT_EQ(0, value.getP2COSize());
 
 	success = false;
-	try { value.getP2ESize(0); }
+	try { value.getP2EOSize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2CSize(0); }
+	try { value.getP2COSize(0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getP2E(0, 0); }
+	try { value.getP2EO(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2C(0, 0); }
+	try { value.getP2CO(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// V2
 	value = xenums::Pcombs::V2;
-	EXPECT_EQ(1, value.getP2ESize());
-	EXPECT_EQ(1, value.getP2CSize());
+	EXPECT_EQ(1, value.getP2EOSize());
+	EXPECT_EQ(1, value.getP2COSize());
 
-	EXPECT_EQ(0, value.getP2ESize(0));
-	EXPECT_EQ(0, value.getP2CSize(0));
+	EXPECT_EQ(0, value.getP2EOSize(0));
+	EXPECT_EQ(0, value.getP2COSize(0));
 	success = false;
-	try { value.getP2ESize(1); }
+	try { value.getP2EOSize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2CSize(1); }
+	try { value.getP2COSize(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	success = false;
-	try { value.getP2E(0, 0); }
+	try { value.getP2EO(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	success = false;
-	try { value.getP2C(0, 0); }
+	try { value.getP2CO(0, 0); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }

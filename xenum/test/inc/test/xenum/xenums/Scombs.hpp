@@ -27,57 +27,57 @@ namespace xenums {
 #define XENUM5_Scombs(D,V,C)				\
 	D(C, test::xenum::xenums::, Scombs, Scomb, , ,	\
 	(						\
-		/* depth=0, (off) */			\
-		(S0O, cstring, "-11", 0, (off)),	\
-		/* depth=0, (ext) */			\
-		(S0E, cstring, "-12", 0, (ext)),	\
-		/* depth=0, (cxp) */			\
-		(S0C, cstring, "-13", 0, (cxp)),	\
-		/* depth=1, (off) */			\
-		(S1O, cstring, "-21", 1, (off)),	\
-		/* depth=1, (ext) */			\
-		(S1E, cstring, "-22", 1, (ext)),	\
-		/* depth=1, (cxp) */			\
-		(S1C, cstring, "-23", 1, (cxp)),	\
-		/* depth=2, (off) */			\
-		(S2O, cstring, "-31", 2, (off)),	\
-		/* depth=2, (ext) */			\
-		(S2E, cstring, "-32", 2, (ext)),	\
-		/* depth=2, (cxp) */			\
-		(S2C, cstring, "-33", 2, (cxp))		\
+		/* depth=0, (off,off) */		\
+		(S0OO, cstring, "-11", 0, (off,off)),	\
+		/* depth=0, (ext,off) */		\
+		(S0EO, cstring, "-12", 0, (ext,off)),	\
+		/* depth=0, (cxp,off) */		\
+		(S0CO, cstring, "-13", 0, (cxp,off)),	\
+		/* depth=1, (off,off) */		\
+		(S1OO, cstring, "-21", 1, (off,off)),	\
+		/* depth=1, (ext,off) */		\
+		(S1EO, cstring, "-22", 1, (ext,off)),	\
+		/* depth=1, (cxp,off) */		\
+		(S1CO, cstring, "-23", 1, (cxp,off)),	\
+		/* depth=2, (off,off) */		\
+		(S2OO, cstring, "-31", 2, (off,off)),	\
+		/* depth=2, (ext,off) */		\
+		(S2EO, cstring, "-32", 2, (ext,off)),	\
+		/* depth=2, (cxp,off) */		\
+		(S2CO, cstring, "-33", 2, (cxp,off))	\
 	))						\
 	V(C, V0						\
-		, "11"			/* S0O */	\
-		, "12"			/* S0E */	\
-		, "13"			/* S0C */	\
-		, ("21", , "22")	/* S1O */	\
-		, ("23", , "24")	/* S1E */	\
-		, ("25", , "26")	/* S1C */	\
-		, (("31",,"32"),())	/* S2O */	\
-		, (("33",,"34"),())	/* S2E */	\
-		, (("35",,"36"),())	/* S2C */	\
+		, "11"			/* S0OO */	\
+		, "12"			/* S0EO */	\
+		, "13"			/* S0CO */	\
+		, ("21", , "22")	/* S1OO */	\
+		, ("23", , "24")	/* S1EO */	\
+		, ("25", , "26")	/* S1CO */	\
+		, (("31",,"32"),())	/* S2OO */	\
+		, (("33",,"34"),())	/* S2EO */	\
+		, (("35",,"36"),())	/* S2CO */	\
 	)						\
 	V(C, V1						\
-		, 			/* S0O */	\
-		, 			/* S0E */	\
-		, 			/* S0C */	\
-		, 			/* S1O */	\
-		, 			/* S1E */	\
-		, 			/* S1C */	\
-		,			/* S2O */	\
-		,			/* S2E */	\
-		,			/* S2C */	\
+		, 			/* S0OO */	\
+		, 			/* S0EO */	\
+		, 			/* S0CO */	\
+		, 			/* S1OO */	\
+		, 			/* S1EO */	\
+		, 			/* S1CO */	\
+		,			/* S2OO */	\
+		,			/* S2EO */	\
+		,			/* S2CO */	\
 	)						\
 	V(C, V2						\
-		, "211"			/* S0O */	\
-		, "212"			/* S0E */	\
-		, "213"			/* S0C */	\
-		, ()			/* S1O */	\
-		, ()			/* S1E */	\
-		, ()			/* S1C */	\
-		, ()			/* S2O */	\
-		, ()			/* S2E */	\
-		, ()			/* S2C */	\
+		, "211"			/* S0OO */	\
+		, "212"			/* S0EO */	\
+		, "213"			/* S0CO */	\
+		, ()			/* S1OO */	\
+		, ()			/* S1EO */	\
+		, ()			/* S1CO */	\
+		, ()			/* S2OO */	\
+		, ()			/* S2EO */	\
+		, ()			/* S2CO */	\
 	)						\
 
 XENUM5_DECLARE(Scombs)
