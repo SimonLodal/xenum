@@ -109,7 +109,6 @@ static_assert(false, "Custom-prop fromValue() (cstring:decls:inl) not implemente
 static_assert(false, "Custom-prop fromValue() (cstring:decls:cxp) not implemented yet.");	_XENUM5_NWLN \
 
 
-
 // ======================================= MAIN: DECLV ==========================================
 /**
  * Entry point for all custom-prop related declarations in value class (header).

@@ -116,8 +116,6 @@
  * Worker for _XENUM5_PROP_DECLC().
  */
 #define _XENUM5_PROP_DECLC_I1(PDEF, CTXT, Z)							\
-
-/*
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))				\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DECLC)			\
 	(											\
@@ -127,7 +125,7 @@
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)											\
-*/
+
 
 // ======================================= DEFINITION ===========================================
 /**
