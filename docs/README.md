@@ -510,7 +510,8 @@ They come with big costs:
   different code for constexpr and non-constexpr, but until then, this is a problem for everyone.
 
 You can also define a get*() or from*() method implementation as "off" to omit it, it might save
-some space in your compiled binary.
+some space in your compiled binary. If you set both get and from to "off", there is no way to
+access the data, and it will therefore not be generated at all.
 
 #### V() macro
 This callback defines a single enum value.
@@ -547,6 +548,8 @@ Underscore-prefixed members are:
 - \_fromIndex
 - \_fromIdentifier
 - \_cxpFromIdentifier
+- For each custom property, _get${propertyName}, _from${propertyName} and
+  _cxpFrom${propertyName} (depending on options).
 
 A few members do not have an underscore prefix.
 - The default constructor

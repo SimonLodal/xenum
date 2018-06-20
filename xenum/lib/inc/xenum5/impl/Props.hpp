@@ -795,6 +795,119 @@
 	}											_XENUM5_NWLN \
 
 
+// ====================== Declare Store::fromValue() =========================
+/**
+ * Declare Store::from{pname}().
+ */
+#define _XENUM5_PROP_FROMVALUE_EXT_DECL(PNAME, PDEF)						\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+	static Enum BOOST_PP_CAT(from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue);	_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+	static bool BOOST_PP_CAT(from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+/* FIXME: Enable 'noexcept' when function is actually implemented */\
+					      Value& enumValue) /*noexcept*/;			_XENUM5_NWLN \
+
+
+// ====================== Define Store::fromValue() ==========================
+/**
+ * Define Store::from${pname}(), inline or ext as declared in header.
+ */
+// FIXME: Separate variants for plain/cstring needed?
+#define _XENUM5_PROP_FROMVALUE_STD_DEFS(DECLPFX, PNAME, DEPTH, PDEF, LSCOPED, SSCOPED, Z)	\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+	DECLPFX SSCOPED Enum SSCOPED BOOST_PP_CAT(from, PNAME)(					\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue					\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+/* FIXME: Implement! */\
+		throw std::logic_error(								\
+			BOOST_PP_STRINGIZE(SSCOPED)						\
+			BOOST_PP_STRINGIZE(BOOST_PP_CAT(from, PNAME))				\
+			"(propValue): Not implemented yet.");					_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+	DECLPFX bool SSCOPED BOOST_PP_CAT(from, PNAME)(						\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
+		Value& enumValue								\
+/* FIXME: Enable 'noexcept' when function is actually implemented */\
+	) /* noexcept */									_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+/* FIXME: Implement! */\
+		throw std::logic_error(								\
+			BOOST_PP_STRINGIZE(SSCOPED)						\
+			BOOST_PP_STRINGIZE(BOOST_PP_CAT(from, PNAME))				\
+			"(propValue, enumValue): Not implemented yet.");			_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+/**
+ * Define Store::from${pname}(), constexpr.
+ */
+// FIXME: Separate variants for plain/cstring needed?
+#define _XENUM5_PROP_FROMVALUE_CXP_DEFS(PNAME, PDEF)						\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ Enum BOOST_PP_CAT(cxpFrom, PNAME)(					\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue					\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+/* FIXME: Implement! */\
+		throw std::logic_error(								\
+			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
+			"(propValue): Not implemented yet.");					_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ bool BOOST_PP_CAT(cxpFrom, PNAME)(					\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
+		Value& enumValue								\
+/* FIXME: Enable 'noexcept' when function is actually implemented */\
+	) /* noexcept */									_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+/* FIXME: Implement! */\
+		throw std::logic_error(								\
+			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
+			"(propValue, enumValue): Not implemented yet.");			_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
 // ====================== Define Cntnr::fromValue() ==========================
 /**
  * Throwing from${pname}() generator, for unit testing only.
@@ -814,6 +927,67 @@
 				       "() is configured 'off'.");				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
 
+
+/**
+ * Common from${pname}() generator for container class.
+ */
+#define _XENUM5_PROP_FROMVALUE_STD_DEFC(PNAME, PDEF, SNAME, VNAME)				\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+	static VNAME BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(from, PNAME)(propValue);				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+	static bool BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+					       VNAME& enumValue) noexcept			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(from, PNAME)(propValue, enumValue);			_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+/**
+ * Constexpr from${pname}() generator for container class.
+ */
+#define _XENUM5_PROP_FROMVALUE_CXP_DEFC(PNAME, PDEF, SNAME, VNAME)				\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ VNAME BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue);				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ bool BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+						  VNAME& enumValue) noexcept			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue, enumValue);		_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
 
 
 #endif // _XENUM5_IMPL_PROPS_HPP

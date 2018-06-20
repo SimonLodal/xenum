@@ -104,22 +104,23 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
  * Declare from${pname}(), defined in source file.
  */
 #define _XENUM5_PLAIN_FROMVALUE_DECLS_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:decls:ext) not implemented yet.");	_XENUM5_NWLN \
+	_XENUM5_PROP_FROMVALUE_EXT_DECL(PNAME, PDEF)						\
 
 /**
  * Define from${pname}() as inline, non-constexpr.
  */
 #define _XENUM5_PLAIN_FROMVALUE_DECLS_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:decls:inl) not implemented yet.");	_XENUM5_NWLN \
+	_XENUM5_PROP_FROMVALUE_STD_DEFS(							\
+		static,										\
+		PNAME, DEPTH, PDEF, , , Z							\
+	)											\
 
 /**
  * Define cxpFrom${pname}() as inline constexpr (also include plain inline variant).
  */
 #define _XENUM5_PLAIN_FROMVALUE_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:decls:cxp) not implemented yet.");	_XENUM5_NWLN \
+	_XENUM5_PLAIN_FROMVALUE_DECLS_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_FROMVALUE_CXP_DEFS(PNAME, PDEF)						\
 
 
 // ======================================= MAIN: DECLV ==========================================
@@ -206,23 +207,35 @@ static_assert(false, "Custom-prop fromValue() (plain:decls:cxp) not implemented 
  * Declare _from${pname}(), defined in source file.
  */
 #define _XENUM5_PLAIN_FROMVALUE_DECLC_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:declc:ext) not implemented yet.");		_XENUM5_NWLN \
+	_XENUM5_PROP_FROMVALUE_STD_DEFC(							\
+		PNAME,										\
+		PDEF,										\
+		_XENUM5_STORE_NAME(_XENUM5_CTXT_XDCL(CTXT)),					\
+		_XENUM5_XDCL_VNAME(_XENUM5_CTXT_XDCL(CTXT))					\
+	)											\
 
 /**
  * Define _from${pname}() as inline, non-constexpr.
  */
 #define _XENUM5_PLAIN_FROMVALUE_DECLC_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:declc:inl) not implemented yet.");		_XENUM5_NWLN \
+	_XENUM5_PROP_FROMVALUE_STD_DEFC(							\
+		PNAME,										\
+		PDEF,										\
+		_XENUM5_STORE_NAME(_XENUM5_CTXT_XDCL(CTXT)),					\
+		_XENUM5_XDCL_VNAME(_XENUM5_CTXT_XDCL(CTXT))					\
+	)											\
 
 /**
- * Define _from${pname}() as inline, non-constexpr.
+ * Define _from${pname}() as inline, non-constexpr (also include plain inline variant).
  */
 #define _XENUM5_PLAIN_FROMVALUE_DECLC_cxp(PNAME, DEPTH, PDEF, CTXT, Z)				\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:declc:cxp) not implemented yet.");		_XENUM5_NWLN \
-
+	_XENUM5_PLAIN_FROMVALUE_DECLC_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	_XENUM5_PROP_FROMVALUE_CXP_DEFC(							\
+		PNAME,										\
+		PDEF,										\
+		_XENUM5_STORE_NAME(_XENUM5_CTXT_XDCL(CTXT)),					\
+		_XENUM5_XDCL_VNAME(_XENUM5_CTXT_XDCL(CTXT))					\
+	)											\
 
 
 // ====================================== MAIN: DEFINE ==========================================
@@ -368,8 +381,15 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
  * Define from${pname}(), declared in header file.
  */
 #define _XENUM5_PLAIN_FROMVALUE_DEF_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-/* FIXME */											\
-static_assert(false, "Custom-prop fromValue() (plain:def:ext) not implemented yet.");		_XENUM5_NWLN \
+	_XENUM5_PROP_FROMVALUE_STD_DEFS(							\
+		,										\
+		PNAME,										\
+		DEPTH,										\
+		PDEF,										\
+		LSCOPE::,									\
+		DSCOPE SNAME::,									\
+		Z										\
+	)											\
 
 /**
  * Omit from${pname}(), defined inline in header.
