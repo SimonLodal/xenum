@@ -67,8 +67,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
  * Declare getters, defined in source file.
  */
 #define _XENUM5_CSTRING_GETTERS_DECLS_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
-	/* INC() because IndexNodes also has indexnodes for the leaf string values */		\
-	_XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, BOOST_PP_INC(DEPTH))				\
+	_XENUM5_PROP_INDEXTYPE_FIXED_DECL(							\
+		PNAME,										\
+		/* Do not define if data=hdr, then it is already defined. But note that */	\
+		/* otherwise it must always be defined since IndexNodes also has indexnodes */	\
+		/* for the leaf string values. */						\
+		BOOST_PP_EQUAL(_XENUM5_PDEF_PROP_INT_DATA(PDEF), 2)				\
+	)											\
 	_XENUM5_PROP_GETSIZE_EXT_DECL(BOOST_PP_INC(DEPTH), PDEF, Z)				\
 	_XENUM5_PROP_GETVALUE_EXT_DECL(PNAME, DEPTH, PDEF, Z)					\
 

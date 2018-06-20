@@ -468,20 +468,19 @@
 // =========================== Index type (std) ==============================
 /**
  * Define a simple, fixed ${PNAME}Index type.
- * Only for depth!=0.
  */
-#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, DEPTH)						\
-	BOOST_PP_CAT(_XENUM5_PROP_INDEXTYPE_FIXED_DECL_, BOOST_PP_BOOL(DEPTH)) (PNAME, DEPT)	\
+#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, COND)						\
+	BOOST_PP_CAT(_XENUM5_PROP_INDEXTYPE_FIXED_DECL_, COND) (PNAME)				\
 
 /**
- * For depth==0, do nothing.
+ * Do nothing (condition==false).
  */
-#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_0(PNAME, DEPTH)					\
+#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_0(PNAME)						\
 
 /**
- * For depth!=0, declare the type.
+ * Declare the type.
  */
-#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_1(PNAME, DEPTH)					\
+#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_1(PNAME)						\
 	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
 	using BOOST_PP_CAT(PNAME, Index) = size_t;						_XENUM5_NWLN \
 

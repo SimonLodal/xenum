@@ -82,9 +82,14 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
  * Declare getters, defined in source file.
  */
 #define _XENUM5_PLAIN_GETTERS_DECLS_ext(PNAME, DEPTH, PDEF, CTXT, Z)				\
-	_XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, DEPTH)						\
+	_XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, BOOST_PP_AND(					\
+		BOOST_PP_BOOL(DEPTH),								\
+		/* Do not define if data=hdr, then it is already defined */			\
+		BOOST_PP_EQUAL(_XENUM5_PDEF_PROP_INT_DATA(PDEF), 2)				\
+	))											\
 	_XENUM5_PROP_GETSIZE_EXT_DECL(DEPTH, PDEF, Z)						\
 	_XENUM5_PROP_GETVALUE_EXT_DECL(PNAME, DEPTH, PDEF, Z)					\
+
 
 /**
  * Define getters as inline constexpr.

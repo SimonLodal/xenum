@@ -71,6 +71,16 @@
 							)					\
 						)						\
 
+/**
+ * Get placement of the custom property data, as int: 0=OFF, 1=HDR, 2=SRC.
+ */
+#define _XENUM5_PDEF_PROP_INT_DATA(PDEF)	BOOST_PP_CAT(					\
+							_XENUM5_PDEF_PROP_INT_DATA_HELPER_,	\
+							_XENUM5_PDEF_PROP_DATA(PDEF)		\
+						)						\
+
+
+
 /// Helper for _XENUM5_PDEF_PROP_DATA()
 #define _XENUM5_PDEF_PROP_DATA_HELPER_offoff	OFF
 /// Helper for _XENUM5_PDEF_PROP_DATA()
@@ -96,6 +106,12 @@
 /// Helper for _XENUM5_PDEF_PROP_DATA()
 #define _XENUM5_PDEF_PROP_DATA_HELPER_cxpcxp	HDR
 
+/// Helper for _XENUM5_PDEF_PROP_INT_DATA()
+#define _XENUM5_PDEF_PROP_INT_DATA_HELPER_OFF	0
+/// Helper for _XENUM5_PDEF_PROP_INT_DATA()
+#define _XENUM5_PDEF_PROP_INT_DATA_HELPER_HDR	1
+/// Helper for _XENUM5_PDEF_PROP_INT_DATA()
+#define _XENUM5_PDEF_PROP_INT_DATA_HELPER_SRC	2
 
 
 
