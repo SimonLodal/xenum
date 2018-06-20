@@ -151,9 +151,9 @@ TEST_F(TestScombs, S0ExtCxp)
 // =========================== depth=0 get=cxp ===============================
 
 /// Function that only compiles if the constexpr getS0COSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::V0.getS0COSize() == 3, bool>::type cxpGetS0COSize() { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::V0.getS0COSize() == 5, bool>::type cxpGetS0COSize() { return true; }
 /// Function that only compiles if the constexpr getS0CO() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS0CO(), "13"), bool>::type cxpGetS0CO(void) { return true; }
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS0CO(), "1008"), bool>::type cxpGetS0CO(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=off
 TEST_F(TestScombs, S0CxpOff)
 {
@@ -352,9 +352,9 @@ TEST_F(TestScombs, S1ExtCxp)
 /// Function that only compiles if the constexpr getS1COSize() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Scombs::V0.getS1COSize() == 3, bool>::type cxpGetS1COSize() { return true; }
 /// Function that only compiles if the constexpr getS1COSize(index1) actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::V0.getS1COSize(2) == 3, bool>::type cxpGetS1COSize1() { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::V0.getS1COSize(2) == 5, bool>::type cxpGetS1COSize1() { return true; }
 /// Function that only compiles if the constexpr getS1CO() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS1CO(1), "-23"), bool>::type cxpGetS1CO(void) { return true; }
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS1CO(2), "1121"), bool>::type cxpGetS1CO(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=off
 TEST_F(TestScombs, S1CxpOff)
 {
@@ -622,9 +622,9 @@ template <class T> typename std::enable_if<xenums::Scombs::V0.getS2COSize() == 2
 /// Function that only compiles if the constexpr getS2COSize(index1) actually works at compile time.
 template <class T> typename std::enable_if<xenums::Scombs::V0.getS2COSize(0) == 3, bool>::type cxpGetS2COSize1() { return true; }
 /// Function that only compiles if the constexpr getS2COSize(index1,index2) actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::V0.getS2COSize(0,2) == 3, bool>::type cxpGetS2COSize2() { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::V0.getS2COSize(0,2) == 5, bool>::type cxpGetS2COSize2() { return true; }
 /// Function that only compiles if the constexpr getS2CO() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS2CO(1,0), "-33"), bool>::type cxpGetS2CO(void) { return true; }
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS2CO(1,0), "-1208"), bool>::type cxpGetS2CO(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=off
 TEST_F(TestScombs, S2CxpOff)
 {

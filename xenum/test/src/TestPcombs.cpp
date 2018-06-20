@@ -141,7 +141,7 @@ TEST_F(TestPcombs, P0ExtCxp)
 // =========================== depth=0 get=cxp ===============================
 
 /// Function that only compiles if the constexpr getP0CO() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V1.getP0CO() == -13, bool>::type cxpGetP0CO(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CO() == 1008, bool>::type cxpGetP0CO(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=off
 TEST_F(TestPcombs, P0CxpOff)
 {
@@ -310,7 +310,7 @@ TEST_F(TestPcombs, P1ExtCxp)
 /// Function that only compiles if the constexpr getP1COSize() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1COSize() == 3, bool>::type cxpGetP1COSize(void) { return true; }
 /// Function that only compiles if the constexpr getP1CO() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CO(2) == 26, bool>::type cxpGetP1CO(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CO(2) == 1121, bool>::type cxpGetP1CO(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=off
 TEST_F(TestPcombs, P1CxpOff)
 {
@@ -537,7 +537,7 @@ template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize() == 2
 /// Function that only compiles if the constexpr getP2COSize(index1) actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize(0) == 3, bool>::type cxpGetP2COSize1() { return true; }
 /// Function that only compiles if the constexpr getP2CO() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(1,0) == -33, bool>::type cxpGetP2CO(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(1,0) == -1208, bool>::type cxpGetP2CO(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=off
 TEST_F(TestPcombs, P2CxpOff)
 {
