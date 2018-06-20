@@ -368,7 +368,18 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
  */
 #define _XENUM5_PLAIN_GETTERS_DEF_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	_XENUM5_PROP_GETSIZE_DEFS(DEPTH, CTXT, Z)						\
-	_XENUM5_PLAIN_GETVALUE_DEFS(, PNAME, DEPTH, PDEF, LSCOPE::, DSCOPE SNAME::, Z)		\
+	_XENUM5_PLAIN_GETVALUE_DEFS(								\
+		,										\
+		PNAME,										\
+		DEPTH,										\
+		PDEF,										\
+		BOOST_PP_IF(									\
+			BOOST_PP_EQUAL(_XENUM5_PDEF_PROP_INT_DATA(PDEF), 2),			\
+			LSCOPE::,								\
+		),										\
+		DSCOPE SNAME::,									\
+		Z										\
+	)											\
 
 /**
  * Omit getters, they are defined inline constexpr in header.

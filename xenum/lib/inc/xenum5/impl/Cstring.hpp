@@ -330,7 +330,18 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))	
 #define _XENUM5_CSTRING_GETTERS_DEF_ext(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\
 	_XENUM5_PROP_GETSIZE_DEFS(BOOST_PP_INC(DEPTH), CTXT, Z)					\
-	_XENUM5_CSTRING_GETVALUE_DEFS(, PNAME, DEPTH, PDEF, LSCOPE::, DSCOPE SNAME::, Z)	\
+	_XENUM5_CSTRING_GETVALUE_DEFS(								\
+		,										\
+		PNAME,										\
+		DEPTH,										\
+		PDEF,										\
+		BOOST_PP_IF(									\
+			BOOST_PP_EQUAL(_XENUM5_PDEF_PROP_INT_DATA(PDEF), 2),			\
+			LSCOPE::,								\
+		),										\
+		DSCOPE SNAME::,									\
+		Z										\
+	)											\
 
 /**
  * Omit getters, they are defined inline constexpr in header.

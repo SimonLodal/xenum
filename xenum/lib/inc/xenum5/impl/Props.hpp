@@ -678,7 +678,10 @@
 		PNAME,										\
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)::,						\
+		BOOST_PP_IF(									\
+			BOOST_PP_EQUAL(_XENUM5_PDEF_PROP_INT_DATA(PDEF), 2),			\
+			_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)::,					\
+		),										\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		Z										\
 	)											\
