@@ -485,6 +485,34 @@
 	using BOOST_PP_CAT(PNAME, Index) = size_t;						_XENUM5_NWLN \
 
 
+// ========================== Index type (auto) ==============================
+/**
+ * Define the index type in local-ns context.
+ * Problem is that selecting the optimal type requires access to the common ${pname}Values
+ * array, but if that is defined in header, it is private and inaccessible; in that case
+ * just define the index type generically.
+ */
+#define _XENUM5_PROP_INDEXTYPE_DEFL(PNAME, PDEF)						\
+	BOOST_PP_CAT(										\
+		_XENUM5_PROP_INDEXTYPE_DEFL_,							\
+		BOOST_PP_EQUAL(_XENUM5_PDEF_PLACE_INT_COMMON(PDEF), 2)				\
+	)(PNAME)										\
+
+/**
+ * Helper for _XENUM5_PROP_INDEXTYPE_DEFL().
+ * Define generic index type.
+ */
+#define _XENUM5_PROP_INDEXTYPE_DEFL_0(PNAME)							\
+	_XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, 1)						\
+
+/**
+ * Helper for _XENUM5_PROP_INDEXTYPE_DEFL().
+ * Define optimal index type.
+ */
+#define _XENUM5_PROP_INDEXTYPE_DEFL_1(PNAME)							\
+	_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)						\
+
+
 // ============================== Node type ==================================
 /**
  * Define the ${PNAME}IndexNode type.
@@ -679,7 +707,7 @@
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
 		BOOST_PP_IF(									\
-			BOOST_PP_EQUAL(_XENUM5_PDEF_PROP_INT_DATA(PDEF), 2),			\
+			BOOST_PP_EQUAL(_XENUM5_PDEF_PLACE_INT_GET(PDEF), 2),			\
 			_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)::,					\
 		),										\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
