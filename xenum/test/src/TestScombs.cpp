@@ -100,16 +100,16 @@ TEST_F(TestScombs, S0ExtOff)
 	// getValue()
 	// V0
 	value = xenums::Scombs::V0;
-	EXPECT_STREQ("12", value.getS0EO());
-	EXPECT_EQ(3, value.getS0EOSize());
+	EXPECT_STREQ("1004", value.getS0EO());
+	EXPECT_EQ(5, value.getS0EOSize());
 	// V1
 	value = xenums::Scombs::V1;
-	EXPECT_STREQ("-12", value.getS0EO());
-	EXPECT_EQ(4, value.getS0EOSize());
+	EXPECT_STREQ("-1004", value.getS0EO());
+	EXPECT_EQ(6, value.getS0EOSize());
 	// V2
 	value = xenums::Scombs::V2;
-	EXPECT_STREQ("212", value.getS0EO());
-	EXPECT_EQ(4, value.getS0EOSize());
+	EXPECT_STREQ("1024", value.getS0EO());
+	EXPECT_EQ(5, value.getS0EOSize());
 
 	// fromValue=off
 	success = false;
@@ -165,16 +165,16 @@ TEST_F(TestScombs, S0CxpOff)
 	// getValue()
 	// V0
 	value = xenums::Scombs::V0;
-	EXPECT_STREQ("13", value.getS0CO());
-	EXPECT_EQ(3, value.getS0COSize());
+	EXPECT_STREQ("1008", value.getS0CO());
+	EXPECT_EQ(5, value.getS0COSize());
 	// V1
 	value = xenums::Scombs::V1;
-	EXPECT_STREQ("-13", value.getS0CO());
-	EXPECT_EQ(4, value.getS0COSize());
+	EXPECT_STREQ("-1008", value.getS0CO());
+	EXPECT_EQ(6, value.getS0COSize());
 	// V2
 	value = xenums::Scombs::V2;
-	EXPECT_STREQ("213", value.getS0CO());
-	EXPECT_EQ(4, value.getS0COSize());
+	EXPECT_STREQ("1028", value.getS0CO());
+	EXPECT_EQ(5, value.getS0COSize());
 
 	// fromValue=off
 	success = false;
@@ -271,12 +271,12 @@ TEST_F(TestScombs, S1ExtOff)
 	// V0
 	value = xenums::Scombs::V0;
 	EXPECT_EQ(3, value.getS1EOSize());
-	EXPECT_STREQ("23", value.getS1EO(0));
-	EXPECT_EQ(3, value.getS1EOSize(0));
-	EXPECT_STREQ("-22", value.getS1EO(1));
-	EXPECT_EQ(4, value.getS1EOSize(1));
-	EXPECT_STREQ("24", value.getS1EO(2));
-	EXPECT_EQ(3, value.getS1EOSize(2));
+	EXPECT_STREQ("1110", value.getS1EO(0));
+	EXPECT_EQ(5, value.getS1EOSize(0));
+	EXPECT_STREQ("-1104", value.getS1EO(1));
+	EXPECT_EQ(6, value.getS1EOSize(1));
+	EXPECT_STREQ("1111", value.getS1EO(2));
+	EXPECT_EQ(5, value.getS1EOSize(2));
 	success = false;
 	try { value.getS1EO(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -299,8 +299,8 @@ TEST_F(TestScombs, S1ExtOff)
 	// V2
 	value = xenums::Scombs::V2;
 	EXPECT_EQ(1, value.getS1EOSize());
-	EXPECT_STREQ("-22", value.getS1EO(0));
-	EXPECT_EQ(4, value.getS1EOSize(0));
+	EXPECT_STREQ("-1104", value.getS1EO(0));
+	EXPECT_EQ(6, value.getS1EOSize(0));
 	success = false;
 	try { value.getS1EO(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -369,12 +369,12 @@ TEST_F(TestScombs, S1CxpOff)
 	// V0
 	value = xenums::Scombs::V0;
 	EXPECT_EQ(3, value.getS1COSize());
-	EXPECT_STREQ("25", value.getS1CO(0));
-	EXPECT_EQ(3, value.getS1COSize(0));
-	EXPECT_STREQ("-23", value.getS1CO(1));
-	EXPECT_EQ(4, value.getS1COSize(1));
-	EXPECT_STREQ("26", value.getS1CO(2));
-	EXPECT_EQ(3, value.getS1COSize(2));
+	EXPECT_STREQ("1120", value.getS1CO(0));
+	EXPECT_EQ(5, value.getS1COSize(0));
+	EXPECT_STREQ("-1108", value.getS1CO(1));
+	EXPECT_EQ(6, value.getS1COSize(1));
+	EXPECT_STREQ("1121", value.getS1CO(2));
+	EXPECT_EQ(5, value.getS1COSize(2));
 	success = false;
 	try { value.getS1CO(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -397,8 +397,8 @@ TEST_F(TestScombs, S1CxpOff)
 	// V2
 	value = xenums::Scombs::V2;
 	EXPECT_EQ(1, value.getS1COSize());
-	EXPECT_STREQ("-23", value.getS1CO(0));
-	EXPECT_EQ(4, value.getS1COSize(0));
+	EXPECT_STREQ("-1108", value.getS1CO(0));
+	EXPECT_EQ(6, value.getS1COSize(0));
 	success = false;
 	try { value.getS1CO(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -510,12 +510,12 @@ TEST_F(TestScombs, S2ExtOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_STREQ("33", value.getS2EO(0, 0));
-	EXPECT_EQ(3, value.getS2EOSize(0, 0));
-	EXPECT_STREQ("-32", value.getS2EO(0, 1));
-	EXPECT_EQ(4, value.getS2EOSize(0, 1));
-	EXPECT_STREQ("34", value.getS2EO(0, 2));
-	EXPECT_EQ(3, value.getS2EOSize(0, 2));
+	EXPECT_STREQ("1210", value.getS2EO(0, 0));
+	EXPECT_EQ(5, value.getS2EOSize(0, 0));
+	EXPECT_STREQ("-1204", value.getS2EO(0, 1));
+	EXPECT_EQ(6, value.getS2EOSize(0, 1));
+	EXPECT_STREQ("1211", value.getS2EO(0, 2));
+	EXPECT_EQ(5, value.getS2EOSize(0, 2));
 	success = false;
 	try { value.getS2EO(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -525,8 +525,8 @@ TEST_F(TestScombs, S2ExtOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_STREQ("-32", value.getS2EO(1, 0));
-	EXPECT_EQ(4, value.getS2EOSize(1, 0));
+	EXPECT_STREQ("-1204", value.getS2EO(1, 0));
+	EXPECT_EQ(6, value.getS2EOSize(1, 0));
 	success = false;
 	try { value.getS2EO(1, 1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -648,12 +648,12 @@ TEST_F(TestScombs, S2CxpOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_STREQ("35", value.getS2CO(0, 0));
-	EXPECT_EQ(3, value.getS2COSize(0, 0));
-	EXPECT_STREQ("-33", value.getS2CO(0, 1));
-	EXPECT_EQ(4, value.getS2COSize(0, 1));
-	EXPECT_STREQ("36", value.getS2CO(0, 2));
-	EXPECT_EQ(3, value.getS2COSize(0, 2));
+	EXPECT_STREQ("1220", value.getS2CO(0, 0));
+	EXPECT_EQ(5, value.getS2COSize(0, 0));
+	EXPECT_STREQ("-1208", value.getS2CO(0, 1));
+	EXPECT_EQ(6, value.getS2COSize(0, 1));
+	EXPECT_STREQ("1221", value.getS2CO(0, 2));
+	EXPECT_EQ(5, value.getS2COSize(0, 2));
 	success = false;
 	try { value.getS2CO(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -663,8 +663,8 @@ TEST_F(TestScombs, S2CxpOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_STREQ("-33", value.getS2CO(1, 0));
-	EXPECT_EQ(4, value.getS2COSize(1, 0));
+	EXPECT_STREQ("-1208", value.getS2CO(1, 0));
+	EXPECT_EQ(6, value.getS2COSize(1, 0));
 	success = false;
 	try { value.getS2CO(1, 1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }

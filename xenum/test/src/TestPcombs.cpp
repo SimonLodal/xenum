@@ -97,9 +97,9 @@ TEST_F(TestPcombs, P0OffCxp)
 TEST_F(TestPcombs, P0ExtOff)
 {
 	// getValue()
-	EXPECT_EQ(12, xenums::Pcombs::V0.getP0EO());
-	EXPECT_EQ(-12, xenums::Pcombs::V1.getP0EO());
-	EXPECT_EQ(212, xenums::Pcombs::V2.getP0EO());
+	EXPECT_EQ(1004, xenums::Pcombs::V0.getP0EO());
+	EXPECT_EQ(-1004, xenums::Pcombs::V1.getP0EO());
+	EXPECT_EQ(1024, xenums::Pcombs::V2.getP0EO());
 
 	// fromValue=off
 	success = false;
@@ -149,9 +149,9 @@ TEST_F(TestPcombs, P0CxpOff)
 	EXPECT_EQ(true, cxpGetP0CO<void>());
 
 	// getValue()
-	EXPECT_EQ(13, xenums::Pcombs::V0.getP0CO());
-	EXPECT_EQ(-13, xenums::Pcombs::V1.getP0CO());
-	EXPECT_EQ(213, xenums::Pcombs::V2.getP0CO());
+	EXPECT_EQ(1008, xenums::Pcombs::V0.getP0CO());
+	EXPECT_EQ(-1008, xenums::Pcombs::V1.getP0CO());
+	EXPECT_EQ(1028, xenums::Pcombs::V2.getP0CO());
 
 	// fromValue=off
 	success = false;
@@ -246,9 +246,9 @@ TEST_F(TestPcombs, P1ExtOff)
 	// V0
 	value = xenums::Pcombs::V0;
 	EXPECT_EQ(3, value.getP1EOSize());
-	EXPECT_EQ(23, value.getP1EO(0));
-	EXPECT_EQ(-22, value.getP1EO(1));
-	EXPECT_EQ(24, value.getP1EO(2));
+	EXPECT_EQ(1110, value.getP1EO(0));
+	EXPECT_EQ(-1104, value.getP1EO(1));
+	EXPECT_EQ(1111, value.getP1EO(2));
 	success = false;
 	try { value.getP1EO(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -263,7 +263,7 @@ TEST_F(TestPcombs, P1ExtOff)
 	// V2
 	value = xenums::Pcombs::V2;
 	EXPECT_EQ(1, value.getP1EOSize());
-	EXPECT_EQ(-22, value.getP1EO(0));
+	EXPECT_EQ(-1104, value.getP1EO(0));
 	success = false;
 	try { value.getP1EO(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -323,9 +323,9 @@ TEST_F(TestPcombs, P1CxpOff)
 	// V0
 	value = xenums::Pcombs::V0;
 	EXPECT_EQ(3, value.getP1COSize());
-	EXPECT_EQ(25, value.getP1CO(0));
-	EXPECT_EQ(-23, value.getP1CO(1));
-	EXPECT_EQ(26, value.getP1CO(2));
+	EXPECT_EQ(1120, value.getP1CO(0));
+	EXPECT_EQ(-1108, value.getP1CO(1));
+	EXPECT_EQ(1121, value.getP1CO(2));
 	success = false;
 	try { value.getP1CO(3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -341,7 +341,7 @@ TEST_F(TestPcombs, P1CxpOff)
 	// V2
 	value = xenums::Pcombs::V2;
 	EXPECT_EQ(1, value.getP1COSize());
-	EXPECT_EQ(-23, value.getP1CO(0));
+	EXPECT_EQ(-1108, value.getP1CO(0));
 	success = false;
 	try { value.getP1CO(1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -449,15 +449,15 @@ TEST_F(TestPcombs, P2ExtOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_EQ(33, value.getP2EO(0, 0));
-	EXPECT_EQ(-32, value.getP2EO(0, 1));
-	EXPECT_EQ(34, value.getP2EO(0, 2));
+	EXPECT_EQ(1210, value.getP2EO(0, 0));
+	EXPECT_EQ(-1204, value.getP2EO(0, 1));
+	EXPECT_EQ(1211, value.getP2EO(0, 2));
 	success = false;
 	try { value.getP2EO(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_EQ(-32, value.getP2EO(1, 0));
+	EXPECT_EQ(-1204, value.getP2EO(1, 0));
 	success = false;
 	try { value.getP2EO(1, 1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
@@ -559,15 +559,15 @@ TEST_F(TestPcombs, P2CxpOff)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_EQ(35, value.getP2CO(0, 0));
-	EXPECT_EQ(-33, value.getP2CO(0, 1));
-	EXPECT_EQ(36, value.getP2CO(0, 2));
+	EXPECT_EQ(1220, value.getP2CO(0, 0));
+	EXPECT_EQ(-1208, value.getP2CO(0, 1));
+	EXPECT_EQ(1221, value.getP2CO(0, 2));
 	success = false;
 	try { value.getP2CO(0, 3); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	EXPECT_EQ(-33, value.getP2CO(1, 0));
+	EXPECT_EQ(-1208, value.getP2CO(1, 0));
 	success = false;
 	try { value.getP2CO(1, 1); }
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
