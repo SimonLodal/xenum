@@ -866,10 +866,13 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
+		return SSCOPED fromIndex(0);							\
+/*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(SSCOPED)						\
 			BOOST_PP_STRINGIZE(BOOST_PP_CAT(from, PNAME))				\
 			"(propValue): Not implemented yet.");					_XENUM5_NWLN \
+*/\
 	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
 		without throwing on error.							_XENUM5_NWLN \
@@ -887,10 +890,13 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
+		return false;									\
+/*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(SSCOPED)						\
 			BOOST_PP_STRINGIZE(BOOST_PP_CAT(from, PNAME))				\
 			"(propValue, enumValue): Not implemented yet.");			_XENUM5_NWLN \
+*/\
 	}											_XENUM5_NWLN \
 
 
@@ -911,9 +917,12 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
+		return fromIndex(0);								\
+/*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
 			"(propValue): Not implemented yet.");					_XENUM5_NWLN \
+*/\
 	}											_XENUM5_NWLN \
 	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
 		without throwing on error.							_XENUM5_NWLN \
@@ -932,9 +941,12 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
+		return false;									\
+/*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
 			"(propValue, enumValue): Not implemented yet.");			_XENUM5_NWLN \
+*/\
 	}											_XENUM5_NWLN \
 
 
