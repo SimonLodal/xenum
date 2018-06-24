@@ -866,7 +866,7 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
-		return SSCOPED fromIndex(0);							\
+		return SSCOPED fromIndex(0);							_XENUM5_NWLN \
 /*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(SSCOPED)						\
@@ -890,7 +890,7 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
-		return false;									\
+		return false;									_XENUM5_NWLN \
 /*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(SSCOPED)						\
@@ -917,7 +917,7 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
-		return fromIndex(0);								\
+		return fromIndex(0);								_XENUM5_NWLN \
 /*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
@@ -941,7 +941,7 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
-		return false;									\
+		return false;									_XENUM5_NWLN \
 /*\
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
