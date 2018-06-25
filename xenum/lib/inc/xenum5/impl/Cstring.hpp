@@ -412,7 +412,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	/* FIXME: Also define NodesSize - ? */							\
 
 /**
- * Define store members declared inline in header.
+ * Define store members declared ext in header.
  */
 #define _XENUM5_CSTRING_GETTERS_DEFS_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* INC() because Nodes also has indexnodes for the leaf string values */		\

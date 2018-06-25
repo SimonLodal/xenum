@@ -38,7 +38,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 #define _XENUM5_PLAIN_COMMON_DECLS_SRC(PNAME, DEPTH, PDEF, CTXT, Z)				\
 
 /**
- * Define data inline since some inline methods use it.
+ * Define common data inline since some inline methods use it.
  */
 #define _XENUM5_PLAIN_COMMON_DECLS_HDR(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
@@ -427,7 +427,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	/* FIXME: Also define NodesSize - ? */							\
 
 /**
- * Define store members declared inline in header.
+ * Define store members declared ext in header.
  */
 #define _XENUM5_PLAIN_GETTERS_DEFS_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	_XENUM5_PROP_GETSIZE_DEFS(DEPTH, CTXT, Z)						\

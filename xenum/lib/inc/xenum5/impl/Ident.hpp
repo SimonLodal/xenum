@@ -16,29 +16,29 @@
  */
 #define _XENUM5_IDENT_DECLS(XDCL, CTXT)								\
 	_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident)							\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:data: _XENUM5_XDCL_IDENT_DATA(XDCL))			\
-	BOOST_PP_CAT(_XENUM5_IDENT_DATA_DECLS_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL, CTXT)	\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:common: _XENUM5_XDCL_PLACE_COMMON(XDCL))			\
+	BOOST_PP_CAT(_XENUM5_IDENT_COMMON_DECLS_, _XENUM5_XDCL_PLACE_COMMON(XDCL)) (XDCL, CTXT)	\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:get: _XENUM5_XDCL_IMPL_GET(XDCL))				\
 	BOOST_PP_CAT(_XENUM5_IDENT_GETVALUE_DECLS_, _XENUM5_XDCL_IMPL_GET(XDCL)) ()		\
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IMPL_FROM(XDCL))			\
 	BOOST_PP_CAT(_XENUM5_IDENT_FROMVALUE_DECLS_, _XENUM5_XDCL_IMPL_FROM(XDCL)) (XDCL, CTXT)	\
 
 
-// =========================== DECLS ident data ==============================
+// ============================= DECLS common ================================
 /**
- * No data to declare since nobody uses it.
+ * No common stuff to declare since nobody uses it.
  */
-#define _XENUM5_IDENT_DATA_DECLS_OFF(XDCL, CTXT)						\
+#define _XENUM5_IDENT_COMMON_DECLS_OFF(XDCL, CTXT)						\
 
 /**
- * No data to declare since it is all defined in source file.
+ * No common stuff to declare since it is all defined in source file.
  */
-#define _XENUM5_IDENT_DATA_DECLS_SRC(XDCL, CTXT)						\
+#define _XENUM5_IDENT_COMMON_DECLS_SRC(XDCL, CTXT)						\
 
 /**
- * Define data inline since some inline methods use it.
+ * Define common data inline since some inline methods use it.
  */
-#define _XENUM5_IDENT_DATA_DECLS_HDR(XDCL, CTXT)						\
+#define _XENUM5_IDENT_COMMON_DECLS_HDR(XDCL, CTXT)						\
 	_XENUM5_IDENT_VALUES_DEF(static, CTXT)							\
 	_XENUM5_IDENT_VALUENAMES_DECL(CTXT)							\
 	_XENUM5_IDENT_OFFSETS_DEF(static, CTXT)							\
@@ -226,99 +226,173 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IMPL_FROM(XDCL))			\
  * Entry point for all identifier related definitions (in source file).
  */
 #define _XENUM5_IDENT_DEFINE(XDCL, CTXT)							\
-	_XENUM5_NWLN _XENUM5_CMNT(Store:Ident)							\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:data: _XENUM5_XDCL_IDENT_DATA(XDCL))		\
-	BOOST_PP_CAT(_XENUM5_IDENT_DATA_DEF_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL, CTXT)	\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:get: _XENUM5_XDCL_IMPL_GET(XDCL))			\
-	BOOST_PP_CAT(_XENUM5_IDENT_GETVALUE_DEF_, _XENUM5_XDCL_IMPL_GET(XDCL)) (XDCL)		\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_IMPL_FROM(XDCL))			\
-	BOOST_PP_CAT(_XENUM5_IDENT_FROMVALUE_DEF_, _XENUM5_XDCL_IMPL_FROM(XDCL)) (XDCL, CTXT)	\
-
+	_XENUM5_IDENT_DEFL(XDCL, CTXT)								\
+	_XENUM5_IDENT_DEFS(XDCL, CTXT)								\
 
 /**
  * Entry point for defining final checks for identifier data.
  */
 #define _XENUM5_IDENT_CHECK(XDCL)								\
 	_XENUM5_CMNT(Ident)									\
-	BOOST_PP_CAT(_XENUM5_IDENT_CHECK_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
-
+	using namespace _XENUM5_IMPL_LOCAL_NS(XDCL, );						_XENUM5_NWLN \
+	BOOST_PP_CAT(										\
+		_XENUM5_IDENT_COMMON_CHECK_,							\
+		BOOST_PP_EQUAL(_XENUM5_XDCL_PLACE_INT_COMMON(XDCL), 0)				\
+	) (XDCL)										\
+/* Nothing to do, all data is in common.							\
+	BOOST_PP_CAT(										\
+		_XENUM5_IDENT_GETTERS_CHECK_,							\
+		BOOST_PP_EQUAL(_XENUM5_XDCL_PLACE_INT_GET(XDCL), 0)				\
+	) (XDCL)										\
+	BOOST_PP_CAT(										\
+		_XENUM5_IDENT_FROMVALUE_CHECK_,							\
+		BOOST_PP_EQUAL(_XENUM5_XDCL_PLACE_INT_FROM(XDCL), 0)				\
+	) (XDCL)										\
+*/
 
 /**
  * Entry point for debug dumping of identifier data.
  */
 #define _XENUM5_IDENT_DBGINFO(XDCL)								\
 	_XENUM5_CMNT(Ident)									\
-_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDCL))		\
-	BOOST_PP_CAT(_XENUM5_IDENT_DBGINFO_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
+	using namespace _XENUM5_IMPL_LOCAL_NS(XDCL, );						_XENUM5_NWLN \
+	BOOST_PP_CAT(										\
+		_XENUM5_IDENT_COMMON_DBGINFO_,							\
+		BOOST_PP_EQUAL(_XENUM5_XDCL_PLACE_INT_COMMON(XDCL), 0)				\
+	) (XDCL)										\
+/* Nothing to do, all data is in common.							\
+	BOOST_PP_CAT(										\
+		_XENUM5_IDENT_GETTERS_DBGINFO_,							\
+		BOOST_PP_EQUAL(_XENUM5_XDCL_PLACE_INT_GET(XDCL), 0)				\
+	) (XDCL)										\
+	BOOST_PP_CAT(										\
+		_XENUM5_IDENT_FROMVALUE_DBGINFO_,						\
+		BOOST_PP_EQUAL(_XENUM5_XDCL_PLACE_INT_FROM(XDCL), 0)				\
+	) (XDCL)										\
+*/
 
 
-// ============================= Define data =================================
+// ========================== Define in local ns =============================
 /**
- * No data to define since nobody uses it.
+ * Entry function for definitions made in local ns.
  */
-#define _XENUM5_IDENT_DATA_DEF_OFF(XDCL, CTXT)							\
-
-/**
- * Define all the data, in local ns.
- */
-#define _XENUM5_IDENT_DATA_DEF_SRC(XDCL, CTXT)							\
+#define _XENUM5_IDENT_DEFL(XDCL, CTXT)								\
 	_XENUM5_DOC(The symbols should never become visible outside this source unit.)		\
 	namespace {										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
 		_XENUM5_DOC(Also wrap in named namespace to prevent name clashes.)		\
 		namespace _XENUM5_IMPL_LOCAL_NS(XDCL,) {					_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
-			_XENUM5_IDENT_VALUES_DEF(, CTXT)					\
-			_XENUM5_IDENT_VALUENAMES_DECL(CTXT)					\
-			_XENUM5_IDENT_OFFSETS_DEF(, CTXT)					\
-			_XENUM5_DOC(Alias the native enum into this scope.)			\
-			using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;	_XENUM5_NWLN \
-			_XENUM5_DOC(Alias the Index type into this scope.)			\
-			using Index = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_index_t;	_XENUM5_NWLN \
-			_XENUM5_IDENT_GETOFFSET_DEF()						\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Local:Ident:common: _XENUM5_XDCL_PLACE_COMMON(XDCL))		\
+			BOOST_PP_CAT(_XENUM5_IDENT_COMMON_DEFL_, _XENUM5_XDCL_PLACE_COMMON(XDCL))	\
+				(XDCL, CTXT)							\
+/* Nothing to do, everything needed is in common.						\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Local:Ident:get: _XENUM5_XDCL_PLACE_GET(XDCL))			\
+			BOOST_PP_CAT(_XENUM5_IDENT_GETTERS_DEFL_, _XENUM5_XDCL_PLACE_GET(XDCL))	\
+				(XDCL, CTXT)							\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Local:Ident:from: _XENUM5_XDCL_PLACE_FROM(XDCL))		\
+			BOOST_PP_CAT(_XENUM5_IDENT_FROMVALUE_DEFL_, _XENUM5_XDCL_PLACE_FROM(XDCL))	\
+				(XDCL, CTXT)							\
+*/\
 			_XENUM5_INDENT_DEC							\
 		} _XENUM5_CMNT(namespace _XENUM5_IMPL_LOCAL_NS(XDCL,))				\
 		_XENUM5_INDENT_DEC								\
 	} _XENUM5_CMNT(Anon namespace)								\
 
+
+// ========================== DEFL common stuff ==============================
 /**
- * Define the data, without content since that is in the header.
+ * No common stuff to define at all.
  */
-#define _XENUM5_IDENT_DATA_DEF_HDR(XDCL, CTXT)							\
-	_XENUM5_IDENT_DATA_DEF_HDR_I1(_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL))	\
-
-/// Worker for _XENUM5_IDENT_DATA_DEF_HDR().
-#define _XENUM5_IDENT_DATA_DEF_HDR_I1(SCOPE_SNAME)						\
-	constexpr const SCOPE_SNAME::IdentValue SCOPE_SNAME::identValues[];			_XENUM5_NWLN \
-	constexpr const SCOPE_SNAME::IdentIndex SCOPE_SNAME::identOffsets[];			_XENUM5_NWLN \
-
-
-// ============================ Define getter ================================
-/**
- * Omit getIdentifier(), turned off.
- */
-#define _XENUM5_IDENT_GETVALUE_DEF_off(XDCL)							\
-
+#define _XENUM5_IDENT_COMMON_DEFL_OFF(XDCL, CTXT)						\
 
 /**
- * Define getIdentifier(), declared in header file.
+ * Common stuff defined in header is defined in store class; nothing to add in local ns.
  */
-#define _XENUM5_IDENT_GETVALUE_DEF_ext(XDCL)							\
+#define _XENUM5_IDENT_COMMON_DEFL_HDR(XDCL, CTXT)						\
+
+/**
+ * Common stuff omitted from store class is defined here in local ns.
+ */
+#define _XENUM5_IDENT_COMMON_DEFL_SRC(XDCL, CTXT)						\
+	_XENUM5_IDENT_VALUES_DEF(, CTXT)							\
+	_XENUM5_IDENT_VALUENAMES_DECL(CTXT)							\
+	_XENUM5_IDENT_OFFSETS_DEF(, CTXT)							\
+	_XENUM5_DOC(Alias the native enum into this scope.)					\
+	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
+	_XENUM5_DOC(Alias the Index type into this scope.)					\
+	using Index = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_index_t;		_XENUM5_NWLN \
+	_XENUM5_IDENT_GETOFFSET_DEF()								\
+
+
+// ========================= Define store members ============================
+/**
+ * Entry function for definitions of store members.
+ */
+#define _XENUM5_IDENT_DEFS(XDCL, CTXT)								\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:common: _XENUM5_XDCL_PLACE_COMMON(XDCL))		\
+	BOOST_PP_CAT(_XENUM5_IDENT_COMMON_DEFS_, _XENUM5_XDCL_PLACE_COMMON(XDCL))		\
+		(XDCL, CTXT)									\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:get: _XENUM5_XDCL_PLACE_GET(XDCL))			\
+	BOOST_PP_CAT(_XENUM5_IDENT_GETTERS_DEFS_, _XENUM5_XDCL_PLACE_GET(XDCL))			\
+		(XDCL, CTXT)									\
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_PLACE_FROM(XDCL))		\
+	BOOST_PP_CAT(_XENUM5_IDENT_FROMVALUE_DEFS_, _XENUM5_XDCL_PLACE_FROM(XDCL))		\
+		(XDCL, CTXT)									\
+
+
+// ========================== DEFS common stuff ==============================
+/**
+ * No common stuff to define at all.
+ */
+#define _XENUM5_IDENT_COMMON_DEFS_OFF(XDCL, CTXT)						\
+
+/**
+ * Common stuff is defined inline in store class, but must also exist here in source file,
+ * without content.
+ */
+#define _XENUM5_IDENT_COMMON_DEFS_HDR(XDCL, CTXT)						\
+	_XENUM5_IDENT_COMMON_DEFS_HDR_I1(_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL))	\
+
+/**
+ * Helper for  _XENUM5_IDENT_COMMON_DEFS_HDR().
+ */
+#define _XENUM5_IDENT_COMMON_DEFS_HDR_I1(SSCOPE)						\
+	constexpr const SSCOPE::IdentValue SSCOPE::identValues[];				_XENUM5_NWLN \
+	constexpr const SSCOPE::IdentIndex SSCOPE::identOffsets[];				_XENUM5_NWLN \
+
+/**
+ * Common stuff omitted from store class is defined in local ns above.
+ */
+#define _XENUM5_IDENT_COMMON_DEFS_SRC(XDCL, CTXT)						\
+
+
+// ============================= DEFS getters ================================
+/**
+ * No getters stuff to define at all.
+ */
+#define _XENUM5_IDENT_GETTERS_DEFS_OFF(XDCL, CTXT)						\
+
+/**
+ * Define store members declared inline in header (only the data): None, all is in common.
+ */
+#define _XENUM5_IDENT_GETTERS_DEFS_HDR(XDCL, CTXT)						\
+
+/**
+ * Define store members declared inline in header.
+ */
+#define _XENUM5_IDENT_GETTERS_DEFS_SRC(XDCL, CTXT)						\
 	_XENUM5_IDENT_GETIDENT_DEF(								\
 		,										\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		_XENUM5_IDENT_DATA_SCOPE(XDCL)							\
 	)											\
 
-/**
- * Omit getIdentifier(), defined inline constexpr in header.
- */
-#define _XENUM5_IDENT_GETVALUE_DEF_cxp(XDCL)							\
-
 
 /**
  * Helper to get the correct data scope.
  */
+// FIXME: Get rid of this, just import the local ns inside getIdentifier().
 #define _XENUM5_IDENT_DATA_SCOPE(XDCL)								\
 	BOOST_PP_CAT(_XENUM5_IDENT_DATA_SCOPE_, _XENUM5_XDCL_IDENT_DATA(XDCL)) (XDCL)		\
 
@@ -345,97 +419,62 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 /**
  * Omit fromIdentifier(), turned off.
  */
-#define _XENUM5_IDENT_FROMVALUE_DEF_off(XDCL, CTXT)						\
+#define _XENUM5_IDENT_FROMVALUE_DEFS_OFF(XDCL, CTXT)						\
 
 /**
- * Define fromIdentifier(), declared in header file.
+ * Omit fromIdentifier(), defined inline/constexpr in header.
  */
-#define _XENUM5_IDENT_FROMVALUE_DEF_ext(XDCL, CTXT)						\
+#define _XENUM5_IDENT_FROMVALUE_DEFS_HDR(XDCL, CTXT)						\
+
+/**
+ * Define fromIdentifier(), declared ext in header file.
+ */
+#define _XENUM5_IDENT_FROMVALUE_DEFS_SRC(XDCL, CTXT)						\
 	_XENUM5_IDENT_FROMVALUE_STD_DEF(							\
 		,										\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		_XENUM5_IDENT_DATA_SCOPE(XDCL)							\
 	)											\
 
+
+// ======================= Define _check() contents ==========================
 /**
- * Omit fromIdentifier(), defined inline in header.
+ * Final checks on common data structures.
  */
-#define _XENUM5_IDENT_FROMVALUE_DEF_inl(XDCL, CTXT)						\
-
-/**
- * Omit fromIdentifier(), defined inline constexpr in header.
- */
-#define _XENUM5_IDENT_FROMVALUE_DEF_cxp(XDCL, CTXT)						\
-
-
-// ============================ DEFS _check() ================================
-/**
- * Final checks on ident data structures: None since they do not exist.
- */
-#define _XENUM5_IDENT_CHECK_OFF(XDCL)								\
-
-/**
- * Define final checks on ident data structures, defined in source.
- */
-#define _XENUM5_IDENT_CHECK_SRC(XDCL)								\
-	_XENUM5_IDENT_CHECK_I1(									\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, )::,						\
-		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::				\
-	)											\
-
-/**
- * Define final checks on ident data structures, defined in header.
- */
-#define _XENUM5_IDENT_CHECK_HDR(XDCL)								\
-	_XENUM5_IDENT_CHECK_I1(,)								\
-
-
-/**
- * Common worker to define the ident data structures checks.
- */
-#define _XENUM5_IDENT_CHECK_I1(LSCOPE, SSCOPE)							\
+#define _XENUM5_IDENT_COMMON_CHECK_0(XDCL)							\
 	static_assert(										\
 		/* +1: Compiler adds an extra null terminator in Values array */		\
-		sizeof(LSCOPE identValues) == sizeof(LSCOPE IdentValueNames) + 1,		\
+		sizeof(identValues) == sizeof(IdentValueNames) + 1,				\
 		"BUG: Struct/array size mismatch (IdentValueNames / identValues)."		\
 	);											_XENUM5_NWLN \
 	static_assert(										\
-		sizeof(LSCOPE identOffsets) == SSCOPE size * sizeof(LSCOPE IdentIndex),		\
+		sizeof(identOffsets) == size * sizeof(IdentIndex),				\
 		"BUG: Struct size mismatch (identOffsets / ::size)."				\
 	);											_XENUM5_NWLN \
 
-
-// =========================== DEFS _dbginfo() ===============================
 /**
- * Debug info: None since there is no data.
+ * Final checks on common data structures: None since they do not exist.
  */
-#define _XENUM5_IDENT_DBGINFO_OFF(XDCL)								\
+#define _XENUM5_IDENT_COMMON_CHECK_1(XDCL)							\
 
+
+// ====================== Define _dbginfo() contents =========================
 /**
- * Debug info for ident data structures, defined in source.
+ * Define debug info for common data structures.
  */
-#define _XENUM5_IDENT_DBGINFO_SRC(XDCL)								\
-	_XENUM5_IDENT_DBGINFO_I1(								\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, )::,						\
-		XDCL										\
-	)											\
-
-/**
- * Debug info for ident data structures, defined in source.
- */
-#define _XENUM5_IDENT_DBGINFO_HDR(XDCL)								\
-	_XENUM5_IDENT_DBGINFO_I1(, XDCL)							\
-
-
-/**
- * Common worker to define debug info for ident data structures.
- */
-#define _XENUM5_IDENT_DBGINFO_I1(DATA_SCOPE, XDCL)						\
+#define _XENUM5_IDENT_COMMON_DBGINFO_0(XDCL)							\
+	std::cout<<"\tIdent:"<<std::endl;							_XENUM5_NWLN \
 	std::cout										\
-		<<"\tident ("<<BOOST_PP_STRINGIZE(_XENUM5_XDCL_IDENT_DATA(XDCL))<<"):"<<std::endl	\
-		<<"\t\tsizeof(identValues) = "<<sizeof(DATA_SCOPE identValues)<<std::endl	\
-		<<"\t\tsizeof(IdentValueNames) = "<<sizeof(DATA_SCOPE IdentValueNames )<<std::endl	\
-		;										_XENUM5_NWLN \
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_XDCL_PLACE_COMMON(XDCL))<<": "		\
+		<<"sizeof(identValues) = "<<sizeof(identValues)<<std::endl;			_XENUM5_NWLN \
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_XDCL_PLACE_COMMON(XDCL))<<": "		\
+		<<"sizeof(IdentValueNames) = "<<sizeof(IdentValueNames)<<std::endl;		_XENUM5_NWLN \
+
+/**
+ * Define debug info for common data structures: None since they are OFF.
+ */
+#define _XENUM5_IDENT_COMMON_DBGINFO_1(XDCL)							\
 
 
 // ====================================== COMMON PARTS ==========================================
@@ -520,9 +559,9 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:dbginfo: _XENUM5_XDCL_IDENT_DATA(XDC
 /**
  * Define getIdentifier(), either inline in header, or as definition in source file.
  */
-#define _XENUM5_IDENT_GETIDENT_DEF(DECLPFX, STORE_SCOPE, DATA_SCOPE)				\
+#define _XENUM5_IDENT_GETIDENT_DEF(DECLPFX, SSCOPED, DATA_SCOPE)				\
 	_XENUM5_DOC(@return Identifier (name) of an enum value.)				\
-	DECLPFX const char* STORE_SCOPE getIdentifier(STORE_SCOPE Enum value) noexcept		_XENUM5_NWLN \
+	DECLPFX const char* SSCOPED getIdentifier(SSCOPED Enum value) noexcept			_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return &DATA_SCOPE identValues[DATA_SCOPE getIdentOffset(value)];		_XENUM5_NWLN \

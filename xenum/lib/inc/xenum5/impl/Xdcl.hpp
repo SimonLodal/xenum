@@ -109,6 +109,15 @@
 							)					\
 						)						\
 
+/**
+ * Get placement of common stuff, as int: 0=OFF, 1=HDR, 2=SRC.
+ */
+#define _XENUM5_XDCL_PLACE_INT_COMMON(XDCL)	BOOST_PP_CAT(					\
+							_XENUM5_XLATE_PLACE_INT_,		\
+							_XENUM5_XDCL_PLACE_COMMON(XDCL)		\
+						)						\
+
+
 // FIXME: Delete once all callers have been converted.
 #define _XENUM5_XDCL_IDENT_DATA			_XENUM5_XDCL_PLACE_COMMON
 
