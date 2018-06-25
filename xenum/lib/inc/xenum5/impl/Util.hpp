@@ -235,6 +235,52 @@ namespace xenum5 {
 
 
 // ==============================================================================================
+/// @name IMPL to INT translation
+/// Helpers for IMPL_INT functions; translate implementation option to int.
+/// @{
+#define _XENUM5_XLATE_IMPL_INT_off		0
+#define _XENUM5_XLATE_IMPL_INT_ext		1
+#define _XENUM5_XLATE_IMPL_INT_inl		2
+#define _XENUM5_XLATE_IMPL_INT_cxp		3
+/// @}
+
+/// @name IMPL to PLACE translation
+/// Helpers for PLACE functions; translate implementation option to placement.
+/// @{
+#define _XENUM5_XLATE_IMPL_PLACE_off		OFF
+#define _XENUM5_XLATE_IMPL_PLACE_ext		SRC
+#define _XENUM5_XLATE_IMPL_PLACE_inl		HDR
+#define _XENUM5_XLATE_IMPL_PLACE_cxp		HDR
+/// @}
+
+/// @name PLACE to INT translation
+/// Helpers for PLACE_INT functions; translate placement string to int.
+/// @{
+#define _XENUM5_XLATE_PLACE_INT_OFF		0
+#define _XENUM5_XLATE_PLACE_INT_HDR		1
+#define _XENUM5_XLATE_PLACE_INT_SRC		2
+/// @}
+
+/// @name IMPL to PLACE translation, for common parts
+/// Helpers for PLACE_COMMON functions; translate concatenation of "get" and
+/// "from" implementation options to a placement for their common parts.
+/// @{
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_offoff	OFF
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_offext	SRC
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_offinl	HDR
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_offcxp	HDR
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_extoff	SRC
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_extext	SRC
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_extinl	HDR
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_extcxp	HDR
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_cxpoff	HDR
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_cxpext	HDR
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_cxpinl	HDR
+#define _XENUM5_XLATE_COMMON_IMPL_PLACE_cxpcxp	HDR
+/// @}
+
+
+// ==============================================================================================
 /**
  * Common helper to check the "get" feature option, which must be off, ext, cxp, or empty.
  * @return Nothing if valid, else error message.

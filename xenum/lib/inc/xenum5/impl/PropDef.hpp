@@ -51,7 +51,7 @@
 #define _XENUM5_PDEF_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
 
 /**
- * Get the implementation option for the getters; off|ext|cxp.
+ * Get the option for implementation of the getters; off|ext|cxp.
  */
 #define _XENUM5_PDEF_IMPL_GET(PDEF)		BOOST_PP_SEQ_ELEM(0, _XENUM5_PDEF_FEATURES(PDEF))
 
@@ -59,7 +59,7 @@
  * Get the placement of data and functions for the getters; OFF|HDR|SRC.
  */
 #define _XENUM5_PDEF_PLACE_GET(PDEF)		BOOST_PP_CAT(					\
-							_XENUM5_PDEF_PLACE_HELPER_,		\
+							_XENUM5_XLATE_IMPL_PLACE_,		\
 							_XENUM5_PDEF_IMPL_GET(PDEF)		\
 						)						\
 
@@ -67,12 +67,12 @@
  * Get the placement of data and functions for the getters, as int: 0=OFF, 1=HDR, 2=SRC.
  */
 #define _XENUM5_PDEF_PLACE_INT_GET(PDEF)	BOOST_PP_CAT(					\
-							_XENUM5_PDEF_PROP_INT_HELPER_,		\
+							_XENUM5_XLATE_PLACE_INT_,		\
 							_XENUM5_PDEF_PLACE_GET(PDEF)		\
 						)
 
 /**
- * Get the implementation option for the fromValue() lookup; off|ext|inl|cxp.
+ * Get the option for implementation of fromValue() lookup; off|ext|inl|cxp.
  */
 #define _XENUM5_PDEF_IMPL_FROM(PDEF)		BOOST_PP_SEQ_ELEM(1, _XENUM5_PDEF_FEATURES(PDEF))
 
@@ -80,7 +80,7 @@
  * Get the placement of data and functions for fromValue(); OFF|HDR|SRC.
  */
 #define _XENUM5_PDEF_PLACE_FROM(PDEF)		BOOST_PP_CAT(					\
-							_XENUM5_PDEF_PLACE_HELPER_,		\
+							_XENUM5_XLATE_IMPL_PLACE_,		\
 							_XENUM5_PDEF_IMPL_FROM(PDEF)		\
 						)						\
 
@@ -88,7 +88,7 @@
  * Get the placement of data and functions for fromValue(), as int: 0=OFF, 1=HDR, 2=SRC.
  */
 #define _XENUM5_PDEF_PLACE_INT_FROM(PDEF)	BOOST_PP_CAT(					\
-							_XENUM5_PDEF_PROP_INT_HELPER_,		\
+							_XENUM5_XLATE_PLACE_INT_,		\
 							_XENUM5_PDEF_PLACE_FROM(PDEF)		\
 						)
 
@@ -96,7 +96,7 @@
  * Get placement of common custom property data: OFF, SRC or HDR.
  */
 #define _XENUM5_PDEF_PLACE_COMMON(PDEF)		BOOST_PP_CAT(					\
-							_XENUM5_PDEF_PLACE_COMMON_HELPER_,	\
+							_XENUM5_XLATE_COMMON_IMPL_PLACE_,	\
 							BOOST_PP_CAT(				\
 								_XENUM5_PDEF_IMPL_GET(PDEF),	\
 								_XENUM5_PDEF_IMPL_FROM(PDEF)	\
@@ -107,55 +107,9 @@
  * Get placement of common stuff, as int: 0=OFF, 1=HDR, 2=SRC.
  */
 #define _XENUM5_PDEF_PLACE_INT_COMMON(PDEF)	BOOST_PP_CAT(					\
-							_XENUM5_PDEF_PROP_INT_HELPER_,		\
+							_XENUM5_XLATE_PLACE_INT_,		\
 							_XENUM5_PDEF_PLACE_COMMON(PDEF)		\
 						)						\
-
-
-/// Generic helper for translating OFF to 0.
-#define _XENUM5_PDEF_PROP_INT_HELPER_OFF	0
-/// Generic helper for translating HDR to 1.
-#define _XENUM5_PDEF_PROP_INT_HELPER_HDR	1
-/// Generic helper for translating SRC to 2.
-#define _XENUM5_PDEF_PROP_INT_HELPER_SRC	2
-
-
-/// Helper for PLACE functions.
-#define _XENUM5_PDEF_PLACE_HELPER_off		OFF
-/// Helper for PLACE functions.
-#define _XENUM5_PDEF_PLACE_HELPER_ext		SRC
-/// Helper for PLACE functions.
-#define _XENUM5_PDEF_PLACE_HELPER_inl		HDR
-/// Helper for PLACE functions.
-#define _XENUM5_PDEF_PLACE_HELPER_cxp		HDR
-
-
-
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_offoff	OFF
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_offext	SRC
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_offinl	HDR
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_offcxp	HDR
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_extoff	SRC
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_extext	SRC
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_extinl	HDR
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_extcxp	HDR
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_cxpoff	HDR
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_cxpext	HDR
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_cxpinl	HDR
-/// Helper for _XENUM5_PDEF_PLACE_COMMON()
-#define _XENUM5_PDEF_PLACE_COMMON_HELPER_cxpcxp	HDR
-
 
 
 /**
