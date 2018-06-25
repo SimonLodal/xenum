@@ -117,13 +117,6 @@
 							_XENUM5_XDCL_PLACE_COMMON(XDCL)		\
 						)						\
 
-
-// FIXME: Delete once all callers have been converted.
-#define _XENUM5_XDCL_IDENT_DATA			_XENUM5_XDCL_PLACE_COMMON
-
-
-
-
 /**
  * @return 0|1 if the xenum declaration contains any custom properties.
  */

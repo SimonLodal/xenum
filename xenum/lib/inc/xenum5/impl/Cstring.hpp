@@ -824,10 +824,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	) BOOST_PP_IF(BOOST_PP_BOOL(DEPTH), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		BOOST_PP_IF(BOOST_PP_IS_EMPTY(LSCOPE),						\
-			,									\
-			using namespace LSCOPE; _XENUM5_NWLN					\
-		)										\
+		_XENUM5_USE_NS_IF_NONEMPTY(LSCOPE)						\
 		return & BOOST_PP_CAT(PNAME, Values)[						\
 			BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (				\
 				_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(DEPTH), Z)		\

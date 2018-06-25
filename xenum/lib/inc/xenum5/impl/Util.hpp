@@ -37,6 +37,14 @@ namespace xenum5 {
 #define _XENUM5_ECHO(msg) msg
 
 
+/// Emit "using namespace NS" if NS is non-empty.
+#define _XENUM5_USE_NS_IF_NONEMPTY(NS)								\
+	BOOST_PP_IF(BOOST_PP_IS_EMPTY(NS),							\
+		,										\
+		using namespace NS; _XENUM5_NWLN						\
+	)											\
+
+
 // ==============================================================================================
 /// Helper for _XENUM5_EXEC_IF*(): Executes if condition is true. Executes macro with args.
 #define _XENUM5_EXEC_IF_1(MACRO, ...) MACRO(__VA_ARGS__)

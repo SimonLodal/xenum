@@ -706,10 +706,7 @@
 		PNAME,										\
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
-		BOOST_PP_IF(									\
-			BOOST_PP_EQUAL(_XENUM5_PDEF_PLACE_INT_GET(PDEF), 2),			\
-			_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)::,					\
-		),										\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		Z										\
 	)											\
@@ -717,7 +714,7 @@
 /**
  * Define Store::get${pname}Size(), inline/constexpr or ext, defined by parms.
  */
-#define _XENUM5_PROP_GETSIZE_DEFS_N_I1(DECLPFX, PNAME, DEPTH, LEVEL, LSCOPED, SSCOPED, Z)	\
+#define _XENUM5_PROP_GETSIZE_DEFS_N_I1(DECLPFX, PNAME, DEPTH, LEVEL, LSCOPE, SSCOPED, Z)	\
 	_XENUM5_DOC(Get number of								\
 		BOOST_PP_IF(									\
 			BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),				\
@@ -733,11 +730,13 @@
 		)										\
 	) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return LSCOPED BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (			\
+		_XENUM5_INDENT_INC								\
+		_XENUM5_USE_NS_IF_NONEMPTY(LSCOPE)						\
+		return BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (				\
 			_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
 		.size;										_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
 
 
