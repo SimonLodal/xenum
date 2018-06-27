@@ -41,7 +41,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
  * Define common data inline since some inline methods use it.
  */
 #define _XENUM5_PLAIN_COMMON_DECLS_HDR(PNAME, DEPTH, PDEF, CTXT, Z)				\
+	/* Types need to be public so local-ns can use them. */					\
+	_XENUM5_INDENT_SUB public:								_XENUM5_NWLN \
 	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
+	/* Data should still be private. */							\
+	_XENUM5_INDENT_SUB private:								_XENUM5_NWLN \
 	_XENUM5_PLAIN_VALUES_DEF(static, PNAME, CTXT)						\
 
 
@@ -301,19 +305,20 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:get: _XENUM5_PDEF_PLACE_GET(PDEF))		
 #define _XENUM5_PLAIN_COMMON_DEFL_OFF(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 
 /**
- * Common stuff defined in header is defined in store class; nothing to add in local ns.
- * Except for convenience we define the value type, to be used by get/from if they are
- * defined in src (local-ns).
+ * Common stuff defined in header is defined in store class; no data to add in local ns.
+ * However, for get/from implementation in SRC (local-ns), we need to import the public
+ * types from the store header (they are only public because we need to do that).
  */
 #define _XENUM5_PLAIN_COMMON_DEFL_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
+	_XENUM5_PROP_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)					\
 
 /**
  * Common stuff omitted from store class is defined here in local ns.
  */
 #define _XENUM5_PLAIN_COMMON_DEFL_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+	/* Types */										\
+	_XENUM5_PROP_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)					\
 	/* Values */										\
-	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
 	_XENUM5_PLAIN_VALUES_DEF(, PNAME, CTXT)							\
 
 
@@ -355,8 +360,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:get: _XENUM5_PDEF_PLACE_GET(PDEF))		
 	_XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_PLAIN_NODES_DEF(, PNAME, CTXT)							\
 	/* Funcs */										\
-	_XENUM5_DOC(Alias the native enum into this scope.)					\
-	using Enum = _XENUM5_XDCL_DSCOPE(_XENUM5_CTXT_XDCL(CTXT))_XENUM5_CNTNR_NAME(_XENUM5_CTXT_XDCL(CTXT))::_enum;	_XENUM5_NWLN \
 	_XENUM5_PROP_GETNODE_DEF(DEPTH, CTXT, Z)						\
 
 

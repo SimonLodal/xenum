@@ -45,7 +45,11 @@
 	class _XENUM5_CNTNR_NAME(XDCL);								_XENUM5_NWLN \
 	_XENUM5_DOC(Internal/private class for xenum _XENUM5_XDCL_CNAME(XDCL).			_XENUM5_NWLN \
 		Contains data and accessors for the enum.					_XENUM5_NWLN \
-		Only accessed by friends (value and container classes).)			\
+		ONLY to be accessed by friends (value and container classes) and local		_XENUM5_NWLN \
+		implementation namespaces.							_XENUM5_NWLN \
+		Warning: Some members are public, but this is an unfortunate necessity.		_XENUM5_NWLN \
+		They are still considered internal, and may change without notice.		_XENUM5_NWLN \
+		Do not use them.)								\
 	class _XENUM5_STORE_NAME(XDCL) {							_XENUM5_NWLN \
 	private:										_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
@@ -85,10 +89,14 @@
 		::_XENUM5_NS::SelectInt<size>::type,						\
 		_XENUM5_XDCL_INTTYPE(XDCL)							\
 	);											_XENUM5_NWLN \
+	/* Types need to be public so local-ns can use them. */					\
+	_XENUM5_INDENT_SUB public:								_XENUM5_NWLN \
 	_XENUM5_DOC(The native enum class.)							\
 	enum class Enum : Index {								_XENUM5_NWLN \
 		_XENUM5_CALL_VALS(_XENUM5_DECLS_ENUM_MEMBER, CTXT)				\
 	};											_XENUM5_NWLN \
+	/* Data should still be private. */							\
+	_XENUM5_INDENT_SUB private:								_XENUM5_NWLN \
 
 /**
  * Callback worker for _XENUM5_DECLARE_CNTNR_ENUM().

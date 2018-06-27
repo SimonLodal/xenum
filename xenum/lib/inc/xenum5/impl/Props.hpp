@@ -450,6 +450,33 @@
 	_XENUM5_DOC(Native type of custom property PNAME values.)				\
 	using BOOST_PP_CAT(PNAME, Value) = _XENUM5_PDEF_REAL_TYPE(PDEF);			_XENUM5_NWLN \
 
+/**
+ * Alias the data type for a custom property.
+ */
+#define _XENUM5_PROP_VALUETYPE_DEFL(PNAME, SSCOPED)						\
+	_XENUM5_DOC(Alias native type of custom property PNAME values.)				\
+	using BOOST_PP_CAT(PNAME, Value) = typename SSCOPED BOOST_PP_CAT(PNAME, Value);		_XENUM5_NWLN \
+
+/**
+ * Declare the data type for a custom property, using one of the above functions, based
+ * on existence of PDEF parameter.
+ */
+#define _XENUM5_PROP_VALUETYPE_AUTO(PNAME, PDEF, SSCOPED)					\
+	BOOST_PP_CAT(_XENUM5_PROP_VALUETYPE_AUTO_, BOOST_PP_IS_EMPTY(PDEF))			\
+		(PNAME, PDEF, SSCOPED)								\
+
+/**
+ * Helper for _XENUM5_PROP_VALUETYPE_AUTO().
+ */
+#define _XENUM5_PROP_VALUETYPE_AUTO_0(PNAME, PDEF, SSCOPED)					\
+	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
+
+/**
+ * Helper for _XENUM5_PROP_VALUETYPE_AUTO().
+ */
+#define _XENUM5_PROP_VALUETYPE_AUTO_1(PNAME, PDEF, SSCOPED)					\
+	_XENUM5_PROP_VALUETYPE_DEFL(PNAME, SSCOPED)						\
+
 
 // ========================== Index type (real) ==============================
 /**
@@ -543,6 +570,17 @@
 		_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS)						\
 	);											_XENUM5_NWLN
 
+
+// ============================= Local::TYPES ================================
+/**
+ * In local-ns context, import the public types from the store class.
+ */
+#define _XENUM5_PROP_TYPES_DEFL(PNAME, PDEF, SSCOPED)						\
+	_XENUM5_DOC(Alias the native enum into this scope.)					\
+	using Enum = typename SSCOPED Enum;							_XENUM5_NWLN \
+	_XENUM5_PROP_VALUETYPE_AUTO(PNAME, PDEF, SSCOPED)					\
+
+// FIXME: Vindex, ValueNames
 
 // ============================= Value::TYPES ================================
 /**
