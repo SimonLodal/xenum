@@ -478,6 +478,15 @@
 	_XENUM5_PROP_VALUETYPE_DEFL(PNAME, SSCOPED)						\
 
 
+// =========================== ValueNames type ===============================
+/**
+ * Alias the ValueNames struct type for a custom property.
+ */
+#define _XENUM5_PROP_VALUENAMES_DEFL(PNAME, SSCOPED)						\
+	_XENUM5_DOC(Alias ValueNames struct for custom property PNAME.)				\
+	using BOOST_PP_CAT(PNAME, ValueNames) = typename SSCOPED BOOST_PP_CAT(PNAME, ValueNames);	_XENUM5_NWLN \
+
+
 // ======================== Prop-values index-type ===========================
 /**
  * Declare the data type to index and count the values of a custom property.

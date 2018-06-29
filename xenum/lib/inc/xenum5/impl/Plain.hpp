@@ -44,6 +44,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 	/* Types need to be public so local-ns can use them. */					\
 	_XENUM5_INDENT_SUB public:								_XENUM5_NWLN \
 	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
+	_XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
 	/* Data should still be private. */							\
 	_XENUM5_INDENT_SUB private:								_XENUM5_NWLN \
 	_XENUM5_PLAIN_VALUES_DEF(static, PNAME, CTXT)						\
@@ -77,7 +78,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 	_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)						\
 	_XENUM5_PROP_NODETYPE_DECL(PNAME)							\
 	_XENUM5_PLAIN_NODENAMES_DECL(PNAME, CTXT)						\
-	_XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_PLAIN_NODES_DEF(static, PNAME, CTXT)						\
 	_XENUM5_PROP_GETNODE_DEF(								\
 		DEPTH,										\
@@ -318,6 +318,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  */
 #define _XENUM5_PLAIN_COMMON_DEFL_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	_XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)				\
+	_XENUM5_PROP_VALUENAMES_DEFL(PNAME, DSCOPE SNAME::)					\
 	_XENUM5_PROP_VINDEX_DEFL(PNAME, DSCOPE SNAME::)						\
 
 /**
@@ -326,6 +327,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 #define _XENUM5_PLAIN_COMMON_DEFL_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* Types */										\
 	_XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)				\
+	_XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
 	/* Values */										\
 	_XENUM5_PLAIN_VALUES_DEF(, PNAME, CTXT)							\
 	/* More types */									\
@@ -367,7 +369,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	_XENUM5_PROP_INDEXTYPE_DEFL(PNAME, PDEF)						\
 	_XENUM5_PROP_NODETYPE_DECL(PNAME)							\
 	_XENUM5_PLAIN_NODENAMES_DECL(PNAME, CTXT)						\
-	_XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
 	_XENUM5_PLAIN_NODES_DEF(, PNAME, CTXT)							\
 	/* Funcs */										\
 	_XENUM5_PROP_GETNODE_DEF(DEPTH, CTXT, Z)						\
@@ -720,6 +721,29 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	)
 
 
+// ============================== ValueNames =================================
+/**
+ * Declare the ${pname}ValueNames struct.
+ */
+#define _XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
+	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PNAME, Values) array,	\
+		has same layout.)								\
+	_XENUM5_DOC(@{)										\
+	using BOOST_PP_CAT(PNAME, ValueNames) = struct {					_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_VALUENAME_DECL, CTXT)			\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN \
+	_XENUM5_DOC(@})										\
+
+/**
+ * Declare a single field of the ValueNames struct.
+ */
+#define _XENUM5_PLAIN_VALUENAME_DECL(ITERPOS, NODE, CTXT)					\
+	BOOST_PP_CAT(_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)), Value)				\
+	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS));		_XENUM5_NWLN \
+
+
 // ================================ Values ===================================
 /**
  * Define the values array.
@@ -775,27 +799,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_PLAIN_ITER_NODES(_XENUM5_PROP_NODENAME_DECL, CTXT)			\
 		_XENUM5_INDENT_DEC								\
 	};											_XENUM5_NWLN \
-
-
-// ============================== ValueNames =================================
-/**
- * Declare the ${pname}ValueNames struct.
- */
-#define _XENUM5_PLAIN_VALUENAMES_DECL(PNAME, CTXT)						\
-	_XENUM5_DOC(Used for calculating offsets into BOOST_PP_CAT(PNAME, Values) array,	\
-		has same layout.)								\
-	using BOOST_PP_CAT(PNAME, ValueNames) = struct {					_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_VALUENAME_DECL, CTXT)			\
-		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN \
-
-/**
- * Declare a single field of the ValueNames struct.
- */
-#define _XENUM5_PLAIN_VALUENAME_DECL(ITERPOS, NODE, CTXT)					\
-	BOOST_PP_CAT(_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)), Value)				\
-	_XENUM5_PROP_GEN_NODE_NAME(CTXT, _XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS));		_XENUM5_NWLN \
 
 
 // ================================ Nodes ====================================

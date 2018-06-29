@@ -39,8 +39,9 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IMPL_FROM(XDCL))			\
  * Define common data inline since some inline methods use it.
  */
 #define _XENUM5_IDENT_COMMON_DECLS_HDR(XDCL, CTXT)						\
-	_XENUM5_IDENT_VALUES_DEF(static, CTXT)							\
+	_XENUM5_IDENT_VALUETYPE_DECL()								\
 	_XENUM5_IDENT_VALUENAMES_DECL(CTXT)							\
+	_XENUM5_IDENT_VALUES_DEF(static, CTXT)							\
 	_XENUM5_IDENT_OFFSETS_DEF(static, CTXT)							\
 	_XENUM5_IDENT_GETOFFSET_DEF(static)							\
 
@@ -315,8 +316,9 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:Ident:from: _XENUM5_XDCL_PLACE_FROM(XDCL))
  * Common stuff omitted from store class is defined here in local ns.
  */
 #define _XENUM5_IDENT_COMMON_DEFL_SRC(XDCL, CTXT)						\
-	_XENUM5_IDENT_VALUES_DEF(, CTXT)							\
+	_XENUM5_IDENT_VALUETYPE_DECL()								\
 	_XENUM5_IDENT_VALUENAMES_DECL(CTXT)							\
+	_XENUM5_IDENT_VALUES_DEF(, CTXT)							\
 	_XENUM5_IDENT_OFFSETS_DEF(, CTXT)							\
 	_XENUM5_DOC(Alias the native enum into this scope.)					\
 	using Enum = _XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_CNTNR_NAME(XDCL)::_enum;			_XENUM5_NWLN \
@@ -455,25 +457,11 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_PLACE_FROM(XDCL))
 
 // ================================ Values ===================================
 /**
- * Define the identValues array.
+ * Declare the data type for an identifier.
  */
-#define _XENUM5_IDENT_VALUES_DEF(DECLPFX, CTXT)							\
+#define _XENUM5_IDENT_VALUETYPE_DECL()								\
 	_XENUM5_DOC(Native type for identifier strings.)					\
 	using IdentValue = char;								_XENUM5_NWLN \
-	_XENUM5_DOC(Array of all identifier strings.)						\
-	DECLPFX constexpr const IdentValue identValues[] =					\
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-		_XENUM5_CALL_VALS(_XENUM5_IDENT_VALUE_DEF, CTXT)				\
-		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN
-
-/**
- * Loop worker for _XENUM5_IDENT_VALUES_DEF().
- * Define a single identifier value.
- */
-#define _XENUM5_IDENT_VALUE_DEF(CTXT, IDENT, ...)						\
-	#IDENT "\0"										_XENUM5_NWLN
 
 
 // ============================== ValueNames =================================
@@ -493,6 +481,27 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_PLACE_FROM(XDCL))
  */
 #define _XENUM5_IDENT_VALUENAME_DECL(CTXT, IDENT, ...)						\
 	IdentValue IDENT[sizeof(#IDENT)];							_XENUM5_NWLN
+
+
+// ================================ Values ===================================
+/**
+ * Define the identValues array.
+ */
+#define _XENUM5_IDENT_VALUES_DEF(DECLPFX, CTXT)							\
+	_XENUM5_DOC(Array of all identifier strings.)						\
+	DECLPFX constexpr const IdentValue identValues[] =					\
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_CALL_VALS(_XENUM5_IDENT_VALUE_DEF, CTXT)				\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN
+
+/**
+ * Loop worker for _XENUM5_IDENT_VALUES_DEF().
+ * Define a single identifier value.
+ */
+#define _XENUM5_IDENT_VALUE_DEF(CTXT, IDENT, ...)						\
+	#IDENT "\0"										_XENUM5_NWLN
 
 
 // =============================== Offsets ===================================
