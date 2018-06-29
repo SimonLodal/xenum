@@ -609,11 +609,24 @@
 	);											_XENUM5_NWLN
 
 
+// ============================ PropOwner type ===============================
+/**
+ * Define the ${PNAME}PropOwner type.
+ */
+#define _XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
+	_XENUM5_DOC(PropOwner type for PNAME, to map each PNAME value to the enum-value		\
+		it belongs to.)									\
+	using BOOST_PP_CAT(PNAME, PropOwner) =							\
+	::_XENUM5_NS::PropOwner<Index,BOOST_PP_CAT(PNAME, Vindex)>;				_XENUM5_NWLN \
+
+
 // ============================= Local::TYPES ================================
 /**
  * In local-ns context, import the public types from the store class.
  */
 #define _XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, SSCOPED)					\
+	_XENUM5_DOC(Alias enum index-type into this scope.)					\
+	using Index = typename SSCOPED Index;							_XENUM5_NWLN \
 	_XENUM5_DOC(Alias the native enum into this scope.)					\
 	using Enum = typename SSCOPED Enum;							_XENUM5_NWLN \
 	_XENUM5_PROP_VALUETYPE_AUTO(PNAME, PDEF, SSCOPED)					\

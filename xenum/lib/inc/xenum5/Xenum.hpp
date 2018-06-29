@@ -43,6 +43,7 @@
 #include <xenum5/impl/PropDef.hpp>
 #include <xenum5/impl/Ctxt.hpp>
 #include <xenum5/impl/IndexNode.hpp>
+#include <xenum5/impl/PropOwner.hpp>
 #include <xenum5/impl/Ident.hpp>
 #include <xenum5/impl/Props.hpp>
 #include <xenum5/impl/Plain.hpp>

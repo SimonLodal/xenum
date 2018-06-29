@@ -107,6 +107,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
  * Define from${pname}() as inline, non-constexpr.
  */
 #define _XENUM5_CSTRING_FROMVALUE_DECLS_inl(PNAME, DEPTH, PDEF, CTXT, Z)			\
+	_XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
 	_XENUM5_PROP_FROMVALUE_STD_DEFS(							\
 		static,										\
 		PNAME, DEPTH, PDEF, , , Z							\
@@ -304,7 +305,9 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:common: _XENUM5_PDEF_PLACE_COMMON(PD
 _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:get: _XENUM5_PDEF_PLACE_GET(PDEF))			\
 			BOOST_PP_CAT(_XENUM5_CSTRING_GETTERS_DEFL_, _XENUM5_PDEF_PLACE_GET(PDEF))	\
 				(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
-/* FIXME: FROMVALUE_DEFL_* */ \
+_XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))		\
+			BOOST_PP_CAT(_XENUM5_CSTRING_FROMVALUE_DEFL_, _XENUM5_PDEF_PLACE_FROM(PDEF))	\
+				(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)		\
 			_XENUM5_INDENT_DEC							\
 		} _XENUM5_CMNT(namespace LSCOPE)						\
 		_XENUM5_INDENT_DEC								\
@@ -365,6 +368,26 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:get: _XENUM5_PDEF_PLACE_GET(PDEF))		
 	/* Funcs */										\
 	/* INC() because Nodes also has indexnodes for the leaf stringvalues */			\
 	_XENUM5_PROP_GETNODE_DEF(BOOST_PP_INC(DEPTH), CTXT, Z)					\
+
+
+// ============================= DEFL lookup =================================
+/**
+ * No lookup stuff to define at all.
+ */
+#define _XENUM5_CSTRING_FROMVALUE_DEFL_OFF(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+
+/**
+ * Lookup stuff defined in header is defined in store class; nothing to add in local ns.
+ */
+#define _XENUM5_CSTRING_FROMVALUE_DEFL_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+
+/**
+ * Lookup stuff omitted from store class is defined here in local ns.
+ */
+#define _XENUM5_CSTRING_FROMVALUE_DEFL_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
+	_XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
+
+// FIXME: Define propOwners array
 
 
 // ========================= Define store members ============================
