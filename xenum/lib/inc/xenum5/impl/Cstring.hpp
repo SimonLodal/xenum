@@ -47,6 +47,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 	/* Data should still be private. */							\
 	_XENUM5_INDENT_SUB private:								_XENUM5_NWLN \
 	_XENUM5_CSTRING_VALUES_DEF(static, PNAME, CTXT)						\
+	/* Type that depends on definition of data. */						\
+	_XENUM5_INDENT_SUB public:								_XENUM5_NWLN \
+	_XENUM5_PROP_VINDEX_DECL(PNAME)								\
+	_XENUM5_INDENT_SUB private:								_XENUM5_NWLN \
 
 
 // ========================== DECLS prop getters =============================
@@ -319,16 +323,19 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:get: _XENUM5_PDEF_PLACE_GET(PDEF))		
  * types from the store header (they are only public because we need to do that).
  */
 #define _XENUM5_CSTRING_COMMON_DEFL_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-	_XENUM5_PROP_TYPES_DEFL(PNAME, , DSCOPE SNAME::)					\
+	_XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, , DSCOPE SNAME::)					\
+	_XENUM5_PROP_VINDEX_DEFL(PNAME, DSCOPE SNAME::)						\
 
 /**
  * Common stuff omitted from store class is defined here in local ns.
  */
 #define _XENUM5_CSTRING_COMMON_DEFL_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* Types */										\
-	_XENUM5_PROP_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)					\
+	_XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)				\
 	/* Values */										\
 	_XENUM5_CSTRING_VALUES_DEF(, PNAME, CTXT)						\
+	/* More types */									\
+	_XENUM5_PROP_VINDEX_AUTO(PNAME, PDEF, DSCOPE SNAME::)					\
 
 
 // ============================= DEFL getters ================================
@@ -441,7 +448,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Define store members declared inline in header (only the data).
  */
 #define _XENUM5_CSTRING_FROMVALUE_DEFS_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-/* FIXME: Lookup data */
+/* FIXME: Lookup data declared in header. */
 
 /**
  * Define store members declared inline in header.
@@ -569,7 +576,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	/* First, execute callback only for the enum values (root nodes), so they are */	\
 	/* executed in one block. */								\
 	_XENUM5_CALL_VALS(									\
-		_XENUM5_CSTRING_ITER_NODES_ROOT,							\
+		_XENUM5_CSTRING_ITER_NODES_ROOT,						\
 		_XENUM5_CTXT_SET_CALLBACK(CTXT, CALLBACK)					\
 	)											\
 	/* Secondly, iterate all non-root nodes. */						\
@@ -582,7 +589,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Callback worker for _XENUM5_CSTRING_ITER_NODES(); loop function for each root node
  * (enum-value). Execute the callback only for the root node (no further iteration).
  */
-#define _XENUM5_CSTRING_ITER_NODES_ROOT(CTXT, IDENT, ...)						\
+#define _XENUM5_CSTRING_ITER_NODES_ROOT(CTXT, IDENT, ...)					\
 	_XENUM5_CSTRING_ITER_NODES_ROOT_I1							\
 	(											\
 		_XENUM5_GET_VARARG(_XENUM5_CTXT_PINDEX(CTXT), __VA_ARGS__),			\
@@ -620,7 +627,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Worker for _XENUM5_CSTRING_ITER_NODES_NONROOT().
  * Execute tupletree iteration.
  */
-#define _XENUM5_CSTRING_ITER_NODES_NONROOT_I1(DATA, DEPTH, CTXT)					\
+#define _XENUM5_CSTRING_ITER_NODES_NONROOT_I1(DATA, DEPTH, CTXT)				\
 	_XENUM5_TT_ITERATE_FLAT_GEN(								\
 		DATA,										\
 		DEPTH,										\
@@ -649,13 +656,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_CSTRING_VALUE_DEF, CTXT)			\
 		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN
+	};											_XENUM5_NWLN \
 
 /**
  * Loop worker for _XENUM5_CSTRING_VALUES_DEF().
  */
 #define _XENUM5_CSTRING_VALUE_DEF(ITERPOS, NODE, CTXT)						\
-	_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)) "\0"					_XENUM5_NWLN
+	_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)) "\0"					_XENUM5_NWLN \
 
 
 // ============================== NodesSize ==================================
@@ -835,7 +842,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 			.index									\
 		];										_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
-	}											_XENUM5_NWLN
+	}											_XENUM5_NWLN \
 
 
 #endif // _XENUM5_IMPL_CSTRING_HPP

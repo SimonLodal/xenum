@@ -47,6 +47,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 	/* Data should still be private. */							\
 	_XENUM5_INDENT_SUB private:								_XENUM5_NWLN \
 	_XENUM5_PLAIN_VALUES_DEF(static, PNAME, CTXT)						\
+	/* Type that depends on definition of data. */						\
+	_XENUM5_INDENT_SUB public:								_XENUM5_NWLN \
+	_XENUM5_PROP_VINDEX_DECL(PNAME)								\
+	_XENUM5_INDENT_SUB private:								_XENUM5_NWLN \
 
 
 // ========================== DECLS prop getters =============================
@@ -310,16 +314,19 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:get: _XENUM5_PDEF_PLACE_GET(PDEF))		
  * types from the store header (they are only public because we need to do that).
  */
 #define _XENUM5_PLAIN_COMMON_DEFL_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-	_XENUM5_PROP_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)					\
+	_XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)				\
+	_XENUM5_PROP_VINDEX_DEFL(PNAME, DSCOPE SNAME::)						\
 
 /**
  * Common stuff omitted from store class is defined here in local ns.
  */
 #define _XENUM5_PLAIN_COMMON_DEFL_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	/* Types */										\
-	_XENUM5_PROP_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)					\
+	_XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, DSCOPE SNAME::)				\
 	/* Values */										\
 	_XENUM5_PLAIN_VALUES_DEF(, PNAME, CTXT)							\
+	/* More types */									\
+	_XENUM5_PROP_VINDEX_AUTO(PNAME, PDEF, DSCOPE SNAME::)					\
 
 
 // ============================= DEFL getters ================================
@@ -455,7 +462,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Define store members declared inline in header (only the data).
  */
 #define _XENUM5_PLAIN_FROMVALUE_DEFS_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-/* FIXME: Lookup data */
+/* FIXME: Lookup data declared in header. */
 
 /**
  * Define store members declared inline in header.
@@ -701,13 +708,13 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_PLAIN_VALUE_DEF, CTXT)				\
 		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN
+	};											_XENUM5_NWLN \
 
 /**
  * Loop worker for _XENUM5_PLAIN_VALUES_DEF().
  */
 #define _XENUM5_PLAIN_VALUE_DEF(ITERPOS, NODE, CTXT)						\
-	_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)),					_XENUM5_NWLN
+	_XENUM5_PROP_VALUE(NODE, _XENUM5_CTXT_PDEF(CTXT)),					_XENUM5_NWLN \
 
 
 // ============================== NodesSize ==================================

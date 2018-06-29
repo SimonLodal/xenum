@@ -478,6 +478,44 @@
 	_XENUM5_PROP_VALUETYPE_DEFL(PNAME, SSCOPED)						\
 
 
+// ======================== Prop-values index-type ===========================
+/**
+ * Declare the data type to index and count the values of a custom property.
+ */
+#define _XENUM5_PROP_VINDEX_DECL(PNAME)								\
+	_XENUM5_DOC(Integer type big enough to index and count the values.)			\
+	using BOOST_PP_CAT(PNAME, Vindex) = ::_XENUM5_NS::SelectInt<				\
+		sizeof(BOOST_PP_CAT(PNAME, Values)) / sizeof(BOOST_PP_CAT(PNAME, Value))	\
+	>::type;										_XENUM5_NWLN \
+
+/**
+ * Alias the data type for indexing the values of a custom property.
+ */
+#define _XENUM5_PROP_VINDEX_DEFL(PNAME, SSCOPED)						\
+	_XENUM5_DOC(Alias native type for indexing the values of custom property PNAME.)	\
+	using BOOST_PP_CAT(PNAME, Vindex) = typename SSCOPED BOOST_PP_CAT(PNAME, Vindex);	_XENUM5_NWLN \
+
+/**
+ * Declare the data type for indexing the values of a custom property, using one of the above
+ * functions, based on existence of PDEF parameter.
+ */
+#define _XENUM5_PROP_VINDEX_AUTO(PNAME, PDEF, SSCOPED)						\
+	BOOST_PP_CAT(_XENUM5_PROP_VINDEX_AUTO_, BOOST_PP_IS_EMPTY(PDEF))			\
+		(PNAME, SSCOPED)								\
+
+/**
+ * Helper for _XENUM5_PROP_VINDEX_AUTO().
+ */
+#define _XENUM5_PROP_VINDEX_AUTO_0(PNAME, SSCOPED)						\
+	_XENUM5_PROP_VINDEX_DECL(PNAME)								\
+
+/**
+ * Helper for _XENUM5_PROP_VINDEX_AUTO().
+ */
+#define _XENUM5_PROP_VINDEX_AUTO_1(PNAME, SSCOPED)						\
+	_XENUM5_PROP_VINDEX_DEFL(PNAME, SSCOPED)						\
+
+
 // ========================== Index type (real) ==============================
 /**
  * Define the real ${PNAME}Index type.
@@ -575,12 +613,12 @@
 /**
  * In local-ns context, import the public types from the store class.
  */
-#define _XENUM5_PROP_TYPES_DEFL(PNAME, PDEF, SSCOPED)						\
+#define _XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, SSCOPED)					\
 	_XENUM5_DOC(Alias the native enum into this scope.)					\
 	using Enum = typename SSCOPED Enum;							_XENUM5_NWLN \
 	_XENUM5_PROP_VALUETYPE_AUTO(PNAME, PDEF, SSCOPED)					\
 
-// FIXME: Vindex, ValueNames
+// FIXME: ValueNames
 
 // ============================= Value::TYPES ================================
 /**
