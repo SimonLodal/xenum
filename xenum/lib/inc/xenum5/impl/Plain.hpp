@@ -105,6 +105,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
  */
 #define _XENUM5_PLAIN_FROMVALUE_DECLS_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
+	_XENUM5_PROP_OWNERS_DEF(static, PNAME, CTXT)						\
 	_XENUM5_PROP_FROMVALUE_STD_DEFS(							\
 		static,										\
 		PNAME, DEPTH, PDEF, , , Z							\
@@ -390,8 +391,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  */
 #define _XENUM5_PLAIN_FROMVALUE_DEFL_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
 	_XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
-
-// FIXME: Define propOwners array
+	_XENUM5_PROP_OWNERS_DEF(, PNAME, CTXT)							\
 
 
 // ========================= Define store members ============================
@@ -486,7 +486,10 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Define store members declared inline in header (only the data).
  */
 #define _XENUM5_PLAIN_FROMVALUE_DEFS_HDR(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-/* FIXME: Lookup data declared in header. */
+	constexpr const										\
+		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, PropOwner)					\
+		DSCOPE SNAME :: BOOST_PP_CAT(PNAME, PropOwners)					\
+		[];										_XENUM5_NWLN \
 
 /**
  * Define store members declared ext in header.
@@ -626,7 +629,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Define debug info for fromValue() data structures.
  */
 #define _XENUM5_PLAIN_FROMVALUE_DBGINFO_0(PNAME, PDEF)						\
-/* FIXME: ! */
+	_XENUM5_PROP_FROMVALUE_DBGINFO(PNAME, PDEF)						\
 
 /**
  * Define debug info for fromValue data structures: None since they are OFF.

@@ -618,17 +618,6 @@
 	);											_XENUM5_NWLN
 
 
-// ============================ PropOwner type ===============================
-/**
- * Define the ${PNAME}PropOwner type.
- */
-#define _XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
-	_XENUM5_DOC(PropOwner type for PNAME, to map each PNAME value to the enum-value		\
-		it belongs to.)									\
-	using BOOST_PP_CAT(PNAME, PropOwner) =							\
-	::_XENUM5_NS::PropOwner<Index,BOOST_PP_CAT(PNAME, Vindex)>;				_XENUM5_NWLN \
-
-
 // ============================= Local::TYPES ================================
 /**
  * In local-ns context, import the public types from the store class.
@@ -922,6 +911,78 @@
 	}											_XENUM5_NWLN \
 
 
+// ============================ PropOwner type ===============================
+/**
+ * Define the ${PNAME}PropOwner type.
+ */
+#define _XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
+	_XENUM5_DOC(PropOwner type for PNAME, to map each PNAME value to the enum-value		\
+		it belongs to.)									\
+	using BOOST_PP_CAT(PNAME, PropOwner) =							\
+	::_XENUM5_NS::PropOwner<Index,BOOST_PP_CAT(PNAME, Vindex)>;				_XENUM5_NWLN \
+
+
+// ======================= Define propOwners array ===========================
+/**
+ * Define the propOwners array.
+ */
+#define _XENUM5_PROP_OWNERS_DEF(DECLPFX, PNAME, CTXT)						\
+	_XENUM5_DOC(Array of enum-value owners of all PNAME values.)				\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, PropOwner) BOOST_PP_CAT(PNAME, PropOwners)[] =	\
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_PROP_OWNER_DEF, CTXT)				\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN
+
+/**
+ * Loop worker for _XENUM5_PROP_OWNERS_DEF().
+ */
+#define _XENUM5_PROP_OWNER_DEF(ITERPOS, NODE, CTXT)						\
+	{											\
+		/* EnumIndex */									\
+		static_cast<Index>(Enum::_XENUM5_CTXT_IDENT(CTXT)),				\
+		/* PropValueIndex */								\
+		_XENUM5_PROP_OWNER_DEF_INDEX(							\
+			_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS),					\
+			_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),				\
+			CTXT									\
+		)										\
+	},											_XENUM5_NWLN \
+
+
+/**
+ * Worker for _XENUM5_PROP_OWNER_DEF().
+ */
+#define _XENUM5_PROP_OWNER_DEF_INDEX(INDEXPATH, PNAME, CTXT)					\
+	(offsetof(										\
+		BOOST_PP_CAT(PNAME, ValueNames),						\
+		_XENUM5_PROP_GEN_NODE_NAME(CTXT, INDEXPATH)					\
+	) / sizeof(BOOST_PP_CAT(PNAME, Value)))							\
+
+
+// ========================== propOwners dbginfo =============================
+/**
+ * Dump propOwners array.
+ */
+#define _XENUM5_PROP_FROMVALUE_DBGINFO(PNAME, PDEF)						\
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_GET(PDEF))<<" "			\
+		<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, PropOwners))<<" ("			\
+		<<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)))	\
+		<<"):"<<std::endl;								_XENUM5_NWLN \
+	for (BOOST_PP_CAT(PNAME, Vindex) idx=0;							\
+		idx<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)));	\
+		idx++) {									_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+			std::cout<<"\t\t\t["<<(size_t)idx<<"]"					\
+				<<" eidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].enumValue	\
+				<<" pidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].propIndex	\
+				<<std::endl;							_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
+
+
 // ====================== Declare Store::fromValue() =========================
 /**
  * Declare Store::from{pname}().
@@ -963,8 +1024,9 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 /* FIXME: Implement! */\
-		return SSCOPED fromIndex(0);							_XENUM5_NWLN \
+		return fromIndex(LSCOPED BOOST_PP_CAT(PNAME, PropOwners)[0].enumValue);		_XENUM5_NWLN \
 /*\
+		return SSCOPED fromIndex(0);							_XENUM5_NWLN \
 		throw std::logic_error(								\
 			BOOST_PP_STRINGIZE(SSCOPED)						\
 			BOOST_PP_STRINGIZE(BOOST_PP_CAT(from, PNAME))				\
