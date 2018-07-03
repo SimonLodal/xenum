@@ -89,7 +89,7 @@ TEST_F(TestPcombs, P0OffExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0OE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0OE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0OE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -119,7 +119,7 @@ TEST_F(TestPcombs, P0OffInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0OI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0OI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0OI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -151,7 +151,7 @@ TEST_F(TestPcombs, P0OffCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0OC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0OC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -202,7 +202,7 @@ TEST_F(TestPcombs, P0ExtExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0EE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0EE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0EE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -232,7 +232,7 @@ TEST_F(TestPcombs, P0ExtInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0EI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0EI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0EI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -264,7 +264,7 @@ TEST_F(TestPcombs, P0ExtCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0EC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0EC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -325,7 +325,7 @@ TEST_F(TestPcombs, P0CxpExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0CE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0CE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0CE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -360,7 +360,7 @@ TEST_F(TestPcombs, P0CxpInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0CI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0CI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0CI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -397,7 +397,7 @@ TEST_F(TestPcombs, P0CxpCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP0CC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP0CC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -452,7 +452,7 @@ TEST_F(TestPcombs, P1OffExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1OE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1OE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1OE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -485,7 +485,7 @@ TEST_F(TestPcombs, P1OffInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1OI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1OI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1OI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -520,7 +520,7 @@ TEST_F(TestPcombs, P1OffCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1OC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1OC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -610,7 +610,7 @@ TEST_F(TestPcombs, P1ExtExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1EE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1EE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1EE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -662,7 +662,7 @@ TEST_F(TestPcombs, P1ExtInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1EI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1EI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1EI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -716,7 +716,7 @@ TEST_F(TestPcombs, P1ExtCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1EC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1EC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -825,7 +825,7 @@ TEST_F(TestPcombs, P1CxpExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1CE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1CE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1CE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -886,7 +886,7 @@ TEST_F(TestPcombs, P1CxpInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1CI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1CI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1CI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -949,7 +949,7 @@ TEST_F(TestPcombs, P1CxpCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP1CC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP1CC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1004,7 +1004,7 @@ TEST_F(TestPcombs, P2OffExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2OE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2OE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2OE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1037,7 +1037,7 @@ TEST_F(TestPcombs, P2OffInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2OI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2OI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2OI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1072,7 +1072,7 @@ TEST_F(TestPcombs, P2OffCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2OC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2OC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1210,7 +1210,7 @@ TEST_F(TestPcombs, P2ExtExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2EE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2EE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2EE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1285,7 +1285,7 @@ TEST_F(TestPcombs, P2ExtInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2EI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2EI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2EI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1362,7 +1362,7 @@ TEST_F(TestPcombs, P2ExtCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2EC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2EC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1526,7 +1526,7 @@ TEST_F(TestPcombs, P2CxpExt)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2CE(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2CE(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2CE'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1614,7 +1614,7 @@ TEST_F(TestPcombs, P2CxpInl)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2CI(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2CI(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2CI'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -1704,7 +1704,7 @@ TEST_F(TestPcombs, P2CxpCxp)
 	EXPECT_EQ(false, xenums::Pcombs::_fromP2CC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V2);
 	try { success = false; xenums::Pcombs::_fromP2CC(intval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value.", e.what()); success = true; }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 

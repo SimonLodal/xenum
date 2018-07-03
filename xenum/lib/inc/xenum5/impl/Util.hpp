@@ -350,7 +350,7 @@ namespace xenum5 {
  * std::max is constexpr in c++14, but we are still targeting c++11 where it is not.
  */
 template <class T>
-constexpr const T& cxp_max (const T& a, const T& b)
+constexpr const T& cxpMax (const T& a, const T& b)
 {
 	return (a>b) ? a : b;
 }

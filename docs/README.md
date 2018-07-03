@@ -431,18 +431,22 @@ This callback defines general parameters of the enum.
   to let Xenum decide the smallest possible type.
 - **features** Optional. A list (comma-separated, in parentheses) of not so common
   features/options (more may be added):
-  - [0] (getIdentifier): How to implement the getIdentifier() method. See discussion below.
+  - [0] (getIdentifier): How to implement the getIdentifier() method.
     Valid values are:
     - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
+      See warning below.
     - cxp: Declare and define constexpr, in generated header.
-  - [1] (fromIdentifier): How to implement the fromIdentifier() method. See discussion below.
+      See warning below.
+  - [1] (fromIdentifier): How to implement the fromIdentifier() method.
     Valid values are:
     - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
     - inl: Declare and define inline, but not constexpr, in generated header.
+      See warning below.
     - cxp: Declare and define constexpr, in generated header. This produces a separate
       cxpFromIdentifier() method, but also includes the plain inline fromIdentifier().
+      See warning below.
 - **properties** Optional. Defines custom properties. Leave field empty/undefined if the
   xenum does not have any custom properties. If defined, it must be a tuple of one or
   more tuples that each define a property (see below).
@@ -475,15 +479,23 @@ Custom property tuple syntax:
     - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
     - cxp: Declare and define constexpr, in generated header.
+      See warning below.
   - [1] (from${propertyName}): How to implement the from${propertyName}() lookup method for
-    this custom property. See discussion about efficiency below. Also note that this requires
-    that all the values of this custom property are different; if not, the lookup function
-    results are undefined (it may return any of them, or even just fail). - Valid values are:
+    this custom property. See requirements below. Valid values are:
     - off (the default, if empty): Do not implement this method.
     - ext: Declare in generated header, define in generated source.
     - inl: Declare and define inline, but not constexpr, in generated header.
+      See warning below.
     - cxp: Declare and define constexpr, in generated header. This produces a separate
       cxpFrom${propertyName}() method, but also includes the plain inline from${propertyName}().
+      See warning below.
+
+##### Requirements for from${propertyName}() lookup method
+- All the values of this custom property must be different. If they are not, the lookup function
+  results are undefined: It may return any of them, or fail, at runtime or compile time.
+- The lookup method uses the == operator to compare values. If the custom property data type is
+  complex you may need to define such an operator function for the data type. And if you want
+  from${propertyName}() to be constexpr, then your operator==() must also be constexpr.
 
 ##### Warning about inline/constexpr methods
 You can implement the get*() and from*() functions for identifiers and custom properties in
@@ -509,7 +521,7 @@ They come with big costs:
   compile time. The price is terrible runtime performance. In the future C++ may allow to define
   different code for constexpr and non-constexpr, but until then, this is a problem for everyone.
 
-You can also define a get*() or from*() method implementation as "off" to omit it, it might save
+You can also define a get*() or from*() method implementation as "off" to omit it, and save
 some space in your compiled binary. If you set both get and from to "off", there is no way to
 access the data, and it will therefore not be generated at all.
 

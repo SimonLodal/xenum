@@ -106,10 +106,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 #define _XENUM5_PLAIN_FROMVALUE_DECLS_inl(PNAME, DEPTH, PDEF, CTXT, Z)				\
 	_XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
 	_XENUM5_PROP_OWNERS_DEF(static, PNAME, CTXT)						\
-	_XENUM5_PROP_FROMVALUE_STD_DEFS(							\
-		static,										\
-		PNAME, DEPTH, PDEF, , , Z							\
-	)											\
+	_XENUM5_PLAIN_FROMVALUE_STD_DEFS(static, PNAME, DEPTH, PDEF, , , Z)			\
 
 /**
  * Define cxpFrom${pname}() as inline constexpr (also include plain inline variant).
@@ -495,12 +492,12 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Define store members declared ext in header.
  */
 #define _XENUM5_PLAIN_FROMVALUE_DEFS_SRC(PNAME, DEPTH, PDEF, LSCOPE, DSCOPE, SNAME, CTXT, Z)	\
-	_XENUM5_PROP_FROMVALUE_STD_DEFS(							\
+	_XENUM5_PLAIN_FROMVALUE_STD_DEFS(							\
 		,										\
 		PNAME,										\
 		DEPTH,										\
 		PDEF,										\
-		LSCOPE::,									\
+		LSCOPE,										\
 		DSCOPE SNAME::,									\
 		Z										\
 	)											\
@@ -909,6 +906,90 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_PROP_GEN_INDEX0_ARGS(DEPTH, Z)						\
 	)											\
 	.getNextIndex(BOOST_PP_CAT(index, DEPTH))						\
+
+
+
+// ======================== Define from${pname}() ============================
+/**
+ * Define Store::from${pname}(), inline or ext as declared in header.
+ */
+#define _XENUM5_PLAIN_FROMVALUE_STD_DEFS(DECLPFX, PNAME, DEPTH, PDEF, LSCOPE, SSCOPED, Z)	\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+	DECLPFX SSCOPED Enum SSCOPED BOOST_PP_CAT(from, PNAME)(					\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue					\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_USE_NS_IF_NONEMPTY(LSCOPE)						\
+/*\
+std::cout<<BOOST_PP_STRINGIZE(Enum BOOST_PP_CAT(from, PNAME))<<"() qValue="<<(size_t)propValue<<std::endl;	_XENUM5_NWLN \
+*/\
+		for (BOOST_PP_CAT(PNAME, Vindex) index=0;					\
+		     index < (sizeof(BOOST_PP_CAT(PNAME, ValueNames)) / sizeof(BOOST_PP_CAT(PNAME, Value)));	\
+		     index++) {									_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+/*\
+std::cout<<BOOST_PP_STRINGIZE(Enum BOOST_PP_CAT(from, PNAME))<<"() index="<<(size_t)index	\
+	<<" enumValue="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue		\
+	<<" propIndex="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex		\
+	<<" propValue="<<(size_t)BOOST_PP_CAT(PNAME, Values)[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex]	\
+	<<std::endl;										_XENUM5_NWLN \
+*/\
+			if (propValue == BOOST_PP_CAT(PNAME, Values)				\
+				[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex])		_XENUM5_NWLN \
+				_XENUM5_INDENT_ADD						\
+				return static_cast<Enum>(BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue);	_XENUM5_NWLN \
+			_XENUM5_INDENT_DEC							\
+		}										_XENUM5_NWLN \
+		throw std::out_of_range("No such value of custom property"			\
+			" '" BOOST_PP_STRINGIZE(PNAME) "'.");					_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+	DECLPFX bool SSCOPED BOOST_PP_CAT(from, PNAME)(						\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
+		Value& enumValue								\
+	) noexcept										_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+/*\
+std::cout<<BOOST_PP_STRINGIZE(bool BOOST_PP_CAT(from, PNAME))<<"() qValue="<<(size_t)propValue<<std::endl;	_XENUM5_NWLN \
+*/\
+		_XENUM5_USE_NS_IF_NONEMPTY(LSCOPE)						\
+		for (BOOST_PP_CAT(PNAME, Vindex) index=0;					\
+		     index < (sizeof(BOOST_PP_CAT(PNAME, ValueNames)) / sizeof(BOOST_PP_CAT(PNAME, Value)));	\
+		     index++) {									_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+/*\
+std::cout<<BOOST_PP_STRINGIZE(bool BOOST_PP_CAT(from, PNAME))<<"() index="<<(size_t)index	\
+	<<" enumValue="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue		\
+	<<" propIndex="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex		\
+	<<" propValue="<<(size_t)BOOST_PP_CAT(PNAME, Values)[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex]	\
+	<<std::endl;										_XENUM5_NWLN \
+*/\
+			if (propValue == BOOST_PP_CAT(PNAME, Values)				\
+				[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex]) {		_XENUM5_NWLN \
+				_XENUM5_INDENT_INC						\
+				enumValue = static_cast<Enum>(BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue);	_XENUM5_NWLN \
+				return true;							_XENUM5_NWLN \
+				_XENUM5_INDENT_DEC						\
+			}									_XENUM5_NWLN \
+			_XENUM5_INDENT_DEC							\
+		}										_XENUM5_NWLN \
+		return false;									_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
 
 
 #endif // _XENUM5_IMPL_PLAIN_HPP
