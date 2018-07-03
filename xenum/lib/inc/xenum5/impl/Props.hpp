@@ -1067,7 +1067,7 @@
 		throw std::logic_error(BOOST_PP_STRINGIZE(BOOST_PP_CAT(_from, PNAME))		\
 				       "() is configured 'off'.");				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
-	static bool BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) identifier,	\
+	static bool BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
 					       VNAME& enumValue)				_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
