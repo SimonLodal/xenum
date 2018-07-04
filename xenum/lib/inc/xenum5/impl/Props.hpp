@@ -1005,57 +1005,6 @@
 					      Value& enumValue) noexcept;			_XENUM5_NWLN \
 
 
-// ====================== Define Store::fromValue() ==========================
-/**
- * Define Store::from${pname}(), constexpr.
- */
-// FIXME: Separate variants for plain/cstring needed?
-#define _XENUM5_PROP_FROMVALUE_CXP_DEFS(PNAME, PDEF)						\
-	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
-		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
-		@param propValue Value to look up.						_XENUM5_NWLN \
-		@return Requested enum value.							_XENUM5_NWLN \
-		@throws std::out_of_range if no such custom property value exists.)		\
-/* FIXME: Enable 'constexpr' when function is actually implemented */\
-	static /*constexpr*/ Enum BOOST_PP_CAT(cxpFrom, PNAME)(					\
-		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue					\
-	)											_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-/* FIXME: Implement! */\
-		return fromIndex(0);								_XENUM5_NWLN \
-/*\
-		throw std::logic_error(								\
-			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
-			"(propValue): Not implemented yet.");					_XENUM5_NWLN \
-*/\
-	}											_XENUM5_NWLN \
-	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
-		without throwing on error.							_XENUM5_NWLN \
-		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
-		@param propValue Value to look up.						_XENUM5_NWLN \
-		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
-			_XENUM5_INDENT_ADD							\
-			if it exists, else it is not touched.					_XENUM5_NWLN \
-		@return True if enum-value with given property value was found, else false.)	\
-/* FIXME: Enable 'constexpr' when function is actually implemented */\
-	static /*constexpr*/ bool BOOST_PP_CAT(cxpFrom, PNAME)(					\
-		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
-		Value& enumValue								\
-/* FIXME: Enable 'noexcept' when function is actually implemented */\
-	) /* noexcept */									_XENUM5_NWLN \
-	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-/* FIXME: Implement! */\
-		return false;									_XENUM5_NWLN \
-/*\
-		throw std::logic_error(								\
-			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
-			"(propValue, enumValue): Not implemented yet.");			_XENUM5_NWLN \
-*/\
-	}											_XENUM5_NWLN \
-
-
 // ====================== Define Cntnr::fromValue() ==========================
 /**
  * Throwing from${pname}() generator, for unit testing only.

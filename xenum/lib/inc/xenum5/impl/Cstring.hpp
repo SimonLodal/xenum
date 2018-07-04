@@ -116,7 +116,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
  */
 #define _XENUM5_CSTRING_FROMVALUE_DECLS_cxp(PNAME, DEPTH, PDEF, CTXT, Z)			\
 	_XENUM5_CSTRING_FROMVALUE_DECLS_inl(PNAME, DEPTH, PDEF, CTXT, Z)			\
-	_XENUM5_PROP_FROMVALUE_CXP_DEFS(PNAME, PDEF)						\
+	_XENUM5_CSTRING_FROMVALUE_CXP_DEFS(PNAME, PDEF)						\
 
 
 // ======================================= MAIN: DECLV ==========================================
@@ -952,6 +952,121 @@ std::cout<<BOOST_PP_STRINGIZE(Enum BOOST_PP_CAT(from, PNAME))<<"() index="<<(siz
 		}										_XENUM5_NWLN \
 		return false;									_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
+
+
+/**
+ * Define Store::from${pname}(), constexpr.
+ */
+#define _XENUM5_CSTRING_FROMVALUE_CXP_DEFS(PNAME, PDEF)						\
+	_XENUM5_DOC(Recursive worker for throwing BOOST_PP_CAT(cxpFrom, PNAME)().)		\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ Enum BOOST_PP_CAT(cxpTFrom, PNAME)(				\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
+		BOOST_PP_CAT(PNAME, Vindex) index						\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+/*\
+*/\
+std::cout<<BOOST_PP_STRINGIZE(Enum BOOST_PP_CAT(cxpTFrom, PNAME))<<"() index="<<(size_t)index	\
+	<<" enumValue="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue		\
+	<<" propIndex="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex		\
+	<<" propValue='"<<&BOOST_PP_CAT(PNAME, Values)[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex]<<"'"	\
+	<<std::endl;										_XENUM5_NWLN \
+		return (index < (sizeof(BOOST_PP_CAT(PNAME, ValueNames)) / sizeof(BOOST_PP_CAT(PNAME, Value))))	_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+			?(::_XENUM5_NS::cxpStrEqual(propValue, &BOOST_PP_CAT(PNAME, Values)	\
+				[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex])		_XENUM5_NWLN \
+				_XENUM5_INDENT_INC						\
+				? static_cast<Enum>(BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue)	_XENUM5_NWLN \
+				: BOOST_PP_CAT(cxpTFrom, PNAME)(propValue, index+1)		_XENUM5_NWLN \
+				_XENUM5_INDENT_DEC						\
+			)									_XENUM5_NWLN \
+			: throw std::out_of_range("No such value of custom property"		\
+				" '" BOOST_PP_STRINGIZE(PNAME) "'.");				_XENUM5_NWLN \
+			_XENUM5_INDENT_DEC							\
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search, and because		_XENUM5_NWLN \
+		constexpr requirements result in very suboptimal runtime code.			_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ Enum BOOST_PP_CAT(cxpFrom, PNAME)(					\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue					\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+/*\
+*/\
+std::cout<<BOOST_PP_STRINGIZE(Enum BOOST_PP_CAT(cxpFrom, PNAME))<<"() qValue='"<<propValue<<"'"<<std::endl;	_XENUM5_NWLN \
+ 		return BOOST_PP_CAT(cxpTFrom, PNAME)(propValue, 0);				_XENUM5_NWLN \
+/* FIXME: Implement! */\
+/*\
+		return fromIndex(0);								_XENUM5_NWLN \
+		throw std::logic_error(								\
+			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
+			"(propValue): Not implemented yet.");					_XENUM5_NWLN \
+*/\
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Recursive worker for non-throwing BOOST_PP_CAT(cxpFrom, PNAME)().)		\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ bool BOOST_PP_CAT(cxpNFrom, PNAME)(				\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
+		Value& enumValue,								\
+		BOOST_PP_CAT(PNAME, Vindex) index						\
+	)											_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+/*\
+*/\
+std::cout<<BOOST_PP_STRINGIZE(bool BOOST_PP_CAT(cxpNFrom, PNAME))<<"() index="<<(size_t)index	\
+	<<" enumValue="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue		\
+	<<" propIndex="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex		\
+	<<" propValue='"<<&BOOST_PP_CAT(PNAME, Values)[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex]<<"'"	\
+	<<std::endl;										_XENUM5_NWLN \
+		return (index < (sizeof(BOOST_PP_CAT(PNAME, ValueNames)) / sizeof(BOOST_PP_CAT(PNAME, Value))))	_XENUM5_NWLN \
+			_XENUM5_INDENT_INC							\
+			?(::_XENUM5_NS::cxpStrEqual(propValue, &BOOST_PP_CAT(PNAME, Values)	\
+				[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex])		_XENUM5_NWLN \
+				_XENUM5_INDENT_INC						\
+				? enumValue = static_cast<Enum>(BOOST_PP_CAT(PNAME, PropOwners)[index].enumValue), true	_XENUM5_NWLN \
+				: BOOST_PP_CAT(cxpNFrom, PNAME)(propValue, enumValue, index+1)	_XENUM5_NWLN \
+				_XENUM5_INDENT_DEC						\
+			)									_XENUM5_NWLN \
+			: false;								_XENUM5_NWLN \
+			_XENUM5_INDENT_DEC							\
+		_XENUM5_INDENT_DEC								\
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search, and because		_XENUM5_NWLN \
+		constexpr requirements result in very suboptimal runtime code.			_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+/* FIXME: Enable 'constexpr' when function is actually implemented */\
+	static /*constexpr*/ bool BOOST_PP_CAT(cxpFrom, PNAME)(					\
+		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
+		Value& enumValue								\
+/* FIXME: Enable 'noexcept' when function is actually implemented */\
+	) /* noexcept */									_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+std::cout<<BOOST_PP_STRINGIZE(bool BOOST_PP_CAT(cxpFrom, PNAME))<<"() qValue='"<<propValue<<"'"<<std::endl;	_XENUM5_NWLN \
+ 		return BOOST_PP_CAT(cxpNFrom, PNAME)(propValue, enumValue, 0);			_XENUM5_NWLN \
+/* FIXME: Implement! */\
+/*\
+		return false;									_XENUM5_NWLN \
+		throw std::logic_error(								\
+			BOOST_PP_STRINGIZE(BOOST_PP_CAT(cxpFrom, PNAME))			\
+			"(propValue, enumValue): Not implemented yet.");			_XENUM5_NWLN \
+*/\
 	}											_XENUM5_NWLN \
 
 
