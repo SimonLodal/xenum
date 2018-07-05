@@ -125,6 +125,12 @@ TEST_F(TestScombs, S0OffInl)
 }
 
 
+/// Function that only compiles if cxpFromS0OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC("1003") == xenums::Scombs::V0, bool>::type cxpFromS0OC0(void) { return true; }
+/// Function that only compiles if cxpFromS0OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC("-1003") == xenums::Scombs::V1, bool>::type cxpFromS0OC1(void) { return true; }
+/// Function that only compiles if cxpFromS0OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC("1023") == xenums::Scombs::V2, bool>::type cxpFromS0OC2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=off, fromValue=cxp
 TEST_F(TestScombs, S0OffCxp)
 {
@@ -133,7 +139,10 @@ TEST_F(TestScombs, S0OffCxp)
 	catch (std::logic_error e) { EXPECT_STREQ("getS0OC() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS0OC0<void>());
+	EXPECT_EQ(true, cxpFromS0OC1<void>());
+	EXPECT_EQ(true, cxpFromS0OC2<void>());
 
 	// fromValue
 	strval = "1003";
@@ -155,7 +164,7 @@ TEST_F(TestScombs, S0OffCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1003";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS0OC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -285,6 +294,12 @@ TEST_F(TestScombs, S0ExtInl)
 }
 
 
+/// Function that only compiles if cxpFromS0EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC("1007") == xenums::Scombs::V0, bool>::type cxpFromS0EC0(void) { return true; }
+/// Function that only compiles if cxpFromS0EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC("-1007") == xenums::Scombs::V1, bool>::type cxpFromS0EC1(void) { return true; }
+/// Function that only compiles if cxpFromS0EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC("1027") == xenums::Scombs::V2, bool>::type cxpFromS0EC2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=ext, fromValue=cxp
 TEST_F(TestScombs, S0ExtCxp)
 {
@@ -302,7 +317,10 @@ TEST_F(TestScombs, S0ExtCxp)
 	EXPECT_STREQ("1027", value.getS0EC());
 	EXPECT_EQ(5, value.getS0ECSize());
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS0EC0<void>());
+	EXPECT_EQ(true, cxpFromS0EC1<void>());
+	EXPECT_EQ(true, cxpFromS0EC2<void>());
 
 	// fromValue
 	strval = "1007";
@@ -324,7 +342,7 @@ TEST_F(TestScombs, S0ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1007";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS0EC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -485,6 +503,12 @@ TEST_F(TestScombs, S0CxpInl)
 template <class T> typename std::enable_if<xenums::Scombs::V0.getS0CCSize() == 5, bool>::type cxpGetS0CCSize() { return true; }
 /// Function that only compiles if the constexpr getS0CC() actually works at compile time.
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS0CC(), "1011"), bool>::type cxpGetS0CC(void) { return true; }
+/// Function that only compiles if cxpFromS0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0CC("1011") == xenums::Scombs::V0, bool>::type cxpFromS0CC0(void) { return true; }
+/// Function that only compiles if cxpFromS0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0CC("-1011") == xenums::Scombs::V1, bool>::type cxpFromS0CC1(void) { return true; }
+/// Function that only compiles if cxpFromS0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0CC("1031") == xenums::Scombs::V2, bool>::type cxpFromS0CC2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=cxp
 TEST_F(TestScombs, S0CxpCxp)
 {
@@ -507,7 +531,10 @@ TEST_F(TestScombs, S0CxpCxp)
 	EXPECT_STREQ("1031", value.getS0CC());
 	EXPECT_EQ(5, value.getS0CCSize());
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS0CC0<void>());
+	EXPECT_EQ(true, cxpFromS0CC1<void>());
+	EXPECT_EQ(true, cxpFromS0CC2<void>());
 
 	// fromValue
 	strval = "1011";
@@ -529,7 +556,7 @@ TEST_F(TestScombs, S0CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1011";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS0CC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -639,6 +666,10 @@ TEST_F(TestScombs, S1OffInl)
 }
 
 
+/// Function that only compiles if cxpFromS1OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1OC("1106") == xenums::Scombs::V0, bool>::type cxpFromS1OC0(void) { return true; }
+/// Function that only compiles if cxpFromS1OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1OC("1107") == xenums::Scombs::V0, bool>::type cxpFromS1OC1(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=off, fromValue=cxp
 TEST_F(TestScombs, S1OffCxp)
 {
@@ -647,7 +678,9 @@ TEST_F(TestScombs, S1OffCxp)
 	catch (std::logic_error e) { EXPECT_STREQ("getS1OC() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS1OC0<void>());
+	EXPECT_EQ(true, cxpFromS1OC1<void>());
 
 	// fromValue
 	strval = "1106";
@@ -672,7 +705,7 @@ TEST_F(TestScombs, S1OffCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S1OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1106";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS1OC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -880,6 +913,10 @@ TEST_F(TestScombs, S1ExtInl)
 }
 
 
+/// Function that only compiles if cxpFromS1EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1EC("1116") == xenums::Scombs::V0, bool>::type cxpFromS1EC0(void) { return true; }
+/// Function that only compiles if cxpFromS1EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1EC("1117") == xenums::Scombs::V0, bool>::type cxpFromS1EC1(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=ext, fromValue=cxp
 TEST_F(TestScombs, S1ExtCxp)
 {
@@ -920,7 +957,9 @@ TEST_F(TestScombs, S1ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS1EC0<void>());
+	EXPECT_EQ(true, cxpFromS1EC1<void>());
 
 	// fromValue
 	strval = "1116";
@@ -945,7 +984,7 @@ TEST_F(TestScombs, S1ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S1EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1116";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS1EC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -1198,6 +1237,10 @@ template <class T> typename std::enable_if<xenums::Scombs::V0.getS1CCSize() == 3
 template <class T> typename std::enable_if<xenums::Scombs::V0.getS1CCSize(2) == 5, bool>::type cxpGetS1CCSize1() { return true; }
 /// Function that only compiles if the constexpr getS1CC() actually works at compile time.
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS1CC(2), "1127"), bool>::type cxpGetS1CC(void) { return true; }
+/// Function that only compiles if cxpFromS1CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1CC("1126") == xenums::Scombs::V0, bool>::type cxpFromS1CC0(void) { return true; }
+/// Function that only compiles if cxpFromS1CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1CC("1127") == xenums::Scombs::V0, bool>::type cxpFromS1CC1(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=cxp
 TEST_F(TestScombs, S1CxpCxp)
 {
@@ -1245,7 +1288,9 @@ TEST_F(TestScombs, S1CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS1CC0<void>());
+	EXPECT_EQ(true, cxpFromS1CC1<void>());
 
 	// fromValue
 	strval = "1126";
@@ -1270,7 +1315,7 @@ TEST_F(TestScombs, S1CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S1CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1126";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS1CC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -1383,6 +1428,12 @@ TEST_F(TestScombs, S2OffInl)
 }
 
 
+/// Function that only compiles if cxpFromS2OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC("1206") == xenums::Scombs::V0, bool>::type cxpFromS2OC0(void) { return true; }
+/// Function that only compiles if cxpFromS2OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC("1207") == xenums::Scombs::V0, bool>::type cxpFromS2OC1(void) { return true; }
+/// Function that only compiles if cxpFromS2OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC("-1203") == xenums::Scombs::V0, bool>::type cxpFromS2OC2(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=off, fromValue=cxp
 TEST_F(TestScombs, S2OffCxp)
 {
@@ -1391,7 +1442,10 @@ TEST_F(TestScombs, S2OffCxp)
 	catch (std::logic_error e) { EXPECT_STREQ("getS2OC() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS2OC0<void>());
+	EXPECT_EQ(true, cxpFromS2OC1<void>());
+	EXPECT_EQ(true, cxpFromS2OC2<void>());
 
 	// fromValue
 	strval = "1206";
@@ -1416,7 +1470,7 @@ TEST_F(TestScombs, S2OffCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S2OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1206";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS2OC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -1711,6 +1765,12 @@ TEST_F(TestScombs, S2ExtInl)
 }
 
 
+/// Function that only compiles if cxpFromS2EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC("1216") == xenums::Scombs::V0, bool>::type cxpFromS2EC0(void) { return true; }
+/// Function that only compiles if cxpFromS2EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC("1217") == xenums::Scombs::V0, bool>::type cxpFromS2EC1(void) { return true; }
+/// Function that only compiles if cxpFromS2EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC("-1207") == xenums::Scombs::V0, bool>::type cxpFromS2EC2(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=ext, fromValue=cxp
 TEST_F(TestScombs, S2ExtCxp)
 {
@@ -1780,7 +1840,10 @@ TEST_F(TestScombs, S2ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS2EC0<void>());
+	EXPECT_EQ(true, cxpFromS2EC1<void>());
+	EXPECT_EQ(true, cxpFromS2EC2<void>());
 
 	// fromValue
 	strval = "1216";
@@ -1805,7 +1868,7 @@ TEST_F(TestScombs, S2ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S2EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1216";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS2EC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);
@@ -2159,6 +2222,12 @@ template <class T> typename std::enable_if<xenums::Scombs::V0.getS2CCSize(0) == 
 template <class T> typename std::enable_if<xenums::Scombs::V0.getS2CCSize(0,2) == 5, bool>::type cxpGetS2CCSize2() { return true; }
 /// Function that only compiles if the constexpr getS2CC() actually works at compile time.
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS2CC(1,0), "-1211"), bool>::type cxpGetS2CC(void) { return true; }
+/// Function that only compiles if cxpFromS2CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC("1226") == xenums::Scombs::V0, bool>::type cxpFromS2CC0(void) { return true; }
+/// Function that only compiles if cxpFromS2CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC("1227") == xenums::Scombs::V0, bool>::type cxpFromS2CC1(void) { return true; }
+/// Function that only compiles if cxpFromS2CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC("-1211") == xenums::Scombs::V0, bool>::type cxpFromS2CC2(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=cxp
 TEST_F(TestScombs, S2CxpCxp)
 {
@@ -2237,7 +2306,10 @@ TEST_F(TestScombs, S2CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromS2CC0<void>());
+	EXPECT_EQ(true, cxpFromS2CC1<void>());
+	EXPECT_EQ(true, cxpFromS2CC2<void>());
 
 	// fromValue
 	strval = "1226";
@@ -2262,7 +2334,7 @@ TEST_F(TestScombs, S2CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S2CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	strval = "1226";
 	EXPECT_EQ(true, xenums::Scombs::_cxpFromS2CC(strval, value));
 	EXPECT_EQ(value, xenums::Scombs::V0);

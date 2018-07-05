@@ -124,6 +124,12 @@ TEST_F(TestPcombs, P0OffInl)
 }
 
 
+/// Function that only compiles if cxpFromP0OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0OC(1003) == xenums::Pcombs::V0, bool>::type cxpFromP0OC0(void) { return true; }
+/// Function that only compiles if cxpFromP0OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0OC(-1003) == xenums::Pcombs::V1, bool>::type cxpFromP0OC1(void) { return true; }
+/// Function that only compiles if cxpFromP0OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0OC(1023) == xenums::Pcombs::V2, bool>::type cxpFromP0OC2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=off, fromValue=cxp
 TEST_F(TestPcombs, P0OffCxp)
 {
@@ -132,7 +138,10 @@ TEST_F(TestPcombs, P0OffCxp)
 	catch (std::logic_error e) { EXPECT_STREQ("getP0OC() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP0OC0<void>());
+	EXPECT_EQ(true, cxpFromP0OC1<void>());
+	EXPECT_EQ(true, cxpFromP0OC2<void>());
 
 	// fromValue
 	intval = 1003;
@@ -154,7 +163,7 @@ TEST_F(TestPcombs, P0OffCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1003;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP0OC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -257,6 +266,12 @@ TEST_F(TestPcombs, P0ExtInl)
 }
 
 
+/// Function that only compiles if cxpFromP0EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0EC(1007) == xenums::Pcombs::V0, bool>::type cxpFromP0EC0(void) { return true; }
+/// Function that only compiles if cxpFromP0EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0EC(-1007) == xenums::Pcombs::V1, bool>::type cxpFromP0EC1(void) { return true; }
+/// Function that only compiles if cxpFromP0EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0EC(1027) == xenums::Pcombs::V2, bool>::type cxpFromP0EC2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=ext, fromValue=cxp
 TEST_F(TestPcombs, P0ExtCxp)
 {
@@ -265,7 +280,10 @@ TEST_F(TestPcombs, P0ExtCxp)
 	EXPECT_EQ(-1007, xenums::Pcombs::V1.getP0EC());
 	EXPECT_EQ(1027, xenums::Pcombs::V2.getP0EC());
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP0EC0<void>());
+	EXPECT_EQ(true, cxpFromP0EC1<void>());
+	EXPECT_EQ(true, cxpFromP0EC2<void>());
 
 	// fromValue
 	intval = 1007;
@@ -287,7 +305,7 @@ TEST_F(TestPcombs, P0ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1007;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP0EC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -407,6 +425,12 @@ TEST_F(TestPcombs, P0CxpInl)
 
 /// Function that only compiles if the constexpr getP0CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CC() == 1011, bool>::type cxpGetP0CC(void) { return true; }
+/// Function that only compiles if cxpFromP0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(1011) == xenums::Pcombs::V0, bool>::type cxpFromP0CC0(void) { return true; }
+/// Function that only compiles if cxpFromP0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(-1011) == xenums::Pcombs::V1, bool>::type cxpFromP0CC1(void) { return true; }
+/// Function that only compiles if cxpFromP0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(1031) == xenums::Pcombs::V2, bool>::type cxpFromP0CC2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=cxp
 TEST_F(TestPcombs, P0CxpCxp)
 {
@@ -418,7 +442,10 @@ TEST_F(TestPcombs, P0CxpCxp)
 	EXPECT_EQ(-1011, xenums::Pcombs::V1.getP0CC());
 	EXPECT_EQ(1031, xenums::Pcombs::V2.getP0CC());
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP0CC0<void>());
+	EXPECT_EQ(true, cxpFromP0CC1<void>());
+	EXPECT_EQ(true, cxpFromP0CC2<void>());
 
 	// fromValue
 	intval = 1011;
@@ -440,7 +467,7 @@ TEST_F(TestPcombs, P0CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P0CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1011;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP0CC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -550,6 +577,10 @@ TEST_F(TestPcombs, P1OffInl)
 }
 
 
+/// Function that only compiles if cxpFromP1OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1OC(1106) == xenums::Pcombs::V0, bool>::type cxpFromP1OC0(void) { return true; }
+/// Function that only compiles if cxpFromP1OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1OC(1107) == xenums::Pcombs::V0, bool>::type cxpFromP1OC1(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=off, fromValue=cxp
 TEST_F(TestPcombs, P1OffCxp)
 {
@@ -558,7 +589,9 @@ TEST_F(TestPcombs, P1OffCxp)
 	catch (std::logic_error e) { EXPECT_STREQ("getP1OC() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP1OC0<void>());
+	EXPECT_EQ(true, cxpFromP1OC1<void>());
 
 	// fromValue
 	intval = 1106;
@@ -583,7 +616,7 @@ TEST_F(TestPcombs, P1OffCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1106;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP1OC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -750,6 +783,10 @@ TEST_F(TestPcombs, P1ExtInl)
 }
 
 
+/// Function that only compiles if cxpFromP1EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1EC(1116) == xenums::Pcombs::V0, bool>::type cxpFromP1EC0(void) { return true; }
+/// Function that only compiles if cxpFromP1EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1EC(1117) == xenums::Pcombs::V0, bool>::type cxpFromP1EC1(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=ext, fromValue=cxp
 TEST_F(TestPcombs, P1ExtCxp)
 {
@@ -777,7 +814,9 @@ TEST_F(TestPcombs, P1ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP1EC0<void>());
+	EXPECT_EQ(true, cxpFromP1EC1<void>());
 
 	// fromValue
 	intval = 1116;
@@ -802,7 +841,7 @@ TEST_F(TestPcombs, P1ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1116;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP1EC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -1001,6 +1040,10 @@ TEST_F(TestPcombs, P1CxpInl)
 template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CCSize() == 3, bool>::type cxpGetP1CCSize(void) { return true; }
 /// Function that only compiles if the constexpr getP1CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CC(2) == 1127, bool>::type cxpGetP1CC(void) { return true; }
+/// Function that only compiles if cxpFromP1CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1CC(1126) == xenums::Pcombs::V0, bool>::type cxpFromP1CC0(void) { return true; }
+/// Function that only compiles if cxpFromP1CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1CC(1127) == xenums::Pcombs::V0, bool>::type cxpFromP1CC1(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=cxp
 TEST_F(TestPcombs, P1CxpCxp)
 {
@@ -1033,7 +1076,9 @@ TEST_F(TestPcombs, P1CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP1CC0<void>());
+	EXPECT_EQ(true, cxpFromP1CC1<void>());
 
 	// fromValue
 	intval = 1126;
@@ -1058,7 +1103,7 @@ TEST_F(TestPcombs, P1CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P1CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1126;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP1CC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -1171,6 +1216,12 @@ TEST_F(TestPcombs, P2OffInl)
 }
 
 
+/// Function that only compiles if cxpFromP2OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2OC(1206) == xenums::Pcombs::V0, bool>::type cxpFromP2OC0(void) { return true; }
+/// Function that only compiles if cxpFromP2OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2OC(1207) == xenums::Pcombs::V0, bool>::type cxpFromP2OC1(void) { return true; }
+/// Function that only compiles if cxpFromP2OC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2OC(-1203) == xenums::Pcombs::V0, bool>::type cxpFromP2OC2(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=off, fromValue=cxp
 TEST_F(TestPcombs, P2OffCxp)
 {
@@ -1179,7 +1230,10 @@ TEST_F(TestPcombs, P2OffCxp)
 	catch (std::logic_error e) { EXPECT_STREQ("getP2OC() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP2OC0<void>());
+	EXPECT_EQ(true, cxpFromP2OC1<void>());
+	EXPECT_EQ(true, cxpFromP2OC2<void>());
 
 	// fromValue
 	intval = 1206;
@@ -1204,7 +1258,7 @@ TEST_F(TestPcombs, P2OffCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2OC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1206;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP2OC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -1442,6 +1496,12 @@ TEST_F(TestPcombs, P2ExtInl)
 }
 
 
+/// Function that only compiles if cxpFromP2EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2EC(1216) == xenums::Pcombs::V0, bool>::type cxpFromP2EC0(void) { return true; }
+/// Function that only compiles if cxpFromP2EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2EC(1217) == xenums::Pcombs::V0, bool>::type cxpFromP2EC1(void) { return true; }
+/// Function that only compiles if cxpFromP2EC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2EC(-1207) == xenums::Pcombs::V0, bool>::type cxpFromP2EC2(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=ext, fromValue=cxp
 TEST_F(TestPcombs, P2ExtCxp)
 {
@@ -1492,7 +1552,10 @@ TEST_F(TestPcombs, P2ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP2EC0<void>());
+	EXPECT_EQ(true, cxpFromP2EC1<void>());
+	EXPECT_EQ(true, cxpFromP2EC2<void>());
 
 	// fromValue
 	intval = 1216;
@@ -1517,7 +1580,7 @@ TEST_F(TestPcombs, P2ExtCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2EC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1216;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP2EC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);
@@ -1800,6 +1863,12 @@ template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CCSize() == 2
 template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CCSize(0) == 3, bool>::type cxpGetP2CCSize1() { return true; }
 /// Function that only compiles if the constexpr getP2CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CC(1,0) == -1211, bool>::type cxpGetP2CC(void) { return true; }
+/// Function that only compiles if cxpFromP2CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(1226) == xenums::Pcombs::V0, bool>::type cxpFromP2CC0(void) { return true; }
+/// Function that only compiles if cxpFromP2CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(1227) == xenums::Pcombs::V0, bool>::type cxpFromP2CC1(void) { return true; }
+/// Function that only compiles if cxpFromP2CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(-1211) == xenums::Pcombs::V0, bool>::type cxpFromP2CC2(void) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=cxp
 TEST_F(TestPcombs, P2CxpCxp)
 {
@@ -1857,7 +1926,10 @@ TEST_F(TestPcombs, P2CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("Offset >= size", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-// FIXME: fromValue() at compile time.
+	// cxpFromValue() at compile time
+	EXPECT_EQ(true, cxpFromP2CC0<void>());
+	EXPECT_EQ(true, cxpFromP2CC1<void>());
+	EXPECT_EQ(true, cxpFromP2CC2<void>());
 
 	// fromValue
 	intval = 1226;
@@ -1882,7 +1954,7 @@ TEST_F(TestPcombs, P2CxpCxp)
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'P2CC'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
-	// cxpFromValue (at runtime)
+	// cxpFromValue() at runtime
 	intval = 1226;
 	EXPECT_EQ(true, xenums::Pcombs::_cxpFromP2CC(intval, value));
 	EXPECT_EQ(value, xenums::Pcombs::V0);

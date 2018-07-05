@@ -966,7 +966,7 @@
  */
 #define _XENUM5_PROP_FROMVALUE_DBGINFO(PNAME, PDEF)						\
 	std::cout										\
-		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_GET(PDEF))<<" "			\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_GET(PDEF))<<": "			\
 		<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, PropOwners))<<" ("			\
 		<<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)))	\
 		<<"):"<<std::endl;								_XENUM5_NWLN \
@@ -1064,8 +1064,7 @@
 		@param propValue Value to look up.						_XENUM5_NWLN \
 		@return Requested enum value.							_XENUM5_NWLN \
 		@throws std::out_of_range if no such custom property value exists.)		\
-/* FIXME: Enable 'constexpr' when function is actually implemented */\
-	static /*constexpr*/ VNAME BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
+	static constexpr VNAME BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue);				_XENUM5_NWLN \
@@ -1078,8 +1077,7 @@
 			_XENUM5_INDENT_ADD							\
 			if it exists, else it is not touched.					_XENUM5_NWLN \
 		@return True if enum-value with given property value was found, else false.)	\
-/* FIXME: Enable 'constexpr' when function is actually implemented */\
-	static /*constexpr*/ bool BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+	static constexpr bool BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
 						  VNAME& enumValue) noexcept			_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\

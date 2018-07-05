@@ -10,9 +10,8 @@
 #define _XENUM5_IMPL_STORE_HPP
 
 /// Enable/disable some debugging stuff.
-// FIXME: 0
-//#define _XENUM5_DEBUG_STORE	0
-#define _XENUM5_DEBUG_STORE	1
+#define _XENUM5_DEBUG_STORE	0
+//#define _XENUM5_DEBUG_STORE	1
 
 // ==============================================================================================
 /**
