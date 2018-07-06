@@ -585,10 +585,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Define debug info for common data structures.
  */
 #define _XENUM5_PLAIN_COMMON_DBGINFO_0(PNAME, PDEF)						\
-	std::cout										\
-		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_COMMON(PDEF))<<": "		\
-		<<"sizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, Values))<<") = "		\
-		<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl;				_XENUM5_NWLN \
+	_XENUM5_PROP_COMMON_DBGINFO(PNAME, PDEF)						\
 
 /**
  * Define debug info for common data structures: None since they are OFF.
@@ -612,10 +609,6 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
  * Define debug info for getter data structures, for depth!=0.
  */
 #define _XENUM5_PLAIN_GETTERS_DBGINFO_0_1(PNAME, PDEF)						\
-	std::cout										\
-		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_GET(PDEF))<<": "		\
-		<<"\t\tsizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
-		<<sizeof(BOOST_PP_CAT(PNAME, ValueNames))<<std::endl;				_XENUM5_NWLN \
 
 /**
  * Define debug info for getter data structures: None since they are OFF.

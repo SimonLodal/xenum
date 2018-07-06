@@ -960,28 +960,6 @@
 	) / sizeof(BOOST_PP_CAT(PNAME, Value)))							\
 
 
-// ========================== propOwners dbginfo =============================
-/**
- * Dump propOwners array.
- */
-#define _XENUM5_PROP_FROMVALUE_DBGINFO(PNAME, PDEF)						\
-	std::cout										\
-		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_GET(PDEF))<<": "			\
-		<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, PropOwners))<<" ("			\
-		<<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)))	\
-		<<"):"<<std::endl;								_XENUM5_NWLN \
-	for (BOOST_PP_CAT(PNAME, Vindex) idx=0;							\
-		idx<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)));	\
-		idx++) {									_XENUM5_NWLN \
-		_XENUM5_INDENT_INC								\
-			std::cout<<"\t\t\t["<<(size_t)idx<<"]"					\
-				<<" eidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].enumValue	\
-				<<" pidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].propIndex	\
-				<<std::endl;							_XENUM5_NWLN \
-		_XENUM5_INDENT_DEC								\
-	}											_XENUM5_NWLN \
-
-
 // ====================== Declare Store::fromValue() =========================
 /**
  * Declare Store::from{pname}().
@@ -1082,6 +1060,43 @@
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_ADD								\
 		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue, enumValue);		_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+// ============================ common dbginfo ===============================
+/**
+ * Dump common data.
+ */
+#define _XENUM5_PROP_COMMON_DBGINFO(PNAME, PDEF)						\
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_COMMON(PDEF))<<": "		\
+		<<"sizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, Values))<<") = "		\
+		<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl;				_XENUM5_NWLN \
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_COMMON(PDEF))<<": "		\
+		<<"sizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
+		<<sizeof(BOOST_PP_CAT(PNAME, ValueNames))<<std::endl;				_XENUM5_NWLN \
+
+
+// ========================== propOwners dbginfo =============================
+/**
+ * Dump propOwners array.
+ */
+#define _XENUM5_PROP_FROMVALUE_DBGINFO(PNAME, PDEF)						\
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_FROM(PDEF))<<": "		\
+		<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, PropOwners))<<" ("			\
+		<<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)))	\
+		<<"):"<<std::endl;								_XENUM5_NWLN \
+	for (BOOST_PP_CAT(PNAME, Vindex) idx=0;							\
+		idx<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)));	\
+		idx++) {									_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+			std::cout<<"\t\t\t["<<(size_t)idx<<"]"					\
+				<<" eidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].enumValue	\
+				<<" pidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].propIndex	\
+				<<std::endl;							_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
 
 
