@@ -3,6 +3,8 @@
  * @author Simon Lodal
  * @copyright 2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
+ *
+ * FIXME: Test bool fromValue()
  */
 
 // For debug only
@@ -331,12 +333,18 @@ TEST_F(TestPcombs, P0ExtCxp)
 // =========================== depth=0 get=cxp ===============================
 
 /// Function that only compiles if the constexpr getP0CO() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CO() == 1008, bool>::type cxpGetP0CO(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CO() == 1008, bool>::type cxpGetP0CO0(void) { return true; }
+/// Function that only compiles if the constexpr getP0CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP0CO() == -1008, bool>::type cxpGetP0CO1(void) { return true; }
+/// Function that only compiles if the constexpr getP0CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP0CO() == 1028, bool>::type cxpGetP0CO2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=off
 TEST_F(TestPcombs, P0CxpOff)
 {
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP0CO<void>());
+	EXPECT_EQ(true, cxpGetP0CO0<void>());
+	EXPECT_EQ(true, cxpGetP0CO1<void>());
+	EXPECT_EQ(true, cxpGetP0CO2<void>());
 
 	// getValue()
 	EXPECT_EQ(1008, xenums::Pcombs::V0.getP0CO());
@@ -354,12 +362,18 @@ TEST_F(TestPcombs, P0CxpOff)
 
 
 /// Function that only compiles if the constexpr getP0CE() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CE() == 1009, bool>::type cxpGetP0CE(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CE() == 1009, bool>::type cxpGetP0CE0(void) { return true; }
+/// Function that only compiles if the constexpr getP0CE() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP0CE() == -1009, bool>::type cxpGetP0CE1(void) { return true; }
+/// Function that only compiles if the constexpr getP0CE() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP0CE() == 1029, bool>::type cxpGetP0CE2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=ext
 TEST_F(TestPcombs, P0CxpExt)
 {
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP0CE<void>());
+	EXPECT_EQ(true, cxpGetP0CE0<void>());
+	EXPECT_EQ(true, cxpGetP0CE1<void>());
+	EXPECT_EQ(true, cxpGetP0CE2<void>());
 
 	// getValue()
 	EXPECT_EQ(1009, xenums::Pcombs::V0.getP0CE());
@@ -389,12 +403,18 @@ TEST_F(TestPcombs, P0CxpExt)
 
 
 /// Function that only compiles if the constexpr getP0CI() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CI() == 1010, bool>::type cxpGetP0CI(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CI() == 1010, bool>::type cxpGetP0CI0(void) { return true; }
+/// Function that only compiles if the constexpr getP0CI() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP0CI() == -1010, bool>::type cxpGetP0CI1(void) { return true; }
+/// Function that only compiles if the constexpr getP0CI() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP0CI() == 1030, bool>::type cxpGetP0CI2(void) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=inl
 TEST_F(TestPcombs, P0CxpInl)
 {
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP0CI<void>());
+	EXPECT_EQ(true, cxpGetP0CI0<void>());
+	EXPECT_EQ(true, cxpGetP0CI1<void>());
+	EXPECT_EQ(true, cxpGetP0CI2<void>());
 
 	// getValue()
 	EXPECT_EQ(1010, xenums::Pcombs::V0.getP0CI());
@@ -424,7 +444,11 @@ TEST_F(TestPcombs, P0CxpInl)
 
 
 /// Function that only compiles if the constexpr getP0CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CC() == 1011, bool>::type cxpGetP0CC(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP0CC() == 1011, bool>::type cxpGetP0CC0(void) { return true; }
+/// Function that only compiles if the constexpr getP0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP0CC() == -1011, bool>::type cxpGetP0CC1(void) { return true; }
+/// Function that only compiles if the constexpr getP0CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP0CC() == 1031, bool>::type cxpGetP0CC2(void) { return true; }
 /// Function that only compiles if cxpFromP0CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(1011) == xenums::Pcombs::V0, bool>::type cxpFromP0CC0(void) { return true; }
 /// Function that only compiles if cxpFromP0CC() actually works at compile time.
@@ -435,7 +459,9 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(1031) ==
 TEST_F(TestPcombs, P0CxpCxp)
 {
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP0CC<void>());
+	EXPECT_EQ(true, cxpGetP0CC0<void>());
+	EXPECT_EQ(true, cxpGetP0CC1<void>());
+	EXPECT_EQ(true, cxpGetP0CC2<void>());
 
 	// getValue()
 	EXPECT_EQ(1011, xenums::Pcombs::V0.getP0CC());
@@ -869,16 +895,31 @@ TEST_F(TestPcombs, P1ExtCxp)
 
 // =========================== depth=1 get=cxp ===============================
 /// Function that only compiles if the constexpr getP1COSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1COSize() == 3, bool>::type cxpGetP1COSize(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1COSize() == 3, bool>::type cxpGetP1COSize0(void) { return true; }
+/// Function that only compiles if the constexpr getP1COSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP1COSize() == 0, bool>::type cxpGetP1COSize1(void) { return true; }
+/// Function that only compiles if the constexpr getP1COSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1COSize() == 1, bool>::type cxpGetP1COSize2(void) { return true; }
 /// Function that only compiles if the constexpr getP1CO() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CO(2) == 1121, bool>::type cxpGetP1CO(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CO(0) == 1120, bool>::type cxpGetP1CO0(void) { return true; }
+/// Function that only compiles if the constexpr getP1CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CO(1) == -1108, bool>::type cxpGetP1CO1(void) { return true; }
+/// Function that only compiles if the constexpr getP1CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CO(2) == 1121, bool>::type cxpGetP1CO2(void) { return true; }
+/// Function that only compiles if the constexpr getP1CO() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CO(0) == -1108, bool>::type cxpGetP1CO3(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=off
 TEST_F(TestPcombs, P1CxpOff)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP1COSize<void>());
+	EXPECT_EQ(true, cxpGetP1COSize0<void>());
+	EXPECT_EQ(true, cxpGetP1COSize1<void>());
+	EXPECT_EQ(true, cxpGetP1COSize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP1CO<void>());
+	EXPECT_EQ(true, cxpGetP1CO0<void>());
+	EXPECT_EQ(true, cxpGetP1CO1<void>());
+	EXPECT_EQ(true, cxpGetP1CO2<void>());
+	EXPECT_EQ(true, cxpGetP1CO3<void>());
 
 	// getValue()
 	// V0
@@ -915,16 +956,31 @@ TEST_F(TestPcombs, P1CxpOff)
 
 
 /// Function that only compiles if the constexpr getP1CESize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CESize() == 3, bool>::type cxpGetP1CESize(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CESize() == 3, bool>::type cxpGetP1CESize0(void) { return true; }
+/// Function that only compiles if the constexpr getP1CESize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP1CESize() == 0, bool>::type cxpGetP1CESize1(void) { return true; }
+/// Function that only compiles if the constexpr getP1CESize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CESize() == 1, bool>::type cxpGetP1CESize2(void) { return true; }
 /// Function that only compiles if the constexpr getP1CE() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CE(2) == 1123, bool>::type cxpGetP1CE(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CE(0) == 1122, bool>::type cxpGetP1CE0(void) { return true; }
+/// Function that only compiles if the constexpr getP1CE() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CE(1) == -1109, bool>::type cxpGetP1CE1(void) { return true; }
+/// Function that only compiles if the constexpr getP1CE() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CE(2) == 1123, bool>::type cxpGetP1CE2(void) { return true; }
+/// Function that only compiles if the constexpr getP1CE() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CE(0) == -1109, bool>::type cxpGetP1CE3(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=ext
 TEST_F(TestPcombs, P1CxpExt)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP1CESize<void>());
+	EXPECT_EQ(true, cxpGetP1CESize0<void>());
+	EXPECT_EQ(true, cxpGetP1CESize1<void>());
+	EXPECT_EQ(true, cxpGetP1CESize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP1CE<void>());
+	EXPECT_EQ(true, cxpGetP1CE0<void>());
+	EXPECT_EQ(true, cxpGetP1CE1<void>());
+	EXPECT_EQ(true, cxpGetP1CE2<void>());
+	EXPECT_EQ(true, cxpGetP1CE3<void>());
 
 	// getValue()
 	// V0
@@ -976,16 +1032,31 @@ TEST_F(TestPcombs, P1CxpExt)
 
 
 /// Function that only compiles if the constexpr getP1CISize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CISize() == 3, bool>::type cxpGetP1CISize(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CISize() == 3, bool>::type cxpGetP1CISize0(void) { return true; }
+/// Function that only compiles if the constexpr getP1CISize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP1CISize() == 0, bool>::type cxpGetP1CISize1(void) { return true; }
+/// Function that only compiles if the constexpr getP1CISize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CISize() == 1, bool>::type cxpGetP1CISize2(void) { return true; }
 /// Function that only compiles if the constexpr getP1CI() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CI(2) == 1125, bool>::type cxpGetP1CI(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CI(0) == 1124, bool>::type cxpGetP1CI0(void) { return true; }
+/// Function that only compiles if the constexpr getP1CI() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CI(1) == -1110, bool>::type cxpGetP1CI1(void) { return true; }
+/// Function that only compiles if the constexpr getP1CI() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CI(2) == 1125, bool>::type cxpGetP1CI2(void) { return true; }
+/// Function that only compiles if the constexpr getP1CI() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CI(0) == -1110, bool>::type cxpGetP1CI3(void) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=inl
 TEST_F(TestPcombs, P1CxpInl)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP1CISize<void>());
+	EXPECT_EQ(true, cxpGetP1CISize0<void>());
+	EXPECT_EQ(true, cxpGetP1CISize1<void>());
+	EXPECT_EQ(true, cxpGetP1CISize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP1CI<void>());
+	EXPECT_EQ(true, cxpGetP1CI0<void>());
+	EXPECT_EQ(true, cxpGetP1CI1<void>());
+	EXPECT_EQ(true, cxpGetP1CI2<void>());
+	EXPECT_EQ(true, cxpGetP1CI3<void>());
 
 	// getValue()
 	// V0
@@ -1037,9 +1108,19 @@ TEST_F(TestPcombs, P1CxpInl)
 
 
 /// Function that only compiles if the constexpr getP1CCSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CCSize() == 3, bool>::type cxpGetP1CCSize(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CCSize() == 3, bool>::type cxpGetP1CCSize0(void) { return true; }
+/// Function that only compiles if the constexpr getP1CCSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP1CCSize() == 0, bool>::type cxpGetP1CCSize1(void) { return true; }
+/// Function that only compiles if the constexpr getP1CCSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CCSize() == 1, bool>::type cxpGetP1CCSize2(void) { return true; }
 /// Function that only compiles if the constexpr getP1CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CC(2) == 1127, bool>::type cxpGetP1CC(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CC(0) == 1126, bool>::type cxpGetP1CC0(void) { return true; }
+/// Function that only compiles if the constexpr getP1CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CC(1) == -1111, bool>::type cxpGetP1CC1(void) { return true; }
+/// Function that only compiles if the constexpr getP1CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP1CC(2) == 1127, bool>::type cxpGetP1CC2(void) { return true; }
+/// Function that only compiles if the constexpr getP1CC() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CC(0) == -1111, bool>::type cxpGetP1CC3(void) { return true; }
 /// Function that only compiles if cxpFromP1CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1CC(1126) == xenums::Pcombs::V0, bool>::type cxpFromP1CC0(void) { return true; }
 /// Function that only compiles if cxpFromP1CC() actually works at compile time.
@@ -1048,9 +1129,14 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1CC(1127) ==
 TEST_F(TestPcombs, P1CxpCxp)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP1CCSize<void>());
+	EXPECT_EQ(true, cxpGetP1CCSize0<void>());
+	EXPECT_EQ(true, cxpGetP1CCSize1<void>());
+	EXPECT_EQ(true, cxpGetP1CCSize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP1CC<void>());
+	EXPECT_EQ(true, cxpGetP1CC0<void>());
+	EXPECT_EQ(true, cxpGetP1CC1<void>());
+	EXPECT_EQ(true, cxpGetP1CC2<void>());
+	EXPECT_EQ(true, cxpGetP1CC3<void>());
 
 	// getValue()
 	// V0
@@ -1609,20 +1695,43 @@ TEST_F(TestPcombs, P2ExtCxp)
 // =========================== depth=2 get=cxp ===============================
 
 /// Function that only compiles if the constexpr getP2COSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize() == 2, bool>::type cxpGetP2COSize() { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize() == 2, bool>::type cxpGetP2COSize0() { return true; }
+/// Function that only compiles if the constexpr getP2COSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP2COSize() == 0, bool>::type cxpGetP2COSize1() { return true; }
+/// Function that only compiles if the constexpr getP2COSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2COSize() == 1, bool>::type cxpGetP2COSize2() { return true; }
+
 /// Function that only compiles if the constexpr getP2COSize(index1) actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize(0) == 3, bool>::type cxpGetP2COSize1() { return true; }
-/// Function that only compiles if the constexpr getP2CO() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(1,0) == -1208, bool>::type cxpGetP2CO(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize(0) == 3, bool>::type cxpGetP2COSize00() { return true; }
+/// Function that only compiles if the constexpr getP2COSize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2COSize(1) == 1, bool>::type cxpGetP2COSize01() { return true; }
+/// Function that only compiles if the constexpr getP2COSize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2COSize(0) == 0, bool>::type cxpGetP2COSize20() { return true; }
+
+/// Function that only compiles if the constexpr getP2CO(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(0,0) == 1220, bool>::type cxpGetP2CO000(void) { return true; }
+/// Function that only compiles if the constexpr getP2CO(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(0,1) == -1208, bool>::type cxpGetP2CO001(void) { return true; }
+/// Function that only compiles if the constexpr getP2CO(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(0,2) == 1221, bool>::type cxpGetP2CO002(void) { return true; }
+/// Function that only compiles if the constexpr getP2CO(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CO(1,0) == -1208, bool>::type cxpGetP2CO010(void) { return true; }
+
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=off
 TEST_F(TestPcombs, P2CxpOff)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP2COSize<void>());
-	// getValueSize(index1) at compile time
+	EXPECT_EQ(true, cxpGetP2COSize0<void>());
 	EXPECT_EQ(true, cxpGetP2COSize1<void>());
+	EXPECT_EQ(true, cxpGetP2COSize2<void>());
+	EXPECT_EQ(true, cxpGetP2COSize00<void>());
+	EXPECT_EQ(true, cxpGetP2COSize01<void>());
+	EXPECT_EQ(true, cxpGetP2COSize20<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP2CO<void>());
+	EXPECT_EQ(true, cxpGetP2CO000<void>());
+	EXPECT_EQ(true, cxpGetP2CO001<void>());
+	EXPECT_EQ(true, cxpGetP2CO002<void>());
+	EXPECT_EQ(true, cxpGetP2CO010<void>());
 
 	// getValue()
 	// V0
@@ -1682,20 +1791,43 @@ TEST_F(TestPcombs, P2CxpOff)
 
 
 /// Function that only compiles if the constexpr getP2CESize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CESize() == 2, bool>::type cxpGetP2CESize() { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CESize() == 2, bool>::type cxpGetP2CESize0() { return true; }
+/// Function that only compiles if the constexpr getP2CESize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP2CESize() == 0, bool>::type cxpGetP2CESize1() { return true; }
+/// Function that only compiles if the constexpr getP2CESize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2CESize() == 1, bool>::type cxpGetP2CESize2() { return true; }
+
 /// Function that only compiles if the constexpr getP2CESize(index1) actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CESize(0) == 3, bool>::type cxpGetP2CESize1() { return true; }
-/// Function that only compiles if the constexpr getP2CE() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CE(1,0) == -1209, bool>::type cxpGetP2CE(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CESize(0) == 3, bool>::type cxpGetP2CESize00() { return true; }
+/// Function that only compiles if the constexpr getP2CESize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CESize(1) == 1, bool>::type cxpGetP2CESize01() { return true; }
+/// Function that only compiles if the constexpr getP2CESize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2CESize(0) == 0, bool>::type cxpGetP2CESize20() { return true; }
+
+/// Function that only compiles if the constexpr getP2CE(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CE(0,0) == 1222, bool>::type cxpGetP2CE000(void) { return true; }
+/// Function that only compiles if the constexpr getP2CE(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CE(0,1) == -1209, bool>::type cxpGetP2CE001(void) { return true; }
+/// Function that only compiles if the constexpr getP2CE(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CE(0,2) == 1223, bool>::type cxpGetP2CE002(void) { return true; }
+/// Function that only compiles if the constexpr getP2CE(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CE(1,0) == -1209, bool>::type cxpGetP2CE010(void) { return true; }
+
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=ext
 TEST_F(TestPcombs, P2CxpExt)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP2CESize<void>());
-	// getValueSize(index1) at compile time
+	EXPECT_EQ(true, cxpGetP2CESize0<void>());
 	EXPECT_EQ(true, cxpGetP2CESize1<void>());
+	EXPECT_EQ(true, cxpGetP2CESize2<void>());
+	EXPECT_EQ(true, cxpGetP2CESize00<void>());
+	EXPECT_EQ(true, cxpGetP2CESize01<void>());
+	EXPECT_EQ(true, cxpGetP2CESize20<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP2CE<void>());
+	EXPECT_EQ(true, cxpGetP2CE000<void>());
+	EXPECT_EQ(true, cxpGetP2CE001<void>());
+	EXPECT_EQ(true, cxpGetP2CE002<void>());
+	EXPECT_EQ(true, cxpGetP2CE010<void>());
 
 	// getValue()
 	// V0
@@ -1770,20 +1902,43 @@ TEST_F(TestPcombs, P2CxpExt)
 
 
 /// Function that only compiles if the constexpr getP2CISize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CISize() == 2, bool>::type cxpGetP2CISize() { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CISize() == 2, bool>::type cxpGetP2CISize0() { return true; }
+/// Function that only compiles if the constexpr getP2CISize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP2CISize() == 0, bool>::type cxpGetP2CISize1() { return true; }
+/// Function that only compiles if the constexpr getP2CISize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2CISize() == 1, bool>::type cxpGetP2CISize2() { return true; }
+
 /// Function that only compiles if the constexpr getP2CISize(index1) actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CISize(0) == 3, bool>::type cxpGetP2CISize1() { return true; }
-/// Function that only compiles if the constexpr getP2CI() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CI(1,0) == -1210, bool>::type cxpGetP2CI(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CISize(0) == 3, bool>::type cxpGetP2CISize00() { return true; }
+/// Function that only compiles if the constexpr getP2CISize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CISize(1) == 1, bool>::type cxpGetP2CISize01() { return true; }
+/// Function that only compiles if the constexpr getP2CISize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2CISize(0) == 0, bool>::type cxpGetP2CISize20() { return true; }
+
+/// Function that only compiles if the constexpr getP2CI(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CI(0,0) == 1224, bool>::type cxpGetP2CI000(void) { return true; }
+/// Function that only compiles if the constexpr getP2CI(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CI(0,1) == -1210, bool>::type cxpGetP2CI001(void) { return true; }
+/// Function that only compiles if the constexpr getP2CI(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CI(0,2) == 1225, bool>::type cxpGetP2CI002(void) { return true; }
+/// Function that only compiles if the constexpr getP2CI(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CI(1,0) == -1210, bool>::type cxpGetP2CI010(void) { return true; }
+
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=inl
 TEST_F(TestPcombs, P2CxpInl)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP2CISize<void>());
-	// getValueSize(index1) at compile time
+	EXPECT_EQ(true, cxpGetP2CISize0<void>());
 	EXPECT_EQ(true, cxpGetP2CISize1<void>());
+	EXPECT_EQ(true, cxpGetP2CISize2<void>());
+	EXPECT_EQ(true, cxpGetP2CISize00<void>());
+	EXPECT_EQ(true, cxpGetP2CISize01<void>());
+	EXPECT_EQ(true, cxpGetP2CISize20<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP2CI<void>());
+	EXPECT_EQ(true, cxpGetP2CI000<void>());
+	EXPECT_EQ(true, cxpGetP2CI001<void>());
+	EXPECT_EQ(true, cxpGetP2CI002<void>());
+	EXPECT_EQ(true, cxpGetP2CI010<void>());
 
 	// getValue()
 	// V0
@@ -1858,11 +2013,28 @@ TEST_F(TestPcombs, P2CxpInl)
 
 
 /// Function that only compiles if the constexpr getP2CCSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CCSize() == 2, bool>::type cxpGetP2CCSize() { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CCSize() == 2, bool>::type cxpGetP2CCSize0() { return true; }
+/// Function that only compiles if the constexpr getP2CCSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V1.getP2CCSize() == 0, bool>::type cxpGetP2CCSize1() { return true; }
+/// Function that only compiles if the constexpr getP2CCSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2CCSize() == 1, bool>::type cxpGetP2CCSize2() { return true; }
+
 /// Function that only compiles if the constexpr getP2CCSize(index1) actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CCSize(0) == 3, bool>::type cxpGetP2CCSize1() { return true; }
-/// Function that only compiles if the constexpr getP2CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CC(1,0) == -1211, bool>::type cxpGetP2CC(void) { return true; }
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CCSize(0) == 3, bool>::type cxpGetP2CCSize00() { return true; }
+/// Function that only compiles if the constexpr getP2CCSize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CCSize(1) == 1, bool>::type cxpGetP2CCSize01() { return true; }
+/// Function that only compiles if the constexpr getP2CCSize(index1) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V2.getP2CCSize(0) == 0, bool>::type cxpGetP2CCSize20() { return true; }
+
+/// Function that only compiles if the constexpr getP2CC(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CC(0,0) == 1226, bool>::type cxpGetP2CC000(void) { return true; }
+/// Function that only compiles if the constexpr getP2CC(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CC(0,1) == -1211, bool>::type cxpGetP2CC001(void) { return true; }
+/// Function that only compiles if the constexpr getP2CC(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CC(0,2) == 1227, bool>::type cxpGetP2CC002(void) { return true; }
+/// Function that only compiles if the constexpr getP2CC(index1,index2) actually works at compile time.
+template <class T> typename std::enable_if<xenums::Pcombs::V0.getP2CC(1,0) == -1211, bool>::type cxpGetP2CC010(void) { return true; }
+
 /// Function that only compiles if cxpFromP2CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(1226) == xenums::Pcombs::V0, bool>::type cxpFromP2CC0(void) { return true; }
 /// Function that only compiles if cxpFromP2CC() actually works at compile time.
@@ -1873,11 +2045,17 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(-1211) =
 TEST_F(TestPcombs, P2CxpCxp)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetP2CCSize<void>());
-	// getValueSize(index1) at compile time
+	EXPECT_EQ(true, cxpGetP2CCSize0<void>());
 	EXPECT_EQ(true, cxpGetP2CCSize1<void>());
+	EXPECT_EQ(true, cxpGetP2CCSize2<void>());
+	EXPECT_EQ(true, cxpGetP2CCSize00<void>());
+	EXPECT_EQ(true, cxpGetP2CCSize01<void>());
+	EXPECT_EQ(true, cxpGetP2CCSize20<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetP2CC<void>());
+	EXPECT_EQ(true, cxpGetP2CC000<void>());
+	EXPECT_EQ(true, cxpGetP2CC001<void>());
+	EXPECT_EQ(true, cxpGetP2CC002<void>());
+	EXPECT_EQ(true, cxpGetP2CC010<void>());
 
 	// getValue()
 	// V0
