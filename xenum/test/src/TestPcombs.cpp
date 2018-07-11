@@ -132,6 +132,10 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0OC(1003) ==
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0OC(-1003) == xenums::Pcombs::V1, bool>::type cxpFromP0OC1(void) { return true; }
 /// Function that only compiles if cxpFromP0OC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0OC(1023) == xenums::Pcombs::V2, bool>::type cxpFromP0OC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP0OC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromP0OC(V) returns with success, and returns true if so; for testing that cxpFromP0OC() fails correctly at compile time.
+template<int V> bool cxpFromP0OC3(typename std::enable_if<xenums::Pcombs::_cxpFromP0OC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=off, fromValue=cxp
 TEST_F(TestPcombs, P0OffCxp)
 {
@@ -144,6 +148,11 @@ TEST_F(TestPcombs, P0OffCxp)
 	EXPECT_EQ(true, cxpFromP0OC0<void>());
 	EXPECT_EQ(true, cxpFromP0OC1<void>());
 	EXPECT_EQ(true, cxpFromP0OC2<void>());
+	EXPECT_EQ(false, cxpFromP0OC3<1002>(0));
+	EXPECT_EQ(true, cxpFromP0OC3<1003>(0));
+	EXPECT_EQ(true, cxpFromP0OC3<1023>(0));
+	EXPECT_EQ(false, cxpFromP0OC3<1024>(0));
+	EXPECT_EQ(false, cxpFromP0OC3<42>(0));
 
 	// fromValue
 	intval = 1003;
@@ -274,6 +283,10 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0EC(1007) ==
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0EC(-1007) == xenums::Pcombs::V1, bool>::type cxpFromP0EC1(void) { return true; }
 /// Function that only compiles if cxpFromP0EC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0EC(1027) == xenums::Pcombs::V2, bool>::type cxpFromP0EC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP0EC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromP0EC(V) returns with success, and returns true if so; for testing that cxpFromP0EC() fails correctly at compile time.
+template<int V> bool cxpFromP0EC3(typename std::enable_if<xenums::Pcombs::_cxpFromP0EC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=ext, fromValue=cxp
 TEST_F(TestPcombs, P0ExtCxp)
 {
@@ -286,6 +299,11 @@ TEST_F(TestPcombs, P0ExtCxp)
 	EXPECT_EQ(true, cxpFromP0EC0<void>());
 	EXPECT_EQ(true, cxpFromP0EC1<void>());
 	EXPECT_EQ(true, cxpFromP0EC2<void>());
+	EXPECT_EQ(false, cxpFromP0EC3<1006>(0));
+	EXPECT_EQ(true, cxpFromP0EC3<1007>(0));
+	EXPECT_EQ(true, cxpFromP0EC3<1027>(0));
+	EXPECT_EQ(false, cxpFromP0EC3<1028>(0));
+	EXPECT_EQ(false, cxpFromP0EC3<42>(0));
 
 	// fromValue
 	intval = 1007;
@@ -455,6 +473,10 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(1011) ==
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(-1011) == xenums::Pcombs::V1, bool>::type cxpFromP0CC1(void) { return true; }
 /// Function that only compiles if cxpFromP0CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(1031) == xenums::Pcombs::V2, bool>::type cxpFromP0CC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP0CC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromP0CC(V) returns with success, and returns true if so; for testing that cxpFromP0CC() fails correctly at compile time.
+template<int V> bool cxpFromP0CC3(typename std::enable_if<xenums::Pcombs::_cxpFromP0CC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=cxp
 TEST_F(TestPcombs, P0CxpCxp)
 {
@@ -472,6 +494,11 @@ TEST_F(TestPcombs, P0CxpCxp)
 	EXPECT_EQ(true, cxpFromP0CC0<void>());
 	EXPECT_EQ(true, cxpFromP0CC1<void>());
 	EXPECT_EQ(true, cxpFromP0CC2<void>());
+	EXPECT_EQ(false, cxpFromP0CC3<1010>(0));
+	EXPECT_EQ(true, cxpFromP0CC3<1011>(0));
+	EXPECT_EQ(true, cxpFromP0CC3<1031>(0));
+	EXPECT_EQ(false, cxpFromP0CC3<1032>(0));
+	EXPECT_EQ(false, cxpFromP0CC3<42>(0));
 
 	// fromValue
 	intval = 1011;
@@ -607,6 +634,10 @@ TEST_F(TestPcombs, P1OffInl)
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1OC(1106) == xenums::Pcombs::V0, bool>::type cxpFromP1OC0(void) { return true; }
 /// Function that only compiles if cxpFromP1OC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1OC(1107) == xenums::Pcombs::V0, bool>::type cxpFromP1OC1(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP1OC2(unsigned v) { return false; }
+/// Function that only exists if cxpFromP1OC(V) returns with success, and returns true if so; for testing that cxpFromP1OC() fails correctly at compile time.
+template<int V> bool cxpFromP1OC2(typename std::enable_if<xenums::Pcombs::_cxpFromP1OC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=off, fromValue=cxp
 TEST_F(TestPcombs, P1OffCxp)
 {
@@ -618,6 +649,11 @@ TEST_F(TestPcombs, P1OffCxp)
 	// cxpFromValue() at compile time
 	EXPECT_EQ(true, cxpFromP1OC0<void>());
 	EXPECT_EQ(true, cxpFromP1OC1<void>());
+	EXPECT_EQ(false, cxpFromP1OC2<1105>(0));
+	EXPECT_EQ(true, cxpFromP1OC2<1106>(0));
+	EXPECT_EQ(true, cxpFromP1OC2<1107>(0));
+	EXPECT_EQ(false, cxpFromP1OC2<1108>(0));
+	EXPECT_EQ(false, cxpFromP1OC2<42>(0));
 
 	// fromValue
 	intval = 1106;
@@ -813,6 +849,10 @@ TEST_F(TestPcombs, P1ExtInl)
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1EC(1116) == xenums::Pcombs::V0, bool>::type cxpFromP1EC0(void) { return true; }
 /// Function that only compiles if cxpFromP1EC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1EC(1117) == xenums::Pcombs::V0, bool>::type cxpFromP1EC1(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP1EC2(unsigned v) { return false; }
+/// Function that only exists if cxpFromP1EC(V) returns with success, and returns true if so; for testing that cxpFromP1EC() fails correctly at compile time.
+template<int V> bool cxpFromP1EC2(typename std::enable_if<xenums::Pcombs::_cxpFromP1EC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=ext, fromValue=cxp
 TEST_F(TestPcombs, P1ExtCxp)
 {
@@ -843,6 +883,11 @@ TEST_F(TestPcombs, P1ExtCxp)
 	// cxpFromValue() at compile time
 	EXPECT_EQ(true, cxpFromP1EC0<void>());
 	EXPECT_EQ(true, cxpFromP1EC1<void>());
+	EXPECT_EQ(false, cxpFromP1EC2<1115>(0));
+	EXPECT_EQ(true, cxpFromP1EC2<1116>(0));
+	EXPECT_EQ(true, cxpFromP1EC2<1117>(0));
+	EXPECT_EQ(false, cxpFromP1EC2<1118>(0));
+	EXPECT_EQ(false, cxpFromP1EC2<42>(0));
 
 	// fromValue
 	intval = 1116;
@@ -1125,6 +1170,10 @@ template <class T> typename std::enable_if<xenums::Pcombs::V2.getP1CC(0) == -111
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1CC(1126) == xenums::Pcombs::V0, bool>::type cxpFromP1CC0(void) { return true; }
 /// Function that only compiles if cxpFromP1CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP1CC(1127) == xenums::Pcombs::V0, bool>::type cxpFromP1CC1(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP1CC2(unsigned v) { return false; }
+/// Function that only exists if cxpFromP1CC(V) returns with success, and returns true if so; for testing that cxpFromP1CC() fails correctly at compile time.
+template<int V> bool cxpFromP1CC2(typename std::enable_if<xenums::Pcombs::_cxpFromP1CC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=cxp
 TEST_F(TestPcombs, P1CxpCxp)
 {
@@ -1165,6 +1214,11 @@ TEST_F(TestPcombs, P1CxpCxp)
 	// cxpFromValue() at compile time
 	EXPECT_EQ(true, cxpFromP1CC0<void>());
 	EXPECT_EQ(true, cxpFromP1CC1<void>());
+	EXPECT_EQ(false, cxpFromP1CC2<1125>(0));
+	EXPECT_EQ(true, cxpFromP1CC2<1126>(0));
+	EXPECT_EQ(true, cxpFromP1CC2<1127>(0));
+	EXPECT_EQ(false, cxpFromP1CC2<1128>(0));
+	EXPECT_EQ(false, cxpFromP1CC2<42>(0));
 
 	// fromValue
 	intval = 1126;
@@ -1308,6 +1362,10 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2OC(1206) ==
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2OC(1207) == xenums::Pcombs::V0, bool>::type cxpFromP2OC1(void) { return true; }
 /// Function that only compiles if cxpFromP2OC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2OC(-1203) == xenums::Pcombs::V0, bool>::type cxpFromP2OC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP2OC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromP2OC(V) returns with success, and returns true if so; for testing that cxpFromP2OC() fails correctly at compile time.
+template<int V> bool cxpFromP2OC3(typename std::enable_if<xenums::Pcombs::_cxpFromP2OC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=off, fromValue=cxp
 TEST_F(TestPcombs, P2OffCxp)
 {
@@ -1320,6 +1378,11 @@ TEST_F(TestPcombs, P2OffCxp)
 	EXPECT_EQ(true, cxpFromP2OC0<void>());
 	EXPECT_EQ(true, cxpFromP2OC1<void>());
 	EXPECT_EQ(true, cxpFromP2OC2<void>());
+	EXPECT_EQ(false, cxpFromP2OC3<1205>(0));
+	EXPECT_EQ(true, cxpFromP2OC3<1206>(0));
+	EXPECT_EQ(true, cxpFromP2OC3<1207>(0));
+	EXPECT_EQ(false, cxpFromP2OC3<1208>(0));
+	EXPECT_EQ(false, cxpFromP2OC3<42>(0));
 
 	// fromValue
 	intval = 1206;
@@ -1588,6 +1651,10 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2EC(1216) ==
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2EC(1217) == xenums::Pcombs::V0, bool>::type cxpFromP2EC1(void) { return true; }
 /// Function that only compiles if cxpFromP2EC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2EC(-1207) == xenums::Pcombs::V0, bool>::type cxpFromP2EC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP2EC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromP2EC(V) returns with success, and returns true if so; for testing that cxpFromP2EC() fails correctly at compile time.
+template<int V> bool cxpFromP2EC3(typename std::enable_if<xenums::Pcombs::_cxpFromP2EC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=ext, fromValue=cxp
 TEST_F(TestPcombs, P2ExtCxp)
 {
@@ -1642,6 +1709,11 @@ TEST_F(TestPcombs, P2ExtCxp)
 	EXPECT_EQ(true, cxpFromP2EC0<void>());
 	EXPECT_EQ(true, cxpFromP2EC1<void>());
 	EXPECT_EQ(true, cxpFromP2EC2<void>());
+	EXPECT_EQ(false, cxpFromP2EC3<1215>(0));
+	EXPECT_EQ(true, cxpFromP2EC3<1216>(0));
+	EXPECT_EQ(true, cxpFromP2EC3<1217>(0));
+	EXPECT_EQ(false, cxpFromP2EC3<1218>(0));
+	EXPECT_EQ(false, cxpFromP2EC3<42>(0));
 
 	// fromValue
 	intval = 1216;
@@ -2041,6 +2113,12 @@ template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(1226) ==
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(1227) == xenums::Pcombs::V0, bool>::type cxpFromP2CC1(void) { return true; }
 /// Function that only compiles if cxpFromP2CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(-1211) == xenums::Pcombs::V0, bool>::type cxpFromP2CC2(void) { return true; }
+
+/// Fallback function that always exists and always returns false.
+template<int V> bool cxpFromP2CC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromP2CC(V) returns with success, and returns true if so; for testing that cxpFromP2CC() fails correctly at compile time.
+template<int V> bool cxpFromP2CC3(typename std::enable_if<xenums::Pcombs::_cxpFromP2CC(V).toTrue(), int>::type) { return true; }
+
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=cxp
 TEST_F(TestPcombs, P2CxpCxp)
 {
@@ -2108,6 +2186,11 @@ TEST_F(TestPcombs, P2CxpCxp)
 	EXPECT_EQ(true, cxpFromP2CC0<void>());
 	EXPECT_EQ(true, cxpFromP2CC1<void>());
 	EXPECT_EQ(true, cxpFromP2CC2<void>());
+	EXPECT_EQ(false, cxpFromP2CC3<1225>(0));
+	EXPECT_EQ(true, cxpFromP2CC3<1226>(0));
+	EXPECT_EQ(true, cxpFromP2CC3<1227>(0));
+	EXPECT_EQ(false, cxpFromP2CC3<1228>(0));
+	EXPECT_EQ(false, cxpFromP2CC3<42>(0));
 
 	// fromValue
 	intval = 1226;

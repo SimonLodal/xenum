@@ -68,6 +68,9 @@ public:
 	template<int doEnable = enableGetIdentifier>
 	typename std::enable_if<doEnable==0, const char*>::type
 	getIdentifier(void) const { throw std::logic_error("getIdentifier() is configured 'off'."); }
+
+	/// Used by unit test to convert just any xenumvalue to 'true'.
+	constexpr bool toTrue(void) const { return true; }
 #endif
 
 public:

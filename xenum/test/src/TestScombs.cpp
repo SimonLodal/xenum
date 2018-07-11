@@ -127,12 +127,25 @@ TEST_F(TestScombs, S0OffInl)
 }
 
 
+/// Values for testing cxpFromS0OC()
+/// @{
+constexpr char S0OCv0[] = "1003";
+constexpr char S0OCv1[] = "-1003";
+constexpr char S0OCv2[] = "1023";
+constexpr char S0OCv3[] = "1002";
+constexpr char S0OCv4[] = "1024";
+constexpr char S0OCv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS0OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC("1003") == xenums::Scombs::V0, bool>::type cxpFromS0OC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC(S0OCv0) == xenums::Scombs::V0, bool>::type cxpFromS0OC0(void) { return true; }
 /// Function that only compiles if cxpFromS0OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC("-1003") == xenums::Scombs::V1, bool>::type cxpFromS0OC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC(S0OCv1) == xenums::Scombs::V1, bool>::type cxpFromS0OC1(void) { return true; }
 /// Function that only compiles if cxpFromS0OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC("1023") == xenums::Scombs::V2, bool>::type cxpFromS0OC2(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0OC(S0OCv2) == xenums::Scombs::V2, bool>::type cxpFromS0OC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS0OC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS0OC(V) returns with success, and returns true if so; for testing that cxpFromS0OC() fails correctly at compile time.
+template<const char* V> bool cxpFromS0OC3(typename std::enable_if<xenums::Scombs::_cxpFromS0OC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=off, fromValue=cxp
 TEST_F(TestScombs, S0OffCxp)
 {
@@ -145,6 +158,12 @@ TEST_F(TestScombs, S0OffCxp)
 	EXPECT_EQ(true, cxpFromS0OC0<void>());
 	EXPECT_EQ(true, cxpFromS0OC1<void>());
 	EXPECT_EQ(true, cxpFromS0OC2<void>());
+	EXPECT_EQ(true, cxpFromS0OC3<S0OCv0>(0));
+	EXPECT_EQ(true, cxpFromS0OC3<S0OCv1>(0));
+	EXPECT_EQ(true, cxpFromS0OC3<S0OCv2>(0));
+	EXPECT_EQ(false, cxpFromS0OC3<S0OCv3>(0));
+	EXPECT_EQ(false, cxpFromS0OC3<S0OCv4>(0));
+	EXPECT_EQ(false, cxpFromS0OC3<S0OCv5>(0));
 
 	// fromValue
 	strval = "1003";
@@ -296,12 +315,25 @@ TEST_F(TestScombs, S0ExtInl)
 }
 
 
+/// Values for testing cxpFromS0EC()
+/// @{
+constexpr char S0ECv0[] = "1007";
+constexpr char S0ECv1[] = "-1007";
+constexpr char S0ECv2[] = "1027";
+constexpr char S0ECv3[] = "1006";
+constexpr char S0ECv4[] = "1028";
+constexpr char S0ECv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS0EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC("1007") == xenums::Scombs::V0, bool>::type cxpFromS0EC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC(S0ECv0) == xenums::Scombs::V0, bool>::type cxpFromS0EC0(void) { return true; }
 /// Function that only compiles if cxpFromS0EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC("-1007") == xenums::Scombs::V1, bool>::type cxpFromS0EC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC(S0ECv1) == xenums::Scombs::V1, bool>::type cxpFromS0EC1(void) { return true; }
 /// Function that only compiles if cxpFromS0EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC("1027") == xenums::Scombs::V2, bool>::type cxpFromS0EC2(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0EC(S0ECv2) == xenums::Scombs::V2, bool>::type cxpFromS0EC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS0EC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS0EC(V) returns with success, and returns true if so; for testing that cxpFromS0EC() fails correctly at compile time.
+template<const char* V> bool cxpFromS0EC3(typename std::enable_if<xenums::Scombs::_cxpFromS0EC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=ext, fromValue=cxp
 TEST_F(TestScombs, S0ExtCxp)
 {
@@ -323,6 +355,12 @@ TEST_F(TestScombs, S0ExtCxp)
 	EXPECT_EQ(true, cxpFromS0EC0<void>());
 	EXPECT_EQ(true, cxpFromS0EC1<void>());
 	EXPECT_EQ(true, cxpFromS0EC2<void>());
+	EXPECT_EQ(true, cxpFromS0EC3<S0ECv0>(0));
+	EXPECT_EQ(true, cxpFromS0EC3<S0ECv1>(0));
+	EXPECT_EQ(true, cxpFromS0EC3<S0ECv2>(0));
+	EXPECT_EQ(false, cxpFromS0EC3<S0ECv3>(0));
+	EXPECT_EQ(false, cxpFromS0EC3<S0ECv4>(0));
+	EXPECT_EQ(false, cxpFromS0EC3<S0ECv5>(0));
 
 	// fromValue
 	strval = "1007";
@@ -549,12 +587,25 @@ template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Sco
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V1.getS0CC(), "-1011"), bool>::type cxpGetS0CC1(void) { return true; }
 /// Function that only compiles if the constexpr getS0CC() actually works at compile time.
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V2.getS0CC(), "1031"), bool>::type cxpGetS0CC2(void) { return true; }
+/// Values for testing cxpFromS0CC()
+/// @{
+constexpr char S0CCv0[] = "1011";
+constexpr char S0CCv1[] = "-1011";
+constexpr char S0CCv2[] = "1031";
+constexpr char S0CCv3[] = "1010";
+constexpr char S0CCv4[] = "1032";
+constexpr char S0CCv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS0CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0CC("1011") == xenums::Scombs::V0, bool>::type cxpFromS0CC0(void) { return true; }
 /// Function that only compiles if cxpFromS0CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0CC("-1011") == xenums::Scombs::V1, bool>::type cxpFromS0CC1(void) { return true; }
 /// Function that only compiles if cxpFromS0CC() actually works at compile time.
 template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS0CC("1031") == xenums::Scombs::V2, bool>::type cxpFromS0CC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS0CC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS0CC(V) returns with success, and returns true if so; for testing that cxpFromS0CC() fails correctly at compile time.
+template<const char* V> bool cxpFromS0CC3(typename std::enable_if<xenums::Scombs::_cxpFromS0CC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=0, getValue=cxp, fromValue=cxp
 TEST_F(TestScombs, S0CxpCxp)
 {
@@ -585,6 +636,12 @@ TEST_F(TestScombs, S0CxpCxp)
 	EXPECT_EQ(true, cxpFromS0CC0<void>());
 	EXPECT_EQ(true, cxpFromS0CC1<void>());
 	EXPECT_EQ(true, cxpFromS0CC2<void>());
+	EXPECT_EQ(true, cxpFromS0CC3<S0CCv0>(0));
+	EXPECT_EQ(true, cxpFromS0CC3<S0CCv1>(0));
+	EXPECT_EQ(true, cxpFromS0CC3<S0CCv2>(0));
+	EXPECT_EQ(false, cxpFromS0CC3<S0CCv3>(0));
+	EXPECT_EQ(false, cxpFromS0CC3<S0CCv4>(0));
+	EXPECT_EQ(false, cxpFromS0CC3<S0CCv5>(0));
 
 	// fromValue
 	strval = "1011";
@@ -716,10 +773,23 @@ TEST_F(TestScombs, S1OffInl)
 }
 
 
+/// Values for testing cxpFromS1OC()
+/// @{
+constexpr char S1OCv0[] = "1106";
+//constexpr char S1OCv1[] = "-1103";
+constexpr char S1OCv2[] = "1107";
+constexpr char S1OCv3[] = "1105";
+constexpr char S1OCv4[] = "1108";
+constexpr char S1OCv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS1OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1OC("1106") == xenums::Scombs::V0, bool>::type cxpFromS1OC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1OC(S1OCv0) == xenums::Scombs::V0, bool>::type cxpFromS1OC0(void) { return true; }
 /// Function that only compiles if cxpFromS1OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1OC("1107") == xenums::Scombs::V0, bool>::type cxpFromS1OC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1OC(S1OCv2) == xenums::Scombs::V0, bool>::type cxpFromS1OC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS1OC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS1OC(V) returns with success, and returns true if so; for testing that cxpFromS1OC() fails correctly at compile time.
+template<const char* V> bool cxpFromS1OC3(typename std::enable_if<xenums::Scombs::_cxpFromS1OC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=off, fromValue=cxp
 TEST_F(TestScombs, S1OffCxp)
 {
@@ -730,7 +800,13 @@ TEST_F(TestScombs, S1OffCxp)
 
 	// cxpFromValue() at compile time
 	EXPECT_EQ(true, cxpFromS1OC0<void>());
-	EXPECT_EQ(true, cxpFromS1OC1<void>());
+	EXPECT_EQ(true, cxpFromS1OC2<void>());
+	EXPECT_EQ(true, cxpFromS1OC3<S1OCv0>(0));
+	//EXPECT_EQ(true, cxpFromS1OC3<S1OCv1>(0));
+	EXPECT_EQ(true, cxpFromS1OC3<S1OCv2>(0));
+	EXPECT_EQ(false, cxpFromS1OC3<S1OCv3>(0));
+	EXPECT_EQ(false, cxpFromS1OC3<S1OCv4>(0));
+	EXPECT_EQ(false, cxpFromS1OC3<S1OCv5>(0));
 
 	// fromValue
 	strval = "1106";
@@ -963,10 +1039,23 @@ TEST_F(TestScombs, S1ExtInl)
 }
 
 
+/// Values for testing cxpFromS1EC()
+/// @{
+constexpr char S1ECv0[] = "1116";
+//constexpr char S1ECv1[] = "-1107";
+constexpr char S1ECv2[] = "1117";
+constexpr char S1ECv3[] = "1115";
+constexpr char S1ECv4[] = "1118";
+constexpr char S1ECv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS1EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1EC("1116") == xenums::Scombs::V0, bool>::type cxpFromS1EC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1EC(S1ECv0) == xenums::Scombs::V0, bool>::type cxpFromS1EC0(void) { return true; }
 /// Function that only compiles if cxpFromS1EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1EC("1117") == xenums::Scombs::V0, bool>::type cxpFromS1EC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1EC(S1ECv2) == xenums::Scombs::V0, bool>::type cxpFromS1EC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS1EC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS1EC(V) returns with success, and returns true if so; for testing that cxpFromS1EC() fails correctly at compile time.
+template<const char* V> bool cxpFromS1EC3(typename std::enable_if<xenums::Scombs::_cxpFromS1EC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=ext, fromValue=cxp
 TEST_F(TestScombs, S1ExtCxp)
 {
@@ -1009,7 +1098,13 @@ TEST_F(TestScombs, S1ExtCxp)
 
 	// cxpFromValue() at compile time
 	EXPECT_EQ(true, cxpFromS1EC0<void>());
-	EXPECT_EQ(true, cxpFromS1EC1<void>());
+	EXPECT_EQ(true, cxpFromS1EC2<void>());
+	EXPECT_EQ(true, cxpFromS1EC3<S1ECv0>(0));
+	//EXPECT_EQ(true, cxpFromS1EC3<S1ECv1>(0));
+	EXPECT_EQ(true, cxpFromS1EC3<S1ECv2>(0));
+	EXPECT_EQ(false, cxpFromS1EC3<S1ECv3>(0));
+	EXPECT_EQ(false, cxpFromS1EC3<S1ECv4>(0));
+	EXPECT_EQ(false, cxpFromS1EC3<S1ECv5>(0));
 
 	// fromValue
 	strval = "1116";
@@ -1382,10 +1477,23 @@ template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Sco
 /// Function that only compiles if the constexpr getS1CC() actually works at compile time.
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V2.getS1CC(0), "-1111"), bool>::type cxpGetS1CC3(void) { return true; }
 
+/// Values for testing cxpFromS1CC()
+/// @{
+constexpr char S1CCv0[] = "1126";
+//constexpr char S1CCv1[] = "-1111";
+constexpr char S1CCv2[] = "1127";
+constexpr char S1CCv3[] = "1125";
+constexpr char S1CCv4[] = "1128";
+constexpr char S1CCv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS1CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1CC("1126") == xenums::Scombs::V0, bool>::type cxpFromS1CC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1CC(S1CCv0) == xenums::Scombs::V0, bool>::type cxpFromS1CC0(void) { return true; }
 /// Function that only compiles if cxpFromS1CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1CC("1127") == xenums::Scombs::V0, bool>::type cxpFromS1CC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS1CC(S1CCv2) == xenums::Scombs::V0, bool>::type cxpFromS1CC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS1CC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS1CC(V) returns with success, and returns true if so; for testing that cxpFromS1CC() fails correctly at compile time.
+template<const char* V> bool cxpFromS1CC3(typename std::enable_if<xenums::Scombs::_cxpFromS1CC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=1, getValue=cxp, fromValue=cxp
 TEST_F(TestScombs, S1CxpCxp)
 {
@@ -1442,7 +1550,13 @@ TEST_F(TestScombs, S1CxpCxp)
 
 	// cxpFromValue() at compile time
 	EXPECT_EQ(true, cxpFromS1CC0<void>());
-	EXPECT_EQ(true, cxpFromS1CC1<void>());
+	EXPECT_EQ(true, cxpFromS1CC2<void>());
+	EXPECT_EQ(true, cxpFromS1CC3<S1CCv0>(0));
+	//EXPECT_EQ(true, cxpFromS1CC3<S1CCv1>(0));
+	EXPECT_EQ(true, cxpFromS1CC3<S1CCv2>(0));
+	EXPECT_EQ(false, cxpFromS1CC3<S1CCv3>(0));
+	EXPECT_EQ(false, cxpFromS1CC3<S1CCv4>(0));
+	EXPECT_EQ(false, cxpFromS1CC3<S1CCv5>(0));
 
 	// fromValue
 	strval = "1126";
@@ -1580,12 +1694,25 @@ TEST_F(TestScombs, S2OffInl)
 }
 
 
+/// Values for testing cxpFromS2OC()
+/// @{
+constexpr char S2OCv0[] = "1206";
+constexpr char S2OCv1[] = "-1203";
+constexpr char S2OCv2[] = "1207";
+constexpr char S2OCv3[] = "1205";
+constexpr char S2OCv4[] = "1208";
+constexpr char S2OCv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS2OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC("1206") == xenums::Scombs::V0, bool>::type cxpFromS2OC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC(S2OCv0) == xenums::Scombs::V0, bool>::type cxpFromS2OC0(void) { return true; }
 /// Function that only compiles if cxpFromS2OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC("1207") == xenums::Scombs::V0, bool>::type cxpFromS2OC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC(S2OCv1) == xenums::Scombs::V0, bool>::type cxpFromS2OC1(void) { return true; }
 /// Function that only compiles if cxpFromS2OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC("-1203") == xenums::Scombs::V0, bool>::type cxpFromS2OC2(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2OC(S2OCv2) == xenums::Scombs::V0, bool>::type cxpFromS2OC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS2OC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS2OC(V) returns with success, and returns true if so; for testing that cxpFromS2OC() fails correctly at compile time.
+template<const char* V> bool cxpFromS2OC3(typename std::enable_if<xenums::Scombs::_cxpFromS2OC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=off, fromValue=cxp
 TEST_F(TestScombs, S2OffCxp)
 {
@@ -1598,6 +1725,12 @@ TEST_F(TestScombs, S2OffCxp)
 	EXPECT_EQ(true, cxpFromS2OC0<void>());
 	EXPECT_EQ(true, cxpFromS2OC1<void>());
 	EXPECT_EQ(true, cxpFromS2OC2<void>());
+	EXPECT_EQ(true, cxpFromS2OC3<S2OCv0>(0));
+	EXPECT_EQ(true, cxpFromS2OC3<S2OCv1>(0));
+	EXPECT_EQ(true, cxpFromS2OC3<S2OCv2>(0));
+	EXPECT_EQ(false, cxpFromS2OC3<S2OCv3>(0));
+	EXPECT_EQ(false, cxpFromS2OC3<S2OCv4>(0));
+	EXPECT_EQ(false, cxpFromS2OC3<S2OCv5>(0));
 
 	// fromValue
 	strval = "1206";
@@ -1917,12 +2050,25 @@ TEST_F(TestScombs, S2ExtInl)
 }
 
 
+/// Values for testing cxpFromS2EC()
+/// @{
+constexpr char S2ECv0[] = "1216";
+constexpr char S2ECv1[] = "-1207";
+constexpr char S2ECv2[] = "1217";
+constexpr char S2ECv3[] = "1215";
+constexpr char S2ECv4[] = "1218";
+constexpr char S2ECv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS2EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC("1216") == xenums::Scombs::V0, bool>::type cxpFromS2EC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC(S2ECv0) == xenums::Scombs::V0, bool>::type cxpFromS2EC0(void) { return true; }
 /// Function that only compiles if cxpFromS2EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC("1217") == xenums::Scombs::V0, bool>::type cxpFromS2EC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC(S2ECv1) == xenums::Scombs::V0, bool>::type cxpFromS2EC1(void) { return true; }
 /// Function that only compiles if cxpFromS2EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC("-1207") == xenums::Scombs::V0, bool>::type cxpFromS2EC2(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2EC(S2ECv2) == xenums::Scombs::V0, bool>::type cxpFromS2EC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS2EC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS2EC(V) returns with success, and returns true if so; for testing that cxpFromS2EC() fails correctly at compile time.
+template<const char* V> bool cxpFromS2EC3(typename std::enable_if<xenums::Scombs::_cxpFromS2EC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=ext, fromValue=cxp
 TEST_F(TestScombs, S2ExtCxp)
 {
@@ -1996,6 +2142,12 @@ TEST_F(TestScombs, S2ExtCxp)
 	EXPECT_EQ(true, cxpFromS2EC0<void>());
 	EXPECT_EQ(true, cxpFromS2EC1<void>());
 	EXPECT_EQ(true, cxpFromS2EC2<void>());
+	EXPECT_EQ(true, cxpFromS2EC3<S2ECv0>(0));
+	EXPECT_EQ(true, cxpFromS2EC3<S2ECv1>(0));
+	EXPECT_EQ(true, cxpFromS2EC3<S2ECv2>(0));
+	EXPECT_EQ(false, cxpFromS2EC3<S2ECv3>(0));
+	EXPECT_EQ(false, cxpFromS2EC3<S2ECv4>(0));
+	EXPECT_EQ(false, cxpFromS2EC3<S2ECv5>(0));
 
 	// fromValue
 	strval = "1216";
@@ -2494,12 +2646,25 @@ template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Sco
 /// Function that only compiles if the constexpr getS2CC() actually works at compile time.
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::Scombs::V0.getS2CC(1,0), "-1211"), bool>::type cxpGetS2CC010(void) { return true; }
 
+/// Values for testing cxpFromS2CC()
+/// @{
+constexpr char S2CCv0[] = "1226";
+constexpr char S2CCv1[] = "-1211";
+constexpr char S2CCv2[] = "1227";
+constexpr char S2CCv3[] = "1225";
+constexpr char S2CCv4[] = "1228";
+constexpr char S2CCv5[] = "42";
+/// @}
 /// Function that only compiles if cxpFromS2CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC("1226") == xenums::Scombs::V0, bool>::type cxpFromS2CC0(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC(S2CCv0) == xenums::Scombs::V0, bool>::type cxpFromS2CC0(void) { return true; }
 /// Function that only compiles if cxpFromS2CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC("1227") == xenums::Scombs::V0, bool>::type cxpFromS2CC1(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC(S2CCv1) == xenums::Scombs::V0, bool>::type cxpFromS2CC1(void) { return true; }
 /// Function that only compiles if cxpFromS2CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC("-1211") == xenums::Scombs::V0, bool>::type cxpFromS2CC2(void) { return true; }
+template <class T> typename std::enable_if<xenums::Scombs::_cxpFromS2CC(S2CCv2) == xenums::Scombs::V0, bool>::type cxpFromS2CC2(void) { return true; }
+/// Fallback function that always exists and always returns false.
+template<const char* V> bool cxpFromS2CC3(unsigned v) { return false; }
+/// Function that only exists if cxpFromS2CC(V) returns with success, and returns true if so; for testing that cxpFromS2CC() fails correctly at compile time.
+template<const char* V> bool cxpFromS2CC3(typename std::enable_if<xenums::Scombs::_cxpFromS2CC(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=cxp
 TEST_F(TestScombs, S2CxpCxp)
 {
@@ -2590,6 +2755,12 @@ TEST_F(TestScombs, S2CxpCxp)
 	EXPECT_EQ(true, cxpFromS2CC0<void>());
 	EXPECT_EQ(true, cxpFromS2CC1<void>());
 	EXPECT_EQ(true, cxpFromS2CC2<void>());
+	EXPECT_EQ(true, cxpFromS2CC3<S2CCv0>(0));
+	EXPECT_EQ(true, cxpFromS2CC3<S2CCv1>(0));
+	EXPECT_EQ(true, cxpFromS2CC3<S2CCv2>(0));
+	EXPECT_EQ(false, cxpFromS2CC3<S2CCv3>(0));
+	EXPECT_EQ(false, cxpFromS2CC3<S2CCv4>(0));
+	EXPECT_EQ(false, cxpFromS2CC3<S2CCv5>(0));
 
 	// fromValue
 	strval = "1226";
