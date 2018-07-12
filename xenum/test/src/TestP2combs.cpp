@@ -45,11 +45,11 @@ TEST_F(TestP2combs, Basics)
 }
 
 
-// ========================================= Depth=2 ============================================
-// =========================== depth=2 get=off ===============================
 
-/// Test xenum with identifier features: depth=2, getValue=off, fromValue=off
-TEST_F(TestP2combs, P2OffOff)
+// ========================================= get=off ============================================
+
+/// Test xenum with identifier features: getValue=off, fromValue=off
+TEST_F(TestP2combs, OffOff)
 {
 	// getValue=off
 	try { success = false; xenums::P2combs::V0.getP2OO(0,0); }
@@ -66,8 +66,8 @@ TEST_F(TestP2combs, P2OffOff)
 }
 
 
-/// Test xenum with identifier features: depth=2, getValue=off, fromValue=ext
-TEST_F(TestP2combs, P2OffExt)
+/// Test xenum with identifier features: getValue=off, fromValue=ext
+TEST_F(TestP2combs, OffExt)
 {
 	// getValue=off
 	try { success = false; xenums::P2combs::V0.getP2OE(0,0); }
@@ -99,8 +99,8 @@ TEST_F(TestP2combs, P2OffExt)
 }
 
 
-/// Test xenum with identifier features: depth=2, getValue=off, fromValue=inl
-TEST_F(TestP2combs, P2OffInl)
+/// Test xenum with identifier features: getValue=off, fromValue=inl
+TEST_F(TestP2combs, OffInl)
 {
 	// getValue=off
 	try { success = false; xenums::P2combs::V0.getP2OI(0,0); }
@@ -142,8 +142,8 @@ template <class T> typename std::enable_if<xenums::P2combs::_cxpFromP2OC(-1203) 
 template<int V> bool cxpFromP2OC3(unsigned v) { return false; }
 /// Function that only exists if cxpFromP2OC(V) returns with success, and returns true if so; for testing that cxpFromP2OC() fails correctly at compile time.
 template<int V> bool cxpFromP2OC3(typename std::enable_if<xenums::P2combs::_cxpFromP2OC(V).toTrue(), int>::type) { return true; }
-/// Test xenum with identifier features: depth=2, getValue=off, fromValue=cxp
-TEST_F(TestP2combs, P2OffCxp)
+/// Test xenum with identifier features: getValue=off, fromValue=cxp
+TEST_F(TestP2combs, OffCxp)
 {
 	// getValue=off
 	try { success = false; xenums::P2combs::V0.getP2OC(0,0); }
@@ -209,10 +209,10 @@ TEST_F(TestP2combs, P2OffCxp)
 
 
 
-// =========================== depth=2 get=ext ===============================
+// ========================================= get=ext ============================================
 
-/// Test xenum with identifier features: depth=2, getValue=ext, fromValue=off
-TEST_F(TestP2combs, P2ExtOff)
+/// Test xenum with identifier features: getValue=ext, fromValue=off
+TEST_F(TestP2combs, ExtOff)
 {
 	// getValue()
 	// V0
@@ -271,8 +271,8 @@ TEST_F(TestP2combs, P2ExtOff)
 }
 
 
-/// Test xenum with identifier features: depth=2, getValue=ext, fromValue=ext
-TEST_F(TestP2combs, P2ExtExt)
+/// Test xenum with identifier features: getValue=ext, fromValue=ext
+TEST_F(TestP2combs, ExtExt)
 {
 	// getValue()
 	// V0
@@ -346,8 +346,8 @@ TEST_F(TestP2combs, P2ExtExt)
 }
 
 
-/// Test xenum with identifier features: depth=2, getValue=ext, fromValue=inl
-TEST_F(TestP2combs, P2ExtInl)
+/// Test xenum with identifier features: getValue=ext, fromValue=inl
+TEST_F(TestP2combs, ExtInl)
 {
 	// getValue()
 	// V0
@@ -431,8 +431,8 @@ template <class T> typename std::enable_if<xenums::P2combs::_cxpFromP2EC(-1207) 
 template<int V> bool cxpFromP2EC3(unsigned v) { return false; }
 /// Function that only exists if cxpFromP2EC(V) returns with success, and returns true if so; for testing that cxpFromP2EC() fails correctly at compile time.
 template<int V> bool cxpFromP2EC3(typename std::enable_if<xenums::P2combs::_cxpFromP2EC(V).toTrue(), int>::type) { return true; }
-/// Test xenum with identifier features: depth=2, getValue=ext, fromValue=cxp
-TEST_F(TestP2combs, P2ExtCxp)
+/// Test xenum with identifier features: getValue=ext, fromValue=cxp
+TEST_F(TestP2combs, ExtCxp)
 {
 	// getValue()
 	// V0
@@ -540,7 +540,7 @@ TEST_F(TestP2combs, P2ExtCxp)
 
 
 
-// =========================== depth=2 get=cxp ===============================
+// ========================================= get=cxp ============================================
 
 /// Function that only compiles if the constexpr getP2COSize() actually works at compile time.
 template <class T> typename std::enable_if<xenums::P2combs::V0.getP2COSize() == 2, bool>::type cxpGetP2COSize0() { return true; }
@@ -565,8 +565,8 @@ template <class T> typename std::enable_if<xenums::P2combs::V0.getP2CO(0,2) == 1
 /// Function that only compiles if the constexpr getP2CO(index1,index2) actually works at compile time.
 template <class T> typename std::enable_if<xenums::P2combs::V0.getP2CO(1,0) == -1208, bool>::type cxpGetP2CO010(void) { return true; }
 
-/// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=off
-TEST_F(TestP2combs, P2CxpOff)
+/// Test xenum with identifier features: getValue=cxp, fromValue=off
+TEST_F(TestP2combs, CxpOff)
 {
 	// getValueSize() at compile time
 	EXPECT_EQ(true, cxpGetP2COSize0<void>());
@@ -661,8 +661,8 @@ template <class T> typename std::enable_if<xenums::P2combs::V0.getP2CE(0,2) == 1
 /// Function that only compiles if the constexpr getP2CE(index1,index2) actually works at compile time.
 template <class T> typename std::enable_if<xenums::P2combs::V0.getP2CE(1,0) == -1209, bool>::type cxpGetP2CE010(void) { return true; }
 
-/// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=ext
-TEST_F(TestP2combs, P2CxpExt)
+/// Test xenum with identifier features: getValue=cxp, fromValue=ext
+TEST_F(TestP2combs, CxpExt)
 {
 	// getValueSize() at compile time
 	EXPECT_EQ(true, cxpGetP2CESize0<void>());
@@ -772,8 +772,8 @@ template <class T> typename std::enable_if<xenums::P2combs::V0.getP2CI(0,2) == 1
 /// Function that only compiles if the constexpr getP2CI(index1,index2) actually works at compile time.
 template <class T> typename std::enable_if<xenums::P2combs::V0.getP2CI(1,0) == -1210, bool>::type cxpGetP2CI010(void) { return true; }
 
-/// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=inl
-TEST_F(TestP2combs, P2CxpInl)
+/// Test xenum with identifier features: getValue=cxp, fromValue=inl
+TEST_F(TestP2combs, CxpInl)
 {
 	// getValueSize() at compile time
 	EXPECT_EQ(true, cxpGetP2CISize0<void>());
@@ -895,8 +895,8 @@ template<int V> bool cxpFromP2CC3(unsigned v) { return false; }
 /// Function that only exists if cxpFromP2CC(V) returns with success, and returns true if so; for testing that cxpFromP2CC() fails correctly at compile time.
 template<int V> bool cxpFromP2CC3(typename std::enable_if<xenums::P2combs::_cxpFromP2CC(V).toTrue(), int>::type) { return true; }
 
-/// Test xenum with identifier features: depth=2, getValue=cxp, fromValue=cxp
-TEST_F(TestP2combs, P2CxpCxp)
+/// Test xenum with identifier features: getValue=cxp, fromValue=cxp
+TEST_F(TestP2combs, CxpCxp)
 {
 	// getValueSize() at compile time
 	EXPECT_EQ(true, cxpGetP2CCSize0<void>());
