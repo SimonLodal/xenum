@@ -918,7 +918,7 @@
 		_XENUM5_INDENT_INC								\
 		_XENUM5_PROP_ITER_VALUES(_XENUM5_PROP_OWNER_DEF, CTXT)				\
 		_XENUM5_INDENT_DEC								\
-	};											_XENUM5_NWLN
+	};											_XENUM5_NWLN \
 
 /**
  * Loop worker for _XENUM5_PROP_OWNERS_DEF().
@@ -935,7 +935,6 @@
 		)										\
 	},											_XENUM5_NWLN \
 
-
 /**
  * Worker for _XENUM5_PROP_OWNER_DEF().
  */
@@ -944,6 +943,17 @@
 		BOOST_PP_CAT(PNAME, ValueNames),						\
 		_XENUM5_PROP_GEN_NODE_NAME(CTXT, INDEXPATH)					\
 	) / sizeof(BOOST_PP_CAT(PNAME, Value)))							\
+
+
+// ============================== ValueCount =================================
+/**
+ * Define number of values.
+ */
+#define _XENUM5_PROP_VALUECOUNT_DEF(PNAME)							\
+	_XENUM5_DOC(Total number of values for custom property PNAME.)				\
+	static constexpr const size_t BOOST_PP_CAT(PNAME, ValueCount) =				\
+		sizeof(BOOST_PP_CAT(PNAME, PropOwners)) /					\
+		sizeof(BOOST_PP_CAT(PNAME, PropOwner));						_XENUM5_NWLN \
 
 
 // ====================== Declare Store::fromValue() =========================

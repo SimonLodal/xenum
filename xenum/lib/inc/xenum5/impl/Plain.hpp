@@ -106,6 +106,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(PNAME:from: _XENUM5_PDEF_IMPL_FROM(PDEF))			\
 #define _XENUM5_PLAIN_FROMVALUE_DECLS_inl(PNAME, PDEF, CTXT)					\
 	_XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
 	_XENUM5_PROP_OWNERS_DEF(static, PNAME, CTXT)						\
+	_XENUM5_PROP_VALUECOUNT_DEF(PNAME)							\
 	_XENUM5_PLAIN_FROMVALUE_STD_DEFS(static, PNAME, PDEF, , )				\
 
 /**
@@ -389,6 +390,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Local:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 #define _XENUM5_PLAIN_FROMVALUE_DEFL_SRC(PNAME, CTXT)						\
 	_XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
 	_XENUM5_PROP_OWNERS_DEF(, PNAME, CTXT)							\
+	_XENUM5_PROP_VALUECOUNT_DEF(PNAME)							\
 
 
 // ========================= Define store members ============================
@@ -903,8 +905,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_INDENT_INC								\
 		_XENUM5_USE_NS_IF_NONEMPTY(LSCOPE)						\
 		for (BOOST_PP_CAT(PNAME, Vindex) index=0;					\
-		     index < (sizeof(BOOST_PP_CAT(PNAME, PropOwners)) /				\
-				sizeof(BOOST_PP_CAT(PNAME, PropOwner)));			\
+		     index < BOOST_PP_CAT(PNAME, ValueCount);					\
 		     index++) {									_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
 			if (propValue == BOOST_PP_CAT(PNAME, Values)				\
@@ -933,8 +934,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_INDENT_INC								\
 		_XENUM5_USE_NS_IF_NONEMPTY(LSCOPE)						\
 		for (BOOST_PP_CAT(PNAME, Vindex) index=0;					\
-		     index < (sizeof(BOOST_PP_CAT(PNAME, PropOwners)) /				\
-				sizeof(BOOST_PP_CAT(PNAME, PropOwner)));			\
+		     index < BOOST_PP_CAT(PNAME, ValueCount);					\
 		     index++) {									_XENUM5_NWLN \
 			_XENUM5_INDENT_INC							\
 			if (propValue == BOOST_PP_CAT(PNAME, Values)				\
@@ -962,8 +962,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	)											_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		return (index < (sizeof(BOOST_PP_CAT(PNAME, PropOwners)) /			\
-				sizeof(BOOST_PP_CAT(PNAME, PropOwner))))			_XENUM5_NWLN \
+		return (index < BOOST_PP_CAT(PNAME, ValueCount))				\
 			_XENUM5_INDENT_INC							\
 			?((propValue == BOOST_PP_CAT(PNAME, Values)				\
 				[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex])		_XENUM5_NWLN \
@@ -998,8 +997,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 	)											_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
 		_XENUM5_INDENT_INC								\
-		return (index < (sizeof(BOOST_PP_CAT(PNAME, PropOwners)) /			\
-				sizeof(BOOST_PP_CAT(PNAME, PropOwner))))			_XENUM5_NWLN \
+		return (index < BOOST_PP_CAT(PNAME, ValueCount))				\
 			_XENUM5_INDENT_INC							\
 			?((propValue == BOOST_PP_CAT(PNAME, Values)				\
 				[BOOST_PP_CAT(PNAME, PropOwners)[index].propIndex])		_XENUM5_NWLN \

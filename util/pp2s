@@ -9,6 +9,9 @@
 # Example: util/mk2h Icombs
 # => produces Icombs.2.hpp and diffs against Icombs.1.hpp.
 
+#GPP=g++
+GPP=clang
+
 BASENAME=$1
 if [ -z "$BASENAME" ]; then
 	echo "Synopsis: mk2h BASENAME"
@@ -16,7 +19,7 @@ if [ -z "$BASENAME" ]; then
 	exit -1
 fi
 
-util/xenum5-inject -c clang -i xenum/test/src/xenums/${BASENAME}.cpp -o ${BASENAME}.2.cpp \
+util/xenum5-inject -c $GPP -i xenum/test/src/xenums/${BASENAME}.cpp -o ${BASENAME}.2.cpp \
 && \
 diff -uN ${BASENAME}.1.cpp ${BASENAME}.2.cpp \
 | less -S
