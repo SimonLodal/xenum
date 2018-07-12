@@ -28,63 +28,63 @@ namespace xenums {
 	D(C, test::xenum::xenums::, P2combs, P2comb, , ,\
 	(						\
 		/* depth=2 */				\
-		(P2OO, int, -1200, 2, (off,off)),	\
-		(P2OE, int, -1201, 2, (off,ext)),	\
-		(P2OI, int, -1202, 2, (off,inl)),	\
-		(P2OC, int, -1203, 2, (off,cxp)),	\
-		(P2EO, int, -1204, 2, (ext,off)),	\
-		(P2EE, int, -1205, 2, (ext,ext)),	\
-		(P2EI, int, -1206, 2, (ext,inl)),	\
-		(P2EC, int, -1207, 2, (ext,cxp)),	\
-		(P2CO, int, -1208, 2, (cxp,off)),	\
-		(P2CE, int, -1209, 2, (cxp,ext)),	\
-		(P2CI, int, -1210, 2, (cxp,inl)),	\
-		(P2CC, int, -1211, 2, (cxp,cxp))	\
+		(OffOff, int, -1200, 2, (off,off)),	\
+		(OffExt, int, -1201, 2, (off,ext)),	\
+		(OffInl, int, -1202, 2, (off,inl)),	\
+		(OffCxp, int, -1203, 2, (off,cxp)),	\
+		(ExtOff, int, -1204, 2, (ext,off)),	\
+		(ExtExt, int, -1205, 2, (ext,ext)),	\
+		(ExtInl, int, -1206, 2, (ext,inl)),	\
+		(ExtCxp, int, -1207, 2, (ext,cxp)),	\
+		(CxpOff, int, -1208, 2, (cxp,off)),	\
+		(CxpExt, int, -1209, 2, (cxp,ext)),	\
+		(CxpInl, int, -1210, 2, (cxp,inl)),	\
+		(CxpCxp, int, -1211, 2, (cxp,cxp))	\
 	))						\
 	V(C, V0						\
 		/* depth=2 */				\
-		, ((1200,,1201),())	/* P2OO */	\
-		, ((1202,,1203),())	/* P2OE */	\
-		, ((1204,,1205),())	/* P2OI */	\
-		, ((1206,,1207),())	/* P2OC */	\
-		, ((1210,,1211),())	/* P2EO */	\
-		, ((1212,,1213),())	/* P2EE */	\
-		, ((1214,,1215),())	/* P2EI */	\
-		, ((1216,,1217),())	/* P2EC */	\
-		, ((1220,,1221),())	/* P2CO */	\
-		, ((1222,,1223),())	/* P2CE */	\
-		, ((1224,,1225),())	/* P2CI */	\
-		, ((1226,,1227),())	/* P2CC */	\
+		, ((1200,,1201),())	/* OffOff */	\
+		, ((1202,,1203),())	/* OffExt */	\
+		, ((1204,,1205),())	/* OffInl */	\
+		, ((1206,,1207),())	/* OffCxp */	\
+		, ((1210,,1211),())	/* ExtOff */	\
+		, ((1212,,1213),())	/* ExtExt */	\
+		, ((1214,,1215),())	/* ExtInl */	\
+		, ((1216,,1217),())	/* ExtCxp */	\
+		, ((1220,,1221),())	/* CxpOff */	\
+		, ((1222,,1223),())	/* CxpExt */	\
+		, ((1224,,1225),())	/* CxpInl */	\
+		, ((1226,,1227),())	/* CxpCxp */	\
 	)						\
 	V(C, V1						\
 		/* depth=2 */				\
-		,			/* P2OO */	\
-		,			/* P2OE */	\
-		,			/* P2OI */	\
-		,			/* P2OC */	\
-		,			/* P2EO */	\
-		,			/* P2EE */	\
-		,			/* P2EI */	\
-		,			/* P2EC */	\
-		,			/* P2CO */	\
-		,			/* P2CE */	\
-		,			/* P2CI */	\
-		,			/* P2CC */	\
+		,			/* OffOff */	\
+		,			/* OffExt */	\
+		,			/* OffInl */	\
+		,			/* OffCxp */	\
+		,			/* ExtOff */	\
+		,			/* ExtExt */	\
+		,			/* ExtInl */	\
+		,			/* ExtCxp */	\
+		,			/* CxpOff */	\
+		,			/* CxpExt */	\
+		,			/* CxpInl */	\
+		,			/* CxpCxp */	\
 	)						\
 	V(C, V2						\
 		/* depth=2 */				\
-		, ()			/* P2OO */	\
-		, ()			/* P2OE */	\
-		, ()			/* P2OI */	\
-		, ()			/* P2OC */	\
-		, ()			/* P2EO */	\
-		, ()			/* P2EE */	\
-		, ()			/* P2EI */	\
-		, ()			/* P2EC */	\
-		, ()			/* P2CO */	\
-		, ()			/* P2CE */	\
-		, ()			/* P2CI */	\
-		, ()			/* P2CC */	\
+		, ()			/* OffOff */	\
+		, ()			/* OffExt */	\
+		, ()			/* OffInl */	\
+		, ()			/* OffCxp */	\
+		, ()			/* ExtOff */	\
+		, ()			/* ExtExt */	\
+		, ()			/* ExtInl */	\
+		, ()			/* ExtCxp */	\
+		, ()			/* CxpOff */	\
+		, ()			/* CxpExt */	\
+		, ()			/* CxpInl */	\
+		, ()			/* CxpCxp */	\
 	)						\
 
 XENUM5_DECLARE(P2combs)

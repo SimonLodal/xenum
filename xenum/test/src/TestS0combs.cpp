@@ -52,16 +52,16 @@ TEST_F(TestS0combs, Basics)
 TEST_F(TestS0combs, OffOff)
 {
 	// getValue=off
-	try { success = false; xenums::S0combs::V0.getS0OO(); }
-	catch (std::logic_error e) { EXPECT_STREQ("getS0OO() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::V0.getOffOff(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getOffOff() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// fromValue=off
-	try { success = false; xenums::S0combs::_fromS0OO("42"); }
-	catch (std::logic_error e) { EXPECT_STREQ("_fromS0OO() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromOffOff("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromOffOff() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
-	try { success = false; xenums::S0combs::_fromS0OO("42", value); }
-	catch (std::logic_error e) { EXPECT_STREQ("_fromS0OO() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromOffOff("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromOffOff() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -70,28 +70,28 @@ TEST_F(TestS0combs, OffOff)
 TEST_F(TestS0combs, OffExt)
 {
 	// getValue=off
-	try { success = false; xenums::S0combs::V0.getS0OE(); }
-	catch (std::logic_error e) { EXPECT_STREQ("getS0OE() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::V0.getOffExt(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getOffExt() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// fromValue
 	strval = "1001";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffExt(strval));
 	strval = "-1001";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffExt(strval));
 	strval = "1021";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffExt(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0OE(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromOffExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0OE(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0OE'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromOffExt(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'OffExt'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -100,108 +100,108 @@ TEST_F(TestS0combs, OffExt)
 TEST_F(TestS0combs, OffInl)
 {
 	// getValue=off
-	try { success = false; xenums::S0combs::V0.getS0OI(); }
-	catch (std::logic_error e) { EXPECT_STREQ("getS0OI() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::V0.getOffInl(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getOffInl() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// fromValue
 	strval = "1002";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffInl(strval));
 	strval = "-1002";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffInl(strval));
 	strval = "1022";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffInl(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0OI(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromOffInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0OI(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0OI'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromOffInl(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'OffInl'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
 
-/// Values for testing cxpFromS0OC()
+/// Values for testing cxpFromOffCxp()
 /// @{
-constexpr char S0OCv0[] = "1003";
-constexpr char S0OCv1[] = "-1003";
-constexpr char S0OCv2[] = "1023";
-constexpr char S0OCv3[] = "1002";
-constexpr char S0OCv4[] = "1024";
-constexpr char S0OCv5[] = "42";
+constexpr char OffCxpv0[] = "1003";
+constexpr char OffCxpv1[] = "-1003";
+constexpr char OffCxpv2[] = "1023";
+constexpr char OffCxpv3[] = "1002";
+constexpr char OffCxpv4[] = "1024";
+constexpr char OffCxpv5[] = "42";
 /// @}
-/// Function that only compiles if cxpFromS0OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0OC(S0OCv0) == xenums::S0combs::V0, bool>::type cxpFromS0OC0(void) { return true; }
-/// Function that only compiles if cxpFromS0OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0OC(S0OCv1) == xenums::S0combs::V1, bool>::type cxpFromS0OC1(void) { return true; }
-/// Function that only compiles if cxpFromS0OC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0OC(S0OCv2) == xenums::S0combs::V2, bool>::type cxpFromS0OC2(void) { return true; }
+/// Function that only compiles if cxpFromOffCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromOffCxp(OffCxpv0) == xenums::S0combs::V0, bool>::type cxpFromOffCxp0(void) { return true; }
+/// Function that only compiles if cxpFromOffCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromOffCxp(OffCxpv1) == xenums::S0combs::V1, bool>::type cxpFromOffCxp1(void) { return true; }
+/// Function that only compiles if cxpFromOffCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromOffCxp(OffCxpv2) == xenums::S0combs::V2, bool>::type cxpFromOffCxp2(void) { return true; }
 /// Fallback function that always exists and always returns false.
-template<const char* V> bool cxpFromS0OC3(unsigned v) { return false; }
-/// Function that only exists if cxpFromS0OC(V) returns with success, and returns true if so; for testing that cxpFromS0OC() fails correctly at compile time.
-template<const char* V> bool cxpFromS0OC3(typename std::enable_if<xenums::S0combs::_cxpFromS0OC(V).toTrue(), int>::type) { return true; }
+template<const char* V> bool cxpFromOffCxp3(unsigned v) { return false; }
+/// Function that only exists if cxpFromOffCxp(V) returns with success, and returns true if so; for testing that cxpFromOffCxp() fails correctly at compile time.
+template<const char* V> bool cxpFromOffCxp3(typename std::enable_if<xenums::S0combs::_cxpFromOffCxp(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: getValue=off, fromValue=cxp
 TEST_F(TestS0combs, OffCxp)
 {
 	// getValue=off
-	try { success = false; xenums::S0combs::V0.getS0OC(); }
-	catch (std::logic_error e) { EXPECT_STREQ("getS0OC() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::V0.getOffCxp(); }
+	catch (std::logic_error e) { EXPECT_STREQ("getOffCxp() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// cxpFromValue() at compile time
-	EXPECT_EQ(true, cxpFromS0OC0<void>());
-	EXPECT_EQ(true, cxpFromS0OC1<void>());
-	EXPECT_EQ(true, cxpFromS0OC2<void>());
-	EXPECT_EQ(true, cxpFromS0OC3<S0OCv0>(0));
-	EXPECT_EQ(true, cxpFromS0OC3<S0OCv1>(0));
-	EXPECT_EQ(true, cxpFromS0OC3<S0OCv2>(0));
-	EXPECT_EQ(false, cxpFromS0OC3<S0OCv3>(0));
-	EXPECT_EQ(false, cxpFromS0OC3<S0OCv4>(0));
-	EXPECT_EQ(false, cxpFromS0OC3<S0OCv5>(0));
+	EXPECT_EQ(true, cxpFromOffCxp0<void>());
+	EXPECT_EQ(true, cxpFromOffCxp1<void>());
+	EXPECT_EQ(true, cxpFromOffCxp2<void>());
+	EXPECT_EQ(true, cxpFromOffCxp3<OffCxpv0>(0));
+	EXPECT_EQ(true, cxpFromOffCxp3<OffCxpv1>(0));
+	EXPECT_EQ(true, cxpFromOffCxp3<OffCxpv2>(0));
+	EXPECT_EQ(false, cxpFromOffCxp3<OffCxpv3>(0));
+	EXPECT_EQ(false, cxpFromOffCxp3<OffCxpv4>(0));
+	EXPECT_EQ(false, cxpFromOffCxp3<OffCxpv5>(0));
 
 	// fromValue
 	strval = "1003";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffCxp(strval));
 	strval = "-1003";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffCxp(strval));
 	strval = "1023";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0OC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0OC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromOffCxp(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0OC(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0OC(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0OC'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromOffCxp(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'OffCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// cxpFromValue() at runtime
 	strval = "1003";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0OC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0OC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromOffCxp(strval));
 	strval = "-1003";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0OC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0OC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromOffCxp(strval));
 	strval = "1023";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0OC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0OC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromOffCxp(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_cxpFromS0OC(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_cxpFromOffCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_cxpFromS0OC(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0OC'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_cxpFromOffCxp(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'OffCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -215,23 +215,23 @@ TEST_F(TestS0combs, ExtOff)
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1004", value.getS0EO());
-	EXPECT_EQ(5, value.getS0EOSize());
+	EXPECT_STREQ("1004", value.getExtOff());
+	EXPECT_EQ(5, value.getExtOffSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1004", value.getS0EO());
-	EXPECT_EQ(6, value.getS0EOSize());
+	EXPECT_STREQ("-1004", value.getExtOff());
+	EXPECT_EQ(6, value.getExtOffSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1024", value.getS0EO());
-	EXPECT_EQ(5, value.getS0EOSize());
+	EXPECT_STREQ("1024", value.getExtOff());
+	EXPECT_EQ(5, value.getExtOffSize());
 
 	// fromValue=off
-	try { success = false; xenums::S0combs::_fromS0EO("42"); }
-	catch (std::logic_error e) { EXPECT_STREQ("_fromS0EO() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromExtOff("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromExtOff() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
-	try { success = false; xenums::S0combs::_fromS0EO("42", value); }
-	catch (std::logic_error e) { EXPECT_STREQ("_fromS0EO() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromExtOff("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromExtOff() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -242,35 +242,35 @@ TEST_F(TestS0combs, ExtExt)
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1005", value.getS0EE());
-	EXPECT_EQ(5, value.getS0EESize());
+	EXPECT_STREQ("1005", value.getExtExt());
+	EXPECT_EQ(5, value.getExtExtSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1005", value.getS0EE());
-	EXPECT_EQ(6, value.getS0EESize());
+	EXPECT_STREQ("-1005", value.getExtExt());
+	EXPECT_EQ(6, value.getExtExtSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1025", value.getS0EE());
-	EXPECT_EQ(5, value.getS0EESize());
+	EXPECT_STREQ("1025", value.getExtExt());
+	EXPECT_EQ(5, value.getExtExtSize());
 
 	// fromValue
 	strval = "1005";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtExt(strval));
 	strval = "-1005";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtExt(strval));
 	strval = "1025";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtExt(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0EE(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromExtExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0EE(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0EE'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromExtExt(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'ExtExt'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -281,124 +281,124 @@ TEST_F(TestS0combs, ExtInl)
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1006", value.getS0EI());
-	EXPECT_EQ(5, value.getS0EISize());
+	EXPECT_STREQ("1006", value.getExtInl());
+	EXPECT_EQ(5, value.getExtInlSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1006", value.getS0EI());
-	EXPECT_EQ(6, value.getS0EISize());
+	EXPECT_STREQ("-1006", value.getExtInl());
+	EXPECT_EQ(6, value.getExtInlSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1026", value.getS0EI());
-	EXPECT_EQ(5, value.getS0EISize());
+	EXPECT_STREQ("1026", value.getExtInl());
+	EXPECT_EQ(5, value.getExtInlSize());
 
 	// fromValue
 	strval = "1006";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtInl(strval));
 	strval = "-1006";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtInl(strval));
 	strval = "1026";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtInl(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0EI(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromExtInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0EI(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0EI'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromExtInl(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'ExtInl'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
 
-/// Values for testing cxpFromS0EC()
+/// Values for testing cxpFromExtCxp()
 /// @{
-constexpr char S0ECv0[] = "1007";
-constexpr char S0ECv1[] = "-1007";
-constexpr char S0ECv2[] = "1027";
-constexpr char S0ECv3[] = "1006";
-constexpr char S0ECv4[] = "1028";
-constexpr char S0ECv5[] = "42";
+constexpr char ExtCxpv0[] = "1007";
+constexpr char ExtCxpv1[] = "-1007";
+constexpr char ExtCxpv2[] = "1027";
+constexpr char ExtCxpv3[] = "1006";
+constexpr char ExtCxpv4[] = "1028";
+constexpr char ExtCxpv5[] = "42";
 /// @}
-/// Function that only compiles if cxpFromS0EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0EC(S0ECv0) == xenums::S0combs::V0, bool>::type cxpFromS0EC0(void) { return true; }
-/// Function that only compiles if cxpFromS0EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0EC(S0ECv1) == xenums::S0combs::V1, bool>::type cxpFromS0EC1(void) { return true; }
-/// Function that only compiles if cxpFromS0EC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0EC(S0ECv2) == xenums::S0combs::V2, bool>::type cxpFromS0EC2(void) { return true; }
+/// Function that only compiles if cxpFromExtCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromExtCxp(ExtCxpv0) == xenums::S0combs::V0, bool>::type cxpFromExtCxp0(void) { return true; }
+/// Function that only compiles if cxpFromExtCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromExtCxp(ExtCxpv1) == xenums::S0combs::V1, bool>::type cxpFromExtCxp1(void) { return true; }
+/// Function that only compiles if cxpFromExtCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromExtCxp(ExtCxpv2) == xenums::S0combs::V2, bool>::type cxpFromExtCxp2(void) { return true; }
 /// Fallback function that always exists and always returns false.
-template<const char* V> bool cxpFromS0EC3(unsigned v) { return false; }
-/// Function that only exists if cxpFromS0EC(V) returns with success, and returns true if so; for testing that cxpFromS0EC() fails correctly at compile time.
-template<const char* V> bool cxpFromS0EC3(typename std::enable_if<xenums::S0combs::_cxpFromS0EC(V).toTrue(), int>::type) { return true; }
+template<const char* V> bool cxpFromExtCxp3(unsigned v) { return false; }
+/// Function that only exists if cxpFromExtCxp(V) returns with success, and returns true if so; for testing that cxpFromExtCxp() fails correctly at compile time.
+template<const char* V> bool cxpFromExtCxp3(typename std::enable_if<xenums::S0combs::_cxpFromExtCxp(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: getValue=ext, fromValue=cxp
 TEST_F(TestS0combs, ExtCxp)
 {
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1007", value.getS0EC());
-	EXPECT_EQ(5, value.getS0ECSize());
+	EXPECT_STREQ("1007", value.getExtCxp());
+	EXPECT_EQ(5, value.getExtCxpSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1007", value.getS0EC());
-	EXPECT_EQ(6, value.getS0ECSize());
+	EXPECT_STREQ("-1007", value.getExtCxp());
+	EXPECT_EQ(6, value.getExtCxpSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1027", value.getS0EC());
-	EXPECT_EQ(5, value.getS0ECSize());
+	EXPECT_STREQ("1027", value.getExtCxp());
+	EXPECT_EQ(5, value.getExtCxpSize());
 
 	// cxpFromValue() at compile time
-	EXPECT_EQ(true, cxpFromS0EC0<void>());
-	EXPECT_EQ(true, cxpFromS0EC1<void>());
-	EXPECT_EQ(true, cxpFromS0EC2<void>());
-	EXPECT_EQ(true, cxpFromS0EC3<S0ECv0>(0));
-	EXPECT_EQ(true, cxpFromS0EC3<S0ECv1>(0));
-	EXPECT_EQ(true, cxpFromS0EC3<S0ECv2>(0));
-	EXPECT_EQ(false, cxpFromS0EC3<S0ECv3>(0));
-	EXPECT_EQ(false, cxpFromS0EC3<S0ECv4>(0));
-	EXPECT_EQ(false, cxpFromS0EC3<S0ECv5>(0));
+	EXPECT_EQ(true, cxpFromExtCxp0<void>());
+	EXPECT_EQ(true, cxpFromExtCxp1<void>());
+	EXPECT_EQ(true, cxpFromExtCxp2<void>());
+	EXPECT_EQ(true, cxpFromExtCxp3<ExtCxpv0>(0));
+	EXPECT_EQ(true, cxpFromExtCxp3<ExtCxpv1>(0));
+	EXPECT_EQ(true, cxpFromExtCxp3<ExtCxpv2>(0));
+	EXPECT_EQ(false, cxpFromExtCxp3<ExtCxpv3>(0));
+	EXPECT_EQ(false, cxpFromExtCxp3<ExtCxpv4>(0));
+	EXPECT_EQ(false, cxpFromExtCxp3<ExtCxpv5>(0));
 
 	// fromValue
 	strval = "1007";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtCxp(strval));
 	strval = "-1007";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtCxp(strval));
 	strval = "1027";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0EC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0EC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromExtCxp(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0EC(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0EC(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0EC'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromExtCxp(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'ExtCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// cxpFromValue() at runtime
 	strval = "1007";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0EC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0EC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromExtCxp(strval));
 	strval = "-1007";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0EC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0EC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromExtCxp(strval));
 	strval = "1027";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0EC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0EC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromExtCxp(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_cxpFromS0EC(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_cxpFromExtCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_cxpFromS0EC(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0EC'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_cxpFromExtCxp(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'ExtCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
@@ -406,280 +406,280 @@ TEST_F(TestS0combs, ExtCxp)
 
 // ========================================= get=cxp ============================================
 
-/// Function that only compiles if the constexpr getS0COSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V0.getS0COSize() == 5, bool>::type cxpGetS0COSize0() { return true; }
-/// Function that only compiles if the constexpr getS0COSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V1.getS0COSize() == 6, bool>::type cxpGetS0COSize1() { return true; }
-/// Function that only compiles if the constexpr getS0COSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V2.getS0COSize() == 5, bool>::type cxpGetS0COSize2() { return true; }
-/// Function that only compiles if the constexpr getS0CO() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getS0CO(), "1008"), bool>::type cxpGetS0CO0(void) { return true; }
-/// Function that only compiles if the constexpr getS0CO() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getS0CO(), "-1008"), bool>::type cxpGetS0CO1(void) { return true; }
-/// Function that only compiles if the constexpr getS0CO() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getS0CO(), "1028"), bool>::type cxpGetS0CO2(void) { return true; }
+/// Function that only compiles if the constexpr getCxpOffSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V0.getCxpOffSize() == 5, bool>::type cxpGetCxpOffSize0() { return true; }
+/// Function that only compiles if the constexpr getCxpOffSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V1.getCxpOffSize() == 6, bool>::type cxpGetCxpOffSize1() { return true; }
+/// Function that only compiles if the constexpr getCxpOffSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V2.getCxpOffSize() == 5, bool>::type cxpGetCxpOffSize2() { return true; }
+/// Function that only compiles if the constexpr getCxpOff() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getCxpOff(), "1008"), bool>::type cxpGetCxpOff0(void) { return true; }
+/// Function that only compiles if the constexpr getCxpOff() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getCxpOff(), "-1008"), bool>::type cxpGetCxpOff1(void) { return true; }
+/// Function that only compiles if the constexpr getCxpOff() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getCxpOff(), "1028"), bool>::type cxpGetCxpOff2(void) { return true; }
 /// Test xenum with identifier features: getValue=cxp, fromValue=off
 TEST_F(TestS0combs, CxpOff)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetS0COSize0<void>());
-	EXPECT_EQ(true, cxpGetS0COSize1<void>());
-	EXPECT_EQ(true, cxpGetS0COSize2<void>());
+	EXPECT_EQ(true, cxpGetCxpOffSize0<void>());
+	EXPECT_EQ(true, cxpGetCxpOffSize1<void>());
+	EXPECT_EQ(true, cxpGetCxpOffSize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetS0CO0<void>());
-	EXPECT_EQ(true, cxpGetS0CO1<void>());
-	EXPECT_EQ(true, cxpGetS0CO2<void>());
+	EXPECT_EQ(true, cxpGetCxpOff0<void>());
+	EXPECT_EQ(true, cxpGetCxpOff1<void>());
+	EXPECT_EQ(true, cxpGetCxpOff2<void>());
 
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1008", value.getS0CO());
-	EXPECT_EQ(5, value.getS0COSize());
+	EXPECT_STREQ("1008", value.getCxpOff());
+	EXPECT_EQ(5, value.getCxpOffSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1008", value.getS0CO());
-	EXPECT_EQ(6, value.getS0COSize());
+	EXPECT_STREQ("-1008", value.getCxpOff());
+	EXPECT_EQ(6, value.getCxpOffSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1028", value.getS0CO());
-	EXPECT_EQ(5, value.getS0COSize());
+	EXPECT_STREQ("1028", value.getCxpOff());
+	EXPECT_EQ(5, value.getCxpOffSize());
 
 	// fromValue=off
-	try { success = false; xenums::S0combs::_fromS0CO("42"); }
-	catch (std::logic_error e) { EXPECT_STREQ("_fromS0CO() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromCxpOff("42"); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromCxpOff() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
-	try { success = false; xenums::S0combs::_fromS0CO("42", value); }
-	catch (std::logic_error e) { EXPECT_STREQ("_fromS0CO() is configured 'off'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromCxpOff("42", value); }
+	catch (std::logic_error e) { EXPECT_STREQ("_fromCxpOff() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
 
-/// Function that only compiles if the constexpr getS0CESize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V0.getS0CESize() == 5, bool>::type cxpGetS0CESize0() { return true; }
-/// Function that only compiles if the constexpr getS0CESize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V1.getS0CESize() == 6, bool>::type cxpGetS0CESize1() { return true; }
-/// Function that only compiles if the constexpr getS0CESize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V2.getS0CESize() == 5, bool>::type cxpGetS0CESize2() { return true; }
-/// Function that only compiles if the constexpr getS0CE() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getS0CE(), "1009"), bool>::type cxpGetS0CE0(void) { return true; }
-/// Function that only compiles if the constexpr getS0CE() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getS0CE(), "-1009"), bool>::type cxpGetS0CE1(void) { return true; }
-/// Function that only compiles if the constexpr getS0CE() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getS0CE(), "1029"), bool>::type cxpGetS0CE2(void) { return true; }
+/// Function that only compiles if the constexpr getCxpExtSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V0.getCxpExtSize() == 5, bool>::type cxpGetCxpExtSize0() { return true; }
+/// Function that only compiles if the constexpr getCxpExtSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V1.getCxpExtSize() == 6, bool>::type cxpGetCxpExtSize1() { return true; }
+/// Function that only compiles if the constexpr getCxpExtSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V2.getCxpExtSize() == 5, bool>::type cxpGetCxpExtSize2() { return true; }
+/// Function that only compiles if the constexpr getCxpExt() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getCxpExt(), "1009"), bool>::type cxpGetCxpExt0(void) { return true; }
+/// Function that only compiles if the constexpr getCxpExt() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getCxpExt(), "-1009"), bool>::type cxpGetCxpExt1(void) { return true; }
+/// Function that only compiles if the constexpr getCxpExt() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getCxpExt(), "1029"), bool>::type cxpGetCxpExt2(void) { return true; }
 /// Test xenum with identifier features: getValue=cxp, fromValue=ext
 TEST_F(TestS0combs, CxpExt)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetS0CESize0<void>());
-	EXPECT_EQ(true, cxpGetS0CESize1<void>());
-	EXPECT_EQ(true, cxpGetS0CESize2<void>());
+	EXPECT_EQ(true, cxpGetCxpExtSize0<void>());
+	EXPECT_EQ(true, cxpGetCxpExtSize1<void>());
+	EXPECT_EQ(true, cxpGetCxpExtSize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetS0CE0<void>());
-	EXPECT_EQ(true, cxpGetS0CE1<void>());
-	EXPECT_EQ(true, cxpGetS0CE2<void>());
+	EXPECT_EQ(true, cxpGetCxpExt0<void>());
+	EXPECT_EQ(true, cxpGetCxpExt1<void>());
+	EXPECT_EQ(true, cxpGetCxpExt2<void>());
 
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1009", value.getS0CE());
-	EXPECT_EQ(5, value.getS0CESize());
+	EXPECT_STREQ("1009", value.getCxpExt());
+	EXPECT_EQ(5, value.getCxpExtSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1009", value.getS0CE());
-	EXPECT_EQ(6, value.getS0CESize());
+	EXPECT_STREQ("-1009", value.getCxpExt());
+	EXPECT_EQ(6, value.getCxpExtSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1029", value.getS0CE());
-	EXPECT_EQ(5, value.getS0CESize());
+	EXPECT_STREQ("1029", value.getCxpExt());
+	EXPECT_EQ(5, value.getCxpExtSize());
 
 	// fromValue
 	strval = "1009";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpExt(strval));
 	strval = "-1009";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpExt(strval));
 	strval = "1029";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CE(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CE(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpExt(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0CE(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromCxpExt(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0CE(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0CE'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromCxpExt(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'CxpExt'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
 
-/// Function that only compiles if the constexpr getS0CISize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V0.getS0CISize() == 5, bool>::type cxpGetS0CISize0() { return true; }
-/// Function that only compiles if the constexpr getS0CISize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V1.getS0CISize() == 6, bool>::type cxpGetS0CISize1() { return true; }
-/// Function that only compiles if the constexpr getS0CISize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V2.getS0CISize() == 5, bool>::type cxpGetS0CISize2() { return true; }
-/// Function that only compiles if the constexpr getS0CI() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getS0CI(), "1010"), bool>::type cxpGetS0CI0(void) { return true; }
-/// Function that only compiles if the constexpr getS0CI() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getS0CI(), "-1010"), bool>::type cxpGetS0CI1(void) { return true; }
-/// Function that only compiles if the constexpr getS0CI() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getS0CI(), "1030"), bool>::type cxpGetS0CI2(void) { return true; }
+/// Function that only compiles if the constexpr getCxpInlSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V0.getCxpInlSize() == 5, bool>::type cxpGetCxpInlSize0() { return true; }
+/// Function that only compiles if the constexpr getCxpInlSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V1.getCxpInlSize() == 6, bool>::type cxpGetCxpInlSize1() { return true; }
+/// Function that only compiles if the constexpr getCxpInlSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V2.getCxpInlSize() == 5, bool>::type cxpGetCxpInlSize2() { return true; }
+/// Function that only compiles if the constexpr getCxpInl() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getCxpInl(), "1010"), bool>::type cxpGetCxpInl0(void) { return true; }
+/// Function that only compiles if the constexpr getCxpInl() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getCxpInl(), "-1010"), bool>::type cxpGetCxpInl1(void) { return true; }
+/// Function that only compiles if the constexpr getCxpInl() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getCxpInl(), "1030"), bool>::type cxpGetCxpInl2(void) { return true; }
 /// Test xenum with identifier features: getValue=cxp, fromValue=inl
 TEST_F(TestS0combs, CxpInl)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetS0CISize0<void>());
-	EXPECT_EQ(true, cxpGetS0CISize1<void>());
-	EXPECT_EQ(true, cxpGetS0CISize2<void>());
+	EXPECT_EQ(true, cxpGetCxpInlSize0<void>());
+	EXPECT_EQ(true, cxpGetCxpInlSize1<void>());
+	EXPECT_EQ(true, cxpGetCxpInlSize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetS0CI0<void>());
-	EXPECT_EQ(true, cxpGetS0CI1<void>());
-	EXPECT_EQ(true, cxpGetS0CI2<void>());
+	EXPECT_EQ(true, cxpGetCxpInl0<void>());
+	EXPECT_EQ(true, cxpGetCxpInl1<void>());
+	EXPECT_EQ(true, cxpGetCxpInl2<void>());
 
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1010", value.getS0CI());
-	EXPECT_EQ(5, value.getS0CISize());
+	EXPECT_STREQ("1010", value.getCxpInl());
+	EXPECT_EQ(5, value.getCxpInlSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1010", value.getS0CI());
-	EXPECT_EQ(6, value.getS0CISize());
+	EXPECT_STREQ("-1010", value.getCxpInl());
+	EXPECT_EQ(6, value.getCxpInlSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1030", value.getS0CI());
-	EXPECT_EQ(5, value.getS0CISize());
+	EXPECT_STREQ("1030", value.getCxpInl());
+	EXPECT_EQ(5, value.getCxpInlSize());
 
 	// fromValue
 	strval = "1010";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpInl(strval));
 	strval = "-1010";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpInl(strval));
 	strval = "1030";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CI(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CI(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpInl(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0CI(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromCxpInl(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0CI(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0CI'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromCxpInl(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'CxpInl'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 
 
-/// Function that only compiles if the constexpr getS0CCSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V0.getS0CCSize() == 5, bool>::type cxpGetS0CCSize0() { return true; }
-/// Function that only compiles if the constexpr getS0CCSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V1.getS0CCSize() == 6, bool>::type cxpGetS0CCSize1() { return true; }
-/// Function that only compiles if the constexpr getS0CCSize() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::V2.getS0CCSize() == 5, bool>::type cxpGetS0CCSize2() { return true; }
-/// Function that only compiles if the constexpr getS0CC() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getS0CC(), "1011"), bool>::type cxpGetS0CC0(void) { return true; }
-/// Function that only compiles if the constexpr getS0CC() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getS0CC(), "-1011"), bool>::type cxpGetS0CC1(void) { return true; }
-/// Function that only compiles if the constexpr getS0CC() actually works at compile time.
-template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getS0CC(), "1031"), bool>::type cxpGetS0CC2(void) { return true; }
-/// Values for testing cxpFromS0CC()
+/// Function that only compiles if the constexpr getCxpCxpSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V0.getCxpCxpSize() == 5, bool>::type cxpGetCxpCxpSize0() { return true; }
+/// Function that only compiles if the constexpr getCxpCxpSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V1.getCxpCxpSize() == 6, bool>::type cxpGetCxpCxpSize1() { return true; }
+/// Function that only compiles if the constexpr getCxpCxpSize() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::V2.getCxpCxpSize() == 5, bool>::type cxpGetCxpCxpSize2() { return true; }
+/// Function that only compiles if the constexpr getCxpCxp() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V0.getCxpCxp(), "1011"), bool>::type cxpGetCxpCxp0(void) { return true; }
+/// Function that only compiles if the constexpr getCxpCxp() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V1.getCxpCxp(), "-1011"), bool>::type cxpGetCxpCxp1(void) { return true; }
+/// Function that only compiles if the constexpr getCxpCxp() actually works at compile time.
+template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S0combs::V2.getCxpCxp(), "1031"), bool>::type cxpGetCxpCxp2(void) { return true; }
+/// Values for testing cxpFromCxpCxp()
 /// @{
-constexpr char S0CCv0[] = "1011";
-constexpr char S0CCv1[] = "-1011";
-constexpr char S0CCv2[] = "1031";
-constexpr char S0CCv3[] = "1010";
-constexpr char S0CCv4[] = "1032";
-constexpr char S0CCv5[] = "42";
+constexpr char CxpCxpv0[] = "1011";
+constexpr char CxpCxpv1[] = "-1011";
+constexpr char CxpCxpv2[] = "1031";
+constexpr char CxpCxpv3[] = "1010";
+constexpr char CxpCxpv4[] = "1032";
+constexpr char CxpCxpv5[] = "42";
 /// @}
-/// Function that only compiles if cxpFromS0CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0CC("1011") == xenums::S0combs::V0, bool>::type cxpFromS0CC0(void) { return true; }
-/// Function that only compiles if cxpFromS0CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0CC("-1011") == xenums::S0combs::V1, bool>::type cxpFromS0CC1(void) { return true; }
-/// Function that only compiles if cxpFromS0CC() actually works at compile time.
-template <class T> typename std::enable_if<xenums::S0combs::_cxpFromS0CC("1031") == xenums::S0combs::V2, bool>::type cxpFromS0CC2(void) { return true; }
+/// Function that only compiles if cxpFromCxpCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromCxpCxp("1011") == xenums::S0combs::V0, bool>::type cxpFromCxpCxp0(void) { return true; }
+/// Function that only compiles if cxpFromCxpCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromCxpCxp("-1011") == xenums::S0combs::V1, bool>::type cxpFromCxpCxp1(void) { return true; }
+/// Function that only compiles if cxpFromCxpCxp() actually works at compile time.
+template <class T> typename std::enable_if<xenums::S0combs::_cxpFromCxpCxp("1031") == xenums::S0combs::V2, bool>::type cxpFromCxpCxp2(void) { return true; }
 /// Fallback function that always exists and always returns false.
-template<const char* V> bool cxpFromS0CC3(unsigned v) { return false; }
-/// Function that only exists if cxpFromS0CC(V) returns with success, and returns true if so; for testing that cxpFromS0CC() fails correctly at compile time.
-template<const char* V> bool cxpFromS0CC3(typename std::enable_if<xenums::S0combs::_cxpFromS0CC(V).toTrue(), int>::type) { return true; }
+template<const char* V> bool cxpFromCxpCxp3(unsigned v) { return false; }
+/// Function that only exists if cxpFromCxpCxp(V) returns with success, and returns true if so; for testing that cxpFromCxpCxp() fails correctly at compile time.
+template<const char* V> bool cxpFromCxpCxp3(typename std::enable_if<xenums::S0combs::_cxpFromCxpCxp(V).toTrue(), int>::type) { return true; }
 /// Test xenum with identifier features: getValue=cxp, fromValue=cxp
 TEST_F(TestS0combs, CxpCxp)
 {
 	// getValueSize() at compile time
-	EXPECT_EQ(true, cxpGetS0CCSize0<void>());
-	EXPECT_EQ(true, cxpGetS0CCSize1<void>());
-	EXPECT_EQ(true, cxpGetS0CCSize2<void>());
+	EXPECT_EQ(true, cxpGetCxpCxpSize0<void>());
+	EXPECT_EQ(true, cxpGetCxpCxpSize1<void>());
+	EXPECT_EQ(true, cxpGetCxpCxpSize2<void>());
 	// getValue() at compile time
-	EXPECT_EQ(true, cxpGetS0CC0<void>());
-	EXPECT_EQ(true, cxpGetS0CC1<void>());
-	EXPECT_EQ(true, cxpGetS0CC2<void>());
+	EXPECT_EQ(true, cxpGetCxpCxp0<void>());
+	EXPECT_EQ(true, cxpGetCxpCxp1<void>());
+	EXPECT_EQ(true, cxpGetCxpCxp2<void>());
 
 	// getValue()
 	// V0
 	value = xenums::S0combs::V0;
-	EXPECT_STREQ("1011", value.getS0CC());
-	EXPECT_EQ(5, value.getS0CCSize());
+	EXPECT_STREQ("1011", value.getCxpCxp());
+	EXPECT_EQ(5, value.getCxpCxpSize());
 	// V1
 	value = xenums::S0combs::V1;
-	EXPECT_STREQ("-1011", value.getS0CC());
-	EXPECT_EQ(6, value.getS0CCSize());
+	EXPECT_STREQ("-1011", value.getCxpCxp());
+	EXPECT_EQ(6, value.getCxpCxpSize());
 	// V2
 	value = xenums::S0combs::V2;
-	EXPECT_STREQ("1031", value.getS0CC());
-	EXPECT_EQ(5, value.getS0CCSize());
+	EXPECT_STREQ("1031", value.getCxpCxp());
+	EXPECT_EQ(5, value.getCxpCxpSize());
 
 	// cxpFromValue() at compile time
-	EXPECT_EQ(true, cxpFromS0CC0<void>());
-	EXPECT_EQ(true, cxpFromS0CC1<void>());
-	EXPECT_EQ(true, cxpFromS0CC2<void>());
-	EXPECT_EQ(true, cxpFromS0CC3<S0CCv0>(0));
-	EXPECT_EQ(true, cxpFromS0CC3<S0CCv1>(0));
-	EXPECT_EQ(true, cxpFromS0CC3<S0CCv2>(0));
-	EXPECT_EQ(false, cxpFromS0CC3<S0CCv3>(0));
-	EXPECT_EQ(false, cxpFromS0CC3<S0CCv4>(0));
-	EXPECT_EQ(false, cxpFromS0CC3<S0CCv5>(0));
+	EXPECT_EQ(true, cxpFromCxpCxp0<void>());
+	EXPECT_EQ(true, cxpFromCxpCxp1<void>());
+	EXPECT_EQ(true, cxpFromCxpCxp2<void>());
+	EXPECT_EQ(true, cxpFromCxpCxp3<CxpCxpv0>(0));
+	EXPECT_EQ(true, cxpFromCxpCxp3<CxpCxpv1>(0));
+	EXPECT_EQ(true, cxpFromCxpCxp3<CxpCxpv2>(0));
+	EXPECT_EQ(false, cxpFromCxpCxp3<CxpCxpv3>(0));
+	EXPECT_EQ(false, cxpFromCxpCxp3<CxpCxpv4>(0));
+	EXPECT_EQ(false, cxpFromCxpCxp3<CxpCxpv5>(0));
 
 	// fromValue
 	strval = "1011";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpCxp(strval));
 	strval = "-1011";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpCxp(strval));
 	strval = "1031";
-	EXPECT_EQ(true, xenums::S0combs::_fromS0CC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_fromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_fromS0CC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_fromCxpCxp(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_fromS0CC(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_fromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_fromS0CC(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0CC'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_fromCxpCxp(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'CxpCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// cxpFromValue() at runtime
 	strval = "1011";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0CC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V0);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0CC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromCxpCxp(strval));
 	strval = "-1011";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0CC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V1);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0CC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromCxpCxp(strval));
 	strval = "1031";
-	EXPECT_EQ(true, xenums::S0combs::_cxpFromS0CC(strval, value));
+	EXPECT_EQ(true, xenums::S0combs::_cxpFromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	EXPECT_EQ(value, xenums::S0combs::_cxpFromS0CC(strval));
+	EXPECT_EQ(value, xenums::S0combs::_cxpFromCxpCxp(strval));
 	strval = "42";
-	EXPECT_EQ(false, xenums::S0combs::_cxpFromS0CC(strval, value));
+	EXPECT_EQ(false, xenums::S0combs::_cxpFromCxpCxp(strval, value));
 	EXPECT_EQ(value, xenums::S0combs::V2);
-	try { success = false; xenums::S0combs::_cxpFromS0CC(strval); }
-	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'S0CC'.", e.what()); success = true; }
+	try { success = false; xenums::S0combs::_cxpFromCxpCxp(strval); }
+	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'CxpCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
 

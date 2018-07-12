@@ -28,63 +28,63 @@ namespace xenums {
 	D(C, test::xenum::xenums::, S0combs, S0comb, , ,\
 	(						\
 		/* depth=0 */				\
-		(S0OO, cstring, "-1000", 0, (off,off)),	\
-		(S0OE, cstring, "-1001", 0, (off,ext)),	\
-		(S0OI, cstring, "-1002", 0, (off,inl)),	\
-		(S0OC, cstring, "-1003", 0, (off,cxp)),	\
-		(S0EO, cstring, "-1004", 0, (ext,off)),	\
-		(S0EE, cstring, "-1005", 0, (ext,ext)),	\
-		(S0EI, cstring, "-1006", 0, (ext,inl)),	\
-		(S0EC, cstring, "-1007", 0, (ext,cxp)),	\
-		(S0CO, cstring, "-1008", 0, (cxp,off)),	\
-		(S0CE, cstring, "-1009", 0, (cxp,ext)),	\
-		(S0CI, cstring, "-1010", 0, (cxp,inl)),	\
-		(S0CC, cstring, "-1011", 0, (cxp,cxp))	\
+		(OffOff, cstring, "-1000", 0, (off,off)),	\
+		(OffExt, cstring, "-1001", 0, (off,ext)),	\
+		(OffInl, cstring, "-1002", 0, (off,inl)),	\
+		(OffCxp, cstring, "-1003", 0, (off,cxp)),	\
+		(ExtOff, cstring, "-1004", 0, (ext,off)),	\
+		(ExtExt, cstring, "-1005", 0, (ext,ext)),	\
+		(ExtInl, cstring, "-1006", 0, (ext,inl)),	\
+		(ExtCxp, cstring, "-1007", 0, (ext,cxp)),	\
+		(CxpOff, cstring, "-1008", 0, (cxp,off)),	\
+		(CxpExt, cstring, "-1009", 0, (cxp,ext)),	\
+		(CxpInl, cstring, "-1010", 0, (cxp,inl)),	\
+		(CxpCxp, cstring, "-1011", 0, (cxp,cxp))	\
 	))						\
 	V(C, V0						\
 		/* depth=0 */				\
-		, "1000"		/* S00O */	\
-		, "1001"		/* S00E */	\
-		, "1002"		/* S00I */	\
-		, "1003"		/* S00C */	\
-		, "1004"		/* S0EO */	\
-		, "1005"		/* S0EE */	\
-		, "1006"		/* S0EI */	\
-		, "1007"		/* S0EC */	\
-		, "1008"		/* S0CO */	\
-		, "1009"		/* S0CE */	\
-		, "1010"		/* S0CI */	\
-		, "1011"		/* S0CC */	\
+		, "1000"		/* OffOff */	\
+		, "1001"		/* OffExt */	\
+		, "1002"		/* OffInl */	\
+		, "1003"		/* OffCxp */	\
+		, "1004"		/* ExtOff */	\
+		, "1005"		/* ExtExt */	\
+		, "1006"		/* ExtInl */	\
+		, "1007"		/* ExtCxp */	\
+		, "1008"		/* CxpOff */	\
+		, "1009"		/* CxpExt */	\
+		, "1010"		/* CxpInl */	\
+		, "1011"		/* CxpCxp */	\
 	)						\
 	V(C, V1						\
 		/* depth=0 */				\
-		,			/* S00O */	\
-		,			/* S00E */	\
-		,			/* S00I */	\
-		,			/* S00C */	\
-		,			/* S0EO */	\
-		,			/* S0EE */	\
-		,			/* S0EI */	\
-		,			/* S0EC */	\
-		,			/* S0CO */	\
-		,			/* S0CE */	\
-		,			/* S0CI */	\
-		,			/* S0CC */	\
+		,			/* OffOff */	\
+		,			/* OffExt */	\
+		,			/* OffInl */	\
+		,			/* OffCxp */	\
+		,			/* ExtOff */	\
+		,			/* ExtExt */	\
+		,			/* ExtInl */	\
+		,			/* ExtCxp */	\
+		,			/* CxpOff */	\
+		,			/* CxpExt */	\
+		,			/* CxpInl */	\
+		,			/* CxpCxp */	\
 	)						\
 	V(C, V2						\
 		/* depth=0 */				\
-		, "1020"		/* S00O */	\
-		, "1021"		/* S00E */	\
-		, "1022"		/* S00I */	\
-		, "1023"		/* S00C */	\
-		, "1024"		/* S0EO */	\
-		, "1025"		/* S0EE */	\
-		, "1026"		/* S0EI */	\
-		, "1027"		/* S0EC */	\
-		, "1028"		/* S0CO */	\
-		, "1029"		/* S0CE */	\
-		, "1030"		/* S0CI */	\
-		, "1031"		/* S0CC */	\
+		, "1020"		/* OffOff */	\
+		, "1021"		/* OffExt */	\
+		, "1022"		/* OffInl */	\
+		, "1023"		/* OffCxp */	\
+		, "1024"		/* ExtOff */	\
+		, "1025"		/* ExtExt */	\
+		, "1026"		/* ExtInl */	\
+		, "1027"		/* ExtCxp */	\
+		, "1028"		/* CxpOff */	\
+		, "1029"		/* CxpExt */	\
+		, "1030"		/* CxpInl */	\
+		, "1031"		/* CxpCxp */	\
 	)						\
 
 XENUM5_DECLARE(S0combs)

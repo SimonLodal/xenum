@@ -28,63 +28,63 @@ namespace xenums {
 	D(C, test::xenum::xenums::, P1combs, P1comb, , ,\
 	(						\
 		/* depth=1 */				\
-		(P1OO, int, -1100, 1, (off,off)),	\
-		(P1OE, int, -1101, 1, (off,ext)),	\
-		(P1OI, int, -1102, 1, (off,inl)),	\
-		(P1OC, int, -1103, 1, (off,cxp)),	\
-		(P1EO, int, -1104, 1, (ext,off)),	\
-		(P1EE, int, -1105, 1, (ext,ext)),	\
-		(P1EI, int, -1106, 1, (ext,inl)),	\
-		(P1EC, int, -1107, 1, (ext,cxp)),	\
-		(P1CO, int, -1108, 1, (cxp,off)),	\
-		(P1CE, int, -1109, 1, (cxp,ext)),	\
-		(P1CI, int, -1110, 1, (cxp,inl)),	\
-		(P1CC, int, -1111, 1, (cxp,cxp))	\
+		(OffOff, int, -1100, 1, (off,off)),	\
+		(OffExt, int, -1101, 1, (off,ext)),	\
+		(OffInl, int, -1102, 1, (off,inl)),	\
+		(OffCxp, int, -1103, 1, (off,cxp)),	\
+		(ExtOff, int, -1104, 1, (ext,off)),	\
+		(ExtExt, int, -1105, 1, (ext,ext)),	\
+		(ExtInl, int, -1106, 1, (ext,inl)),	\
+		(ExtCxp, int, -1107, 1, (ext,cxp)),	\
+		(CxpOff, int, -1108, 1, (cxp,off)),	\
+		(CxpExt, int, -1109, 1, (cxp,ext)),	\
+		(CxpInl, int, -1110, 1, (cxp,inl)),	\
+		(CxpCxp, int, -1111, 1, (cxp,cxp))	\
 	))						\
 	V(C, V0						\
 		/* depth=1 */				\
-		, (1100, , 1101)	/* P1OO */	\
-		, (1102, , 1103)	/* P1OE */	\
-		, (1104, , 1105)	/* P1OI */	\
-		, (1106, , 1107)	/* P1OC */	\
-		, (1110, , 1111)	/* P1EO */	\
-		, (1112, , 1113)	/* P1EE */	\
-		, (1114, , 1115)	/* P1EI */	\
-		, (1116, , 1117)	/* P1EC */	\
-		, (1120, , 1121)	/* P1CO */	\
-		, (1122, , 1123)	/* P1CE */	\
-		, (1124, , 1125)	/* P1CI */	\
-		, (1126, , 1127)	/* P1CC */	\
+		, (1100, , 1101)	/* OffOff */	\
+		, (1102, , 1103)	/* OffExt */	\
+		, (1104, , 1105)	/* OffInl */	\
+		, (1106, , 1107)	/* OffCxp */	\
+		, (1110, , 1111)	/* ExtOff */	\
+		, (1112, , 1113)	/* ExtExt */	\
+		, (1114, , 1115)	/* ExtInl */	\
+		, (1116, , 1117)	/* ExtCxp */	\
+		, (1120, , 1121)	/* CxpOff */	\
+		, (1122, , 1123)	/* CxpExt */	\
+		, (1124, , 1125)	/* CxpInl */	\
+		, (1126, , 1127)	/* CxpCxp */	\
 	)						\
 	V(C, V1						\
 		/* depth=1 */				\
-		,			/* P1OO */	\
-		,			/* P1OE */	\
-		,			/* P1OI */	\
-		,			/* P1OC */	\
-		,			/* P1EO */	\
-		,			/* P1EE */	\
-		,			/* P1EI */	\
-		,			/* P1EC */	\
-		,			/* P1CO */	\
-		,			/* P1CE */	\
-		,			/* P1CI */	\
-		,			/* P1CC */	\
+		,			/* OffOff */	\
+		,			/* OffExt */	\
+		,			/* OffInl */	\
+		,			/* OffCxp */	\
+		,			/* ExtOff */	\
+		,			/* ExtExt */	\
+		,			/* ExtInl */	\
+		,			/* ExtCxp */	\
+		,			/* CxpOff */	\
+		,			/* CxpExt */	\
+		,			/* CxpInl */	\
+		,			/* CxpCxp */	\
 	)						\
 	V(C, V2						\
 		/* depth=1 */				\
-		, ()			/* P1OO */	\
-		, ()			/* P1OE */	\
-		, ()			/* P1OI */	\
-		, ()			/* P1OC */	\
-		, ()			/* P1EO */	\
-		, ()			/* P1EE */	\
-		, ()			/* P1EI */	\
-		, ()			/* P1EC */	\
-		, ()			/* P1CO */	\
-		, ()			/* P1CE */	\
-		, ()			/* P1CI */	\
-		, ()			/* P1CC */	\
+		, ()			/* OffOff */	\
+		, ()			/* OffExt */	\
+		, ()			/* OffInl */	\
+		, ()			/* OffCxp */	\
+		, ()			/* ExtOff */	\
+		, ()			/* ExtExt */	\
+		, ()			/* ExtInl */	\
+		, ()			/* ExtCxp */	\
+		, ()			/* CxpOff */	\
+		, ()			/* CxpExt */	\
+		, ()			/* CxpInl */	\
+		, ()			/* CxpCxp */	\
 	)						\
 
 XENUM5_DECLARE(P1combs)

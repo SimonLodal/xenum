@@ -28,63 +28,63 @@ namespace xenums {
 	D(C, test::xenum::xenums::, P0combs, P0comb, , ,\
 	(						\
 		/* depth=0 */				\
-		(P0OO, int, -1000, 0, (off,off)),	\
-		(P0OE, int, -1001, 0, (off,ext)),	\
-		(P0OI, int, -1002, 0, (off,inl)),	\
-		(P0OC, int, -1003, 0, (off,cxp)),	\
-		(P0EO, int, -1004, 0, (ext,off)),	\
-		(P0EE, int, -1005, 0, (ext,ext)),	\
-		(P0EI, int, -1006, 0, (ext,inl)),	\
-		(P0EC, int, -1007, 0, (ext,cxp)),	\
-		(P0CO, int, -1008, 0, (cxp,off)),	\
-		(P0CE, int, -1009, 0, (cxp,ext)),	\
-		(P0CI, int, -1010, 0, (cxp,inl)),	\
-		(P0CC, int, -1011, 0, (cxp,cxp))	\
+		(OffOff, int, -1000, 0, (off,off)),	\
+		(OffExt, int, -1001, 0, (off,ext)),	\
+		(OffInl, int, -1002, 0, (off,inl)),	\
+		(OffCxp, int, -1003, 0, (off,cxp)),	\
+		(ExtOff, int, -1004, 0, (ext,off)),	\
+		(ExtExt, int, -1005, 0, (ext,ext)),	\
+		(ExtInl, int, -1006, 0, (ext,inl)),	\
+		(ExtCxp, int, -1007, 0, (ext,cxp)),	\
+		(CxpOff, int, -1008, 0, (cxp,off)),	\
+		(CxpExt, int, -1009, 0, (cxp,ext)),	\
+		(CxpInl, int, -1010, 0, (cxp,inl)),	\
+		(CxpCxp, int, -1011, 0, (cxp,cxp))	\
 	))						\
 	V(C, V0						\
 		/* depth=0 */				\
-		, 1000			/* P00O */	\
-		, 1001			/* P00E */	\
-		, 1002			/* P00I */	\
-		, 1003			/* P00C */	\
-		, 1004			/* P0EO */	\
-		, 1005			/* P0EE */	\
-		, 1006			/* P0EI */	\
-		, 1007			/* P0EC */	\
-		, 1008			/* P0CO */	\
-		, 1009			/* P0CE */	\
-		, 1010			/* P0CI */	\
-		, 1011			/* P0CC */	\
+		, 1000			/* OffOff */	\
+		, 1001			/* OffExt */	\
+		, 1002			/* OffInl */	\
+		, 1003			/* OffCxp */	\
+		, 1004			/* ExtOff */	\
+		, 1005			/* ExtExt */	\
+		, 1006			/* ExtInl */	\
+		, 1007			/* ExtCxp */	\
+		, 1008			/* CxpOff */	\
+		, 1009			/* CxpExt */	\
+		, 1010			/* CxpInl */	\
+		, 1011			/* CxpCxp */	\
 	)						\
 	V(C, V1						\
 		/* depth=0 */				\
-		,			/* P00O */	\
-		,			/* P00E */	\
-		,			/* P00I */	\
-		,			/* P00C */	\
-		,			/* P0EO */	\
-		,			/* P0EE */	\
-		,			/* P0EI */	\
-		,			/* P0EC */	\
-		,			/* P0CO */	\
-		,			/* P0CE */	\
-		,			/* P0CI */	\
-		,			/* P0CC */	\
+		,			/* OffOff */	\
+		,			/* OffExt */	\
+		,			/* OffInl */	\
+		,			/* OffCxp */	\
+		,			/* ExtOff */	\
+		,			/* ExtExt */	\
+		,			/* ExtInl */	\
+		,			/* ExtCxp */	\
+		,			/* CxpOff */	\
+		,			/* CxpExt */	\
+		,			/* CxpInl */	\
+		,			/* CxpCxp */	\
 	)						\
 	V(C, V2						\
 		/* depth=0 */				\
-		, 1020			/* P00O */	\
-		, 1021			/* P00E */	\
-		, 1022			/* P00I */	\
-		, 1023			/* P00C */	\
-		, 1024			/* P0EO */	\
-		, 1025			/* P0EE */	\
-		, 1026			/* P0EI */	\
-		, 1027			/* P0EC */	\
-		, 1028			/* P0CO */	\
-		, 1029			/* P0CE */	\
-		, 1030			/* P0CI */	\
-		, 1031			/* P0CC */	\
+		, 1020			/* OffOff */	\
+		, 1021			/* OffExt */	\
+		, 1022			/* OffInl */	\
+		, 1023			/* OffCxp */	\
+		, 1024			/* ExtOff */	\
+		, 1025			/* ExtExt */	\
+		, 1026			/* ExtInl */	\
+		, 1027			/* ExtCxp */	\
+		, 1028			/* CxpOff */	\
+		, 1029			/* CxpExt */	\
+		, 1030			/* CxpInl */	\
+		, 1031			/* CxpCxp */	\
 	)						\
 
 XENUM5_DECLARE(P0combs)
