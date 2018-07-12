@@ -146,21 +146,57 @@ if(DOXYGEN_FOUND)
 		VERBATIM
 	)
 	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Pcombs.hpp
+		OUTPUT ${XENUMS_PP_DIR}/P0combs.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
 		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Pcombs.hpp -o ${XENUMS_PP_DIR}/Pcombs.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Pcombs.hpp
-		COMMENT "Preprocessing Pcombs.hpp ..."
+		ARGS -i ${XENUMS_IN_DIR}/P0combs.hpp -o ${XENUMS_PP_DIR}/P0combs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/P0combs.hpp
+		COMMENT "Preprocessing P0combs.hpp ..."
 		VERBATIM
 	)
 	add_custom_command(
-		OUTPUT ${XENUMS_PP_DIR}/Scombs.hpp
+		OUTPUT ${XENUMS_PP_DIR}/P1combs.hpp
 		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
 		COMMAND util/xenum5-inject
-		ARGS -i ${XENUMS_IN_DIR}/Scombs.hpp -o ${XENUMS_PP_DIR}/Scombs.hpp
-		DEPENDS ${XENUMS_IN_DIR}/Scombs.hpp
-		COMMENT "Preprocessing Scombs.hpp ..."
+		ARGS -i ${XENUMS_IN_DIR}/P1combs.hpp -o ${XENUMS_PP_DIR}/P1combs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/P1combs.hpp
+		COMMENT "Preprocessing P1combs.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/P2combs.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum5-inject
+		ARGS -i ${XENUMS_IN_DIR}/P2combs.hpp -o ${XENUMS_PP_DIR}/P2combs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/P2combs.hpp
+		COMMENT "Preprocessing P2combs.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/S0combs.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum5-inject
+		ARGS -i ${XENUMS_IN_DIR}/S0combs.hpp -o ${XENUMS_PP_DIR}/S0combs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/S0combs.hpp
+		COMMENT "Preprocessing S0combs.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/S1combs.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum5-inject
+		ARGS -i ${XENUMS_IN_DIR}/S1combs.hpp -o ${XENUMS_PP_DIR}/S1combs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/S1combs.hpp
+		COMMENT "Preprocessing S1combs.hpp ..."
+		VERBATIM
+	)
+	add_custom_command(
+		OUTPUT ${XENUMS_PP_DIR}/S2combs.hpp
+		WORKING_DIRECTORY ${XENUM_ROOT_DIR}
+		COMMAND util/xenum5-inject
+		ARGS -i ${XENUMS_IN_DIR}/S2combs.hpp -o ${XENUMS_PP_DIR}/S2combs.hpp
+		DEPENDS ${XENUMS_IN_DIR}/S2combs.hpp
+		COMMENT "Preprocessing S2combs.hpp ..."
 		VERBATIM
 	)
 
@@ -183,8 +219,12 @@ if(DOXYGEN_FOUND)
 		DEPENDS ${XENUMS_PP_DIR}/Icmp.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Icombs.hpp
 		DEPENDS ${XENUMS_PP_DIR}/Numbers.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Pcombs.hpp
-		DEPENDS ${XENUMS_PP_DIR}/Scombs.hpp
+		DEPENDS ${XENUMS_PP_DIR}/P0combs.hpp
+		DEPENDS ${XENUMS_PP_DIR}/P1combs.hpp
+		DEPENDS ${XENUMS_PP_DIR}/P2combs.hpp
+		DEPENDS ${XENUMS_PP_DIR}/S0combs.hpp
+		DEPENDS ${XENUMS_PP_DIR}/S1combs.hpp
+		DEPENDS ${XENUMS_PP_DIR}/S2combs.hpp
 		COMMENT "Generating documentation (doxygen) ..."
 		VERBATIM
 	)

@@ -5,7 +5,11 @@
  * @license GNU GPL version 3
  */
 
-#include <test/xenum/xenums/Scombs.hpp>
+#include <test/xenum/xenums/S0combs.hpp>
+#include <test/xenum/xenums/S1combs.hpp>
+#include <test/xenum/xenums/S2combs.hpp>
 
-XENUM5_DEFINE(Scombs)
+XENUM5_DEFINE(S0combs)
+XENUM5_DEFINE(S1combs)
+XENUM5_DEFINE(S2combs)
 
