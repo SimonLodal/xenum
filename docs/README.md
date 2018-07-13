@@ -262,9 +262,11 @@ Several things to note here:
   and/or class.
 - int16_t is now enforced as the integer type to use for the enum values. The default is
   to use the smallest type that is big enough to hold the number of enum values.
+- The empty field after int16_t is for optional features, which all have sane defaults (see
+  below).
 - The custom properties are defined as separate lists.
-- Color has the special type "cstring". It is really a plain const char*, but strings need
-  special handling, so you must use this special cooked type name for them. All other
+- Color has the special type "cstring". It is really a const char*, but strings need
+  special handling, so you must use this special cooked typename for them. All other
   types can just be used as is.
 - The values (the V() macros) now also define the values of the custom properties.
 
@@ -273,11 +275,11 @@ So:
 - Orange has Ordinal=44, Sour=false (default) and Color="unknown".
 - Lemon has Ordinal=17, Sour=true and Color="yellow".
 
-Code generation is like in the first example:
-Header part:
+Trigger code generation like in the first example:
+- Header part:
 
 	XENUM5_DECLARE(Fruits)
-Source part:
+- Source part:
 
 	XENUM5_DEFINE(Fruits)
 
@@ -314,7 +316,17 @@ In your header file:
 - More importantly, the "1" after "black" means that the data has one dimension, which means
   a single array of values (0 means data is an immediate value; this is the default we used in
   the previous example).
-- For each enum value, the custom property values are now defined as a list.
+- For each enum value, the custom property values are now defined as a list. Each list is of
+  different length; has exactly the number of values that you define for it. The same is true
+  for any other childnode in the data hierarchy, if you use more dimensions.
+
+Trigger code generation as usual:
+- Header part:
+
+	XENUM5_DECLARE(Fruits)
+- Source part:
+
+	XENUM5_DEFINE(Fruits)
 
 ### Use the xenum
 The getter function now includes an index, naturally, and you can get the size of the arrays
@@ -376,6 +388,14 @@ In your header file:
 
 Note that the data is now defined with two levels - arrays in arrays.
 
+Trigger code generation as usual:
+- Header part:
+
+	XENUM5_DECLARE(Fruits)
+- Source part:
+
+	XENUM5_DEFINE(Fruits)
+
 ### Use the xenum
 The getter functions are extended with one index level:
 
@@ -402,6 +422,77 @@ So:
 	randNum = Fruits::apple.getRandNum(0, 0); // => 5
 	randNum = Fruits::apple.getRandNum(1, 1); // => 8
 	randNum = Fruits::apple.getRandNum(2, 3); // => -9
+
+## Example: Lookup enum-values by identifier or custom property value
+fromIdentifier() is generated in the container class, by default (can be turned off by a
+feature option). This allows lookup of enum-value by identifier string.
+
+You can also look up enum-values by the value of custom properties. This is not enabled
+by default since it requires that all the values of a given custom property are unique.
+It is be enabled by a feature option.
+
+Here we add lookup to the multi-level array custom property (and a few custom property
+values to each enum-value).
+
+### Create the xenum
+In your header file:
+
+	#include <xenum5/Xenum.hpp>
+	#define XENUM5_Fruits(D,V,C)					\
+		D(C, my::ns::, Fruits, Fruit, int16_t, , (		\
+			(RandNum, int, , 2, (,ext))			\
+		))							\
+		V(C, apple, ((5,3,7), (11,8), (-22, 44, 1, -9)))	\
+		V(C, orange, ((19,4)))					\
+		V(C, lemon, ((-17)))
+
+- We added the 5th argument, "(,ext)". This is the optional list of feature options
+  for this custom property.
+- The second feature option says to implement lookup as "ext", which is the recommended
+  implementation method. The default is "off". Other possibilities are "inl" for inline
+  implementation, and "cxp" for constexpr inline implementation.
+
+Trigger code generation as usual:
+- Header part:
+
+	XENUM5_DECLARE(Fruits)
+- Source part:
+
+	XENUM5_DEFINE(Fruits)
+
+### Use the xenum
+Two different lookup methods are now generated in the container class (Fruits):
+
+	// Throws on failure
+	static Fruit _fromRandNum(const int& q);
+	// On failure, just returns false and does not alter the result value
+	static bool _fromRandNum(const int& q, Fruit& result) noexcept;
+
+So:
+
+	Fruit fresult;
+	fresult = Fruits::_fromRandNum(-22); // => fresult=Fruits::apple
+	fresult = Fruits::_fromRandNum(4); // => fresult=Fruits::orange
+	fresult = Fruits::_fromRandNum(-17); // => fresult=Fruits::lemon
+	fresult = Fruits::_fromRandNum(27); // => exception; no such RandNum value
+
+	bool bresult;
+	bresult = Fruits::_fromRandNum(-22, fresult); // => bresult=true, fresult=Fruits::apple
+	bresult = Fruits::_fromRandNum(4, fresult); // => bresult=true, fresult=Fruits::orange
+	bresult = Fruits::_fromRandNum(-17, fresult); // => bresult=true, fresult=Fruits::lemon
+	bresult = Fruits::_fromRandNum(27, fresult); // => bresult=false, fresult not touched
+
+### constexpr lookup
+If you define the lookup implementation as "cxp" (instead of "ext"), you still get the above
+fromRandNum() methods (but now inlined), and an additional set of methods with "cxp" prefix:
+
+	static constexpr Fruit _cxpFromRandNum(const int& q);
+	static constexpr bool _cxpFromRandNum(const int& q, Fruit& result) noexcept;
+
+They work like the non-constexpr variants, only difference is that they work at compile time.
+On the other hand they are very inefficient at runtime, so you should always use the
+non-constexpr variants at runtime.
+
 
 ## Reference
 ### XENUM5_$suffix
