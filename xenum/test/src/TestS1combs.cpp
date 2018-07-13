@@ -133,14 +133,12 @@ TEST_F(TestS1combs, OffInl)
 
 
 /// Values for testing cxpFromOffCxp()
-/// @{
 constexpr char OffCxpv0[] = "1106";
 //constexpr char OffCxpv1[] = "-1103";
 constexpr char OffCxpv2[] = "1107";
 constexpr char OffCxpv3[] = "1105";
 constexpr char OffCxpv4[] = "1108";
 constexpr char OffCxpv5[] = "42";
-/// @}
 /// Function that only compiles if cxpFromOffCxp() actually works at compile time.
 template <class T> typename std::enable_if<xenums::S1combs::_cxpFromOffCxp(OffCxpv0) == xenums::S1combs::V0, bool>::type cxpFromOffCxp0(void) { return true; }
 /// Function that only compiles if cxpFromOffCxp() actually works at compile time.
@@ -399,14 +397,12 @@ TEST_F(TestS1combs, ExtInl)
 
 
 /// Values for testing cxpFromExtCxp()
-/// @{
 constexpr char ExtCxpv0[] = "1116";
 //constexpr char ExtCxpv1[] = "-1107";
 constexpr char ExtCxpv2[] = "1117";
 constexpr char ExtCxpv3[] = "1115";
 constexpr char ExtCxpv4[] = "1118";
 constexpr char ExtCxpv5[] = "42";
-/// @}
 /// Function that only compiles if cxpFromExtCxp() actually works at compile time.
 template <class T> typename std::enable_if<xenums::S1combs::_cxpFromExtCxp(ExtCxpv0) == xenums::S1combs::V0, bool>::type cxpFromExtCxp0(void) { return true; }
 /// Function that only compiles if cxpFromExtCxp() actually works at compile time.
@@ -837,14 +833,12 @@ template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S1c
 template <class T> typename std::enable_if<::_XENUM5_NS::cxpStrEqual(xenums::S1combs::V2.getCxpCxp(0), "-1111"), bool>::type cxpGetCxpCxp3(void) { return true; }
 
 /// Values for testing cxpFromCxpCxp()
-/// @{
 constexpr char CxpCxpv0[] = "1126";
 //constexpr char CxpCxpv1[] = "-1111";
 constexpr char CxpCxpv2[] = "1127";
 constexpr char CxpCxpv3[] = "1125";
 constexpr char CxpCxpv4[] = "1128";
 constexpr char CxpCxpv5[] = "42";
-/// @}
 /// Function that only compiles if cxpFromCxpCxp() actually works at compile time.
 template <class T> typename std::enable_if<xenums::S1combs::_cxpFromCxpCxp(CxpCxpv0) == xenums::S1combs::V0, bool>::type cxpFromCxpCxp0(void) { return true; }
 /// Function that only compiles if cxpFromCxpCxp() actually works at compile time.
