@@ -108,7 +108,8 @@ nice for it's elegance and power, but it has some shortcomings:
 - It can not generate identifiers (the enum values, and associated getter functions), only
   types or values.
 - Big lists do not work (fx >256 entries), since all iteration over lists is recursive,
-  and all preprocessors have a rather small recursion limit.
+  and there is always a rather small recursion limit (some compilers can be instructed
+  to increase it, but still it is never unlimited).
 
 ## Example: Basic xenum
 Here we declare a simple "Fruits" enum, with values "apple", "orange", "lemon".
@@ -172,6 +173,10 @@ Fruits::apple() and Fruits::_enum::apple both yield the same native enum value.
 	Fruits::_enum nativeEnumValue = fruit3();
 These are the only properties that Xenum values have (plus any custom properties).
 
+The index is what is usually called the "ordinal" value, however it can not be customized,
+instead it is assigned sequentially (0..n). If you need an associated integer with custom
+values, see custom properties below.
+
 #### Print
 
 	std::cout << "fruit1:"
@@ -231,7 +236,7 @@ First the what and why. If you have some static data associated with each enum v
 could just create an external array, sized using the constexpr Fruits::_size, and a custom
 lookup function for it. It is just not very OO'ish. Xenum's custom properties allows you
 to put the associated data into the enum declaration, and have getters generated on the
-enum value class.
+enum value class (and optionally lookup methods on the container class).
 
 Here we extend the xenum with three custom properties:
 - "Ordinal" of type int, without any default value.
@@ -265,7 +270,7 @@ Several things to note here:
 
 So:
 - Apple has Ordinal=22, Sour=false (default value applied since it is empty), and Color="red".
-- Orange has Ordinal=44, Sour=false (default) and Color="varies".
+- Orange has Ordinal=44, Sour=false (default) and Color="unknown".
 - Lemon has Ordinal=17, Sour=true and Color="yellow".
 
 Code generation is like in the first example:
@@ -583,6 +588,9 @@ iterator(), begin() and end() are needed by for(:) loops.
   be no larger than 64. However, if your have depth>1, each leafnode can contain it's own
   array of up to 64 values.
 
+  Note that if you have many enum-values (say >64), they can each have value(s) for the
+  same custom property. The 64 limit only applies to the values for a single enum-value.
+
 ## Reviving the generated code
 Xenum is macro-based. The disadvantage is that the generated code is only readable to
 a compiler, not to a human. The util/xenum5-inject script helps to overcome this.
@@ -647,10 +655,11 @@ number of errors, and none of them make any sense?
 - Support for more compilers / versions.
 - Per-enum options:
   - Omit iteration functions, and perhaps other parts.
-- Lookup of enum value by custom property value.
+  - Char-type to use for identifiers.
+  - Force always create the value class (no typedef); necessary if forward-declaration is needed.
 - Per-custom-property options:
-  - Generate lookup function.
   - Custom getter prefix.
+  - Char-type to use for cstring.
 - Make xenum with custom properties work when declared inside a class. Probably requires a
   separate XENUM5_DECLARE_PRE() macro call outside the class, ugly.
 - Efficient string-to-enum lookup. Requires a hashmap, which is difficult given these
