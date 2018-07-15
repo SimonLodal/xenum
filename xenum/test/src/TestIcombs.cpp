@@ -45,19 +45,16 @@ TEST_F(TestIcombs, IdentOffOff)
 	EXPECT_EQ(3, xenums::IdentOffOff::Icombs::_size);
 
 	// getIdentifier=off
-	success = false;
-	try { xenums::IdentOffOff::Icombs::OffOff1.getIdentifier(); }
+	try { success = false; xenums::IdentOffOff::Icombs::OffOff1.getIdentifier(); }
 	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
 	// fromIdentifier=off
-	success = false;
-	try { xenums::IdentOffOff::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentOffOff::Icombs::_fromIdentifier("foo"); }
 	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	xenums::IdentOffOff::Icomb resval;
-	success = false;
-	try { xenums::IdentOffOff::Icombs::_fromIdentifier("foo", resval); }
+	try { success = false; xenums::IdentOffOff::Icombs::_fromIdentifier("foo", resval); }
 	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -75,8 +72,7 @@ TEST_F(TestIcombs, IdentOffExt)
 	EXPECT_EQ(3, xenums::IdentOffExt::Icombs::_size);
 
 	// getIdentifier=off
-	success = false;
-	try { xenums::IdentOffExt::Icombs::OffExt1.getIdentifier(); }
+	try { success = false; xenums::IdentOffExt::Icombs::OffExt1.getIdentifier(); }
 	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -96,8 +92,7 @@ TEST_F(TestIcombs, IdentOffExt)
 
 	EXPECT_EQ(false, xenums::IdentOffExt::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentOffExt::Icombs::OffExt2);
-	success = false;
-	try { xenums::IdentOffExt::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentOffExt::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -115,8 +110,7 @@ TEST_F(TestIcombs, IdentOffInl)
 	EXPECT_EQ(3, xenums::IdentOffInl::Icombs::_size);
 
 	// getIdentifier=off
-	success = false;
-	try { xenums::IdentOffInl::Icombs::OffInl1.getIdentifier(); }
+	try { success = false; xenums::IdentOffInl::Icombs::OffInl1.getIdentifier(); }
 	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -136,8 +130,7 @@ TEST_F(TestIcombs, IdentOffInl)
 
 	EXPECT_EQ(false, xenums::IdentOffInl::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentOffInl::Icombs::OffInl2);
-	success = false;
-	try { xenums::IdentOffInl::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentOffInl::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -174,8 +167,7 @@ TEST_F(TestIcombs, IdentOffCxp)
 	EXPECT_EQ(3, xenums::IdentOffCxp::Icombs::_size);
 
 	// getIdentifier=off
-	success = false;
-	try { xenums::IdentOffCxp::Icombs::OffCxp1.getIdentifier(); }
+	try { success = false; xenums::IdentOffCxp::Icombs::OffCxp1.getIdentifier(); }
 	catch (std::logic_error e) { EXPECT_STREQ("getIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -191,23 +183,10 @@ TEST_F(TestIcombs, IdentOffCxp)
 	EXPECT_EQ(false, cxpFromOffCxp3<OffCxpv5>(0));
 
 	// cxpFromIdentifier() at runtime
-	ident = "OffCxp0";
-	EXPECT_EQ(true, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::OffCxp0);
-	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier(ident));
-	ident = "OffCxp1";
-	EXPECT_EQ(true, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::OffCxp1);
-	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier(ident));
-	ident = "OffCxp2";
-	EXPECT_EQ(true, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::OffCxp2);
-	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier(ident));
-
-	EXPECT_EQ(false, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("foo", value));
-	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::OffCxp2);
-	success = false;
-	try { xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("foo"); }
+	EXPECT_EQ(xenums::IdentOffCxp::Icombs::OffCxp0, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("OffCxp0"));
+	EXPECT_EQ(xenums::IdentOffCxp::Icombs::OffCxp1, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("OffCxp1"));
+	EXPECT_EQ(xenums::IdentOffCxp::Icombs::OffCxp2, xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("OffCxp2"));
+	try { success = false; xenums::IdentOffCxp::Icombs::_cxpFromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -227,8 +206,7 @@ TEST_F(TestIcombs, IdentOffCxp)
 
 	EXPECT_EQ(false, xenums::IdentOffCxp::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentOffCxp::Icombs::OffCxp2);
-	success = false;
-	try { xenums::IdentOffCxp::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentOffCxp::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -250,13 +228,11 @@ TEST_F(TestIcombs, IdentExtOff)
 	EXPECT_STREQ("ExtOff2", xenums::IdentExtOff::Icombs::ExtOff2.getIdentifier());
 
 	// fromIdentifier=off
-	success = false;
-	try { xenums::IdentExtOff::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentExtOff::Icombs::_fromIdentifier("foo"); }
 	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	xenums::IdentExtOff::Icomb resval;
-	success = false;
-	try { xenums::IdentExtOff::Icombs::_fromIdentifier("foo", resval); }
+	try { success = false; xenums::IdentExtOff::Icombs::_fromIdentifier("foo", resval); }
 	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -294,8 +270,7 @@ TEST_F(TestIcombs, IdentExtExt)
 
 	EXPECT_EQ(false, xenums::IdentExtExt::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentExtExt::Icombs::ExtExt2);
-	success = false;
-	try { xenums::IdentExtExt::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentExtExt::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -333,8 +308,7 @@ TEST_F(TestIcombs, IdentExtInl)
 
 	EXPECT_EQ(false, xenums::IdentExtInl::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentExtInl::Icombs::ExtInl2);
-	success = false;
-	try { xenums::IdentExtInl::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentExtInl::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -387,23 +361,10 @@ TEST_F(TestIcombs, IdentExtCxp)
 	EXPECT_EQ(false, cxpFromExtCxp3<ExtCxpv5>(0));
 
 	// cxpFromIdentifier() at runtime
-	ident = "ExtCxp0";
-	EXPECT_EQ(true, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::ExtCxp0);
-	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier(ident));
-	ident = "ExtCxp1";
-	EXPECT_EQ(true, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::ExtCxp1);
-	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier(ident));
-	ident = "ExtCxp2";
-	EXPECT_EQ(true, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::ExtCxp2);
-	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier(ident));
-
-	EXPECT_EQ(false, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("foo", value));
-	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::ExtCxp2);
-	success = false;
-	try { xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("foo"); }
+	EXPECT_EQ(xenums::IdentExtCxp::Icombs::ExtCxp0, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("ExtCxp0"));
+	EXPECT_EQ(xenums::IdentExtCxp::Icombs::ExtCxp1, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("ExtCxp1"));
+	EXPECT_EQ(xenums::IdentExtCxp::Icombs::ExtCxp2, xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("ExtCxp2"));
+	try { success = false; xenums::IdentExtCxp::Icombs::_cxpFromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -423,8 +384,7 @@ TEST_F(TestIcombs, IdentExtCxp)
 
 	EXPECT_EQ(false, xenums::IdentExtCxp::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentExtCxp::Icombs::ExtCxp2);
-	success = false;
-	try { xenums::IdentExtCxp::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentExtCxp::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -458,13 +418,11 @@ TEST_F(TestIcombs, IdentCxpOff)
 	EXPECT_STREQ("CxpOff2", xenums::IdentCxpOff::Icombs::CxpOff2.getIdentifier());
 
 	// fromIdentifier=off
-	success = false;
-	try { xenums::IdentCxpOff::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentCxpOff::Icombs::_fromIdentifier("foo"); }
 	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 	xenums::IdentCxpOff::Icomb resval;
-	success = false;
-	try { xenums::IdentCxpOff::Icombs::_fromIdentifier("foo", resval); }
+	try { success = false; xenums::IdentCxpOff::Icombs::_fromIdentifier("foo", resval); }
 	catch (std::logic_error e) { EXPECT_STREQ("fromIdentifier() is configured 'off'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -513,8 +471,7 @@ TEST_F(TestIcombs, IdentCxpExt)
 
 	EXPECT_EQ(false, xenums::IdentCxpExt::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentCxpExt::Icombs::CxpExt2);
-	success = false;
-	try { xenums::IdentCxpExt::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentCxpExt::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -563,8 +520,7 @@ TEST_F(TestIcombs, IdentCxpInl)
 
 	EXPECT_EQ(false, xenums::IdentCxpInl::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentCxpInl::Icombs::CxpInl2);
-	success = false;
-	try { xenums::IdentCxpInl::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentCxpInl::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }
@@ -630,23 +586,10 @@ TEST_F(TestIcombs, IdentCxpCxp)
 	EXPECT_EQ(false, cxpFromCxpCxp3<CxpCxpv5>(0));
 
 	// cxpFromIdentifier() at runtime
-	ident = "CxpCxp0";
-	EXPECT_EQ(true, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::CxpCxp0);
-	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier(ident));
-	ident = "CxpCxp1";
-	EXPECT_EQ(true, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::CxpCxp1);
-	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier(ident));
-	ident = "CxpCxp2";
-	EXPECT_EQ(true, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier(ident, value));
-	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::CxpCxp2);
-	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier(ident));
-
-	EXPECT_EQ(false, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("foo", value));
-	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::CxpCxp2);
-	success = false;
-	try { xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("foo"); }
+	EXPECT_EQ(xenums::IdentCxpCxp::Icombs::CxpCxp0, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("CxpCxp0"));
+	EXPECT_EQ(xenums::IdentCxpCxp::Icombs::CxpCxp1, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("CxpCxp1"));
+	EXPECT_EQ(xenums::IdentCxpCxp::Icombs::CxpCxp2, xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("CxpCxp2"));
+	try { success = false; xenums::IdentCxpCxp::Icombs::_cxpFromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -666,8 +609,7 @@ TEST_F(TestIcombs, IdentCxpCxp)
 
 	EXPECT_EQ(false, xenums::IdentCxpCxp::Icombs::_fromIdentifier("foo", value));
 	EXPECT_EQ(value, xenums::IdentCxpCxp::Icombs::CxpCxp2);
-	success = false;
-	try { xenums::IdentCxpCxp::Icombs::_fromIdentifier("foo"); }
+	try { success = false; xenums::IdentCxpCxp::Icombs::_fromIdentifier("foo"); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such identifier.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 }

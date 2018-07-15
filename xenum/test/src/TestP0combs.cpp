@@ -3,8 +3,6 @@
  * @author Simon Lodal
  * @copyright 2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- *
- * FIXME: Test bool fromValue()
  */
 
 // For debug only
@@ -155,22 +153,10 @@ TEST_F(TestP0combs, OffCxp)
 	EXPECT_EQ(false, cxpFromOffCxp3<42>(0));
 
 	// cxpFromValue() at runtime
-	intval = 1003;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V0);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromOffCxp(intval));
-	intval = -1003;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V1);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromOffCxp(intval));
-	intval = 1023;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V2);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromOffCxp(intval));
-	intval = 42;
-	EXPECT_EQ(false, xenums::P0combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V2);
-	try { success = false; xenums::P0combs::_cxpFromOffCxp(intval); }
+	EXPECT_EQ(xenums::P0combs::V0, xenums::P0combs::_cxpFromOffCxp(1003));
+	EXPECT_EQ(xenums::P0combs::V1, xenums::P0combs::_cxpFromOffCxp(-1003));
+	EXPECT_EQ(xenums::P0combs::V2, xenums::P0combs::_cxpFromOffCxp(1023));
+	try { success = false; xenums::P0combs::_cxpFromOffCxp(42); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'OffCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -306,22 +292,10 @@ TEST_F(TestP0combs, ExtCxp)
 	EXPECT_EQ(false, cxpFromExtCxp3<42>(0));
 
 	// cxpFromValue() at runtime
-	intval = 1007;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V0);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromExtCxp(intval));
-	intval = -1007;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V1);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromExtCxp(intval));
-	intval = 1027;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V2);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromExtCxp(intval));
-	intval = 42;
-	EXPECT_EQ(false, xenums::P0combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V2);
-	try { success = false; xenums::P0combs::_cxpFromExtCxp(intval); }
+	EXPECT_EQ(xenums::P0combs::V0, xenums::P0combs::_cxpFromExtCxp(1007));
+	EXPECT_EQ(xenums::P0combs::V1, xenums::P0combs::_cxpFromExtCxp(-1007));
+	EXPECT_EQ(xenums::P0combs::V2, xenums::P0combs::_cxpFromExtCxp(1027));
+	try { success = false; xenums::P0combs::_cxpFromExtCxp(42); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'ExtCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -501,22 +475,10 @@ TEST_F(TestP0combs, CxpCxp)
 	EXPECT_EQ(false, cxpFromCxpCxp3<42>(0));
 
 	// cxpFromValue() at runtime
-	intval = 1011;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V0);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromCxpCxp(intval));
-	intval = -1011;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V1);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromCxpCxp(intval));
-	intval = 1031;
-	EXPECT_EQ(true, xenums::P0combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V2);
-	EXPECT_EQ(value, xenums::P0combs::_cxpFromCxpCxp(intval));
-	intval = 42;
-	EXPECT_EQ(false, xenums::P0combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P0combs::V2);
-	try { success = false; xenums::P0combs::_cxpFromCxpCxp(intval); }
+	EXPECT_EQ(xenums::P0combs::V0, xenums::P0combs::_cxpFromCxpCxp(1011));
+	EXPECT_EQ(xenums::P0combs::V1, xenums::P0combs::_cxpFromCxpCxp(-1011));
+	EXPECT_EQ(xenums::P0combs::V2, xenums::P0combs::_cxpFromCxpCxp(1031));
+	try { success = false; xenums::P0combs::_cxpFromCxpCxp(42); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'CxpCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 

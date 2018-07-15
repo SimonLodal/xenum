@@ -12,7 +12,7 @@ Enums:
 - Iteration
 - constexpr size
 - XenumSet: Bit-based set of values from an xenum
-- Custom properties: Static data associated with each enum value.
+- Custom properties: Static data associated with each enum value, with get/from methods.
 
 Implementation:
 - No duplicate declaration of values
@@ -484,14 +484,13 @@ So:
 
 ### constexpr lookup
 If you define the lookup implementation as "cxp" (instead of "ext"), you still get the above
-fromRandNum() methods (but now inlined), and an additional set of methods with "cxp" prefix:
+fromRandNum() methods (but now inlined), and an additional method with "cxp" prefix:
 
 	static constexpr Fruit _cxpFromRandNum(const int& q);
-	static constexpr bool _cxpFromRandNum(const int& q, Fruit& result) noexcept;
 
-They work like the non-constexpr variants, only difference is that they work at compile time.
-On the other hand they are very inefficient at runtime, so you should always use the
-non-constexpr variants at runtime.
+It works like the non-constexpr variants, only difference is it works at compile time.
+On the other hand it is very inefficient at runtime, so you should always use the
+non-constexpr variant at runtime.
 
 
 ## Reference

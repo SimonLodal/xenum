@@ -989,6 +989,8 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_INDENT_ADD								\
  		return BOOST_PP_CAT(cxpTFrom, PNAME)(propValue, 0);				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
+
+/* Disabled: Pointless
 	_XENUM5_DOC(Recursive worker for non-throwing BOOST_PP_CAT(cxpFrom, PNAME)().)		\
 	static constexpr bool BOOST_PP_CAT(cxpNFrom, PNAME)(					\
 		const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,					\
@@ -1027,6 +1029,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:PNAME:from: _XENUM5_PDEF_PLACE_FROM(PDEF))
 		_XENUM5_INDENT_ADD								\
  		return BOOST_PP_CAT(cxpNFrom, PNAME)(propValue, enumValue, 0);			_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
+*/
 
 
 #endif // _XENUM5_IMPL_PLAIN_HPP

@@ -3,8 +3,6 @@
  * @author Simon Lodal
  * @copyright 2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- *
- * FIXME: Test bool fromValue()
  */
 
 // For debug only
@@ -161,25 +159,11 @@ TEST_F(TestP2combs, OffCxp)
 	EXPECT_EQ(false, cxpFromOffCxp3<42>(0));
 
 	// cxpFromValue() at runtime
-	intval = 1206;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromOffCxp(intval));
-	intval = 1207;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromOffCxp(intval));
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromOffCxp(1206));
 	// Not unique, but both are in V0
-	intval = -1203;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromOffCxp(intval));
-
-	value = xenums::P2combs::V2;
-	intval = 42;
-	EXPECT_EQ(false, xenums::P2combs::_cxpFromOffCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V2);
-	try { success = false; xenums::P2combs::_cxpFromOffCxp(intval); }
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromOffCxp(-1203));
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromOffCxp(1207));
+	try { success = false; xenums::P2combs::_cxpFromOffCxp(42); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'OffCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -492,25 +476,11 @@ TEST_F(TestP2combs, ExtCxp)
 	EXPECT_EQ(false, cxpFromExtCxp3<42>(0));
 
 	// cxpFromValue() at runtime
-	intval = 1216;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromExtCxp(intval));
-	intval = 1217;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromExtCxp(intval));
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromExtCxp(1216));
 	// Not unique, but both are in V0
-	intval = -1207;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromExtCxp(intval));
-
-	value = xenums::P2combs::V2;
-	intval = 42;
-	EXPECT_EQ(false, xenums::P2combs::_cxpFromExtCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V2);
-	try { success = false; xenums::P2combs::_cxpFromExtCxp(intval); }
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromExtCxp(-1207));
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromExtCxp(1217));
+	try { success = false; xenums::P2combs::_cxpFromExtCxp(42); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'ExtCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 
@@ -969,25 +939,11 @@ TEST_F(TestP2combs, CxpCxp)
 	EXPECT_EQ(false, cxpFromCxpCxp3<42>(0));
 
 	// cxpFromValue() at runtime
-	intval = 1226;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromCxpCxp(intval));
-	intval = 1227;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromCxpCxp(intval));
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromCxpCxp(1226));
 	// Not unique, but both are in V0
-	intval = -1211;
-	EXPECT_EQ(true, xenums::P2combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V0);
-	EXPECT_EQ(value, xenums::P2combs::_cxpFromCxpCxp(intval));
-
-	value = xenums::P2combs::V2;
-	intval = 42;
-	EXPECT_EQ(false, xenums::P2combs::_cxpFromCxpCxp(intval, value));
-	EXPECT_EQ(value, xenums::P2combs::V2);
-	try { success = false; xenums::P2combs::_cxpFromCxpCxp(intval); }
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromCxpCxp(-1211));
+	EXPECT_EQ(xenums::P2combs::V0, xenums::P2combs::_cxpFromCxpCxp(1227));
+	try { success = false; xenums::P2combs::_cxpFromCxpCxp(42); }
 	catch (std::out_of_range e) { EXPECT_STREQ("No such value of custom property 'CxpCxp'.", e.what()); success = true; }
 	EXPECT_EQ(true, success);
 

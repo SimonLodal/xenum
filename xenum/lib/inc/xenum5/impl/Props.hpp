@@ -1043,6 +1043,8 @@
 		_XENUM5_INDENT_ADD								\
 		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue);				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
+
+/* Disabled: Pointless
 	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
 		without throwing on error.							_XENUM5_NWLN \
 		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
@@ -1057,6 +1059,7 @@
 		_XENUM5_INDENT_ADD								\
 		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue, enumValue);		_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
+*/
 
 
 // ============================ common dbginfo ===============================

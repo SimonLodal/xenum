@@ -206,6 +206,8 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IMPL_FROM(XDCL))			\
 		_XENUM5_INDENT_ADD								\
 		return SNAME::cxpFromIdentifier(identifier);					_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
+
+/* Disabled: Pointless
 	_XENUM5_DOC(Get enum value with given identifier (name), without throwing on error.	_XENUM5_NWLN \
 		Warning: Terrible performance, because linear search, and because		_XENUM5_NWLN \
 		constexpr requirements result in very suboptimal runtime code.			_XENUM5_NWLN \
@@ -219,7 +221,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Ident:from: _XENUM5_XDCL_IMPL_FROM(XDCL))			\
 		_XENUM5_INDENT_ADD								\
 		return SNAME::cxpFromIdentifier(identifier, value);				_XENUM5_NWLN \
 	}											_XENUM5_NWLN \
-
+*/
 
 
 // ====================================== MAIN: DEFINE ==========================================
@@ -637,6 +639,8 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_PLACE_FROM(XDCL))
  		return cxpFromIdentifierT(identifier, 0);						_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
+
+/* Disabled: Pointless
  	_XENUM5_DOC(Recursive worker for non-throwing cxpFromIdentifier().)			\
 	static constexpr bool cxpFromIdentifierN(const char* identifier, Value& value, Index index)	_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
@@ -668,6 +672,7 @@ _XENUM5_INDENT_SUB _XENUM5_CMNT(Store:Ident:from: _XENUM5_XDCL_PLACE_FROM(XDCL))
  		return cxpFromIdentifierN(identifier, value, 0);					_XENUM5_NWLN \
 		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
+*/
 
 
 #endif // _XENUM5_IMPL_IDENT_HPP
