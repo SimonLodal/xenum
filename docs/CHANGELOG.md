@@ -1,6 +1,8 @@
 # Changelog
 
 ## [Unreleased]
+
+## [5.2] - 2018-07-17
 ### Added
 - Lookup enum-value by value of custom property.
 
