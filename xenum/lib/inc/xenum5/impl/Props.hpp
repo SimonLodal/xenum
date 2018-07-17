@@ -89,6 +89,41 @@
 	)											\
 
 
+// =============================== DECLARATION IN CNTNR CLASS ===================================
+/**
+ * Entry point for all custom-prop related declarations in container class (header).
+ */
+#define _XENUM5_PROPS_DECLC(CTXT)								\
+	BOOST_PP_REPEAT										\
+	(											\
+		BOOST_PP_SEQ_SIZE(_XENUM5_XDCL_PDEFS(_XENUM5_CTXT_XDCL(CTXT))),			\
+		_XENUM5_PROP_DECLC,								\
+		_XENUM5_CTXT_XDCL(CTXT)								\
+	)											\
+
+/**
+ * Callback for _XENUM5_PROPS_DECLC() loop.
+ */
+#define _XENUM5_PROP_DECLC(Z, N, XDCL)								\
+	_XENUM5_PROP_DECLC_I1									\
+	(											\
+		_XENUM5_XDCL_PDEFN(XDCL, N),							\
+		XDCL										\
+	)
+
+/**
+ * Worker for _XENUM5_PROP_DECLC().
+ */
+#define _XENUM5_PROP_DECLC_I1(PDEF, XDCL)							\
+	_XENUM5_INDENT_SUB _XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))				\
+	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DECLC)			\
+	(											\
+		_XENUM5_PDEF_NAME(PDEF),							\
+		PDEF,										\
+		XDCL										\
+	)											\
+
+
 // ======================================= DEFINITION ===========================================
 /**
  * Main entry function for defining the data for custom properties.
@@ -126,8 +161,7 @@
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		PDEF,										\
 		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
+		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),						\
 		Z										\
 	)
@@ -141,25 +175,20 @@
 	_XENUM5_PROP_CHECK_I1									\
 	(											\
 		_XENUM5_XDCL_PDEFN(_XENUM5_CTXT_XDCL(CTXT), N),					\
-		_XENUM5_CTXT_XDCL(CTXT),							\
-		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
-		Z										\
+		_XENUM5_CTXT_XDCL(CTXT)								\
+		/*, _XENUM5_CTXT_SET_PINDEX(CTXT, N) */						\
 	)
 
 /**
  * Worker for _XENUM5_PROP_CHECK().
  */
-#define _XENUM5_PROP_CHECK_I1(PDEF, XDCL, CTXT, Z)						\
+#define _XENUM5_PROP_CHECK_I1(PDEF, XDCL)							\
 	_XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))							\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _CHECK)			\
 	(											\
 		_XENUM5_PDEF_NAME(PDEF),							\
 		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		/*_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),*/						\
-		Z										\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF))				\
 	)											\
 
 
@@ -170,25 +199,20 @@
 	_XENUM5_PROP_DBGINFO_I1									\
 	(											\
 		_XENUM5_XDCL_PDEFN(_XENUM5_CTXT_XDCL(CTXT), N),					\
-		_XENUM5_CTXT_XDCL(CTXT),							\
-		_XENUM5_CTXT_SET_PINDEX(CTXT, N),						\
-		Z										\
+		_XENUM5_CTXT_XDCL(CTXT)								\
+		/*, _XENUM5_CTXT_SET_PINDEX(CTXT, N)*/						\
 	)
 
 /**
  * Worker for _XENUM5_PROP_DBGINFO().
  */
-#define _XENUM5_PROP_DBGINFO_I1(PDEF, XDCL, CTXT, Z)						\
+#define _XENUM5_PROP_DBGINFO_I1(PDEF, XDCL)							\
 	_XENUM5_CMNT(_XENUM5_PDEF_NAME(PDEF))							\
 	BOOST_PP_CAT(BOOST_PP_CAT(_XENUM5_, _XENUM5_PDEF_TYPCAT(PDEF)), _DBGINFO)		\
 	(											\
 		_XENUM5_PDEF_NAME(PDEF),							\
 		PDEF,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF)),				\
-		_XENUM5_XDCL_DSCOPE(XDCL),							\
-		_XENUM5_STORE_NAME(XDCL),							\
-		/*_XENUM5_CTXT_SET_PDEF(CTXT, PDEF),*/						\
-		Z										\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, _XENUM5_PDEF_NAME(PDEF))				\
 	)											\
 
 
@@ -412,6 +436,80 @@
 	_XENUM5_DOC(Native type of custom property PNAME values.)				\
 	using BOOST_PP_CAT(PNAME, Value) = _XENUM5_PDEF_REAL_TYPE(PDEF);			_XENUM5_NWLN \
 
+/**
+ * Alias the data type for a custom property.
+ */
+#define _XENUM5_PROP_VALUETYPE_DEFL(PNAME, SSCOPED)						\
+	_XENUM5_DOC(Alias native type of custom property PNAME values.)				\
+	using BOOST_PP_CAT(PNAME, Value) = typename SSCOPED BOOST_PP_CAT(PNAME, Value);		_XENUM5_NWLN \
+
+/**
+ * Declare the data type for a custom property, using one of the above functions, based
+ * on existence of PDEF parameter.
+ */
+#define _XENUM5_PROP_VALUETYPE_AUTO(PNAME, PDEF, SSCOPED)					\
+	BOOST_PP_CAT(_XENUM5_PROP_VALUETYPE_AUTO_, BOOST_PP_IS_EMPTY(PDEF))			\
+		(PNAME, PDEF, SSCOPED)								\
+
+/**
+ * Helper for _XENUM5_PROP_VALUETYPE_AUTO().
+ */
+#define _XENUM5_PROP_VALUETYPE_AUTO_0(PNAME, PDEF, SSCOPED)					\
+	_XENUM5_PROP_VALUETYPE_DECL(PNAME, PDEF)						\
+
+/**
+ * Helper for _XENUM5_PROP_VALUETYPE_AUTO().
+ */
+#define _XENUM5_PROP_VALUETYPE_AUTO_1(PNAME, PDEF, SSCOPED)					\
+	_XENUM5_PROP_VALUETYPE_DEFL(PNAME, SSCOPED)						\
+
+
+// =========================== ValueNames type ===============================
+/**
+ * Alias the ValueNames struct type for a custom property.
+ */
+#define _XENUM5_PROP_VALUENAMES_DEFL(PNAME, SSCOPED)						\
+	_XENUM5_DOC(Alias ValueNames struct for custom property PNAME.)				\
+	using BOOST_PP_CAT(PNAME, ValueNames) = typename SSCOPED BOOST_PP_CAT(PNAME, ValueNames);	_XENUM5_NWLN \
+
+
+// ======================== Prop-values index-type ===========================
+/**
+ * Declare the data type to index and count the values of a custom property.
+ */
+#define _XENUM5_PROP_VINDEX_DECL(PNAME)								\
+	_XENUM5_DOC(Integer type big enough to index and count the values.)			\
+	using BOOST_PP_CAT(PNAME, Vindex) = ::_XENUM5_NS::SelectInt<				\
+		sizeof(BOOST_PP_CAT(PNAME, Values)) / sizeof(BOOST_PP_CAT(PNAME, Value))	\
+	>::type;										_XENUM5_NWLN \
+
+/**
+ * Alias the data type for indexing the values of a custom property.
+ */
+#define _XENUM5_PROP_VINDEX_DEFL(PNAME, SSCOPED)						\
+	_XENUM5_DOC(Alias native type for indexing the values of custom property PNAME.)	\
+	using BOOST_PP_CAT(PNAME, Vindex) = typename SSCOPED BOOST_PP_CAT(PNAME, Vindex);	_XENUM5_NWLN \
+
+/**
+ * Declare the data type for indexing the values of a custom property, using one of the above
+ * functions, based on existence of PDEF parameter.
+ */
+#define _XENUM5_PROP_VINDEX_AUTO(PNAME, PDEF, SSCOPED)						\
+	BOOST_PP_CAT(_XENUM5_PROP_VINDEX_AUTO_, BOOST_PP_IS_EMPTY(PDEF))			\
+		(PNAME, SSCOPED)								\
+
+/**
+ * Helper for _XENUM5_PROP_VINDEX_AUTO().
+ */
+#define _XENUM5_PROP_VINDEX_AUTO_0(PNAME, SSCOPED)						\
+	_XENUM5_PROP_VINDEX_DECL(PNAME)								\
+
+/**
+ * Helper for _XENUM5_PROP_VINDEX_AUTO().
+ */
+#define _XENUM5_PROP_VINDEX_AUTO_1(PNAME, SSCOPED)						\
+	_XENUM5_PROP_VINDEX_DEFL(PNAME, SSCOPED)						\
+
 
 // ========================== Index type (real) ==============================
 /**
@@ -421,7 +519,7 @@
 #define _XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)						\
 	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
 	using  BOOST_PP_CAT(PNAME, Index) =							\
-	::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cxp_max(						\
+	::_XENUM5_NS::SelectInt< ::_XENUM5_NS::cxpMax(						\
 		sizeof(BOOST_PP_CAT(PNAME, Values)) / sizeof(BOOST_PP_CAT(PNAME, Value)),	\
 		BOOST_PP_CAT(PNAME, NodesSize)							\
 	) >::type;										_XENUM5_NWLN \
@@ -430,22 +528,49 @@
 // =========================== Index type (std) ==============================
 /**
  * Define a simple, fixed ${PNAME}Index type.
- * Only for depth!=0.
  */
-#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, DEPTH)						\
-	BOOST_PP_CAT(_XENUM5_PROP_INDEXTYPE_FIXED_DECL_, BOOST_PP_BOOL(DEPTH)) (PNAME, DEPT)	\
+#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, COND)						\
+	BOOST_PP_CAT(_XENUM5_PROP_INDEXTYPE_FIXED_DECL_, COND) (PNAME)				\
 
 /**
- * For depth==0, do nothing.
+ * Do nothing (condition==false).
  */
-#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_0(PNAME, DEPTH)					\
+#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_0(PNAME)						\
 
 /**
- * For depth!=0, declare the type.
+ * Declare the type.
  */
-#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_1(PNAME, DEPTH)					\
+#define _XENUM5_PROP_INDEXTYPE_FIXED_DECL_1(PNAME)						\
 	_XENUM5_DOC(Integer type big enough to count and index both PNAME values and indexnodes.)	\
 	using BOOST_PP_CAT(PNAME, Index) = size_t;						_XENUM5_NWLN \
+
+
+// ========================== Index type (auto) ==============================
+/**
+ * Define the index type in local-ns context.
+ * Problem is that selecting the optimal type requires access to the common ${pname}Values
+ * array, but if that is defined in header, it is private and inaccessible; in that case
+ * just define the index type generically.
+ */
+#define _XENUM5_PROP_INDEXTYPE_DEFL(PNAME, PDEF)						\
+	BOOST_PP_CAT(										\
+		_XENUM5_PROP_INDEXTYPE_DEFL_,							\
+		BOOST_PP_EQUAL(_XENUM5_PDEF_PLACE_INT_COMMON(PDEF), 2)				\
+	)(PNAME)										\
+
+/**
+ * Helper for _XENUM5_PROP_INDEXTYPE_DEFL().
+ * Define generic index type.
+ */
+#define _XENUM5_PROP_INDEXTYPE_DEFL_0(PNAME)							\
+	_XENUM5_PROP_INDEXTYPE_FIXED_DECL(PNAME, 1)						\
+
+/**
+ * Helper for _XENUM5_PROP_INDEXTYPE_DEFL().
+ * Define optimal index type.
+ */
+#define _XENUM5_PROP_INDEXTYPE_DEFL_1(PNAME)							\
+	_XENUM5_PROP_INDEXTYPE_SELECT_DECL(PNAME)						\
 
 
 // ============================== Node type ==================================
@@ -477,6 +602,18 @@
 		CTXT,										\
 		_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS)						\
 	);											_XENUM5_NWLN
+
+
+// ============================= Local::TYPES ================================
+/**
+ * In local-ns context, import the public types from the store class.
+ */
+#define _XENUM5_PROP_COMMON_TYPES_DEFL(PNAME, PDEF, SSCOPED)					\
+	_XENUM5_DOC(Alias enum index-type into this scope.)					\
+	using Index = typename SSCOPED Index;							_XENUM5_NWLN \
+	_XENUM5_DOC(Alias the native enum into this scope.)					\
+	using Enum = typename SSCOPED Enum;							_XENUM5_NWLN \
+	_XENUM5_PROP_VALUETYPE_AUTO(PNAME, PDEF, SSCOPED)					\
 
 
 // ============================= Value::TYPES ================================
@@ -641,7 +778,7 @@
 		PNAME,										\
 		_XENUM5_PDEF_DEPTH(PDEF),							\
 		LEVEL,										\
-		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME)::,						\
+		_XENUM5_IMPL_LOCAL_NS(XDCL, PNAME),						\
 		_XENUM5_XDCL_DSCOPE(XDCL)_XENUM5_STORE_NAME(XDCL)::,				\
 		Z										\
 	)											\
@@ -649,7 +786,7 @@
 /**
  * Define Store::get${pname}Size(), inline/constexpr or ext, defined by parms.
  */
-#define _XENUM5_PROP_GETSIZE_DEFS_N_I1(DECLPFX, PNAME, DEPTH, LEVEL, LSCOPED, SSCOPED, Z)	\
+#define _XENUM5_PROP_GETSIZE_DEFS_N_I1(DECLPFX, PNAME, DEPTH, LEVEL, LSCOPE, SSCOPED, Z)	\
 	_XENUM5_DOC(Get number of								\
 		BOOST_PP_IF(									\
 			BOOST_PP_EQUAL(DEPTH, BOOST_PP_INC(LEVEL)),				\
@@ -665,11 +802,13 @@
 		)										\
 	) BOOST_PP_IF(BOOST_PP_BOOL(LEVEL), , noexcept)						_XENUM5_NWLN \
 	{											_XENUM5_NWLN \
-		_XENUM5_INDENT_ADD								\
-		return LSCOPED BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (			\
+		_XENUM5_INDENT_INC								\
+		_XENUM5_USE_NS_IF_NONEMPTY(LSCOPE)						\
+		return BOOST_PP_CAT(BOOST_PP_CAT(get, PNAME), Node) (				\
 			_XENUM5_PROP_GEN_INDEX0_ARGS(BOOST_PP_INC(LEVEL), Z)			\
 		)										\
 		.size;										_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
 
 
@@ -754,6 +893,209 @@
 			value									\
 			_XENUM5_PROP_GEN_INDEX1_ARGS(DEPTH, Z)					\
 		);										_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+// ============================ PropOwner type ===============================
+/**
+ * Define the ${PNAME}PropOwner type.
+ */
+#define _XENUM5_PROP_OWNERTYPE_DECL(PNAME)							\
+	_XENUM5_DOC(PropOwner type for PNAME, to map each PNAME value to the enum-value		\
+		it belongs to.)									\
+	using BOOST_PP_CAT(PNAME, PropOwner) =							\
+	::_XENUM5_NS::PropOwner<Index,BOOST_PP_CAT(PNAME, Vindex)>;				_XENUM5_NWLN \
+
+
+// ======================= Define propOwners array ===========================
+/**
+ * Define the propOwners array.
+ */
+#define _XENUM5_PROP_OWNERS_DEF(DECLPFX, PNAME, CTXT)						\
+	_XENUM5_DOC(Array of enum-value owners of all PNAME values.)				\
+	DECLPFX constexpr const BOOST_PP_CAT(PNAME, PropOwner) BOOST_PP_CAT(PNAME, PropOwners)[] =	\
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+		_XENUM5_PROP_ITER_VALUES(_XENUM5_PROP_OWNER_DEF, CTXT)				\
+		_XENUM5_INDENT_DEC								\
+	};											_XENUM5_NWLN \
+
+/**
+ * Loop worker for _XENUM5_PROP_OWNERS_DEF().
+ */
+#define _XENUM5_PROP_OWNER_DEF(ITERPOS, NODE, CTXT)						\
+	{											\
+		/* EnumIndex */									\
+		static_cast<Index>(Enum::_XENUM5_CTXT_IDENT(CTXT)),				\
+		/* PropValueIndex */								\
+		_XENUM5_PROP_OWNER_DEF_INDEX(							\
+			_XENUM5_TT_ITERPOS_INDEXPATH(ITERPOS),					\
+			_XENUM5_PDEF_NAME(_XENUM5_CTXT_PDEF(CTXT)),				\
+			CTXT									\
+		)										\
+	},											_XENUM5_NWLN \
+
+/**
+ * Worker for _XENUM5_PROP_OWNER_DEF().
+ */
+#define _XENUM5_PROP_OWNER_DEF_INDEX(INDEXPATH, PNAME, CTXT)					\
+	(offsetof(										\
+		BOOST_PP_CAT(PNAME, ValueNames),						\
+		_XENUM5_PROP_GEN_NODE_NAME(CTXT, INDEXPATH)					\
+	) / sizeof(BOOST_PP_CAT(PNAME, Value)))							\
+
+
+// ============================== ValueCount =================================
+/**
+ * Define number of values.
+ */
+#define _XENUM5_PROP_VALUECOUNT_DEF(PNAME)							\
+	_XENUM5_DOC(Total number of values for custom property PNAME.)				\
+	static constexpr const size_t BOOST_PP_CAT(PNAME, ValueCount) =				\
+		sizeof(BOOST_PP_CAT(PNAME, PropOwners)) /					\
+		sizeof(BOOST_PP_CAT(PNAME, PropOwner));						_XENUM5_NWLN \
+
+
+// ====================== Declare Store::fromValue() =========================
+/**
+ * Declare Store::from{pname}().
+ */
+#define _XENUM5_PROP_FROMVALUE_EXT_DECL(PNAME, PDEF)						\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+	static Enum BOOST_PP_CAT(from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue);	_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+	static bool BOOST_PP_CAT(from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+					      Value& enumValue) noexcept;			_XENUM5_NWLN \
+
+
+// ====================== Define Cntnr::fromValue() ==========================
+/**
+ * Throwing from${pname}() generator, for unit testing only.
+ */
+#define _XENUM5_PROP_FROMVALUE_OFF_DEFC(PNAME, PDEF, VNAME)					\
+	static VNAME BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error(BOOST_PP_STRINGIZE(BOOST_PP_CAT(_from, PNAME))		\
+				       "() is configured 'off'.");				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	static bool BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+					       VNAME& enumValue)				_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		throw std::logic_error(BOOST_PP_STRINGIZE(BOOST_PP_CAT(_from, PNAME))		\
+				       "() is configured 'off'.");				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+/**
+ * Common from${pname}() generator for container class.
+ */
+#define _XENUM5_PROP_FROMVALUE_STD_DEFC(PNAME, PDEF, SNAME, VNAME)				\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+	static VNAME BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(from, PNAME)(propValue);				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+	static bool BOOST_PP_CAT(_from, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+					       VNAME& enumValue) noexcept			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(from, PNAME)(propValue, enumValue);			_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+
+/**
+ * Constexpr from${pname}() generator for container class.
+ */
+#define _XENUM5_PROP_FROMVALUE_CXP_DEFC(PNAME, PDEF, SNAME, VNAME)				\
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME.		_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@return Requested enum value.							_XENUM5_NWLN \
+		@throws std::out_of_range if no such custom property value exists.)		\
+	static constexpr VNAME BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue)	_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue);				_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+
+/* Disabled: Pointless
+	_XENUM5_DOC(Get enum value that has this value for custom property PNAME,		_XENUM5_NWLN \
+		without throwing on error.							_XENUM5_NWLN \
+		Warning: Terrible performance, because linear search.				_XENUM5_NWLN \
+		@param propValue Value to look up.						_XENUM5_NWLN \
+		@param enumValue Return value; is set to the requested enum value,		_XENUM5_NWLN \
+			_XENUM5_INDENT_ADD							\
+			if it exists, else it is not touched.					_XENUM5_NWLN \
+		@return True if enum-value with given property value was found, else false.)	\
+	static constexpr bool BOOST_PP_CAT(_cxpFrom, PNAME)(const _XENUM5_PDEF_PARM_TYPE(PDEF) propValue,	\
+						  VNAME& enumValue) noexcept			_XENUM5_NWLN \
+	{											_XENUM5_NWLN \
+		_XENUM5_INDENT_ADD								\
+		return SNAME::BOOST_PP_CAT(cxpFrom, PNAME)(propValue, enumValue);		_XENUM5_NWLN \
+	}											_XENUM5_NWLN \
+*/
+
+
+// ============================ common dbginfo ===============================
+/**
+ * Dump common data.
+ */
+#define _XENUM5_PROP_COMMON_DBGINFO(PNAME, PDEF)						\
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_COMMON(PDEF))<<": "		\
+		<<"sizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, Values))<<") = "		\
+		<<sizeof(BOOST_PP_CAT(PNAME, Values))<<std::endl;				_XENUM5_NWLN \
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_COMMON(PDEF))<<": "		\
+		<<"sizeof("<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, ValueNames))<<") = "	\
+		<<sizeof(BOOST_PP_CAT(PNAME, ValueNames))<<std::endl;				_XENUM5_NWLN \
+
+
+// ========================== propOwners dbginfo =============================
+/**
+ * Dump propOwners array.
+ */
+#define _XENUM5_PROP_FROMVALUE_DBGINFO(PNAME, PDEF)						\
+	std::cout										\
+		<<"\t\t"<<BOOST_PP_STRINGIZE(_XENUM5_PDEF_PLACE_FROM(PDEF))<<": "		\
+		<<BOOST_PP_STRINGIZE(BOOST_PP_CAT(PNAME, PropOwners))<<" ("			\
+		<<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)))	\
+		<<"):"<<std::endl;								_XENUM5_NWLN \
+	for (BOOST_PP_CAT(PNAME, Vindex) idx=0;							\
+		idx<(sizeof(BOOST_PP_CAT(PNAME, PropOwners))/sizeof(BOOST_PP_CAT(PNAME, PropOwner)));	\
+		idx++) {									_XENUM5_NWLN \
+		_XENUM5_INDENT_INC								\
+			std::cout<<"\t\t\t["<<(size_t)idx<<"]"					\
+				<<" eidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].enumValue	\
+				<<" pidx="<<(size_t)BOOST_PP_CAT(PNAME, PropOwners)[idx].propIndex	\
+				<<std::endl;							_XENUM5_NWLN \
+		_XENUM5_INDENT_DEC								\
 	}											_XENUM5_NWLN \
 
 

@@ -1,4 +1,4 @@
-# xenum-5.1
+# xenum-5.2
 
 ## Description
 Want better C++ enums?
@@ -12,7 +12,7 @@ Enums:
 - Iteration
 - constexpr size
 - XenumSet: Bit-based set of values from an xenum
-- Custom properties: Static data associated with each enum value.
+- Custom properties: Static data associated with each enum value, with get/from methods.
 
 Implementation:
 - No duplicate declaration of values
@@ -108,7 +108,8 @@ nice for it's elegance and power, but it has some shortcomings:
 - It can not generate identifiers (the enum values, and associated getter functions), only
   types or values.
 - Big lists do not work (fx >256 entries), since all iteration over lists is recursive,
-  and all preprocessors have a rather small recursion limit.
+  and there is always a rather small recursion limit (some compilers can be instructed
+  to increase it, but still it is never unlimited).
 
 ## Example: Basic xenum
 Here we declare a simple "Fruits" enum, with values "apple", "orange", "lemon".
@@ -172,6 +173,10 @@ Fruits::apple() and Fruits::_enum::apple both yield the same native enum value.
 	Fruits::_enum nativeEnumValue = fruit3();
 These are the only properties that Xenum values have (plus any custom properties).
 
+The index is what is usually called the "ordinal" value, however it can not be customized,
+instead it is assigned sequentially (0..n). If you need an associated integer with custom
+values, see custom properties below.
+
 #### Print
 
 	std::cout << "fruit1:"
@@ -231,7 +236,7 @@ First the what and why. If you have some static data associated with each enum v
 could just create an external array, sized using the constexpr Fruits::_size, and a custom
 lookup function for it. It is just not very OO'ish. Xenum's custom properties allows you
 to put the associated data into the enum declaration, and have getters generated on the
-enum value class.
+enum value class (and optionally lookup methods on the container class).
 
 Here we extend the xenum with three custom properties:
 - "Ordinal" of type int, without any default value.
@@ -257,22 +262,24 @@ Several things to note here:
   and/or class.
 - int16_t is now enforced as the integer type to use for the enum values. The default is
   to use the smallest type that is big enough to hold the number of enum values.
+- The empty field after int16_t is for optional features, which all have sane defaults (see
+  below).
 - The custom properties are defined as separate lists.
-- Color has the special type "cstring". It is really a plain const char*, but strings need
-  special handling, so you must use this special cooked type name for them. All other
+- Color has the special type "cstring". It is really a const char*, but strings need
+  special handling, so you must use this special cooked typename for them. All other
   types can just be used as is.
 - The values (the V() macros) now also define the values of the custom properties.
 
 So:
 - Apple has Ordinal=22, Sour=false (default value applied since it is empty), and Color="red".
-- Orange has Ordinal=44, Sour=false (default) and Color="varies".
+- Orange has Ordinal=44, Sour=false (default) and Color="unknown".
 - Lemon has Ordinal=17, Sour=true and Color="yellow".
 
-Code generation is like in the first example:
-Header part:
+Trigger code generation like in the first example:
+- Header part:
 
 	XENUM5_DECLARE(Fruits)
-Source part:
+- Source part:
 
 	XENUM5_DEFINE(Fruits)
 
@@ -309,7 +316,17 @@ In your header file:
 - More importantly, the "1" after "black" means that the data has one dimension, which means
   a single array of values (0 means data is an immediate value; this is the default we used in
   the previous example).
-- For each enum value, the custom property values are now defined as a list.
+- For each enum value, the custom property values are now defined as a list. Each list is of
+  different length; has exactly the number of values that you define for it. The same is true
+  for any other childnode in the data hierarchy, if you use more dimensions.
+
+Trigger code generation as usual:
+- Header part:
+
+	XENUM5_DECLARE(Fruits)
+- Source part:
+
+	XENUM5_DEFINE(Fruits)
 
 ### Use the xenum
 The getter function now includes an index, naturally, and you can get the size of the arrays
@@ -371,6 +388,14 @@ In your header file:
 
 Note that the data is now defined with two levels - arrays in arrays.
 
+Trigger code generation as usual:
+- Header part:
+
+	XENUM5_DECLARE(Fruits)
+- Source part:
+
+	XENUM5_DEFINE(Fruits)
+
 ### Use the xenum
 The getter functions are extended with one index level:
 
@@ -397,6 +422,76 @@ So:
 	randNum = Fruits::apple.getRandNum(0, 0); // => 5
 	randNum = Fruits::apple.getRandNum(1, 1); // => 8
 	randNum = Fruits::apple.getRandNum(2, 3); // => -9
+
+## Example: Lookup enum-values by identifier or custom property value
+fromIdentifier() is generated in the container class, by default (can be turned off by a
+feature option). This allows lookup of enum-value by identifier string.
+
+You can also look up enum-values by the value of custom properties. This is not enabled
+by default since it requires that all the values of a given custom property are unique.
+It is be enabled by a feature option.
+
+Here we add lookup to the multi-level array custom property (and a few custom property
+values to each enum-value).
+
+### Create the xenum
+In your header file:
+
+	#include <xenum5/Xenum.hpp>
+	#define XENUM5_Fruits(D,V,C)					\
+		D(C, my::ns::, Fruits, Fruit, int16_t, , (		\
+			(RandNum, int, , 2, (,ext))			\
+		))							\
+		V(C, apple, ((5,3,7), (11,8), (-22, 44, 1, -9)))	\
+		V(C, orange, ((19,4)))					\
+		V(C, lemon, ((-17)))
+
+- We added the 5th argument, "(,ext)". This is the optional list of feature options
+  for this custom property.
+- The second feature option says to implement lookup as "ext", which is the recommended
+  implementation method. The default is "off". Other possibilities are "inl" for inline
+  implementation, and "cxp" for constexpr inline implementation.
+
+Trigger code generation as usual:
+- Header part:
+
+	XENUM5_DECLARE(Fruits)
+- Source part:
+
+	XENUM5_DEFINE(Fruits)
+
+### Use the xenum
+Two different lookup methods are now generated in the container class (Fruits):
+
+	// Throws on failure
+	static Fruit _fromRandNum(const int& q);
+	// On failure, just returns false and does not alter the result value
+	static bool _fromRandNum(const int& q, Fruit& result) noexcept;
+
+So:
+
+	Fruit fresult;
+	fresult = Fruits::_fromRandNum(-22); // => fresult=Fruits::apple
+	fresult = Fruits::_fromRandNum(4); // => fresult=Fruits::orange
+	fresult = Fruits::_fromRandNum(-17); // => fresult=Fruits::lemon
+	fresult = Fruits::_fromRandNum(27); // => exception; no such RandNum value
+
+	bool bresult;
+	bresult = Fruits::_fromRandNum(-22, fresult); // => bresult=true, fresult=Fruits::apple
+	bresult = Fruits::_fromRandNum(4, fresult); // => bresult=true, fresult=Fruits::orange
+	bresult = Fruits::_fromRandNum(-17, fresult); // => bresult=true, fresult=Fruits::lemon
+	bresult = Fruits::_fromRandNum(27, fresult); // => bresult=false, fresult not touched
+
+### constexpr lookup
+If you define the lookup implementation as "cxp" (instead of "ext"), you still get the above
+fromRandNum() methods (but now inlined), and an additional method with "cxp" prefix:
+
+	static constexpr Fruit _cxpFromRandNum(const int& q);
+
+It works like the non-constexpr variants, only difference is it works at compile time.
+On the other hand it is very inefficient at runtime, so you should always use the
+non-constexpr variant at runtime.
+
 
 ## Reference
 ### XENUM5_$suffix
@@ -431,18 +526,22 @@ This callback defines general parameters of the enum.
   to let Xenum decide the smallest possible type.
 - **features** Optional. A list (comma-separated, in parentheses) of not so common
   features/options (more may be added):
-  - [0] (getIdentifier): How to implement the getIdentifier() method. See discussion below.
+  - [0] (getIdentifier): How to implement the getIdentifier() method.
     Valid values are:
     - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
+      See warning below.
     - cxp: Declare and define constexpr, in generated header.
-  - [1] (fromIdentifier): How to implement the fromIdentifier() method. See discussion below.
+      See warning below.
+  - [1] (fromIdentifier): How to implement the fromIdentifier() method.
     Valid values are:
     - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
     - inl: Declare and define inline, but not constexpr, in generated header.
+      See warning below.
     - cxp: Declare and define constexpr, in generated header. This produces a separate
       cxpFromIdentifier() method, but also includes the plain inline fromIdentifier().
+      See warning below.
 - **properties** Optional. Defines custom properties. Leave field empty/undefined if the
   xenum does not have any custom properties. If defined, it must be a tuple of one or
   more tuples that each define a property (see below).
@@ -472,18 +571,37 @@ Custom property tuple syntax:
   features/options (more may be added):
   - [0] (get${propertyName}): How to implement the getter method for this custom property.
     See discussion below. Valid values are:
+    - off: Do not implement this method.
     - ext (the default, if empty): Declare in generated header, define in generated source.
     - cxp: Declare and define constexpr, in generated header.
+      See warning below.
+  - [1] (from${propertyName}): How to implement the from${propertyName}() lookup method for
+    this custom property. See requirements below. Valid values are:
+    - off (the default, if empty): Do not implement this method.
+    - ext: Declare in generated header, define in generated source.
+    - inl: Declare and define inline, but not constexpr, in generated header.
+      See warning below.
+    - cxp: Declare and define constexpr, in generated header. This produces a separate
+      cxpFrom${propertyName}() method, but also includes the plain inline from${propertyName}().
+      See warning below.
 
+##### Requirements for from${propertyName}() lookup method
+- All the values of this custom property must be different. If they are not, the lookup function
+  results are undefined: It may return any of them, or fail, at runtime or compile time.
+- The lookup method uses the == operator to compare values. If the custom property data type is
+  complex you may need to define such an operator function for the data type. And if you want
+  from${propertyName}() to be constexpr, then your operator==() must also be constexpr.
 
 ##### Warning about inline/constexpr methods
 You can implement the get*() and from*() functions for identifiers and custom properties in
 different ways (the options above). The default ("ext" option) is to generate their declaration
-in the header, and the definition (along with related data) in the source file.
+in the header, and the definition (along with related data) in the source file (and in the case
+of from${propertyName}(), the default is to not generate it at all, because it requires all
+values to be unique).
 
-You can also have these functions implemented inline or constexpr, but you should only use
-these options if you really need constexpr access to the data, or for some reason want it to
-be inlined. They come with big costs.
+You can also have these functions implemented inline or constexpr, but you should only do this
+if you really need constexpr access to the data, or for some reason want it to be inlined.
+They come with big costs:
 
 - Compile time cost: All source units that include the header will run the whole code generation
   (several iterations over the whole xenum declaration). This can take considerable time if your
@@ -498,8 +616,9 @@ be inlined. They come with big costs.
   compile time. The price is terrible runtime performance. In the future C++ may allow to define
   different code for constexpr and non-constexpr, but until then, this is a problem for everyone.
 
-You can also define a get*() or from*() method implementation as "off" to omit it, it might save
-some space in your compiled binary.
+You can also define a get*() or from*() method implementation as "off" to omit it, and save
+some space in your compiled binary. If you set both get and from to "off", there is no way to
+access the data, and it will therefore not be generated at all.
 
 #### V() macro
 This callback defines a single enum value.
@@ -536,6 +655,8 @@ Underscore-prefixed members are:
 - \_fromIndex
 - \_fromIdentifier
 - \_cxpFromIdentifier
+- For each custom property, _get${propertyName}, _from${propertyName} and
+  _cxpFrom${propertyName} (depending on options).
 
 A few members do not have an underscore prefix.
 - The default constructor
@@ -556,6 +677,9 @@ iterator(), begin() and end() are needed by for(:) loops.
   So if you have a custom property with depth=1, the array of values (per enum value) can
   be no larger than 64. However, if your have depth>1, each leafnode can contain it's own
   array of up to 64 values.
+
+  Note that if you have many enum-values (say >64), they can each have value(s) for the
+  same custom property. The 64 limit only applies to the values for a single enum-value.
 
 ## Reviving the generated code
 Xenum is macro-based. The disadvantage is that the generated code is only readable to
@@ -621,10 +745,11 @@ number of errors, and none of them make any sense?
 - Support for more compilers / versions.
 - Per-enum options:
   - Omit iteration functions, and perhaps other parts.
-- Lookup of enum value by custom property value.
+  - Char-type to use for identifiers.
+  - Force always create the value class (no typedef); necessary if forward-declaration is needed.
 - Per-custom-property options:
-  - Generate lookup function.
   - Custom getter prefix.
+  - Char-type to use for cstring.
 - Make xenum with custom properties work when declared inside a class. Probably requires a
   separate XENUM5_DECLARE_PRE() macro call outside the class, ugly.
 - Efficient string-to-enum lookup. Requires a hashmap, which is difficult given these

@@ -1,0 +1,25 @@
+#!/bin/sh
+#
+# Util for development cycle. Run xenum5-inject on the source file of one of the testing
+# xenums, output to a file with "2" in filename, diff against previous output; a similar
+# file with "1" in filename.
+#
+# Run from basedir.
+# First and only arg is the basename of the xenum, fx. Icombs.
+# Example: util/mk2h Icombs
+# => produces Icombs.2.hpp and diffs against Icombs.1.hpp.
+
+#GPP=g++
+GPP=clang
+
+BASENAME=$1
+if [ -z "$BASENAME" ]; then
+	echo "Synopsis: mk2h BASENAME"
+	echo "Doc in script header."
+	exit -1
+fi
+
+util/xenum5-inject -c $GPP -i xenum/test/src/xenums/${BASENAME}.cpp -o ${BASENAME}.2.cpp \
+&& \
+diff -uN ${BASENAME}.1.cpp ${BASENAME}.2.cpp \
+| less -S

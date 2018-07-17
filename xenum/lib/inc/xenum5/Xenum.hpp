@@ -3,7 +3,7 @@
  * @author Simon Lodal
  * @copyright 2017-2018 Simon Lodal <simonl@parknet.dk>
  * @license GNU GPL version 3
- * @version 5.1
+ * @version 5.2
  */
 #ifndef _XENUM5_XENUM_HPP
 #define _XENUM5_XENUM_HPP
@@ -11,7 +11,7 @@
 /// Major version
 #define XENUM5_VER_MAJOR	5
 /// Minor version
-#define XENUM5_VER_MINOR	1
+#define XENUM5_VER_MINOR	2
 /// Micro/patch/pre version
 #define XENUM5_VER_PATCH	
 
@@ -43,6 +43,7 @@
 #include <xenum5/impl/PropDef.hpp>
 #include <xenum5/impl/Ctxt.hpp>
 #include <xenum5/impl/IndexNode.hpp>
+#include <xenum5/impl/PropOwner.hpp>
 #include <xenum5/impl/Ident.hpp>
 #include <xenum5/impl/Props.hpp>
 #include <xenum5/impl/Plain.hpp>

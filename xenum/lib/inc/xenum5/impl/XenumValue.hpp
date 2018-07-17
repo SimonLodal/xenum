@@ -15,7 +15,7 @@ namespace xenum5 {
  * Thin wrapper around a native enum value.
  * Can never have an invalid value.
  * @param XenumStore The xenum store class, containing the native C++ enum.
- * @param enableGetIdentifier 0=off, 1=inline, 2=constexpr
+ * @param enableGetIdentifier 0=off, 1|2=inline, 3=constexpr
  */
 template<class XenumStore, int enableGetIdentifier>
 class XenumValue {
@@ -53,12 +53,12 @@ public:
 
 	/// @return Identifier (name) of this enum value.
 	template<int doEnable = enableGetIdentifier>
-	typename std::enable_if<doEnable==1, const char*>::type
+	typename std::enable_if<doEnable==1||doEnable==2, const char*>::type
 	getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
 
 	/// @return Identifier (name) of this enum value.
 	template<int doEnable = enableGetIdentifier>
-	constexpr typename std::enable_if<doEnable==2, const char*>::type
+	constexpr typename std::enable_if<doEnable==3, const char*>::type
 	getIdentifier(void) const noexcept { return XenumStore::getIdentifier(value); }
 
 #ifdef _XENUM5_UNIT_TEST
@@ -68,6 +68,9 @@ public:
 	template<int doEnable = enableGetIdentifier>
 	typename std::enable_if<doEnable==0, const char*>::type
 	getIdentifier(void) const { throw std::logic_error("getIdentifier() is configured 'off'."); }
+
+	/// Used by unit test to convert just any xenumvalue to 'true'.
+	constexpr bool toTrue(void) const { return true; }
 #endif
 
 public:

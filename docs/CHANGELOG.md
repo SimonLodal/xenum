@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [5.2] - 2018-07-17
+### Added
+- Lookup enum-value by value of custom property.
+
 ## [5.1] - 2018-06-15
 ### Added
 - Options for how to implement custom properties' get*() methods, and identifiers'

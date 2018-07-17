@@ -5,7 +5,7 @@
  * @license GNU GPL version 3
  */
 
-#include <test/xenum/xenums/Pcombs.hpp>
+#include <test/xenum/xenums/P1combs.hpp>
 
-XENUM5_DEFINE(Pcombs)
+XENUM5_DEFINE(P1combs)
 

@@ -51,28 +51,65 @@
 #define _XENUM5_PDEF_FEATURES(PDEF)		BOOST_PP_SEQ_ELEM(4, PDEF)
 
 /**
- * Get the implementation option for the getter; ext|cxp.
+ * Get the option for implementation of the getters; off|ext|cxp.
  */
 #define _XENUM5_PDEF_IMPL_GET(PDEF)		BOOST_PP_SEQ_ELEM(0, _XENUM5_PDEF_FEATURES(PDEF))
 
 /**
- * Get placement of the custom property data: OFF, SRC or HDR.
+ * Get the placement of data and functions for the getters; OFF|HDR|SRC.
  */
-#define _XENUM5_PDEF_PROP_DATA(PDEF)		BOOST_PP_CAT(					\
-							_XENUM5_PDEF_PROP_DATA_HELPER_,		\
+#define _XENUM5_PDEF_PLACE_GET(PDEF)		BOOST_PP_CAT(					\
+							_XENUM5_XLATE_IMPL_PLACE_,		\
+							_XENUM5_PDEF_IMPL_GET(PDEF)		\
+						)						\
+
+/**
+ * Get the placement of data and functions for the getters, as int: 0=OFF, 1=HDR, 2=SRC.
+ */
+#define _XENUM5_PDEF_PLACE_INT_GET(PDEF)	BOOST_PP_CAT(					\
+							_XENUM5_XLATE_PLACE_INT_,		\
+							_XENUM5_PDEF_PLACE_GET(PDEF)		\
+						)
+
+/**
+ * Get the option for implementation of fromValue() lookup; off|ext|inl|cxp.
+ */
+#define _XENUM5_PDEF_IMPL_FROM(PDEF)		BOOST_PP_SEQ_ELEM(1, _XENUM5_PDEF_FEATURES(PDEF))
+
+/**
+ * Get the placement of data and functions for fromValue(); OFF|HDR|SRC.
+ */
+#define _XENUM5_PDEF_PLACE_FROM(PDEF)		BOOST_PP_CAT(					\
+							_XENUM5_XLATE_IMPL_PLACE_,		\
+							_XENUM5_PDEF_IMPL_FROM(PDEF)		\
+						)						\
+
+/**
+ * Get the placement of data and functions for fromValue(), as int: 0=OFF, 1=HDR, 2=SRC.
+ */
+#define _XENUM5_PDEF_PLACE_INT_FROM(PDEF)	BOOST_PP_CAT(					\
+							_XENUM5_XLATE_PLACE_INT_,		\
+							_XENUM5_PDEF_PLACE_FROM(PDEF)		\
+						)
+
+/**
+ * Get placement of common custom property data: OFF, SRC or HDR.
+ */
+#define _XENUM5_PDEF_PLACE_COMMON(PDEF)		BOOST_PP_CAT(					\
+							_XENUM5_XLATE_COMMON_IMPL_PLACE_,	\
 							BOOST_PP_CAT(				\
 								_XENUM5_PDEF_IMPL_GET(PDEF),	\
-/* FIXME: Add real from() value when added. */\
+								_XENUM5_PDEF_IMPL_FROM(PDEF)	\
 							)					\
 						)						\
 
-/// Helper for _XENUM5_PDEF_PROP_DATA()
-#define _XENUM5_PDEF_PROP_DATA_HELPER_ext	SRC
-/// Helper for _XENUM5_PDEF_PROP_DATA()
-#define _XENUM5_PDEF_PROP_DATA_HELPER_cxp	HDR
-
-
-
+/**
+ * Get placement of common stuff, as int: 0=OFF, 1=HDR, 2=SRC.
+ */
+#define _XENUM5_PDEF_PLACE_INT_COMMON(PDEF)	BOOST_PP_CAT(					\
+							_XENUM5_XLATE_PLACE_INT_,		\
+							_XENUM5_PDEF_PLACE_COMMON(PDEF)		\
+						)						\
 
 
 /**
@@ -182,7 +219,7 @@
 #define _XENUM5_PDEF_CHECK_FTUPLE_0_1(LOC, FEATURES)						\
 	BOOST_PP_CAT(										\
 		_XENUM5_PDEF_CHECK_FPARMCNT_,							\
-		BOOST_PP_LESS(BOOST_PP_TUPLE_SIZE(FEATURES), 2)					\
+		BOOST_PP_LESS(BOOST_PP_TUPLE_SIZE(FEATURES), 3)					\
 	) (LOC, BOOST_PP_TUPLE_SIZE(FEATURES))							\
 	_XENUM5_PDEF_CHECK_FEATOPTS(LOC features, BOOST_PP_TUPLE_ENUM(FEATURES))		\
 
@@ -200,10 +237,17 @@
 	_XENUM5_PDEF_CHECK_IMPL_GET(LOC, __VA_ARGS__)						\
 
 /**
- * Check getter implementation option.
+ * Check getValue() implementation option.
  */
 #define _XENUM5_PDEF_CHECK_IMPL_GET(LOC, IMPL_GET_OPT, ...)					\
 	_XENUM5_CHECK_FEATOPT_GET(IMPL_GET_OPT, LOC[0](getter))					\
+	_XENUM5_PDEF_CHECK_IMPL_FROM(LOC, __VA_ARGS__)						\
+
+/**
+ * Check fromValue() implementation option.
+ */
+#define _XENUM5_PDEF_CHECK_IMPL_FROM(LOC, IMPL_FROM_OPT, ...)					\
+	_XENUM5_CHECK_FEATOPT_FROM(IMPL_FROM_OPT, LOC[1](from))					\
 	/* Call next feature option check from here if ever added */
 
 
@@ -276,7 +320,7 @@
  * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is not defined.
  */
 #define _XENUM5_PDEF_INIT_FEATURES_0(LOC, ...)							\
-	(ext)
+	(ext)(off)										\
 
 /**
  * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is defined.
@@ -286,13 +330,24 @@
 	_XENUM5_PDEF_INIT_IMPL_GET(LOC, __VA_ARGS__)						\
 
 /**
- * Helper for _XENUM5_PDEF_INIT_FEATURES(), when features tuple is defined.
+ * Init 'getValue' feature option.
  */
 #define _XENUM5_PDEF_INIT_IMPL_GET(LOC, IMPL_GET_OPT, ...)					\
 	BOOST_PP_IF(										\
 		BOOST_PP_IS_EMPTY(IMPL_GET_OPT),						\
 		(ext),										\
 		(IMPL_GET_OPT)									\
+	)											\
+	_XENUM5_PDEF_INIT_IMPL_FROM(LOC, __VA_ARGS__)						\
+
+/**
+ * Init 'fromValue' feature option.
+ */
+#define _XENUM5_PDEF_INIT_IMPL_FROM(LOC, IMPL_FROM_OPT, ...)					\
+	BOOST_PP_IF(										\
+		BOOST_PP_IS_EMPTY(IMPL_FROM_OPT),						\
+		(off),										\
+		(IMPL_FROM_OPT)									\
 	)											\
 	/* Call next feature option init from here, when added */				\
 	/*_XENUM5_PDEF_INIT_...(LOC, __VA_ARGS__) */						\
